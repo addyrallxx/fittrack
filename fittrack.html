@@ -581,6 +581,84 @@ function countUp(id,target,dec=0){
     if(p<1)requestAnimationFrame(step);};
   requestAnimationFrame(step);
 }
+/* ── PHASE HELPERS ──────────────────────────── */
+function getPhase(){
+  const now=new Date();
+  const lockIn=new Date('2026-04-15');
+  return now>=lockIn?2:1;
+}
+function getDaysToFlight(){
+  const flight=new Date('2026-05-21');
+  const now=new Date();
+  const diff=Math.ceil((flight-now)/(1000*60*60*24));
+  return Math.max(0,diff);
+}
+
+/* ── PHASE BANNER (home screen) ─────────────── */
+function renderPhaseBanner(){
+  const phase=getPhase();
+  const days=getDaysToFlight();
+  const isP1=phase===1;
+  const title=isP1?'Phase 1 — Exam Mode':'Phase 2 — Full Lock-In 🔥';
+  const sub=isP1?'Home workouts + gym when possible. Nail nutrition and water every day.':'Morning run + evening gym every day. This is where the transformation happens.';
+  const pills=isP1?['4L Water','140g Protein','Creatine 5g','Low Sodium']:['Morning Run','Evening Gym','150g+ Protein','4.5L Water'];
+  return `<div class="phase-banner ${isP1?'phase1':'phase2'}">
+    <div class="phase-label">${isP1?'📚 Exam Mode':'⚡ Lock-In Mode'}</div>
+    <div class="phase-title">${title}</div>
+    <div class="phase-sub">${sub}</div>
+    <div class="phase-countdown">
+      <div class="phase-days">${days}</div>
+      <div class="phase-days-lbl">days to<br>flight ✈️</div>
+    </div>
+    <div class="phase-pills">${pills.map(p=>`<span class="phase-pill">${p}</span>`).join('')}</div>
+  </div>`;
+}
+
+/* ── RUN TRACKER (home screen) ──────────────── */
+function renderRunTracker(){
+  const phase=getPhase();
+  if(phase<2){
+    // Phase 1 — show preview
+    return `<div class="run-card">
+      <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">Morning Run — Starts Apr 15</div>
+      <div class="run-protocol">Your <strong>1-hour daily run</strong> begins April 15 with a progressive protocol. Week 1 starts with run/walk intervals to protect your joints. Full continuous jog by Week 3.</div>
+      <div style="font-size:12px;color:var(--green);font-weight:600">🏃 ${getDaysToFlight()-36} days until lock-in begins</div>
+    </div>`;
+  }
+  const wk=getRunWeek();
+  const proto=RUN_WEEKS[wk];
+  const todayRun=S.log.todayRun||{};
+  return `<div class="run-card">
+    <div class="run-week-badge">🏃 Week ${proto.week} · ${proto.dates}</div>
+    <div class="run-protocol"><strong>Today's protocol:</strong> ${proto.protocol}<br>${proto.duration} · ${proto.cal}</div>
+    ${todayRun.done?
+      `<div style="background:var(--green-dim);border:1px solid var(--green-border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">✅</span>
+        <div><div style="font-size:13px;font-weight:700;color:var(--green)">Run complete!</div>
+        <div style="font-size:11px;color:var(--t2)">${todayRun.duration||'--'} min · ${todayRun.distance||'--'} km</div></div>
+      </div>`:
+      `<div class="run-log-row">
+        <input class="run-inp" id="run-dur" type="number" placeholder="Duration (min)" inputmode="numeric">
+        <input class="run-inp" id="run-dist" type="number" placeholder="Distance (km)" inputmode="decimal" step="0.1">
+        <button class="run-save-btn" onclick="saveRun()">Log ✓</button>
+      </div>`
+    }
+  </div>`;
+}
+
+function saveRun(){
+  const dur=document.getElementById('run-dur')?.value;
+  const dist=document.getElementById('run-dist')?.value;
+  if(!dur)return;
+  if(!S.log.todayRun)S.log.todayRun={};
+  S.log.todayRun={done:true,duration:dur,distance:dist};
+  DB.saveLog(S.today,S.log);
+  renderScreen(0);
+  toast('🏃','Run logged!',`${dur} min · ${dist||'--'} km — great work!`);
+}
+
+
+
 /* ── HOME SCREEN ────────────────────────────── */
 function renderHome(){
   const l=S.log,c=S.cfg;
@@ -1748,81 +1826,6 @@ function getRunWeek(){
 }
 
 
-/* ── PHASE HELPERS ──────────────────────────── */
-function getPhase(){
-  const now=new Date();
-  const lockIn=new Date('2026-04-15');
-  return now>=lockIn?2:1;
-}
-function getDaysToFlight(){
-  const flight=new Date('2026-05-21');
-  const now=new Date();
-  const diff=Math.ceil((flight-now)/(1000*60*60*24));
-  return Math.max(0,diff);
-}
-
-/* ── PHASE BANNER (home screen) ─────────────── */
-function renderPhaseBanner(){
-  const phase=getPhase();
-  const days=getDaysToFlight();
-  const isP1=phase===1;
-  const title=isP1?'Phase 1 — Exam Mode':'Phase 2 — Full Lock-In 🔥';
-  const sub=isP1?'Home workouts + gym when possible. Nail nutrition and water every day.':'Morning run + evening gym every day. This is where the transformation happens.';
-  const pills=isP1?['4L Water','140g Protein','Creatine 5g','Low Sodium']:['Morning Run','Evening Gym','150g+ Protein','4.5L Water'];
-  return `<div class="phase-banner ${isP1?'phase1':'phase2'}">
-    <div class="phase-label">${isP1?'📚 Exam Mode':'⚡ Lock-In Mode'}</div>
-    <div class="phase-title">${title}</div>
-    <div class="phase-sub">${sub}</div>
-    <div class="phase-countdown">
-      <div class="phase-days">${days}</div>
-      <div class="phase-days-lbl">days to<br>flight ✈️</div>
-    </div>
-    <div class="phase-pills">${pills.map(p=>`<span class="phase-pill">${p}</span>`).join('')}</div>
-  </div>`;
-}
-
-/* ── RUN TRACKER (home screen) ──────────────── */
-function renderRunTracker(){
-  const phase=getPhase();
-  if(phase<2){
-    // Phase 1 — show preview
-    return `<div class="run-card">
-      <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">Morning Run — Starts Apr 15</div>
-      <div class="run-protocol">Your <strong>1-hour daily run</strong> begins April 15 with a progressive protocol. Week 1 starts with run/walk intervals to protect your joints. Full continuous jog by Week 3.</div>
-      <div style="font-size:12px;color:var(--green);font-weight:600">🏃 ${getDaysToFlight()-36} days until lock-in begins</div>
-    </div>`;
-  }
-  const wk=getRunWeek();
-  const proto=RUN_WEEKS[wk];
-  const todayRun=S.log.todayRun||{};
-  return `<div class="run-card">
-    <div class="run-week-badge">🏃 Week ${proto.week} · ${proto.dates}</div>
-    <div class="run-protocol"><strong>Today's protocol:</strong> ${proto.protocol}<br>${proto.duration} · ${proto.cal}</div>
-    ${todayRun.done?
-      `<div style="background:var(--green-dim);border:1px solid var(--green-border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px">
-        <span style="font-size:20px">✅</span>
-        <div><div style="font-size:13px;font-weight:700;color:var(--green)">Run complete!</div>
-        <div style="font-size:11px;color:var(--t2)">${todayRun.duration||'--'} min · ${todayRun.distance||'--'} km</div></div>
-      </div>`:
-      `<div class="run-log-row">
-        <input class="run-inp" id="run-dur" type="number" placeholder="Duration (min)" inputmode="numeric">
-        <input class="run-inp" id="run-dist" type="number" placeholder="Distance (km)" inputmode="decimal" step="0.1">
-        <button class="run-save-btn" onclick="saveRun()">Log ✓</button>
-      </div>`
-    }
-  </div>`;
-}
-
-function saveRun(){
-  const dur=document.getElementById('run-dur')?.value;
-  const dist=document.getElementById('run-dist')?.value;
-  if(!dur)return;
-  if(!S.log.todayRun)S.log.todayRun={};
-  S.log.todayRun={done:true,duration:dur,distance:dist};
-  DB.saveLog(S.today,S.log);
-  renderScreen(0);
-  toast('🏃','Run logged!',`${dur} min · ${dist||'--'} km — great work!`);
-}
 
 /* ── HOME WORKOUT SCREEN ────────────────────── */
 let hwActive={blockIdx:0,exIdx:0,setIdx:0,running:false,timerInt:null,timerSec:0};
