@@ -609,6 +609,7 @@ function renderHome(){
       </div>
       <button class="hdr-btn" onclick="openNotifInfo()">${svgIcon('bell',18,'var(--t2)')}</button>
     </div>
+    ${renderPhaseBanner()}
     <div class="section-label">Today's activity</div>
     <div class="rings-wrap">
       ${ring('cal','var(--orange)',totalCal,calGoal,Math.round(totalCal).toLocaleString(),'kcal')}
@@ -626,6 +627,7 @@ function renderHome(){
       ${ciCard('water','💧','Water',l.checkins.water)}
       ${ciCard('protein','🥩','Protein',l.checkins.protein)}
     </div>
+    ${renderRunTracker()}
     <div class="section-label">Steps</div>
     <div class="steps-card">
       <div class="flex-bc" style="margin-bottom:10px">
@@ -707,8 +709,8 @@ function toggleCI(type){
 }
 /* ── WORKOUT SCREEN ─────────────────────────── */
 function renderWorkout(){
-  const useP2=S.cfg.usePhase2Split&&PHASE2_WORKOUT;
-  const days=useP2?PHASE2_WORKOUT.days:S.workout.days;
+  const useP2=S.cfg&&S.cfg.usePhase2Split&&PHASE2_WORKOUT;
+  const days=(useP2?PHASE2_WORKOUT.days:S.workout.days)||S.workout.days;
   const d=days[Math.min(S.workoutDay,days.length-1)],l=S.log;
   const exLogs=l.workout.exercises||{};
   const done=d.exercises.filter(e=>exLogs[e.id]?.completed).length;
@@ -1621,6 +1623,7 @@ function init(){
   if(!S.cfg.targets)S.cfg.targets=DEF_SETTINGS.targets;
   if(!S.cfg.body)S.cfg.body=DEF_SETTINGS.body;
   if(!S.cfg.notifications)S.cfg.notifications=DEF_SETTINGS.notifications;
+  registerSW();
   buildTabs();
   renderScreen(0);
   initSwipe();
@@ -1930,27 +1933,7 @@ function startHWRest(secs,cb){
   },1000);
 }
 
-/* ── UPDATE HOME SCREEN to include phase banner + run ── */
-const _origRenderHome=renderHome;
-renderHome=function(){
-  _origRenderHome();
-  // Inject phase banner and run tracker after header
-  const s0=document.getElementById('s0');
-  if(!s0)return;
-  const firstSection=s0.querySelector('.section-label');
-  if(firstSection){
-    const phaseBannerEl=document.createElement('div');
-    phaseBannerEl.innerHTML=renderPhaseBanner();
-    s0.insertBefore(phaseBannerEl.firstChild,firstSection);
-    // Add run tracker before steps card
-    const stepsCard=s0.querySelector('.steps-card');
-    if(stepsCard&&getPhase()>=1){
-      const runEl=document.createElement('div');
-      runEl.innerHTML=renderRunTracker();
-      stepsCard.parentNode.insertBefore(runEl.firstChild,stepsCard);
-    }
-  }
-};
+/* phase banner baked into renderHome directly */
 
 
 function toggleSplit(){
@@ -1974,6 +1957,22 @@ function setSplit(useP2){
   renderScreen(4);
   renderScreen(1);
   toast('✅',useP2?'Phase 2 split activated 🔥':'Phase 1 split activated','');
+}
+
+
+/* ── SERVICE WORKER ─────────────────────────── */
+function registerSW(){
+  if(!('serviceWorker' in navigator))return;
+  const swCode=`
+const CACHE='fittrack-v${Date.now()}';
+const URLS=['./fittrack.html'];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(URLS)));self.skipWaiting();});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});
+self.addEventListener('fetch',e=>{if(e.request.mode==='navigate'){e.respondWith(fetch(e.request).then(r=>{const rc=r.clone();caches.open(CACHE).then(c=>c.put(e.request,rc));return r;}).catch(()=>caches.match(e.request)));}});
+`;
+  const blob=new Blob([swCode],{type:'application/javascript'});
+  const url=URL.createObjectURL(blob);
+  navigator.serviceWorker.register(url,{scope:'./'}).catch(()=>{});
 }
 
 document.addEventListener('DOMContentLoaded',init);
