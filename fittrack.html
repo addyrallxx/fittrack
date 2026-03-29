@@ -316,6 +316,52 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 /* FLEX UTILS */
 .flex{display:flex;}.flex-bc{display:flex;align-items:center;justify-content:space-between;}
 .flex-c{display:flex;align-items:center;}
+
+/* PHASE BANNER */
+.phase-banner{margin:0 16px 12px;border-radius:var(--r-lg);padding:16px;position:relative;overflow:hidden;}
+.phase-banner.phase1{background:linear-gradient(135deg,rgba(10,132,255,0.15),rgba(10,132,255,0.05));border:1px solid rgba(10,132,255,0.25);}
+.phase-banner.phase2{background:linear-gradient(135deg,rgba(255,149,0,0.18),rgba(255,107,53,0.08));border:1px solid rgba(255,149,0,0.3);}
+.phase-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.phase1 .phase-label{color:var(--blue);}
+.phase2 .phase-label{color:var(--orange);}
+.phase-title{font-size:17px;font-weight:800;color:var(--t1);margin-bottom:4px;}
+.phase-sub{font-size:11px;color:var(--t2);line-height:1.5;}
+.phase-countdown{position:absolute;top:16px;right:16px;text-align:center;}
+.phase-days{font-size:28px;font-weight:800;color:var(--orange);letter-spacing:-1px;line-height:1;}
+.phase-days-lbl{font-size:9px;color:var(--t2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.phase-pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.phase-pill{font-size:9px;font-weight:700;padding:3px 10px;border-radius:8px;text-transform:uppercase;letter-spacing:.4px;}
+.phase1 .phase-pill{background:rgba(10,132,255,0.15);color:var(--blue-light);border:1px solid rgba(10,132,255,0.2);}
+.phase2 .phase-pill{background:rgba(255,149,0,0.15);color:var(--orange);border:1px solid rgba(255,149,0,0.2);}
+/* RUN TRACKER */
+.run-card{margin:0 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;}
+.run-week-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-dim);border:1px solid var(--green-border);border-radius:10px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--green);margin-bottom:12px;}
+.run-protocol{background:var(--s2);border-radius:var(--r-md);padding:12px;margin-bottom:12px;font-size:13px;color:var(--t2);line-height:1.6;}
+.run-protocol strong{color:var(--t1);}
+.run-log-row{display:flex;gap:8px;}
+.run-inp{flex:1;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px;font-size:14px;font-weight:700;color:var(--t1);text-align:center;}
+.run-inp::placeholder{color:var(--t3);font-weight:400;font-size:12px;}
+.run-save-btn{background:var(--green);color:#000;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:800;}
+/* HOME WORKOUT SCREEN */
+.hw-block-title{margin:0 16px 8px;font-size:13px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.6px;display:flex;align-items:center;gap:8px;}
+.hw-block-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.hw-ex-card{margin:0 16px 8px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);padding:14px 16px;display:flex;align-items:center;gap:12px;}
+.hw-ex-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.hw-ex-info{flex:1;}
+.hw-ex-name{font-size:14px;font-weight:600;color:var(--t1);}
+.hw-ex-meta{font-size:11px;color:var(--t2);margin-top:2px;}
+.hw-ex-tip{font-size:11px;color:var(--t3);margin-top:3px;font-style:italic;}
+.hw-start-btn{margin:16px 16px 0;padding:16px;background:linear-gradient(135deg,var(--orange),#FF6B35);border-radius:var(--r-lg);font-size:16px;font-weight:800;color:#fff;text-align:center;transition:transform .15s var(--spring);}
+.hw-start-btn:active{transform:scale(0.97);}
+.hw-timer-wrap{margin:0 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;text-align:center;}
+.hw-timer-big{font-size:56px;font-weight:800;color:var(--orange);letter-spacing:-2px;line-height:1;font-variant-numeric:tabular-nums;}
+.hw-timer-ex{font-size:16px;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.hw-timer-set{font-size:13px;color:var(--t2);margin-bottom:16px;}
+.hw-timer-btns{display:flex;gap:10px;justify-content:center;}
+.hw-timer-btn{padding:12px 24px;border-radius:var(--r-md);font-size:14px;font-weight:700;transition:transform .15s var(--spring);}
+.hw-timer-btn:active{transform:scale(0.95);}
+.hw-prog-wrap{margin:0 16px 12px;}
+
 </style>
 </head>
 <body>
@@ -326,6 +372,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
     <div class="screen" id="s2"></div>
     <div class="screen" id="s3"></div>
     <div class="screen" id="s4"></div>
+    <div class="screen" id="s5"></div>
   </div>
   <div id="tab-bar"></div>
 </div>
@@ -422,33 +469,80 @@ exercises:[
 ]};
 /* ── FOOD PRESETS ─────────────────────────────── */
 const PRESETS=[
-{id:'p1',name:'Beef Tehari (300g)',cal:1750,protein:90,carbs:165,fat:84},
-{id:'p2',name:'Beef Tehari (200g)',cal:1170,protein:60,carbs:110,fat:56},
-{id:'p3',name:'Chicken Curry (250g)',cal:400,protein:48,carbs:10,fat:18},
-{id:'p4',name:'Steamed Rice / Bhaat (250g)',cal:325,protein:6,carbs:72,fat:1},
-{id:'p5',name:'Steamed Rice / Bhaat (150g)',cal:195,protein:4,carbs:43,fat:1},
-{id:'p6',name:'Shawarma Plate',cal:800,protein:45,carbs:65,fat:30},
-{id:'p7',name:'Shawarma Wrap',cal:550,protein:32,carbs:50,fat:18},
-{id:'p8',name:'Grilled Chicken Leg',cal:280,protein:40,carbs:0,fat:12},
-{id:'p9',name:'Paratha (1 piece)',cal:200,protein:4,carbs:28,fat:9},
-{id:'p10',name:'Eggs (2 whole)',cal:140,protein:12,carbs:1,fat:10},
-{id:'p11',name:'Eggs (3 whole)',cal:210,protein:18,carbs:1,fat:15},
-{id:'p12',name:'ON Gold Standard Whey Shake',cal:130,protein:24,carbs:3,fat:2},
-{id:'p13',name:"Church's 3-Piece Combo",cal:1200,protein:52,carbs:90,fat:60},
-{id:'p14',name:"Church's Chicken Only",cal:720,protein:44,carbs:40,fat:38},
-{id:'p15',name:'Five Guys Burger (regular)',cal:840,protein:40,carbs:62,fat:42},
-{id:'p16',name:'Rotisserie Chicken Leg+Thigh',cal:380,protein:44,carbs:0,fat:22},
-{id:'p17',name:"Subway 6\" Chicken Teriyaki",cal:330,protein:26,carbs:44,fat:7},
-{id:'p18',name:'Biryani (350g)',cal:580,protein:28,carbs:78,fat:18},
-{id:'p19',name:'Greek Yogurt (200g)',cal:130,protein:18,carbs:8,fat:3},
-{id:'p20',name:'Costco Hot Dog + Bun',cal:570,protein:23,carbs:46,fat:32},
-{id:'p21',name:'Beef Curry (350g)',cal:540,protein:58,carbs:8,fat:30},
-{id:'p22',name:'Beef Curry (200g)',cal:308,protein:33,carbs:5,fat:17},
-{id:'p23',name:'Salad (side, no dressing)',cal:45,protein:2,carbs:8,fat:1},
-{id:'p24',name:'Bread (2 slices)',cal:160,protein:6,carbs:30,fat:2},
-{id:'p25',name:'Creatine 5g (no calories)',cal:0,protein:0,carbs:0,fat:0},
-{id:'p26',name:'KFC 2-Piece Meal',cal:780,protein:46,carbs:48,fat:36},
-{id:'p27',name:'Taco Bell Chicken Burrito',cal:490,protein:26,carbs:58,fat:16},
+{id:'p1',name:'Beef Tehari (300g)',cat:'Bangladeshi',cal:1750,protein:90,carbs:165,fat:84},
+{id:'p2',name:'Beef Tehari (200g)',cat:'Bangladeshi',cal:1170,protein:60,carbs:110,fat:56},
+{id:'p3',name:'Chicken Curry (250g)',cat:'Bangladeshi',cal:400,protein:48,carbs:10,fat:18},
+{id:'p4',name:'Steamed Rice / Bhaat (250g)',cat:'Bangladeshi',cal:325,protein:6,carbs:72,fat:1},
+{id:'p5',name:'Steamed Rice / Bhaat (150g)',cat:'Bangladeshi',cal:195,protein:4,carbs:43,fat:1},
+{id:'p6',name:'Beef Curry (350g)',cat:'Bangladeshi',cal:540,protein:58,carbs:8,fat:30},
+{id:'p7',name:'Beef Curry (200g)',cat:'Bangladeshi',cal:308,protein:33,carbs:5,fat:17},
+{id:'p8',name:'Beef Bhuna (200g)',cat:'Bangladeshi',cal:380,protein:42,carbs:6,fat:20},
+{id:'p9',name:'Chicken Bhuna (200g)',cat:'Bangladeshi',cal:310,protein:38,carbs:5,fat:14},
+{id:'p10',name:'Kala Bhuna (200g)',cat:'Bangladeshi',cal:420,protein:45,carbs:4,fat:24},
+{id:'p11',name:'Kacchi Biryani (350g)',cat:'Bangladeshi',cal:580,protein:28,carbs:78,fat:18},
+{id:'p12',name:'Chicken Biryani (350g)',cat:'Bangladeshi',cal:520,protein:30,carbs:72,fat:14},
+{id:'p13',name:'Morog Polao (300g)',cat:'Bangladeshi',cal:540,protein:32,carbs:68,fat:16},
+{id:'p14',name:'Bhuna Khichuri with Beef (300g)',cat:'Bangladeshi',cal:480,protein:28,carbs:55,fat:16},
+{id:'p15',name:'Bhuna Khichuri with Chicken (300g)',cat:'Bangladeshi',cal:420,protein:26,carbs:55,fat:12},
+{id:'p16',name:'Lentil Dal / Masoor Dal (1 cup)',cat:'Bangladeshi',cal:180,protein:12,carbs:30,fat:3},
+{id:'p17',name:'Hilsa Fish Curry (200g)',cat:'Bangladeshi',cal:310,protein:28,carbs:4,fat:20},
+{id:'p18',name:'Fried Hilsa Fish (2 pieces)',cat:'Bangladeshi',cal:280,protein:26,carbs:2,fat:18},
+{id:'p19',name:'Shrimp Malai Curry (200g)',cat:'Bangladeshi',cal:290,protein:24,carbs:8,fat:18},
+{id:'p20',name:'Paratha (1 piece)',cat:'Bangladeshi',cal:200,protein:4,carbs:28,fat:9},
+{id:'p21',name:'Paratha (2 pieces)',cat:'Bangladeshi',cal:400,protein:8,carbs:56,fat:18},
+{id:'p22',name:'Puri / Luchi (2 pieces)',cat:'Bangladeshi',cal:260,protein:5,carbs:36,fat:12},
+{id:'p23',name:'Roti (2 pieces)',cat:'Bangladeshi',cal:180,protein:6,carbs:36,fat:2},
+{id:'p24',name:'Egg Bhurji / Scrambled Eggs (3 eggs)',cat:'Bangladeshi',cal:240,protein:18,carbs:2,fat:17},
+{id:'p25',name:'Omelette (2 eggs)',cat:'Bangladeshi',cal:190,protein:13,carbs:1,fat:14},
+{id:'p26',name:'Mishti Doi (200g)',cat:'Bangladeshi',cal:220,protein:7,carbs:38,fat:5},
+{id:'p27',name:'Khichuri with Fried Egg (300g)',cat:'Bangladeshi',cal:450,protein:20,carbs:58,fat:16},
+{id:'p28',name:'Shawarma Palace - Chicken Plate',cat:'Calgary',cal:750,protein:52,carbs:68,fat:24},
+{id:'p29',name:'Shawarma Palace - Beef Plate',cat:'Calgary',cal:820,protein:48,carbs:68,fat:30},
+{id:'p30',name:'Shawarma Palace - Chicken Wrap',cat:'Calgary',cal:550,protein:36,carbs:52,fat:18},
+{id:'p31',name:'Shawarma Palace - Beef Wrap',cat:'Calgary',cal:600,protein:32,carbs:52,fat:24},
+{id:'p32',name:"Church's Chicken - 3 Piece Combo",cat:'Calgary',cal:1200,protein:52,carbs:90,fat:60},
+{id:'p33',name:"Church's Chicken - 2 Piece",cat:'Calgary',cal:720,protein:44,carbs:40,fat:38},
+{id:'p34',name:"Church's Chicken - 3 Piece Only",cat:'Calgary',cal:860,protein:55,carbs:40,fat:46},
+{id:'p35',name:'Five Guys - Little Burger',cat:'Calgary',cal:550,protein:28,carbs:40,fat:26},
+{id:'p36',name:'Five Guys - Regular Burger',cat:'Calgary',cal:700,protein:36,carbs:40,fat:36},
+{id:'p37',name:'Five Guys - Bacon Cheeseburger',cat:'Calgary',cal:840,protein:44,carbs:40,fat:46},
+{id:'p38',name:'Five Guys - Regular Fries',cat:'Calgary',cal:530,protein:8,carbs:71,fat:24},
+{id:'p39',name:"McDonald's - Big Mac",cat:'Calgary',cal:550,protein:25,carbs:45,fat:30},
+{id:'p40',name:"McDonald's - McChicken",cat:'Calgary',cal:360,protein:15,carbs:40,fat:16},
+{id:'p41',name:"McDonald's - Medium Fries",cat:'Calgary',cal:320,protein:4,carbs:44,fat:15},
+{id:'p42',name:'Subway Canada - 6" Chicken Teriyaki',cat:'Calgary',cal:330,protein:26,carbs:44,fat:7},
+{id:'p43',name:'Subway Canada - Footlong Chicken Breast',cat:'Calgary',cal:560,protein:46,carbs:76,fat:10},
+{id:'p44',name:'Subway Canada - Chicken Wrap',cat:'Calgary',cal:380,protein:24,carbs:48,fat:10},
+{id:'p45',name:'Costco - Hot Dog + Bun',cat:'Calgary',cal:570,protein:23,carbs:46,fat:32},
+{id:'p46',name:'Costco - Rotisserie Chicken (half)',cat:'Calgary',cal:490,protein:62,carbs:0,fat:26},
+{id:'p47',name:'Costco - Chicken Bake',cat:'Calgary',cal:770,protein:46,carbs:85,fat:26},
+{id:'p48',name:"A&W - Teen Burger",cat:'Calgary',cal:500,protein:24,carbs:44,fat:24},
+{id:'p49',name:"A&W - Mama Burger",cat:'Calgary',cal:390,protein:18,carbs:36,fat:18},
+{id:'p50',name:'Tim Hortons - Bagel BELT',cat:'Calgary',cal:480,protein:22,carbs:54,fat:18},
+{id:'p51',name:'Tim Hortons - Chili (large)',cat:'Calgary',cal:300,protein:22,carbs:36,fat:7},
+{id:'p52',name:'Tim Hortons - Chicken Wrap',cat:'Calgary',cal:390,protein:24,carbs:44,fat:12},
+{id:'p53',name:'Grilled Chicken Breast (150g)',cat:'Protein',cal:250,protein:46,carbs:0,fat:6},
+{id:'p54',name:'Grilled Chicken Breast (200g)',cat:'Protein',cal:330,protein:62,carbs:0,fat:8},
+{id:'p55',name:'Grilled Chicken Leg',cat:'Protein',cal:280,protein:40,carbs:0,fat:12},
+{id:'p56',name:'Rotisserie Chicken Leg + Thigh',cat:'Protein',cal:380,protein:44,carbs:0,fat:22},
+{id:'p57',name:'Canned Tuna in Water (1 can)',cat:'Protein',cal:160,protein:36,carbs:0,fat:1},
+{id:'p58',name:'Salmon Fillet (150g)',cat:'Protein',cal:280,protein:34,carbs:0,fat:16},
+{id:'p59',name:'Ground Beef Cooked (150g)',cat:'Protein',cal:340,protein:32,carbs:0,fat:22},
+{id:'p60',name:'Eggs (2 whole)',cat:'Protein',cal:140,protein:12,carbs:1,fat:10},
+{id:'p61',name:'Eggs (3 whole)',cat:'Protein',cal:210,protein:18,carbs:1,fat:15},
+{id:'p62',name:'Greek Yogurt (200g)',cat:'Dairy',cal:130,protein:18,carbs:8,fat:3},
+{id:'p63',name:'Greek Yogurt (100g)',cat:'Dairy',cal:65,protein:9,carbs:4,fat:1},
+{id:'p64',name:'Cottage Cheese (200g)',cat:'Dairy',cal:160,protein:22,carbs:6,fat:4},
+{id:'p65',name:'Whole Milk (1 cup 250ml)',cat:'Dairy',cal:150,protein:8,carbs:12,fat:8},
+{id:'p66',name:'Oatmeal Cooked (1 cup)',cat:'Breakfast',cal:150,protein:5,carbs:27,fat:3},
+{id:'p67',name:'Whole Wheat Bread (2 slices)',cat:'Breakfast',cal:160,protein:6,carbs:30,fat:2},
+{id:'p68',name:'Banana (medium)',cat:'Fruit',cal:105,protein:1,carbs:27,fat:0},
+{id:'p69',name:'Apple (medium)',cat:'Fruit',cal:95,protein:0,carbs:25,fat:0},
+{id:'p70',name:'Peanut Butter (2 tbsp)',cat:'Extras',cal:190,protein:7,carbs:6,fat:16},
+{id:'p71',name:'Salad Side (no dressing)',cat:'Extras',cal:45,protein:2,carbs:8,fat:1},
+{id:'p72',name:'ON Gold Standard Whey Shake',cat:'Supplements',cal:130,protein:24,carbs:3,fat:2},
+{id:'p73',name:'ON Gold Standard Whey - Double Shake',cat:'Supplements',cal:260,protein:48,carbs:6,fat:4},
+{id:'p74',name:'Creatine 5g (no calories)',cat:'Supplements',cal:0,protein:0,carbs:0,fat:0},
 ];
 /* ── DEFAULT SETTINGS ─────────────────────────── */
 const DEF_SETTINGS={
@@ -534,6 +628,228 @@ function countUp(id,target,dec=0){
     if(p<1)requestAnimationFrame(step);};
   requestAnimationFrame(step);
 }
+/* ── PHASE 2 SIX-DAY SPLIT ─────────────────── */
+const PHASE2_WORKOUT={days:[
+{id:'p2d1',name:'Monday',label:'Push',sub:'Chest · Shoulders · Triceps',
+warmup:'5 min incline walk → arm circles ×10 → shoulder rotations ×10 → band pull-apart ×15',
+exercises:[
+{id:'p2e1',name:'Dumbbell Bench Press',muscle:'Chest',sets:4,reps:'8–10',weight:'Progress weekly',restSec:120,cues:['Lie flat, feet planted. Grip at chest level','Press straight up — never fully lock elbows','Lower slowly 3 sec, feel chest stretch at bottom']},
+{id:'p2e2',name:'Incline Dumbbell Press',muscle:'Upper Chest',sets:3,reps:'10–12',weight:'12–20 lb',restSec:90,cues:['Set bench 30–45°. Press up and slightly inward','Keep lower back pressed into the bench','Squeeze upper chest hard at the top']},
+{id:'p2e3',name:'Seated Shoulder Press',muscle:'Shoulders',sets:4,reps:'10–12',weight:'Progress weekly',restSec:90,cues:['Back supported, dumbbells at ear height','Press overhead — stop just before lockout','Lower with full control, don't flare elbows']},
+{id:'p2e4',name:'Lateral Raises',muscle:'Side Delts',sets:4,reps:'12–15',weight:'8–12 lb',restSec:60,cues:['Slight elbow bend. Raise to shoulder height only','Lead with elbows — think pour water from a jug','Lower slowly 2 sec. Zero momentum']},
+{id:'p2e5',name:'Cable Lateral Raise',muscle:'Side Delts',sets:3,reps:'15',weight:'Light cable',restSec:60,cues:['One arm at a time for better activation','Cable at lowest setting, raise to shoulder height','Control the descent — don't let cable pull your arm down']},
+{id:'p2e6',name:'Tricep Pushdown',muscle:'Triceps',sets:3,reps:'12',weight:'Light–medium cable',restSec:60,cues:['Elbows pinned to sides — they must not move','Full extension at bottom, hard squeeze','Slow return up']},
+{id:'p2e7',name:'Overhead Tricep Extension',muscle:'Triceps',sets:3,reps:'12',weight:'15–25 lb DB',restSec:60,cues:['One dumbbell overhead with both hands','Lower behind head to 90°, extend fully up','Squeeze triceps hard at top of every rep']},
+]},
+{id:'p2d2',name:'Tuesday',label:'Pull',sub:'Back · Biceps · Rear Delts',
+warmup:'5 min walk → arm swings ×10 → band pull-apart ×15 → shoulder rotation circles',
+exercises:[
+{id:'p2e8',name:'Lat Pulldown',muscle:'Lats / Back',sets:4,reps:'10–12',weight:'Progress weekly',restSec:120,cues:['Grip slightly wider than shoulders, lean back 10–15°','Pull to upper chest — lead with elbows not hands','Squeeze shoulder blades at bottom, slow return']},
+{id:'p2e9',name:'Seated Cable Row',muscle:'Mid Back',sets:4,reps:'10–12',weight:'Progress weekly',restSec:90,cues:['Sit tall, start with arms fully extended','Row to lower chest, squeeze blades hard','Hold 1 sec, then fully extend before next rep']},
+{id:'p2e10',name:'Face Pulls',muscle:'Rear Delts',sets:4,reps:'15',weight:'Very light cable',restSec:60,cues:['Cable at eye level, rope attachment','Pull to face — flare elbows high and wide','Hold 1 sec. This is your posture lifesaver']},
+{id:'p2e11',name:'Dumbbell Bicep Curl',muscle:'Biceps',sets:3,reps:'10–12',weight:'Progress weekly',restSec:60,cues:['Elbows pinned to sides, supinate as you curl','Full range of motion every rep','Lower ALL the way down']},
+{id:'p2e12',name:'Hammer Curls',muscle:'Biceps / Brachialis',sets:3,reps:'12',weight:'Progress weekly',restSec:60,cues:['Neutral grip throughout — palms face each other','Slow and controlled, feel outer bicep','Don't swing your body']},
+{id:'p2e13',name:'Rear Delt Fly',muscle:'Rear Delts',sets:3,reps:'12',weight:'8–12 lb',restSec:60,cues:['Hinge 45° at hips, slight elbow bend','Raise arms out — lead with elbows','Squeeze blades together hard at top']},
+{id:'p2e14',name:'Cable Straight Bar Pullover',muscle:'Lats / Serratus',sets:3,reps:'12',weight:'Light cable',restSec:60,cues:['Cable overhead, arms almost straight','Pull bar down to hips in an arc — feel the lats stretch','This builds the wide back V-taper']},
+]},
+{id:'p2d3',name:'Wednesday',label:'Lower',sub:'Quads · Hamstrings · Glutes · Calves',
+warmup:'5 min walk → ankle circles ×10 each → leg swings ×10 → bodyweight squat ×10 slow',
+exercises:[
+{id:'p2e15',name:'Leg Press',muscle:'Quads / Glutes',sets:4,reps:'10–12',weight:'Add 5–10 lb weekly',restSec:120,cues:['Feet shoulder-width, mid-plate','Push through whole foot. Lower to 90° knee angle','Never lock knees at top']},
+{id:'p2e16',name:'Goblet Squat',muscle:'Quads / Core',sets:3,reps:'10',weight:'20–30 lb DB',restSec:90,cues:['Heels elevated until ankles improve','Sit back AND down — chest tall','Drive knees out over little toes']},
+{id:'p2e17',name:'Bulgarian Split Squat',muscle:'Quads / Glutes',sets:4,reps:'8–10/leg',weight:'10–20 lb DB',restSec:90,cues:['Back foot on bench, front far enough forward','Lower straight down, torso upright','Push through front heel to stand']},
+{id:'p2e18',name:'Romanian Deadlift',muscle:'Hamstrings / Glutes',sets:3,reps:'10–12',weight:'30–50 lb DB',restSec:90,cues:['Hinge at hips — push hips BACK not down','Feel the hamstring stretch at the bottom','Drive hips forward to stand, squeeze glutes']},
+{id:'p2e19',name:'Hamstring Curl Machine',muscle:'Hamstrings',sets:3,reps:'12',weight:'Light — control focus',restSec:90,cues:['Hips pressed to bench throughout','Curl with control, hard squeeze at top','Lower slowly 3 sec every rep']},
+{id:'p2e20',name:'Leg Extension',muscle:'Quads',sets:3,reps:'12',weight:'Light–medium',restSec:60,cues:['Full extension at top, hold 1 sec','Slow descent — don't let weight drop','Builds quad definition and separation']},
+{id:'p2e21',name:'Calf Raises',muscle:'Calves',sets:5,reps:'15–20',weight:'Heavy — machine or smith',restSec:60,cues:['Full range — deep stretch at bottom','Rise fully, hold 1 sec at top, hard squeeze','Slow: 1 up · 1 hold · 2 down']},
+]},
+{id:'p2d4',name:'Thursday',label:'Push',sub:'Chest · Shoulders · Triceps',
+warmup:'5 min walk → arm circles ×10 → shoulder rotations ×10 → band pull-apart ×15',
+exercises:[
+{id:'p2e22',name:'Dumbbell Bench Press',muscle:'Chest',sets:4,reps:'8–10',weight:'Same or +2.5 lb from Mon',restSec:120,cues:['Same form as Monday','Aim to hit upper end of rep range','If easy, increase weight next week']},
+{id:'p2e23',name:'Incline Dumbbell Press',muscle:'Upper Chest',sets:3,reps:'10–12',weight:'Progress from Monday',restSec:90,cues:['Slightly higher angle than Monday for variety','Press up and inward, squeeze at top','Lower with control']},
+{id:'p2e24',name:'Seated Shoulder Press',muscle:'Shoulders',sets:4,reps:'10–12',weight:'Same or +2.5 lb from Mon',restSec:90,cues:['Same form as Monday','Focus on mind-muscle connection','Full range every rep']},
+{id:'p2e25',name:'Lateral Raises',muscle:'Side Delts',sets:4,reps:'12–15',weight:'Same as Monday',restSec:60,cues:['Strict form — no swinging','Lead with elbows every rep','Lower over 2 full seconds']},
+{id:'p2e26',name:'Cable Lateral Raise',muscle:'Side Delts',sets:3,reps:'15',weight:'Same as Monday',restSec:60,cues:['One arm at a time','Keep core braced throughout','Control the negative']},
+{id:'p2e27',name:'Tricep Pushdown',muscle:'Triceps',sets:3,reps:'12',weight:'Same or +2.5 lb',restSec:60,cues:['Elbows pinned — they do not move','Full extension and hard squeeze at bottom','Controlled return']},
+{id:'p2e28',name:'Overhead Tricep Extension',muscle:'Triceps',sets:3,reps:'12',weight:'Same or +2.5 lb',restSec:60,cues:['Elbows close to head throughout','Lower to 90°, extend fully','Triceps do all the work']},
+]},
+{id:'p2d5',name:'Friday',label:'Pull',sub:'Back · Biceps · Rear Delts',
+warmup:'5 min walk → arm swings ×10 → band pull-apart ×15 → shoulder rotation circles',
+exercises:[
+{id:'p2e29',name:'Lat Pulldown',muscle:'Lats / Back',sets:4,reps:'10–12',weight:'Same or +5 lb from Tue',restSec:120,cues:['Lead with elbows pulling to chest','Squeeze shoulder blades at bottom','Slow and controlled on the way up']},
+{id:'p2e30',name:'Seated Cable Row',muscle:'Mid Back',sets:4,reps:'10–12',weight:'Same or +5 lb from Tue',restSec:90,cues:['Full stretch at start, full squeeze at end','Sit tall — no rounding the back','1 sec hold at chest every rep']},
+{id:'p2e31',name:'Face Pulls',muscle:'Rear Delts',sets:4,reps:'15',weight:'Same as Tuesday',restSec:60,cues:['Elbows high and wide at the end position','Hold 1 sec at face every rep','Never skip this — posture gold']},
+{id:'p2e32',name:'Dumbbell Bicep Curl',muscle:'Biceps',sets:3,reps:'10–12',weight:'Same or +2.5 lb',restSec:60,cues:['Full supination as you curl up','Lower ALL the way down','No swinging at all']},
+{id:'p2e33',name:'Hammer Curls',muscle:'Biceps / Brachialis',sets:3,reps:'12',weight:'Same or +2.5 lb',restSec:60,cues:['Neutral grip throughout','Control both directions','Builds thickness in the arm']},
+{id:'p2e34',name:'Rear Delt Fly',muscle:'Rear Delts',sets:3,reps:'12',weight:'Same as Tuesday',restSec:60,cues:['Stay hinged — don't rise up during the set','Lead with elbows, hands relaxed','Hard squeeze at top']},
+{id:'p2e35',name:'Cable Straight Bar Pullover',muscle:'Lats / Serratus',sets:3,reps:'12',weight:'Same as Tuesday',restSec:60,cues:['Slight bend in arms throughout','Arc from overhead down to hips','Feel the lat stretch at the top']},
+]},
+{id:'p2d6',name:'Saturday',label:'Lower + Core',sub:'Legs · Abs · Core',
+warmup:'5 min walk → ankle circles → leg swings ×10 each → bodyweight squat ×10',
+exercises:[
+{id:'p2e36',name:'Leg Press',muscle:'Quads / Glutes',sets:4,reps:'10–12',weight:'Same or +5 lb from Wed',restSec:120,cues:['Same form as Wednesday','Try to increase weight slightly','Progressive overload is the key']},
+{id:'p2e37',name:'Bulgarian Split Squat',muscle:'Quads / Glutes',sets:4,reps:'8–10/leg',weight:'Same or +2.5 lb from Wed',restSec:90,cues:['Balance should be better each week','Push through front heel','Feel quad and glute engage fully']},
+{id:'p2e38',name:'Romanian Deadlift',muscle:'Hamstrings / Glutes',sets:3,reps:'10–12',weight:'Same as Wednesday',restSec:90,cues:['Same form as Wednesday','Focus on the hamstring stretch at bottom','Drive hips forward, squeeze glutes at top']},
+{id:'p2e39',name:'Plank',muscle:'Core / Posture',sets:3,reps:'60–90 sec',weight:'Bodyweight',restSec:60,cues:['Squeeze glutes and abs HARD','Straight line from head to heel','Breathe steadily throughout']},
+{id:'p2e40',name:'Hanging Knee Raise',muscle:'Lower Abs',sets:3,reps:'15',weight:'Bodyweight',restSec:60,cues:['Curl the pelvis up — not just knees','Use abs not momentum','Full control on the way down']},
+{id:'p2e41',name:'Cable Crunch',muscle:'Abs',sets:3,reps:'15',weight:'Light–medium cable',restSec:60,cues:['Kneel at cable, rope at neck level','Crunch elbows toward knees — NOT pulling with arms','Hold the squeeze for 1 sec at bottom']},
+{id:'p2e42',name:'Ab Wheel Rollout',muscle:'Core',sets:3,reps:'10',weight:'Bodyweight',restSec:60,cues:['Start on knees, roll out as far as you can control','Abs do the work — don't let back arch excessively','Pull back with abs to starting position']},
+{id:'p2e43',name:'Calf Raises',muscle:'Calves',sets:5,reps:'15–20',weight:'Heavy — machine',restSec:60,cues:['Full range always','Pause and squeeze at top','Deep stretch at bottom before next rep']},
+]},
+]};
+
+
+/* ── HOME WORKOUT DATA ──────────────────────── */
+const HOME_WORKOUT={
+blocks:[
+{id:'hw_a',name:'Block A — Shoulders + Arms',emoji:'💪',color:'var(--orange)',exercises:[
+{id:'hw1',name:'Pike Push-up',emoji:'🔺',sets:4,reps:'10–12',restSec:60,tip:'Hips high, head towards floor — pure shoulder press movement'},
+{id:'hw2',name:'Diamond Push-up',emoji:'💎',sets:3,reps:'10–12',restSec:60,tip:'Hands form diamond under chest — maximum tricep activation'},
+{id:'hw3',name:'Wide Push-up',emoji:'↔️',sets:3,reps:'12–15',restSec:60,tip:'Hands wider than shoulders — chest and front delts'},
+{id:'hw4',name:'Lateral Raise (water bottles)',emoji:'💧',sets:3,reps:'15',restSec:45,tip:'Fill water bottles — raise arms to shoulder height, lead with elbows'},
+{id:'hw5',name:'Rear Delt Squeeze',emoji:'🔙',sets:3,reps:'15',restSec:45,tip:'Hinge 45° forward, raise arms back and out — squeeze hard at top'},
+]},
+{id:'hw_b',name:'Block B — Core + Posture',emoji:'🎯',color:'var(--blue-light)',exercises:[
+{id:'hw6',name:'Plank',emoji:'📏',sets:3,reps:'60 sec',restSec:45,tip:'Squeeze everything — glutes, abs, quads. No sagging or piking'},
+{id:'hw7',name:'Superman Hold',emoji:'🦸',sets:3,reps:'12 × 2sec hold',restSec:45,tip:'Lie face down, raise arms and legs simultaneously — lower back and posture'},
+{id:'hw8',name:'Reverse Snow Angel',emoji:'❄️',sets:3,reps:'15',restSec:45,tip:'Face down on floor, arms sweep from sides to overhead — rear delts and posture'},
+{id:'hw9',name:'Bicycle Crunch',emoji:'🚲',sets:3,reps:'20/side',restSec:45,tip:'Slow and controlled — feel the obliques working, not your neck'},
+{id:'hw10',name:'Hollow Body Hold',emoji:'🍌',sets:3,reps:'30 sec',restSec:45,tip:'Lower back pressed to floor, legs and arms extended low — pure core stability'},
+]},
+{id:'hw_c',name:'Block C — Lower Body',emoji:'🦵',color:'var(--green)',exercises:[
+{id:'hw11',name:'Bodyweight Squat',emoji:'⬇️',sets:3,reps:'15',restSec:45,tip:'Heels slightly elevated on books if ankles are tight — sit deep'},
+{id:'hw12',name:'Bulgarian Split Squat',emoji:'🪑',sets:3,reps:'10/leg',restSec:60,tip:'Back foot on chair or bed — lower straight down, torso upright'},
+{id:'hw13',name:'Glute Bridge',emoji:'🌉',sets:3,reps:'15',restSec:45,tip:'Squeeze glutes hard at the top, hold 1 sec — don't just pump it'},
+{id:'hw14',name:'Wall Sit',emoji:'🧱',sets:2,reps:'45 sec',restSec:45,tip:'90° at the knees — burns but builds quad endurance fast'},
+{id:'hw15',name:'Calf Raises on Step',emoji:'👟',sets:4,reps:'20',restSec:30,tip:'Use a stair or thick book — full range, deep stretch at bottom'},
+]},
+],
+};
+
+
+/* ── RUN PROTOCOL ───────────────────────────── */
+const RUN_WEEKS=[
+{week:1,dates:'Apr 15–21',protocol:'Run 3 min, walk 2 min — repeat',duration:'45 min',cal:'~350–400 kcal'},
+{week:2,dates:'Apr 22–28',protocol:'Run 5 min, walk 1 min — repeat',duration:'50 min',cal:'~400–450 kcal'},
+{week:3,dates:'Apr 29–May 5',protocol:'Continuous steady jog',duration:'55 min',cal:'~450–500 kcal'},
+{week:4,dates:'May 6–12',protocol:'Continuous jog — push pace slightly',duration:'60 min',cal:'~500–560 kcal'},
+{week:5,dates:'May 13–21',protocol:'Full hour — strong pace',duration:'60 min',cal:'~550–600 kcal'},
+];
+
+function getRunWeek(){
+  const start=new Date('2026-04-15');
+  const now=new Date();
+  const diff=Math.floor((now-start)/(1000*60*60*24*7));
+  return Math.min(Math.max(diff,0),4);
+}
+
+
+
+/* ── PHASE HELPERS ──────────────────────────── */
+function getPhase(){
+  const now=new Date();
+  const lockIn=new Date('2026-04-15');
+  return now>=lockIn?2:1;
+}
+function getDaysToFlight(){
+  const flight=new Date('2026-05-21');
+  const now=new Date();
+  const diff=Math.ceil((flight-now)/(1000*60*60*24));
+  return Math.max(0,diff);
+}
+
+/* ── PHASE BANNER (home screen) ─────────────── */
+function renderPhaseBanner(){
+  const phase=getPhase();
+  const days=getDaysToFlight();
+  const isP1=phase===1;
+  const title=isP1?'Phase 1 — Exam Mode':'Phase 2 — Full Lock-In 🔥';
+  const sub=isP1?'Home workouts + gym when possible. Nail nutrition and water every day.':'Morning run + evening gym every day. This is where the transformation happens.';
+  const pills=isP1?['4L Water','140g Protein','Creatine 5g','Low Sodium']:['Morning Run','Evening Gym','150g+ Protein','4.5L Water'];
+  return `<div class="phase-banner ${isP1?'phase1':'phase2'}">
+    <div class="phase-label">${isP1?'📚 Exam Mode':'⚡ Lock-In Mode'}</div>
+    <div class="phase-title">${title}</div>
+    <div class="phase-sub">${sub}</div>
+    <div class="phase-countdown">
+      <div class="phase-days">${days}</div>
+      <div class="phase-days-lbl">days to<br>flight ✈️</div>
+    </div>
+    <div class="phase-pills">${pills.map(p=>`<span class="phase-pill">${p}</span>`).join('')}</div>
+  </div>`;
+}
+
+/* ── RUN TRACKER (home screen) ──────────────── */
+function renderRunTracker(){
+  const phase=getPhase();
+  if(phase<2){
+    // Phase 1 — show preview
+    return `<div class="run-card">
+      <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">Morning Run — Starts Apr 15</div>
+      <div class="run-protocol">Your <strong>1-hour daily run</strong> begins April 15 with a progressive protocol. Week 1 starts with run/walk intervals to protect your joints. Full continuous jog by Week 3.</div>
+      <div style="font-size:12px;color:var(--green);font-weight:600">🏃 ${getDaysToFlight()-36} days until lock-in begins</div>
+    </div>`;
+  }
+  const wk=getRunWeek();
+  const proto=RUN_WEEKS[wk];
+  const todayRun=S.log.todayRun||{};
+  return `<div class="run-card">
+    <div class="run-week-badge">🏃 Week ${proto.week} · ${proto.dates}</div>
+    <div class="run-protocol"><strong>Today's protocol:</strong> ${proto.protocol}<br>${proto.duration} · ${proto.cal}</div>
+    ${todayRun.done?
+      `<div style="background:var(--green-dim);border:1px solid var(--green-border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">✅</span>
+        <div><div style="font-size:13px;font-weight:700;color:var(--green)">Run complete!</div>
+        <div style="font-size:11px;color:var(--t2)">${todayRun.duration||'--'} min · ${todayRun.distance||'--'} km</div></div>
+      </div>`:
+      `<div class="run-log-row">
+        <input class="run-inp" id="run-dur" type="number" placeholder="Duration (min)" inputmode="numeric">
+        <input class="run-inp" id="run-dist" type="number" placeholder="Distance (km)" inputmode="decimal" step="0.1">
+        <button class="run-save-btn" onclick="saveRun()">Log ✓</button>
+      </div>`
+    }
+  </div>`;
+}
+
+function saveRun(){
+  const dur=document.getElementById('run-dur')?.value;
+  const dist=document.getElementById('run-dist')?.value;
+  if(!dur)return;
+  if(!S.log.todayRun)S.log.todayRun={};
+  S.log.todayRun={done:true,duration:dur,distance:dist};
+  DB.saveLog(S.today,S.log);
+  renderScreen(0);
+  toast('🏃','Run logged!',`${dur} min · ${dist||'--'} km — great work!`);
+}
+
+
+
+
+/* ── SUNDAY CHECK-IN ────────────────────────── */
+function renderSundayCheckin(){
+  const day=new Date().getDay();
+  if(day!==0)return'';
+  const wt=S.log.weight;
+  if(S.log.sundayDismissed)return'';
+  return `<div style="margin:0 16px 12px;background:rgba(191,90,242,0.1);border:1px solid rgba(191,90,242,0.25);border-radius:var(--r-lg);padding:16px;position:relative">
+    <button onclick="dismissSunday()" style="position:absolute;top:10px;right:10px;width:22px;height:22px;background:var(--s3);border-radius:50%;font-size:12px;color:var(--t3);display:flex;align-items:center;justify-content:center">x</button>
+    <div style="font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Sunday Check-in</div>
+    <div style="font-size:15px;font-weight:700;color:var(--t1);margin-bottom:4px">Weekly progress log</div>
+    <div style="font-size:12px;color:var(--t2);margin-bottom:12px">${wt?'Weight logged today.':'Log your weight + take a front and side photo for progress tracking.'}</div>
+    ${wt?
+      '<div style="font-size:13px;font-weight:700;color:var(--green)">Weight logged: '+wt+' lb</div>':
+      '<button onclick="openWeightSheet()" style="background:var(--purple);color:#fff;border-radius:10px;padding:9px 18px;font-size:13px;font-weight:700">Log weight now</button>'
+    }
+  </div>`;
+}
+function dismissSunday(){
+  S.log.sundayDismissed=true;
+  DB.saveLog(S.today,S.log);
+  const el=document.querySelector('.sunday-ci');
+  if(el)el.remove();
+  renderScreen(0);
+}
+
 /* ── HOME SCREEN ────────────────────────────── */
 function renderHome(){
   const l=S.log,c=S.cfg;
@@ -562,6 +878,8 @@ function renderHome(){
       </div>
       <button class="hdr-btn" onclick="openNotifInfo()">${svgIcon('bell',18,'var(--t2)')}</button>
     </div>
+    ${renderPhaseBanner()}
+    ${renderSundayCheckin()}
     <div class="section-label">Today's activity</div>
     <div class="rings-wrap">
       ${ring('cal','var(--orange)',totalCal,calGoal,Math.round(totalCal).toLocaleString(),'kcal')}
@@ -579,6 +897,7 @@ function renderHome(){
       ${ciCard('water','💧','Water',l.checkins.water)}
       ${ciCard('protein','🥩','Protein',l.checkins.protein)}
     </div>
+    ${renderRunTracker()}
     <div class="section-label">Steps</div>
     <div class="steps-card">
       <div class="flex-bc" style="margin-bottom:10px">
@@ -660,7 +979,9 @@ function toggleCI(type){
 }
 /* ── WORKOUT SCREEN ─────────────────────────── */
 function renderWorkout(){
-  const days=S.workout.days,d=days[S.workoutDay],l=S.log;
+  const useP2=S.cfg&&S.cfg.usePhase2Split&&PHASE2_WORKOUT;
+  const days=(useP2?PHASE2_WORKOUT.days:S.workout.days)||S.workout.days;
+  const d=days[Math.min(S.workoutDay,days.length-1)],l=S.log;
   const exLogs=l.workout.exercises||{};
   const done=d.exercises.filter(e=>exLogs[e.id]?.completed).length;
   const total=d.exercises.length;
@@ -972,7 +1293,7 @@ function handleSearch(q){
 }
 async function fetchFoodAPI(q){
   try{
-    const r=await fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&action=process&json=1&page_size=5&fields=product_name,nutriments`);
+    const r=await fetch(`https://world.openfoodfacts.org/cgi/search.pl?lc=en&search_terms=${encodeURIComponent(q)}&action=process&json=1&page_size=5&fields=product_name,nutriments`);
     if(!r.ok)return;
     const d=await r.json();
     const res=document.getElementById('sresults');
@@ -1235,6 +1556,11 @@ function renderSettings(){
           <div><div class="sr-lbl">Ramadan mode</div><div style="font-size:11px;color:var(--t3)">Suhoor / Iftar meal grouping</div></div>
           <div class="toggle${c.ramadanMode!==false?' on':''}" id="rm-toggle" onclick="toggleRamadan()"><div class="toggle-knob"></div></div>
         </div>
+        <div class="settings-row" onclick="toggleSplit()">
+          <div class="sr-icon" style="background:var(--blue-dim)">${svgIcon('dumbbell',18,'var(--blue)')}</div>
+          <div><div class="sr-lbl">Workout split</div><div style="font-size:11px;color:var(--t3)">${c.usePhase2Split?'Phase 2 — 6-day Push/Pull/Lower':'Phase 1 — 4-day Upper/Lower'}</div></div>
+          <div class="sr-arrow">${svgIcon('chevR',14,'var(--t4)')}</div>
+        </div>
       </div>
     </div>
     <div class="settings-sec">
@@ -1344,7 +1670,7 @@ function openWaterSheet(){
   </div>`,'Add water');
 }
 function openMealSheet(){
-  const all=[...PRESETS,...DB.customFoods()];
+  const all=[...PRESETS,...DB.customFoods()].sort((a,b)=>(a.cat||'').localeCompare(b.cat||''));
   openSheet(`<div class="sheet-body">
     <div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px">Your food library</div>
     ${all.slice(0,14).map(f=>`<div class="preset-item" onclick="pickMealType('${f.id}','local')">
@@ -1528,7 +1854,7 @@ function initSwipe(){
     if(!dragging)return;
     const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
     if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>55){
-      if(dx<0&&S.screen<4)go(S.screen+1);
+      if(dx<0&&S.screen<5)go(S.screen+1);
       else if(dx>0&&S.screen>0)go(S.screen-1);
     }
     dragging=false;
@@ -1536,7 +1862,7 @@ function initSwipe(){
 }
 /* ── RENDER DISPATCHER ──────────────────────── */
 function renderScreen(idx){
-  switch(idx){case 0:renderHome();break;case 1:renderWorkout();break;case 2:renderNutrition();break;case 3:renderProgress();break;case 4:renderSettings();break;}
+  switch(idx){case 0:renderHome();break;case 1:renderWorkout();break;case 2:renderNutrition();break;case 3:renderProgress();break;case 4:renderSettings();break;case 5:renderHomeWorkout();break;}
   const el=document.getElementById('s'+idx);if(el)el.scrollTop=0;
 }
 /* ── TAB BAR BUILD ──────────────────────────── */
@@ -1547,6 +1873,7 @@ function buildTabs(){
     {icon:'food',label:'Nutrition'},
     {icon:'chart',label:'Progress'},
     {icon:'gear',label:'Settings'},
+    {icon:'run',label:'Home WO'},
   ];
   document.getElementById('tab-bar').innerHTML=tabs.map((t,i)=>`
     <button class="tab-btn${i===0?' active':''}" onclick="go(${i})">
@@ -1566,6 +1893,7 @@ function init(){
   if(!S.cfg.targets)S.cfg.targets=DEF_SETTINGS.targets;
   if(!S.cfg.body)S.cfg.body=DEF_SETTINGS.body;
   if(!S.cfg.notifications)S.cfg.notifications=DEF_SETTINGS.notifications;
+  registerSW();
   buildTabs();
   renderScreen(0);
   initSwipe();
@@ -1574,6 +1902,159 @@ function init(){
   const wh=DB.weights();
   if(wh.length===0)DB.addWeight(S.today,S.cfg.body.currentWeight);
 }
+
+
+/* ── HOME WORKOUT SCREEN ────────────────────── */
+let hwActive={blockIdx:0,exIdx:0,setIdx:0,running:false,timerInt:null,timerSec:0};
+
+function renderHomeWorkout(){
+  document.getElementById('s5').innerHTML=`
+  <div>
+    <div class="screen-header">
+      <div><div class="header-title">Home Workout</div><div class="header-sub">No equipment needed · 35–40 min</div></div>
+    </div>
+    <div style="margin:0 16px 14px;background:var(--orange-dim);border:1px solid var(--orange-border);border-radius:var(--r-md);padding:12px 14px">
+      <div style="font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px">⚡ Phase 1 Anchor</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.55">Do this every day you miss the gym. Prioritises your face, shoulders and posture goals.</div>
+    </div>
+    ${HOME_WORKOUT.blocks.map((block,bi)=>`
+      <div class="hw-block-title" style="color:${block.color}">${block.emoji} ${block.name}</div>
+      ${block.exercises.map((ex,ei)=>hwExCard(ex,bi,ei)).join('')}
+    `).join('')}
+    <button class="hw-start-btn" onclick="startHWTimer()">▶ Start Guided Timer</button>
+    <div style="height:16px"></div>
+  </div>`;
+}
+
+function hwExCard(ex,bi,ei){
+  return `<div class="hw-ex-card">
+    <div class="hw-ex-icon" style="background:${HOME_WORKOUT.blocks[bi].color}22">${ex.emoji}</div>
+    <div class="hw-ex-info">
+      <div class="hw-ex-name">${ex.name}</div>
+      <div class="hw-ex-meta">${ex.sets} sets × ${ex.reps} · ${ex.restSec}s rest</div>
+      <div class="hw-ex-tip">${ex.tip}</div>
+    </div>
+  </div>`;
+}
+
+function startHWTimer(){
+  hwActive={blockIdx:0,exIdx:0,setIdx:0,running:false,timerInt:null,timerSec:0};
+  showHWTimerSheet();
+}
+
+function showHWTimerSheet(){
+  const allEx=HOME_WORKOUT.blocks.flatMap(b=>b.exercises);
+  const totalEx=allEx.length;
+  let curExGlobal=0;
+  HOME_WORKOUT.blocks.forEach((b,bi)=>{if(bi<hwActive.blockIdx)curExGlobal+=b.exercises.length;});
+  curExGlobal+=hwActive.exIdx;
+  const block=HOME_WORKOUT.blocks[hwActive.blockIdx];
+  if(!block){
+    // Done
+    openSheet(`<div style="padding:0 20px 24px;text-align:center">
+      <div style="font-size:52px;margin:16px 0 12px">🔥</div>
+      <div style="font-size:22px;font-weight:800;color:var(--green);margin-bottom:8px">Home workout done!</div>
+      <div style="font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:20px">All 3 blocks complete. Consistency is building your new body.</div>
+      <button class="sheet-btn sheet-btn-primary" onclick="closeSheet()">Close</button>
+    </div>`,'');
+    return;
+  }
+  const ex=block.exercises[hwActive.exIdx];
+  if(!ex){hwActive.blockIdx++;hwActive.exIdx=0;hwActive.setIdx=0;showHWTimerSheet();return;}
+  const setsDone=hwActive.setIdx;
+  const setsTotal=ex.sets;
+  openSheet(`<div style="padding:0 20px 20px">
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">Exercise ${curExGlobal+1} of ${totalEx}</div>
+      <div style="font-size:26px;margin-bottom:6px">${ex.emoji}</div>
+      <div style="font-size:22px;font-weight:800;color:var(--t1);margin-bottom:4px">${ex.name}</div>
+      <div style="font-size:14px;color:var(--orange);font-weight:700;margin-bottom:8px">Set ${setsDone+1} of ${setsTotal} · ${ex.reps}</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:20px">${ex.tip}</div>
+      <div id="hw-timer-disp" style="font-size:52px;font-weight:800;color:var(--green);letter-spacing:-2px;line-height:1;margin-bottom:16px;display:none">0:${String(ex.restSec).padStart(2,'0')}</div>
+    </div>
+    <button id="hw-next-btn" class="sheet-btn sheet-btn-primary" onclick="hwDoneSet(${ex.restSec})">Done this set ✓</button>
+    <button onclick="hwSkipEx()" style="width:100%;padding:12px;font-size:13px;color:var(--t3);margin-top:6px">Skip exercise</button>
+  </div>`,`${block.name}`);
+}
+
+function hwDoneSet(restSec){
+  const block=HOME_WORKOUT.blocks[hwActive.blockIdx];
+  const ex=block?.exercises[hwActive.exIdx];
+  if(!ex)return;
+  hwActive.setIdx++;
+  if(hwActive.setIdx>=ex.sets){
+    // All sets done — rest then next exercise
+    hwActive.setIdx=0;hwActive.exIdx++;
+    startHWRest(restSec,()=>{closeSheet();setTimeout(showHWTimerSheet,100);});
+  } else {
+    // More sets — rest then same exercise
+    startHWRest(restSec,()=>{showHWTimerSheet();});
+  }
+}
+
+function hwSkipEx(){
+  hwActive.setIdx=0;hwActive.exIdx++;
+  const block=HOME_WORKOUT.blocks[hwActive.blockIdx];
+  if(!block||hwActive.exIdx>=block.exercises.length){hwActive.blockIdx++;hwActive.exIdx=0;}
+  closeSheet();setTimeout(showHWTimerSheet,100);
+}
+
+function startHWRest(secs,cb){
+  let rem=secs;
+  const disp=document.getElementById('hw-timer-disp');
+  const btn=document.getElementById('hw-next-btn');
+  if(disp)disp.style.display='block';
+  if(btn){btn.textContent='Resting...';btn.style.background='var(--s3)';btn.style.color='var(--t2)';}
+  const t=setInterval(()=>{
+    rem--;
+    const el=document.getElementById('hw-timer-disp');
+    if(el)el.textContent=fmtTime(rem);
+    if(rem<=0){clearInterval(t);if(cb)cb();}
+  },1000);
+}
+
+/* phase banner baked into renderHome directly */
+
+
+function toggleSplit(){
+  openSheet(`<div class="sheet-body">
+    <div style="font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:16px">Choose your active workout split.</div>
+    <button onclick="setSplit(false)" class="sheet-btn ${!S.cfg.usePhase2Split?'sheet-btn-primary':'sheet-btn-secondary'}" style="text-align:left;padding:16px">
+      <div style="font-size:15px;font-weight:700">Phase 1 — 4-Day Split</div>
+      <div style="font-size:12px;opacity:.7;margin-top:3px">Upper/Lower · Push/Pull · For exam period</div>
+    </button>
+    <button onclick="setSplit(true)" class="sheet-btn ${S.cfg.usePhase2Split?'sheet-btn-primary':'sheet-btn-secondary'}" style="text-align:left;padding:16px">
+      <div style="font-size:15px;font-weight:700">Phase 2 — 6-Day Split 🔥</div>
+      <div style="font-size:12px;opacity:.7;margin-top:3px">Push/Pull/Lower × 2 · Full lock-in mode</div>
+    </button>
+  </div>`,'Workout Split');
+}
+function setSplit(useP2){
+  S.cfg.usePhase2Split=useP2;
+  DB.saveSettings(S.cfg);
+  S.workoutDay=0;
+  closeSheet();
+  renderScreen(4);
+  renderScreen(1);
+  toast('✅',useP2?'Phase 2 split activated 🔥':'Phase 1 split activated','');
+}
+
+
+/* ── SERVICE WORKER ─────────────────────────── */
+function registerSW(){
+  if(!('serviceWorker' in navigator))return;
+  const swCode=`
+const CACHE='fittrack-v${Date.now()}';
+const URLS=['./fittrack.html'];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(URLS)));self.skipWaiting();});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});
+self.addEventListener('fetch',e=>{if(e.request.mode==='navigate'){e.respondWith(fetch(e.request).then(r=>{const rc=r.clone();caches.open(CACHE).then(c=>c.put(e.request,rc));return r;}).catch(()=>caches.match(e.request)));}});
+`;
+  const blob=new Blob([swCode],{type:'application/javascript'});
+  const url=URL.createObjectURL(blob);
+  navigator.serviceWorker.register(url,{scope:'./'}).catch(()=>{});
+}
+
 document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
