@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="How to install FitTrack on your phone and turn on reminders.">
+<title>FitTrack: Get Started</title>
+<style>
+  :root{
+    --black:#000000;
+    --card:#111111;
+    --border:rgba(255,255,255,0.07);
+    --orange:#FF9500;
+    --orange-dim:rgba(255,149,0,0.12);
+    --orange-border:rgba(255,149,0,0.3);
+    --t1:#F5F5F7;
+    --t2:#8E8E93;
+    --r-md:14px;
+    --r-lg:18px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{background:var(--black);}
+  body{
+    background:var(--black);
+    color:var(--t1);
+    font-family:-apple-system,'SF Pro Display','SF Pro Text','Roboto',system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:28px 20px 48px;
+  }
+  main{max-width:640px;margin:0 auto;}
+  h1{
+    font-size:1.7rem;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin-bottom:8px;
+  }
+  h2{
+    font-size:1.1rem;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin:36px 0 14px;
+  }
+  p{color:var(--t1);}
+  .lede{color:var(--t2);font-size:0.98rem;margin-bottom:24px;}
+  .cta{
+    display:block;
+    width:100%;
+    text-align:center;
+    background:var(--orange);
+    color:#000000;
+    font-weight:700;
+    font-size:1.05rem;
+    text-decoration:none;
+    padding:16px 20px;
+    border-radius:var(--r-lg);
+    min-height:52px;
+    line-height:1.2;
+  }
+  .cta:active{opacity:0.85;}
+  .url-echo{
+    display:block;
+    text-align:center;
+    color:var(--t2);
+    font-size:0.82rem;
+    margin-top:8px;
+    word-break:break-all;
+  }
+  .platform{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--r-lg);
+    padding:18px;
+  }
+  .warn{
+    background:var(--orange-dim);
+    border:1px solid var(--orange-border);
+    border-radius:var(--r-md);
+    padding:14px 16px;
+    margin-bottom:18px;
+    font-size:0.95rem;
+  }
+  .warn strong{color:var(--orange);}
+  ol{list-style:none;counter-reset:step;}
+  li.step{
+    counter-increment:step;
+    display:flex;
+    gap:14px;
+    padding:14px 0;
+    border-top:1px solid var(--border);
+  }
+  li.step:first-child{border-top:none;padding-top:2px;}
+  li.step::before{
+    content:counter(step);
+    flex-shrink:0;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    border:1.5px solid var(--orange-border);
+    color:var(--orange);
+    font-size:0.85rem;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:1px;
+  }
+  .step-body p{font-size:0.95rem;}
+  .step-body .sub{color:var(--t2);font-size:0.88rem;margin-top:4px;}
+  .icon-row{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:2px 8px 2px 6px;
+    vertical-align:-4px;
+    margin:0 2px;
+  }
+  .icon-row svg{width:16px;height:16px;}
+  .icon-row span{font-size:0.85rem;font-weight:600;}
+  .req{
+    color:var(--t2);
+    font-size:0.85rem;
+    margin-top:14px;
+  }
+  .info-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--r-lg);
+    padding:18px;
+  }
+  .info-card ul{list-style:none;}
+  .info-card li{
+    display:flex;
+    gap:10px;
+    padding:9px 0;
+    font-size:0.95rem;
+  }
+  .info-card li:not(:last-child){border-bottom:1px solid var(--border);}
+  .info-card li .dot{
+    flex-shrink:0;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--orange);
+    margin-top:9px;
+  }
+  section + section{margin-top:8px;}
+  .bottom-cta{margin-top:44px;}
+  a{color:var(--orange);}
+  a:focus-visible,button:focus-visible{
+    outline:2px solid var(--orange);
+    outline-offset:3px;
+    border-radius:6px;
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <h1>Get FitTrack on your phone</h1>
+  <p class="lede">Free, no account, and everything stays on your phone. This page walks you through it once.</p>
+
+  <a class="cta" href="https://addyrallxx.github.io/fittrack/fittrack.html">Open FitTrack</a>
+  <span class="url-echo">https://addyrallxx.github.io/fittrack/fittrack.html</span>
+
+  <section>
+    <h2>iPhone</h2>
+    <div class="platform">
+      <div class="warn">
+        <strong>Do these steps in order.</strong> On iPhone, notifications only work once FitTrack is added to your Home Screen. If you skip that and just keep using the link in a Safari tab, the notification toggle inside the app will still look like it turned on, but reminders will never arrive.
+      </div>
+      <ol>
+        <li class="step">
+          <div class="step-body">
+            <p>Open the link above in Safari.</p>
+            <p class="sub">Not Chrome, and not the browser built into Instagram, WhatsApp, or Messages. If this page opened inside one of those apps, look for a menu with three dots or a compass icon and choose "Open in Safari," or copy the link and paste it into Safari yourself.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-body">
+            <p>Tap the Share icon
+              <span class="icon-row" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false" role="img" aria-hidden="true">
+                  <path d="M12 15V4"></path>
+                  <path d="M7.5 8.5 12 4l4.5 4.5"></path>
+                  <path d="M5 12v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path>
+                </svg>
+                <span>Share</span>
+              </span>
+              in Safari's toolbar.
+            </p>
+            <p class="sub">A square with an arrow pointing up out of it. It's usually at the bottom of the screen, or in the top bar on iPad.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-body">
+            <p>Scroll down the sheet that opens and tap "Add to Home Screen."</p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-body">
+            <p>Tap "Add" in the top corner.</p>
+            <p class="sub">A FitTrack icon appears on your Home Screen, like any other app.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-body">
+            <p>Open FitTrack from that new icon, not from Safari.</p>
+            <p class="sub">Only now go to Settings inside the app and turn on notifications. This is the step that actually works, because the app is no longer just a Safari tab.</p>
+          </div>
+        </li>
+      </ol>
+      <p class="req">Requires iOS 16.4 or newer. Most iPhones updated in the last couple of years already have it.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Android</h2>
+    <div class="platform">
+      <ol>
+        <li class="step">
+          <div class="step-body"><p>Open the link above in Chrome.</p></div>
+        </li>
+        <li class="step">
+          <div class="step-body"><p>Tap the three dots in the top right corner.</p></div>
+        </li>
+        <li class="step">
+          <div class="step-body">
+            <p>Tap "Install app" (some phones show "Add to Home screen" instead).</p>
+          </div>
+        </li>
+      </ol>
+      <p class="req">Notifications work on Android either way, in a regular Chrome tab or installed. Installing still gives you a proper icon and a full screen app instead of a browser tab, so it's worth doing.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What happens to your data</h2>
+    <div class="info-card">
+      <ul>
+        <li><span class="dot" aria-hidden="true"></span><span>Everything you log is stored on your phone. There is no account and no signup.</span></li>
+        <li><span class="dot" aria-hidden="true"></span><span>Nothing is sent to a server, except the small amount needed to schedule a reminder notification.</span></li>
+        <li><span class="dot" aria-hidden="true"></span><span>It's free. There is no app store involved, so there is no payment screen to see.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>A few things to know</h2>
+    <div class="info-card">
+      <ul>
+        <li><span class="dot" aria-hidden="true"></span><span>Your log does not sync between devices. What you enter on your phone stays on your phone.</span></li>
+        <li><span class="dot" aria-hidden="true"></span><span>Clearing Safari website data will erase it. Use the export button in Settings inside the app once in a while to keep a backup.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <a class="cta bottom-cta" href="https://addyrallxx.github.io/fittrack/fittrack.html">Open FitTrack</a>
+
+</main>
+</body>
+</html>
