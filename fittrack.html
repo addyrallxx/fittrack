@@ -399,47 +399,103 @@ function svgIcon(key,size=22,stroke='currentColor'){
   return I[key].replace('<svg','<svg width="'+size+'" height="'+size+'" stroke="'+stroke+'" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"');
 }
 /* ── WORKOUT DATA ──────────────────────────────── */
-const DEFAULT_WORKOUT={days:[
-{id:'d1',name:'Day 1',label:'Push',sub:'Chest · Shoulders · Triceps',
-warmup:'5 min incline walk (speed 2) → arm circles ×10 → shoulder rotations ×10 each → band pull-apart ×15',
-exercises:[
-{id:'e1',name:'Dumbbell Bench Press',muscle:'Chest',sets:4,reps:'8–10',weight:'15–20 lb',restSec:120,cues:['Lie flat, feet planted. Grip at chest level, palms forward','Press straight up — never fully lock elbows','Lower slowly 3 sec, feel the chest stretch at the bottom']},
-{id:'e2',name:'Incline Dumbbell Press',muscle:'Upper Chest',sets:3,reps:'10–12',weight:'12–15 lb',restSec:90,cues:['Set bench 30–45°. Same grip as flat press','Press up and slightly inward at the top','Keep lower back pressed into the bench']},
-{id:'e3',name:'Seated Shoulder Press',muscle:'Shoulders',sets:3,reps:'10–12',weight:'10–15 lb',restSec:90,cues:['Back supported, dumbbells at ear height, palms forward','Press overhead — stop just before arms lock out','Lower with control, don\'t flare elbows wide']},
-{id:'e4',name:'Lateral Raises',muscle:'Side Delts',sets:3,reps:'12–15',weight:'8–10 lb',restSec:60,cues:['Slight bend in elbows. Raise to shoulder height only','Lead with elbows — think "pour water from a jug"','Lower slowly 2 sec. No swinging or momentum']},
-{id:'e5',name:'Tricep Pushdown',muscle:'Triceps',sets:3,reps:'12',weight:'Light cable',restSec:60,cues:['Elbows pinned to sides — they must not move','Push down until arms straight, hard squeeze at bottom','Slow return up. Don\'t let elbows flare out']},
-{id:'e6',name:'Overhead Tricep Extension',muscle:'Triceps',sets:3,reps:'12',weight:'15–20 lb DB',restSec:60,cues:['Hold one dumbbell overhead with both hands, elbows close','Lower behind head to 90°, then extend fully','Squeeze triceps hard at the top of every rep']},
-]},
-{id:'d2',name:'Day 2',label:'Lower',sub:'Quads · Hamstrings · Glutes · Calves',
-warmup:'5 min incline walk → ankle circles ×10 each → bodyweight squat ×10 slow → calf raise ×15',
-exercises:[
-{id:'e7',name:'Leg Press',muscle:'Quads / Glutes',sets:4,reps:'10–12',weight:'50–70 lb plate',restSec:120,cues:['Feet shoulder-width, mid-plate. Not too low (stresses knees)','Push through whole foot — heel AND toes both. Lower to 90°','Never lock knees at top. Keep slight bend always']},
-{id:'e8',name:'Goblet Squat',muscle:'Quads / Core',sets:3,reps:'10',weight:'15–20 lb DB',restSec:90,cues:['Hold DB at chest. Heels elevated on 10 lb plates for ankle mobility','Sit back AND down — chest tall, don\'t cave forward','Drive knees out over little toes as you stand']},
-{id:'e9',name:'Bulgarian Split Squat',muscle:'Quads / Glutes',sets:3,reps:'8–10/leg',weight:'Bodyweight',restSec:90,cues:['Back foot on bench laces down. Front foot far enough forward that knee stays behind toes','Lower straight down — don\'t lean forward','Push through front heel to stand. Torso upright']},
-{id:'e10',name:'Hamstring Curl Machine',muscle:'Hamstrings',sets:3,reps:'12',weight:'Light — control focus',restSec:90,cues:['Lie face down, pad above ankles. Hips pressed to bench','Curl heels toward glutes with control — squeeze hard at top','Lower slowly 3 sec. Never let weight drop']},
-{id:'e11',name:'Calf Raises',muscle:'Calves',sets:4,reps:'15',weight:'BW or machine',restSec:60,cues:['Stand on edge of platform for full range','Rise fully onto tiptoes, hold 1 sec, squeeze hard','Lower heel below platform for deep stretch before next rep']},
-]},
-{id:'d3',name:'Day 3',label:'Pull',sub:'Back · Biceps · Rear Delts',
-warmup:'5 min incline walk → arm swings ×10 → band pull-apart ×15 → shoulder rotation circles',
-exercises:[
-{id:'e12',name:'Lat Pulldown',muscle:'Lats / Back',sets:4,reps:'10–12',weight:'40–50 lb',restSec:120,cues:['Grip slightly wider than shoulders. Lean back 10–15°','Pull to upper chest — lead with elbows, not hands','Squeeze shoulder blades at bottom. Slow return up']},
-{id:'e13',name:'Seated Cable Row',muscle:'Mid Back',sets:3,reps:'10–12',weight:'40–50 lb',restSec:90,cues:['Sit tall. Start with arms fully extended — feel the stretch','Row to lower chest. Squeeze shoulder blades hard at end','Hold 1 sec at chest, then extend fully before next rep']},
-{id:'e14',name:'Face Pulls',muscle:'Rear Delts',sets:3,reps:'15',weight:'Very light cable',restSec:60,cues:['Cable at eye level, rope attachment. Arms extended forward','Pull rope to face — flare elbows high and wide (double bicep)','Hold 1 sec at face. This protects your rotator cuff']},
-{id:'e15',name:'Dumbbell Bicep Curl',muscle:'Biceps',sets:3,reps:'10–12',weight:'12–15 lb',restSec:60,cues:['Elbows pinned to sides — must not swing forward','Curl slowly, supinate (twist palms up) as you lift','Lower ALL the way down each rep. Full range = more growth']},
-{id:'e16',name:'Hammer Curls',muscle:'Biceps / Brachialis',sets:3,reps:'12',weight:'12–15 lb',restSec:60,cues:['Palms face each other throughout — neutral grip','Curl up, don\'t rotate the wrists at all','Slow and controlled. Feel outer bicep and forearm']},
-{id:'e17',name:'Rear Delt Fly',muscle:'Rear Delts',sets:3,reps:'12',weight:'8–10 lb',restSec:60,cues:['Hinge forward 45° at hips. Slight elbow bend','Raise arms out to sides — lead with elbows','Squeeze shoulder blades hard at top. Full control down']},
-]},
-{id:'d4',name:'Day 4',label:'Lower + Core',sub:'Legs · Abs · Core',
-warmup:'5 min incline walk → ankle circles → leg swings ×10 each → bodyweight squat ×10 slow',
-exercises:[
-{id:'e18',name:'Leg Press',muscle:'Quads / Glutes',sets:4,reps:'10–12',weight:'+5–10 lb from Day 2',restSec:120,cues:['Same form as Day 2. Small weight increase if Day 2 felt comfortable','Controlled descent 2–3 sec. Push through full foot','Progressive overload: even +5 lb/week = 65 lb more in 3 months']},
-{id:'e19',name:'Bulgarian Split Squat',muscle:'Quads / Glutes',sets:3,reps:'8–10/leg',weight:'10 lb DB if Day 2 stable',restSec:90,cues:['Same setup as Day 2. Hold DB if balance was solid','Stay as upright as possible. Knee must not cave inward','Feel the quad and glute of the working leg fully engage']},
-{id:'e20',name:'Goblet Squat',muscle:'Quads / Core',sets:3,reps:'10',weight:'15–20 lb DB',restSec:90,cues:['Try to sit deeper if ankle mobility has improved','Brace core before you descend — like taking a punch','Drive through heels. Chest up the entire movement']},
-{id:'e21',name:'Plank',muscle:'Core / Posture',sets:3,reps:'45–60 sec',weight:'Bodyweight',restSec:60,cues:['Forearms down, elbows under shoulders. Straight line head to heel','Squeeze glutes and abs HARD — hips must not sag or pike','Breathe steadily. Drop to knees if form breaks before time is up']},
-{id:'e22',name:'Hanging Knee Raise',muscle:'Lower Abs',sets:3,reps:'15',weight:'Bodyweight',restSec:60,cues:['Hang from bar, relaxed grip. No swinging body','Tuck knees to chest using abs — not momentum. Curl pelvis up','Lower with control every single rep. Slow and deliberate']},
-{id:'e23',name:'Calf Raises',muscle:'Calves',sets:4,reps:'15',weight:'BW or machine',restSec:60,cues:['Full range — deep stretch at bottom, hard squeeze at top','1 sec up · 1 sec hold · 2 sec down tempo','Add 10 lb to machine if Day 2 felt too easy']},
-]},
-]};
+/* The program lives in data/workout-program.json, fetched at startup. It used
+   to be four days of dumbbell work hardcoded here, which assumed a lifter who
+   trains on fixed weekdays and is comfortable with free weights. He is neither:
+   he trains on any three days he feels like, and he has not been in a gym in
+   three months.
+
+   Nothing is inlined as a fallback on purpose. This page is itself served over
+   the network, and the service worker caches both with the same network-first
+   rule, so any situation that can load the app can load the program. A second
+   copy here would only be a second thing to keep in sync. */
+const DEFAULT_WORKOUT={version:0,days:[]};
+const WARMUP='5 min incline walk, then one easy set of 10 on the first machine before your working sets. That set is not training, it is telling the joint what is about to happen.';
+
+/* Weeks 1 and 2 run reduced sets. He is detrained, and the thing most likely to
+   end this program is not a bad session, it is being too sore on day two to go
+   back. Ramp state is resolved at load rather than at render, so it settles
+   once per app open instead of on every repaint. */
+function inRampIn(weeks){
+  const start=S.cfg&&S.cfg.programStart;
+  if(!start||!weeks)return false;
+  const days=Math.floor((new Date(S.today+'T12:00:00')-new Date(start+'T12:00:00'))/86400000);
+  return days>=0&&days<weeks*7;
+}
+function rampWeek(weeks){
+  const start=S.cfg&&S.cfg.programStart;
+  if(!start)return 1;
+  const days=Math.floor((new Date(S.today+'T12:00:00')-new Date(start+'T12:00:00'))/86400000);
+  return Math.min(weeks,Math.floor(days/7)+1);
+}
+/* The json speaks in the program vocabulary (machine, cue, swap, rpe). The
+   screen speaks in the shape it already had. This is the only place the two
+   meet, which is why the whole workout screen survived the program change. */
+function mapProgram(prog){
+  const weeks=(prog.rampIn&&prog.rampIn.weeks)||0;
+  const ramp=inRampIn(weeks);
+  return {version:prog.version||1,ramp,rampWeeks:weeks,rampWeek:ramp?rampWeek(weeks):0,
+    rampRule:(prog.rampIn&&prog.rampIn.rule)||'',
+    days:(prog.sessions||[]).map(sn=>({
+      id:sn.id,name:sn.name||('Session '+String(sn.id).toUpperCase()),
+      label:String(sn.focus||'').split(' ')[0].replace(/-biased$/,''),
+      sub:sn.focus||'',warmup:WARMUP,
+      exercises:(sn.exercises||[]).map(e=>({
+        id:e.id,name:e.name,muscle:e.machine||sn.focus||'',
+        sets:ramp?(e.rampSets||e.sets):e.sets,reps:e.reps,
+        weight:'',restSec:e.rest_s||90,
+        cues:[e.cue,ramp?'Ramp-in weeks: stop with 4 or 5 reps left, not 2.':('Target RPE '+e.rpe+'. Stop with 2 or 3 reps left in the tank.'),
+              e.swap?('If the machine is taken: '+e.swap):null].filter(Boolean),
+      })),
+    }))};
+}
+/* Anything he added himself is carried across a program update. Losing work he
+   typed in is not an acceptable cost of shipping a new version. */
+function carryCustom(oldW,newW){
+  if(!oldW||!oldW.days)return newW;
+  for(const od of oldW.days){
+    const custom=(od.exercises||[]).filter(e=>String(e.id).startsWith('cx_'));
+    if(!custom.length)continue;
+    const target=newW.days.find(d=>d.id===od.id)||newW.days[0];
+    if(target)target.exercises.push(...custom);
+  }
+  return newW;
+}
+async function loadProgram(){
+  try{
+    const r=await fetch('./data/workout-program.json');
+    if(!r.ok)return;
+    const prog=await r.json();
+    if(!prog.sessions||!prog.sessions.length)return;
+    S.workout=carryCustom(S.workout,mapProgram(prog));
+    DB.saveWorkout(S.workout);
+    S.workoutDay=suggestSession();
+    if(S.screen===1)renderScreen(1);
+  }catch(e){}
+}
+/* Sessions are interchangeable, so there is no correct next one, only a least
+   recently done one. Opening on that beats opening on whatever he did last. */
+function suggestSession(){
+  const n=((S.workout&&S.workout.days)||[]).length;
+  if(!n)return 0;
+  for(const d of recentDates(21)){
+    const l=DB.log(d);
+    if(l&&l.workout&&l.workout.completed&&l.workout.dayIndex>=0)return (l.workout.dayIndex+1)%n;
+  }
+  return 0;
+}
+/* What he lifted last time on this exact movement, so the set rows open on a
+   real number instead of a default he has to correct every single session. */
+function lastWeightFor(exId){
+  for(const d of recentDates(28)){
+    if(d===S.today)continue;
+    const l=DB.log(d);
+    const sets=l&&l.workout&&l.workout.exercises&&l.workout.exercises[exId]&&l.workout.exercises[exId].sets;
+    if(!sets)continue;
+    for(let i=sets.length-1;i>=0;i--)if(sets[i]&&sets[i].weight)return sets[i].weight;
+  }
+  return null;
+}
 /* ── FOOD PRESETS ─────────────────────────────── */
 const PRESETS=[
 {id:'p1',name:'Beef Tehari (300g)',cal:1750,protein:90,carbs:165,fat:84},
@@ -635,7 +691,10 @@ function renderHome(){
   const allLogs=DB.allLogs();
   const recent=Object.values(allLogs).filter(x=>x.workout?.completed&&x.date!==S.today).sort((a,b)=>b.date.localeCompare(a.date));
   const lastDayIdx=recent.length>0?recent[0].workout.dayIndex:-1;
-  const nextDay=S.workout.days[(lastDayIdx+1)%4];
+  /* Was hardcoded to %4 against a four day split. With three interchangeable
+     sessions that indexed off the end of the array and the home screen threw. */
+  const wdays=(S.workout&&S.workout.days)||[];
+  const nextDay=wdays.length?wdays[(lastDayIdx+1)%wdays.length]:{name:"Workout",label:"not loaded yet"};
   const wh=DB.weights();
   const curWt=l.weight||(wh.length>0?wh[wh.length-1].weight:c.body.currentWeight);
   let deltaHtml='<span class="wt-delta-same">Not logged today</span>';
@@ -647,7 +706,7 @@ function renderHome(){
       <div>
         <div class="header-title">${greeting()},<br>${c.name}.</div>
         <div class="header-sub">${fmtDate(S.today)}</div>
-        <div class="today-badge">${svgIcon('dumbbell',12,'var(--orange)')} &nbsp;${l.workout.completed?'Trained today ✓':nextDay.name+' — '+nextDay.label}</div>
+        <div class="today-badge">${svgIcon('dumbbell',12,'var(--orange)')} &nbsp;${l.workout.completed?'Trained today ✓':nextDay.name+', '+nextDay.label}</div>
       </div>
       <button class="hdr-btn" onclick="openNotifInfo()">${svgIcon('bell',18,'var(--t2)')}</button>
     </div>
@@ -749,7 +808,17 @@ function toggleCI(type){
 }
 /* ── WORKOUT SCREEN ─────────────────────────── */
 function renderWorkout(){
-  const days=S.workout.days,d=days[S.workoutDay],l=S.log;
+  const days=(S.workout&&S.workout.days)||[];
+  if(!days.length){
+    document.getElementById('s1').innerHTML=`
+    <div><div class="screen-header"><div><div class="header-title">Workout</div>
+    <div class="header-sub">Program not loaded</div></div></div>
+    <div class="empty-state"><div class="empty-icon">\u{1F4E1}</div>
+    <div class="empty-txt">The program could not be fetched.<br>Check your connection and reopen the app.</div></div></div>`;
+    return;
+  }
+  if(S.workoutDay>=days.length)S.workoutDay=0;
+  const d=days[S.workoutDay],l=S.log;
   const exLogs=l.workout.exercises||{};
   const done=d.exercises.filter(e=>exLogs[e.id]?.completed).length;
   const total=d.exercises.length;
@@ -760,7 +829,7 @@ function renderWorkout(){
   document.getElementById('s1').innerHTML=`
   <div>
     <div class="screen-header">
-      <div><div class="header-title">Workout</div><div class="header-sub">${d.name} — ${d.sub}</div></div>
+      <div><div class="header-title">Workout</div><div class="header-sub">${d.name}, ${d.sub}</div></div>
       <button class="hdr-btn" onclick="openAddExSheet()">${svgIcon('plus',18,'var(--t2)')}</button>
     </div>
     <div class="day-tabs">${tabs}</div>
@@ -771,7 +840,9 @@ function renderWorkout(){
       </div>
       <div class="prog-track"><div class="prog-fill" id="wk-prog" style="width:${pct}%;background:var(--blue);transition:width 0.6s var(--ease-data)"></div></div>
     </div>
-    <div class="warmup-banner"><div class="warmup-title">🔥 Warm-up first</div><div class="warmup-txt">${d.warmup}</div></div>
+    ${S.workout.ramp?`<div class="warmup-banner" style="border-color:var(--orange)"><div class="warmup-title">Ramp-in week ${S.workout.rampWeek} of ${S.workout.rampWeeks}</div><div class="warmup-txt">${S.workout.rampRule}</div></div>`:''}
+    <div class="warmup-banner"><div class="warmup-title">\u{1F525} Warm-up first</div><div class="warmup-txt">${d.warmup}</div></div>
+    ${dayDone?'':`<button class="finish-btn" style="background:var(--s2);color:var(--t2);border:1px solid var(--border)" onclick="confirmWholeSession()">Log the whole session at once</button>`}
     <div class="ex-list">${cards}</div>
     ${done>0?`<button class="finish-btn${dayDone?' done':''}" onclick="${dayDone?'':'finishWorkout()'}">${dayDone?'✓ Workout saved!':'Finish workout ('+done+'/'+total+' done)'}</button>`:''}
     <div style="height:16px"></div>
@@ -782,7 +853,7 @@ function exCard(ex,exLog){
   const setRows=Array.from({length:ex.sets},(_,i)=>{
     const s=exLog?.sets?.[i];
     const isDone=s?.done||false;
-    const w=s?.weight??ex.weight?.match(/\d+/)?.[0]??'20';
+    const w=s?.weight??lastWeightFor(ex.id)??ex.weight?.match(/\d+/)?.[0]??'20';
     const r=s?.reps??ex.reps?.match(/^\d+/)?.[0]??'10';
     return `<div class="set-row${isDone?' done':''}" id="sr-${ex.id}-${i}">
       <div class="set-num">${i+1}</div>
@@ -825,7 +896,7 @@ function exCard(ex,exLog){
         </div>
         <div class="form-cues"><div class="cue-title">Form cues</div>${cues}</div>
         <button class="ex-complete-btn${done?' done':''}" id="ecb-${ex.id}" onclick="completeEx('${ex.id}')">
-          ${done?'✓ Complete':`Mark complete (${sdone}/${ex.sets} sets done)`}
+          ${done?'\u2713 Complete':`Done, skip the set details (${sdone}/${ex.sets} logged)`}
         </button>
       </div>
     </div>
@@ -911,6 +982,26 @@ function completeEx(exId){
   if(label)label.textContent=`${done}/${d.exercises.length} exercises done`;
   if(done>0&&!document.querySelector('.finish-btn'))renderScreen(1);
 }
+/* One tap for a session he already did and does not want to retype. It is
+   confirmed first, because it marks every exercise done at once and a mistap
+   would otherwise silently claim a workout he has not had yet. */
+function confirmWholeSession(){
+  const d=S.workout.days[S.workoutDay];
+  openSheet(`<div class="sheet-body">
+    <div style="font-size:15px;font-weight:600;margin-bottom:6px">${d.name}, all ${d.exercises.length} exercises</div>
+    <div style="font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:18px">Marks the session done without set by set numbers. Nothing is recorded about weights, so your progress chart learns nothing from today. Use it when you trained but did not log as you went.</div>
+    <button class="sheet-btn sheet-btn-primary" onclick="logWholeSession()">Log the session</button>
+  </div>`,'Log whole session');
+}
+function logWholeSession(){
+  const d=S.workout.days[S.workoutDay];
+  for(const e of d.exercises){
+    if(!S.log.workout.exercises[e.id])S.log.workout.exercises[e.id]={sets:[],completed:false};
+    S.log.workout.exercises[e.id].completed=true;
+  }
+  closeSheet();
+  finishWorkout();
+}
 function finishWorkout(){
   S.log.workout.completed=true;
   S.log.workout.dayIndex=S.workoutDay;
@@ -919,7 +1010,7 @@ function finishWorkout(){
   DB.saveLog(S.today,S.log);
   const d=S.workout.days[S.workoutDay];
   const exDone=d.exercises.filter(e=>S.log.workout.exercises[e.id]?.completed).length;
-  celebrate('🏋️','Workout Complete!',`${d.name} — ${d.label}\n${exDone} exercises logged. Consistency is everything, Adnan!`);
+  celebrate('\u{1F3CB}','Workout complete',`${d.name}, ${exDone} exercises logged. Three a week is the whole plan, and this was one of them.`);
   renderScreen(1);
 }
 /* ── NUTRITION SCREEN ───────────────────────── */
@@ -1305,7 +1396,7 @@ function showDay(ds){
       ${log.checkins?.protein?'<div style="background:var(--coral-dim);color:var(--coral);border-radius:10px;padding:5px 12px;font-size:12px;font-weight:600;border:1px solid var(--coral-border)">🥩 Protein ✓</div>':''}
       ${log.checkins?.water?'<div style="background:var(--blue-dim);color:var(--blue-light);border-radius:10px;padding:5px 12px;font-size:12px;font-weight:600;border:1px solid var(--blue-border)">💧 Water ✓</div>':''}
     </div>
-    ${log.workout?.completed?`<div style="background:var(--s2);border-radius:var(--r-md);padding:12px;margin-bottom:10px"><div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Workout</div><div style="font-size:15px;font-weight:600">${S.workout.days[log.workout.dayIndex]?.name||'Workout'} — ${S.workout.days[log.workout.dayIndex]?.label||''}</div></div>`:''}
+    ${log.workout?.completed?`<div style="background:var(--s2);border-radius:var(--r-md);padding:12px;margin-bottom:10px"><div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Workout</div><div style="font-size:15px;font-weight:600">${S.workout.days[log.workout.dayIndex]?.name||'Workout'}, ${S.workout.days[log.workout.dayIndex]?.label||''}</div></div>`:''}
     ${tCal>0?`<div style="background:var(--s2);border-radius:var(--r-md);padding:12px;margin-bottom:10px">
       <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Nutrition</div>
       <div class="flex-bc" style="margin-bottom:6px"><span style="font-size:13px;color:var(--t2)">Calories</span><span style="font-size:14px;font-weight:700;color:var(--orange)">${Math.round(tCal)} kcal</span></div>
@@ -1920,6 +2011,7 @@ function init(){
   initSwipe();
   initPush();
   loadFoods();
+  loadProgram();
   // Seed initial weight if empty
   const wh=DB.weights();
   if(wh.length===0)DB.addWeight(S.cfg.programStart||S.today,S.cfg.body.startingWeight);
