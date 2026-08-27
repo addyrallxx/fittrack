@@ -161,19 +161,27 @@ async function sendPush(sub, message, env) {
     vapidToken(url.origin, env),
     encryptPayload(JSON.stringify(message), sub.keys.p256dh, sub.keys.auth),
   ]);
-  const res = await fetch(sub.endpoint, {
-    method: 'POST',
-    headers: {
-      'Authorization': `vapid t=${jwt}, k=${env.VAPID_PUBLIC_KEY}`,
-      'Content-Encoding': 'aes128gcm',
-      'Content-Type': 'application/octet-stream',
-      // Short TTL on purpose. A water reminder delivered four hours late is
-      // worse than one quietly dropped.
-      'TTL': '1800',
-      'Urgency': 'normal',
-    },
-    body,
-  });
+  let res;
+  try {
+    res = await fetch(sub.endpoint, {
+      method: 'POST',
+      headers: {
+        'Authorization': `vapid t=${jwt}, k=${env.VAPID_PUBLIC_KEY}`,
+        'Content-Encoding': 'aes128gcm',
+        'Content-Type': 'application/octet-stream',
+        // Short TTL on purpose. A water reminder delivered four hours late is
+        // worse than one quietly dropped.
+        'TTL': '1800',
+        'Urgency': 'normal',
+      },
+      body,
+    });
+  } catch (e) {
+    // An unreachable push host must never throw out of here. Uncaught, it
+    // aborts the whole cron tick, so one dead subscription would silently
+    // stop every other user's reminders for that tick.
+    return `net ${e && e.message || 'unreachable'}`;
+  }
   if (res.status === 410 || res.status === 404) return 'gone';
   return res.ok ? 'ok' : `err ${res.status}`;
 }
@@ -238,6 +246,9 @@ async function runTick(env, now) {
   let sent = 0;
 
   for (const k of list.keys) {
+   // Per-user isolation. A malformed record, a bad timezone string or a KV
+   // hiccup must cost that one user their tick, never everybody else theirs.
+   try {
     const id = k.name.slice(4);
     const rec = await env.KV.get(k.name, 'json');
     if (!rec || !rec.sub) continue;
@@ -281,6 +292,11 @@ async function runTick(env, now) {
       // enough that these never accumulate against the KV storage limit.
       await env.KV.put(dkey, JSON.stringify([...already, ...fired]), { expirationTtl: 172800 });
     }
+   } catch (e) {
+    // Surfaced by `wrangler tail`. Silent failure here is the worst outcome:
+    // reminders would just stop, with nothing anywhere saying why.
+    console.error(`tick failed for ${k.name}:`, e && e.message);
+   }
   }
   return sent;
 }

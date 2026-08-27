@@ -195,6 +195,25 @@ check('sends are VAPID-signed and aes128gcm encrypted', async () => {
   assert.ok(s.bytes < 4096, 'payload must stay under the push service ceiling');
 });
 
+check('one unreachable host does not cost every other user their reminders', async () => {
+  // Found by pointing the local worker at a dead host: the fetch rejection
+  // propagated uncaught and took the whole tick down. Inside waitUntil that
+  // fails silently, so everyone downstream would just stop getting reminders.
+  const kv = fakeKV({
+    'sub:u_dead': { sub: { ...SUB, endpoint: 'https://dead.invalid/p' }, tz: TZ, prefs: {}, cfg: {} },
+    'sub:u_ok': { sub: SUB, tz: TZ, prefs: {}, cfg: {} },
+  });
+  const sink = [];
+  globalThis.fetch = async (url, opts) => {
+    if (String(url).includes('dead.invalid')) throw new TypeError('fetch failed');
+    sink.push({ url: String(url), auth: opts.headers.Authorization, encoding: opts.headers['Content-Encoding'], bytes: opts.body.length });
+    return { ok: true, status: 201 };
+  };
+  for (const t of ticksForLocalDay('2026-08-31', TZ)) await runTick({ KV: kv, ...ENV_KEYS }, t.at);
+  assert.equal(sink.length, 9, 'the healthy user must still get all nine reminders');
+  assert.ok(await kv.get('sub:u_dead'), 'a network blip must not delete a subscription; only 410/404 does that');
+});
+
 check('a 410 deletes the subscription instead of retrying forever', async () => {
   const kv = fakeKV({ [`sub:${ID}`]: { sub: SUB, tz: TZ, prefs: {}, cfg: {} }, [`state:${ID}`]: {} });
   const sink = []; installFakeFetch(sink, 410);

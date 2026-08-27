@@ -467,7 +467,8 @@ profile:{heightCm:171.5,birthday:'2002-11-23',sex:'male'},
 programStart:'2026-08-24',
 targets:{calories:1800,protein:150,carbs:165,fat:60,water:3500,steps:8000,creatine:5},
 body:{currentWeight:71.2,startingWeight:71.2,targetWeight:65.0,bodyFat:31,startBodyFat:31,muscleMass:49.1},
-notifications:{weight:{enabled:true,time:'12:00'},protein:{enabled:true,time:'20:00'},gym:{enabled:true,time:'22:00'}},
+notifications:{water:{enabled:true},gym:{enabled:true},weight:{enabled:true},dose:{enabled:true}},
+trainingDays:[1,3,5], /* Mon/Wed/Fri. Drives the gym prompts and the workout plan. */
 ramadanMode:false, /* archived 2026-08-26, see docs/archive/ramadan-mode.md */
 };
 /* ── STORAGE ─────────────────────────────────── */
@@ -479,10 +480,10 @@ const DB={
   workout(){return this.get('ft_workout',DEFAULT_WORKOUT);},
   saveWorkout(w){this.set('ft_workout',w);},
   log(date){const all=this.get('ft_logs',{});return all[date]||null;},
-  saveLog(date,log){const all=this.get('ft_logs',{});all[date]=log;this.set('ft_logs',all);},
+  saveLog(date,log){const all=this.get('ft_logs',{});all[date]=log;this.set('ft_logs',all);queueState();},
   allLogs(){return this.get('ft_logs',{});},
   weights(){return this.get('ft_weights',[]);},
-  addWeight(date,w){const h=this.weights();const i=h.findIndex(x=>x.date===date);if(i>=0)h[i].weight=w;else h.push({date,weight:w});h.sort((a,b)=>a.date.localeCompare(b.date));this.set('ft_weights',h);},
+  addWeight(date,w){const h=this.weights();const i=h.findIndex(x=>x.date===date);if(i>=0)h[i].weight=w;else h.push({date,weight:w});h.sort((a,b)=>a.date.localeCompare(b.date));this.set('ft_weights',h);queueState();},
   customFoods(){return this.get('ft_custom_foods',[]);},
   saveCustomFoods(f){this.set('ft_custom_foods',f);},
 };
@@ -1291,9 +1292,16 @@ function renderSettings(){
     <div class="settings-sec">
       <div class="section-label">Notifications</div>
       <div class="settings-grp">
-        ${notifRow('weight','Weight reminder','12:00 PM','var(--purple)')}
-        ${notifRow('protein','Protein check-in','8:00 PM','var(--coral)')}
-        ${notifRow('gym','Gym prompt','10:00 PM','var(--orange)')}
+        ${notifRow('water','Water reminders','Five times through the day','var(--blue)')}
+        ${notifRow('gym','Gym prompts','Twice on training days','var(--orange)')}
+        ${notifRow('weight','Monday weigh-in','Monday 8:00 AM','var(--purple)')}
+        ${notifRow('dose','Dose reminders','Sunday night and Monday morning','var(--green)')}
+      </div>
+      <div class="settings-grp" style="margin-top:10px">
+        <div class="settings-row" onclick="testPush()">
+          <div class="sr-icon" style="background:var(--s2)">${svgIcon('bell',18,'var(--t2)')}</div>
+          <div><div class="sr-lbl">Send a test reminder</div><div style="font-size:11px;color:var(--t3)">Checks the whole path, phone included</div></div>
+        </div>
       </div>
     </div>
     <div class="settings-sec">
@@ -1569,9 +1577,49 @@ async function sendSub(sub){
   if(!PUSH_API||!sub)return false;
   try{
     const r=await fetch(PUSH_API+'/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({id:deviceId(),tz:tzName(),sub,prefs:S.cfg.notifications||{}})});
+      body:JSON.stringify({id:deviceId(),tz:tzName(),sub,prefs:S.cfg.notifications||{},
+        cfg:{waterGoal:S.cfg.targets&&S.cfg.targets.water||3500,trainingDays:S.cfg.trainingDays||[1,3,5]}})});
     return r.ok;
   }catch(e){return false;}
+}
+/* Report only the three fields the reminder rules read. The server never
+   becomes a second copy of the log: everything else stays on the phone.
+   Debounced, because logging a workout writes the log once per set and only
+   the final numbers matter. */
+let stTimer=null;
+function queueState(){
+  if(!PUSH_API)return;
+  clearTimeout(stTimer);
+  stTimer=setTimeout(pushState,4000);
+}
+async function pushState(){
+  if(!PUSH_API)return false;
+  try{
+    const l=DB.log(S.today)||{};
+    const wh=DB.weights();
+    const r=await fetch(PUSH_API+'/state',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        id:deviceId(),
+        water:(l.nutrition&&l.nutrition.water)||0,
+        gymDone:(l.workout&&l.workout.completed)?S.today:null,
+        weightLogged:(wh.length&&wh[wh.length-1].date===S.today)?S.today:null,
+      })});
+    return r.ok;
+  }catch(e){return false;}
+}
+/* Deliberately asks the SERVER to send it, rather than showing one locally.
+   A local notification proves nothing: the whole failure being fixed here was
+   that reminders never arrived while the app was closed. */
+async function testPush(){
+  if(!PUSH_API){toast('⏳','Server not live yet','Reminders start once it is deployed');return;}
+  if(!('Notification' in window)||Notification.permission!=='granted'){openNotifInfo();return;}
+  toast('📡','Asking the server...','It should arrive in a moment');
+  try{
+    const r=await fetch(PUSH_API+'/test',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({id:deviceId()})});
+    if(r.status===404){await syncPush();toast('🔄','Re-registered','Try the test once more');return;}
+    if(!r.ok)toast('❌','Server could not send','Check the worker logs');
+  }catch(e){toast('❌','Could not reach the server','Check your connection');}
 }
 /* Re-post whatever subscription exists. Called on launch and whenever a
    reminder toggle changes, so the server's copy cannot drift from the app's. */
@@ -1586,7 +1634,7 @@ async function syncPush(){
 function initPush(){
   if(!('serviceWorker' in navigator))return;
   navigator.serviceWorker.register('sw.js',{scope:'./'}).then(()=>{
-    if(('Notification' in window)&&Notification.permission==='granted')syncPush();
+    if(('Notification' in window)&&Notification.permission==='granted'){syncPush();pushState();}
   }).catch(e=>console.warn('SW registration failed',e));
   navigator.serviceWorker.addEventListener('message',e=>{
     const d=e.data||{};
@@ -1755,6 +1803,8 @@ function init(){
   if(!S.cfg.profile)S.cfg.profile=DEF_SETTINGS.profile;
   if(!S.cfg.units)S.cfg.units=DEF_SETTINGS.units;
   if(!S.cfg.programStart)S.cfg.programStart=DEF_SETTINGS.programStart;
+  if(!S.cfg.trainingDays)S.cfg.trainingDays=DEF_SETTINGS.trainingDays;
+  ['water','gym','weight','dose'].forEach(k=>{if(!S.cfg.notifications[k])S.cfg.notifications[k]={enabled:true};});
   ['carbs','fat','creatine'].forEach(k=>{if(S.cfg.targets[k]==null)S.cfg.targets[k]=DEF_SETTINGS.targets[k];});
   buildTabs();
   renderScreen(0);
