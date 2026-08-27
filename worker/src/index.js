@@ -28,9 +28,12 @@
  * Cumulative targets are a share of the daily goal, so they scale if the goal
  * changes rather than being hardcoded millilitres.
  *
- * GYM: twice on training days, as asked. The morning one asks when, the
- * evening one asks whether. The evening one is skipped once a workout is
- * logged, which is the difference between a useful nudge and one he mutes.
+ * GYM: he does not train on fixed weekdays, he picks any three days. So the
+ * nudge cannot be "it is Wednesday, go to the gym". It is arithmetic instead:
+ * sessions left against days left. While there is slack it says nothing at
+ * all, and it only speaks once skipping today would actually cost him the
+ * week. Being nagged on a Monday about a target that is still easily reachable
+ * is how an app gets muted, and a muted app sends nothing.
  */
 const WATER_CHECKS = [
   { at: '09:30', frac: 0.17 },
@@ -40,26 +43,38 @@ const WATER_CHECKS = [
   { at: '21:00', frac: 1.00 },
 ];
 
+const ANY_DAY = [0, 1, 2, 3, 4, 5, 6];
+
 const SCHEDULE = [
-  { id: 'weight',   at: '08:00', days: [1],        pref: 'weight' },
-  { id: 'gym-am',   at: '11:00', days: 'training', pref: 'gym' },
-  { id: 'gym-pm',   at: '19:30', days: 'training', pref: 'gym' },
-  { id: 'dose-eve', at: '22:00', days: [0],        pref: 'dose' }, // Sunday; dose is ~2am Monday
-  { id: 'dose-am',  at: '10:00', days: [1],        pref: 'dose' },
+  { id: 'weight',   at: '08:00', days: [1],     pref: 'weight' },
+  { id: 'gym-am',   at: '11:00', days: 'any',   pref: 'gym' },   // gymGap decides whether to speak
+  { id: 'gym-pm',   at: '19:30', days: 'any',   pref: 'gym' },
+  { id: 'dose-eve', at: '22:00', days: [0],     pref: 'dose' },  // Sunday; dose is ~2am Monday
+  { id: 'dose-am',  at: '10:00', days: [1],     pref: 'dose' },
 ];
+
+/* Three sessions a week, on whichever days he likes. */
+const GYM_TARGET = 3;
 
 /* Known titration only. Doses are never extrapolated: guessing the next step
  * up for a drug is not something a reminder app gets to do. Past the last
- * known date the reminder says so and asks him to confirm. */
+ * known date the reminder says so and asks him to confirm.
+ *
+ * The pattern is two weeks per step, and he has confirmed the step to 2 mg on
+ * 2026-09-21. It STOPS at 2026-09-28 on purpose. "Slowly titrating every two
+ * weeks" describes an intent, not a prescription, and the dose after that is
+ * his call to make and state. Extend this table only from something he has
+ * actually said, never by continuing the pattern. */
 const TITRATION = [
   { date: '2026-08-24', mg: 1 },
   { date: '2026-08-31', mg: 1 },
   { date: '2026-09-07', mg: 1.5 },
   { date: '2026-09-14', mg: 1.5 },
+  { date: '2026-09-21', mg: 2 },
+  { date: '2026-09-28', mg: 2 },
 ];
 
 const DEFAULT_TZ = 'America/Edmonton';   // Calgary, DST-aware
-const DEFAULT_TRAINING_DAYS = [1, 3, 5]; // Mon / Wed / Fri
 
 /* ── SMALL HELPERS ─────────────────────────────────────────────────────── */
 const enc = new TextEncoder();
@@ -200,6 +215,19 @@ function doseFor(dateStr) {
   return { mg: last.mg, known: dateStr <= last.date };
 }
 
+/* Sessions left against days left, for a week that runs Monday to Sunday.
+ * Returns null when the nudge would be noise: already trained today, target
+ * already met, or there is still comfortable room left in the week. */
+function gymGap(st, cfg, local) {
+  if (st.gymDone === local.date) return null;
+  const target = cfg.gymTarget || GYM_TARGET;
+  const left = target - (st.gymWeek || 0);
+  if (left <= 0) return null;
+  const daysLeft = 7 - ((local.dow + 6) % 7);   // including today
+  if (daysLeft > left + 1) return null;         // a spare day in hand, so stay quiet
+  return { left, daysLeft, tight: daysLeft <= left };
+}
+
 /* Returns the message for a reminder, or null to stay silent. Staying silent
  * when the thing is already done is what keeps these worth reading. */
 function compose(rid, st, cfg, local) {
@@ -209,14 +237,22 @@ function compose(rid, st, cfg, local) {
       if (st.weightLogged === local.date) return null;
       return { title: 'Monday weigh-in', body: 'Same time, before food, before your dose. One number is all it takes.',
                tag: 'weight', sticky: true, actions: [{ action: 'weight', title: 'Log it' }] };
-    case 'gym-am':
-      if (st.gymDone === local.date) return null;
-      return { title: 'When are you hitting the gym today?', body: 'Pick a time now and it is far more likely to happen.',
+    case 'gym-am': {
+      const g = gymGap(st, cfg, local);
+      if (!g) return null;
+      return { title: g.left === 1 ? 'One session left this week' : `${g.left} sessions left this week`,
+               body: g.tight ? 'No spare days left. Pick a time today and it happens.'
+                             : 'Pick a time now and it is far more likely to happen.',
                tag: 'gym', actions: [{ action: 'gym', title: 'Open plan' }] };
-    case 'gym-pm':
-      if (st.gymDone === local.date) return null;
-      return { title: 'Did you already hit it?', body: 'If you went, log it. If not, there is still time.',
+    }
+    case 'gym-pm': {
+      const g = gymGap(st, cfg, local);
+      if (!g) return null;
+      return { title: 'Still time today',
+               body: g.tight ? 'Skipping today means missing the target this week.'
+                             : `${g.left} left and ${g.daysLeft} days to fit them in. If you went already, log it.`,
                tag: 'gym', actions: [{ action: 'gym', title: 'Log session' }] };
+    }
     case 'dose-eve': {
       const d = doseFor(nextMonday(local.date));
       return { title: 'Dose tonight', body: d.known ? `${d.mg} mg tonight. Have it ready before bed.`
@@ -256,12 +292,11 @@ async function runTick(env, now) {
     const local = localParts(rec.tz || DEFAULT_TZ, now);
     const prefs = rec.prefs || {};
     const cfg = rec.cfg || {};
-    const training = cfg.trainingDays || DEFAULT_TRAINING_DAYS;
 
     const due = [];
     for (const s of SCHEDULE) {
       if (prefs[s.pref] && prefs[s.pref].enabled === false) continue;
-      const days = s.days === 'training' ? training : s.days;
+      const days = s.days === 'any' ? ANY_DAY : s.days;
       if (!days.includes(local.dow)) continue;
       if (inBucket(s.at, local.hm)) due.push(s.id);
     }
@@ -342,6 +377,7 @@ export default {
         await env.KV.put(`state:${b.id}`, JSON.stringify({
           water: Number(b.water) || 0,
           gymDone: b.gymDone || null,
+          gymWeek: Number(b.gymWeek) || 0,
           weightLogged: b.weightLogged || null,
         }), { expirationTtl: 172800 });
         return json({ ok: true });
@@ -370,4 +406,4 @@ export default {
 /* Exported for the local test harness, which drives runTick with a fixed clock
  * and a fake KV to prove the schedule fires at the right local times. Workers
  * only ever loads the default export, so these cost nothing at runtime. */
-export { runTick, localParts, inBucket, compose, doseFor, nextMonday, WATER_CHECKS, SCHEDULE, TITRATION };
+export { runTick, localParts, inBucket, compose, gymGap, doseFor, nextMonday, WATER_CHECKS, SCHEDULE, TITRATION };

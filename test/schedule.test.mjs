@@ -10,7 +10,7 @@
  * twice, or not at all, is invisible until someone's phone stays silent for a
  * week. That is far too slow a feedback loop to rely on. */
 import assert from 'node:assert';
-import { runTick, localParts, inBucket, compose, doseFor, nextMonday } from '../worker/src/index.js';
+import { runTick, localParts, inBucket, compose, gymGap, doseFor, nextMonday } from '../worker/src/index.js';
 
 const TZ = 'America/Edmonton'; // Calgary
 const ID = 'u_test';
@@ -104,6 +104,9 @@ check('localParts survives the DST boundary', () => {
 check('doseFor never invents a dose past the known titration', () => {
   assert.deepEqual(doseFor('2026-08-31'), { mg: 1, known: true });
   assert.deepEqual(doseFor('2026-09-07'), { mg: 1.5, known: true });
+  assert.deepEqual(doseFor('2026-09-21'), { mg: 2, known: true }, 'the confirmed step to 2 mg');
+  assert.deepEqual(doseFor('2026-09-28'), { mg: 2, known: true });
+  assert.equal(doseFor('2026-10-05').known, false, 'the week after the table ends must NOT be extrapolated to 2.5 mg');
   assert.equal(doseFor('2026-10-12').known, false, 'beyond the schedule must be flagged unknown');
 });
 
@@ -128,28 +131,67 @@ check('water reminder reports the real shortfall', () => {
 });
 
 check('gym and weight reminders stay silent once done', () => {
-  const local = { date: '2026-08-31' };
-  assert.equal(compose('gym-pm', { gymDone: '2026-08-31' }, {}, local), null);
-  assert.ok(compose('gym-pm', { gymDone: '2026-08-30' }, {}, local), 'yesterday does not count as done');
-  assert.equal(compose('weight', { weightLogged: '2026-08-31' }, {}, local), null);
+  const sat = { date: '2026-09-05', dow: 6 };   // Saturday, one day left, so the gym nudge is live
+  assert.equal(compose('gym-pm', { gymDone: '2026-09-05' }, {}, sat), null);
+  assert.ok(compose('gym-pm', { gymDone: '2026-09-04' }, {}, sat), 'yesterday does not count as done');
+  assert.equal(compose('weight', { weightLogged: '2026-08-31' }, {}, { date: '2026-08-31', dow: 1 }), null);
+});
+
+/* The whole point of a flexible three-day week: it must not nag while the
+ * target is still comfortably reachable, and it must not shut up when it is not. */
+check('gymGap stays quiet while the week still has slack', () => {
+  // Monday, nothing done. 3 sessions, 7 days. Plenty of room, so silence.
+  assert.equal(gymGap({ gymWeek: 0 }, {}, { date: '2026-08-31', dow: 1 }), null);
+  assert.equal(gymGap({ gymWeek: 0 }, {}, { date: '2026-09-02', dow: 3 }), null, 'Wednesday with 5 days left is still fine');
+});
+
+check('gymGap speaks once the week gets tight', () => {
+  const thu = gymGap({ gymWeek: 0 }, {}, { date: '2026-09-03', dow: 4 }); // 4 days left, 3 needed
+  assert.ok(thu, 'nothing done by Thursday must speak');
+  assert.equal(thu.left, 3);
+  assert.equal(thu.daysLeft, 4);
+  assert.equal(thu.tight, false, 'one spare day is not tight yet');
+
+  const fri = gymGap({ gymWeek: 0 }, {}, { date: '2026-09-04', dow: 5 }); // 3 days left, 3 needed
+  assert.equal(fri.tight, true, 'three sessions in the last three days is tight');
+});
+
+check('gymGap goes silent the moment the target is met', () => {
+  assert.equal(gymGap({ gymWeek: 3 }, {}, { date: '2026-09-05', dow: 6 }), null);
+  assert.equal(gymGap({ gymWeek: 4 }, {}, { date: '2026-09-05', dow: 6 }), null, 'over target is still silent');
+  assert.ok(gymGap({ gymWeek: 2 }, {}, { date: '2026-09-06', dow: 0 }), 'Sunday one short must speak');
+});
+
+check('gymGap honours a custom weekly target', () => {
+  assert.equal(gymGap({ gymWeek: 2 }, { gymTarget: 2 }, { date: '2026-09-05', dow: 6 }), null);
+  assert.ok(gymGap({ gymWeek: 2 }, { gymTarget: 5 }, { date: '2026-09-05', dow: 6 }));
 });
 
 check('every action payload fits the 2-button Safari cap', () => {
   for (const rid of ['weight', 'gym-am', 'gym-pm', 'dose-eve', 'dose-am', 'water:0.4']) {
-    const m = compose(rid, {}, {}, { date: '2026-08-31' });
+    const m = compose(rid, {}, {}, { date: '2026-09-05', dow: 6 });
     if (m && m.actions) assert.ok(m.actions.length <= 2, `${rid} has ${m.actions.length} actions`);
   }
 });
 
 /* ── full day ─────────────────────────────────────────────────────────── */
-check('a training Monday fires exactly the expected reminders at local times', async () => {
+check('an early week Monday stays off his back about the gym', async () => {
+  // Weigh-in, dose and water. No gym: three sessions across seven days is not
+  // yet urgent, and shouting on Monday morning is exactly how this gets muted.
   const { times } = await firedOn('2026-08-31');
-  assert.deepEqual(times, ['08:00', '09:30', '10:00', '11:00', '12:30', '15:30', '18:30', '19:30', '21:00']);
+  assert.deepEqual(times, ['08:00', '09:30', '10:00', '12:30', '15:30', '18:30', '21:00']);
 });
 
-check('a rest day fires water only, no gym and no weight', async () => {
-  const { times } = await firedOn('2026-09-01'); // Tuesday, not in [1,3,5]
-  assert.deepEqual(times, ['09:30', '12:30', '15:30', '18:30', '21:00']);
+check('a late week day with nothing logged does fire both gym nudges', async () => {
+  const { times } = await firedOn('2026-09-04'); // Friday, 3 days left, 3 sessions owed
+  assert.deepEqual(times, ['09:30', '11:00', '12:30', '15:30', '18:30', '19:30', '21:00']);
+});
+
+check('the gym nudge does not care which weekday he trains', async () => {
+  // Sunday, two done, one owed. A fixed Mon/Wed/Fri schedule would have been
+  // silent here, which is the bug this replaces.
+  const { times } = await firedOn('2026-09-06', { state: { gymWeek: 2 } });
+  assert.ok(times.includes('11:00') && times.includes('19:30'), 'a Sunday session still counts');
 });
 
 check('running the same day twice sends nothing the second time', async () => {
@@ -165,7 +207,7 @@ check('running the same day twice sends nothing the second time', async () => {
 
 check('a day already fully logged is almost entirely silent', async () => {
   const { times } = await firedOn('2026-08-31', {
-    state: { water: 4000, gymDone: '2026-08-31', weightLogged: '2026-08-31' },
+    state: { water: 4000, gymDone: '2026-08-31', gymWeek: 1, weightLogged: '2026-08-31' },
   });
   // Only the dose reminder, which is not conditional on logged state.
   assert.deepEqual(times, ['10:00']);
@@ -178,9 +220,11 @@ check('disabled preferences suppress their reminders', async () => {
   assert.deepEqual(times, ['08:00', '10:00']); // weight and dose only
 });
 
-check('custom training days are honoured', async () => {
-  const { times } = await firedOn('2026-09-01', { cfg: { trainingDays: [2] } }); // Tuesday
-  assert.ok(times.includes('11:00') && times.includes('19:30'), 'gym should fire on a custom training day');
+check('a week already completed is silent about the gym on every remaining day', async () => {
+  for (const d of ['2026-09-04', '2026-09-05', '2026-09-06']) {
+    const { times } = await firedOn(d, { state: { gymWeek: 3 } });
+    assert.ok(!times.includes('11:00') && !times.includes('19:30'), d + ' nagged after the target was met');
+  }
 });
 
 /* ── real crypto on the wire ──────────────────────────────────────────── */
@@ -210,7 +254,7 @@ check('one unreachable host does not cost every other user their reminders', asy
     return { ok: true, status: 201 };
   };
   for (const t of ticksForLocalDay('2026-08-31', TZ)) await runTick({ KV: kv, ...ENV_KEYS }, t.at);
-  assert.equal(sink.length, 9, 'the healthy user must still get all nine reminders');
+  assert.equal(sink.length, 7, 'the healthy user must still get every reminder that day owed him');
   assert.ok(await kv.get('sub:u_dead'), 'a network blip must not delete a subscription; only 410/404 does that');
 });
 
