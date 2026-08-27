@@ -468,7 +468,9 @@ programStart:'2026-08-24',
 targets:{calories:1800,protein:150,carbs:165,fat:60,water:3500,steps:8000,creatine:5},
 body:{currentWeight:71.2,startingWeight:71.2,targetWeight:65.0,bodyFat:31,startBodyFat:31,muscleMass:49.1},
 notifications:{water:{enabled:true},gym:{enabled:true},weight:{enabled:true},dose:{enabled:true}},
-trainingDays:[1,3,5], /* Mon/Wed/Fri. Drives the gym prompts and the workout plan. */
+gymTarget:3, /* Sessions per week, on whichever days he likes. There are no fixed
+   training days: the plan is three interchangeable sessions and the reminder
+   counts what is left in the week rather than naming a weekday. */
 ramadanMode:false, /* archived 2026-08-26, see docs/archive/ramadan-mode.md */
 };
 /* ── STORAGE ─────────────────────────────────── */
@@ -1554,7 +1556,7 @@ function saveNewEx(){
    PUSH_API empty means the reminder server is not deployed yet. The app still
    registers the worker and subscribes, and says so plainly rather than
    claiming reminders are live when nothing is scheduled. */
-const PUSH_API='';
+const PUSH_API='https://fittrack-push.addyrallxx.workers.dev';
 const VAPID_PUBLIC='BB3_s3JhI7PA6q8YLZYmKepjaW394uuyxkzjWUz2Bm3HMguRlYv3v5rOeU_KaL_JCpz1uLqb0sQgIx-75a3RC_0';
 
 function urlB64ToU8(s){
@@ -1580,11 +1582,23 @@ async function sendSub(sub){
   try{
     const r=await fetch(PUSH_API+'/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({id:deviceId(),tz:tzName(),sub,prefs:S.cfg.notifications||{},
-        cfg:{waterGoal:S.cfg.targets&&S.cfg.targets.water||3500,trainingDays:S.cfg.trainingDays||[1,3,5]}})});
+        cfg:{waterGoal:S.cfg.targets&&S.cfg.targets.water||3500,gymTarget:S.cfg.gymTarget||3}})});
     return r.ok;
   }catch(e){return false;}
 }
-/* Report only the three fields the reminder rules read. The server never
+/* Sessions completed in the current week, which runs Monday to Sunday to match
+   the Monday weigh-in and dose. The server needs the count, not the dates: it
+   decides whether to nudge from sessions left against days left. */
+function gymWeekCount(){
+  const dow=(new Date(S.today+'T12:00:00').getDay()+6)%7;   /* Mon=0 */
+  let n=0;
+  for(let i=0;i<=dow;i++){
+    const l=DB.log(shiftDate(S.today,-i));
+    if(l&&l.workout&&l.workout.completed)n++;
+  }
+  return n;
+}
+/* Report only the fields the reminder rules read. The server never
    becomes a second copy of the log: everything else stays on the phone.
    Debounced, because logging a workout writes the log once per set and only
    the final numbers matter. */
@@ -1604,6 +1618,7 @@ async function pushState(){
         id:deviceId(),
         water:(l.nutrition&&l.nutrition.water)||0,
         gymDone:(l.workout&&l.workout.completed)?S.today:null,
+        gymWeek:gymWeekCount(),
         weightLogged:(wh.length&&wh[wh.length-1].date===S.today)?S.today:null,
       })});
     return r.ok;
@@ -1805,7 +1820,7 @@ function init(){
   if(!S.cfg.profile)S.cfg.profile=DEF_SETTINGS.profile;
   if(!S.cfg.units)S.cfg.units=DEF_SETTINGS.units;
   if(!S.cfg.programStart)S.cfg.programStart=DEF_SETTINGS.programStart;
-  if(!S.cfg.trainingDays)S.cfg.trainingDays=DEF_SETTINGS.trainingDays;
+  if(!S.cfg.gymTarget)S.cfg.gymTarget=DEF_SETTINGS.gymTarget;
   ['water','gym','weight','dose'].forEach(k=>{if(!S.cfg.notifications[k])S.cfg.notifications[k]={enabled:true};});
   ['carbs','fat','creatine'].forEach(k=>{if(S.cfg.targets[k]==null)S.cfg.targets[k]=DEF_SETTINGS.targets[k];});
   buildTabs();

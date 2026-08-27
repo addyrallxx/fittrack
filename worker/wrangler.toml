@@ -2,6 +2,17 @@ name = "fittrack-push"
 main = "src/index.js"
 compatibility_date = "2026-08-27"
 
+# Both of these default to on and wrangler warns about the implicit choice.
+# They are top-level keys on purpose: anything after the first [table] header
+# belongs to that table, so putting them at the bottom silently turned them
+# into two environment variables named workers_dev and preview_urls.
+# workers.dev is how the app reaches this Worker, so it stays on, said out
+# loud rather than inherited. Preview URLs are OFF: every deployment would
+# otherwise get its own public hostname serving this same endpoint, and an
+# endpoint that stores push subscriptions does not need extra front doors.
+workers_dev = true
+preview_urls = false
+
 # Every 30 minutes. Each reminder time in src/index.js lands on :00 or :30, so
 # a 30-minute tick can never miss one. Cron triggers are always UTC and there
 # is no per-trigger timezone setting, so the Worker resolves each user's own
@@ -27,3 +38,4 @@ VAPID_SUBJECT = "mailto:adnanshakib888@gmail.com"
 # VAPID_PRIVATE_KEY is NOT here and must never be. Set it once with:
 #   npx wrangler secret put VAPID_PRIVATE_KEY
 # See README.md for the deploy sequence.
+
