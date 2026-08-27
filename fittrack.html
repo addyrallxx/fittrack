@@ -101,6 +101,17 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .qa-grid{margin:0 16px 12px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;}
 .qa-btn{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;transition:transform 0.15s var(--spring);}
 .qa-btn:active{transform:scale(0.92);}
+/* Published numbers and guesses must be distinguishable at a glance. He asked
+   for accuracy, so the app never renders an estimate as if it were fact. */
+.conf{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:1px 5px;border-radius:4px;margin-left:6px;vertical-align:1px;}
+.conf-pub{background:rgba(52,199,89,0.16);color:#34c759;}
+.conf-der{background:rgba(255,159,10,0.16);color:var(--orange);}
+.conf-est{background:rgba(142,142,147,0.18);color:var(--t3);}
+.sri-brand{font-size:11px;color:var(--t3);}
+.creat-row{width:100%;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:11px;margin-bottom:10px;transition:transform 0.15s var(--spring);}
+.creat-row:active{transform:scale(0.985);}
+.creat-chk{width:22px;height:22px;border-radius:11px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex-shrink:0;}
+.creat-chk.on{background:#34c759;border-color:#34c759;}
 .qa-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
 .qa-icon svg{width:17px;height:17px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;}
 .qa-lbl{font-size:10px;font-weight:500;color:var(--t2);text-align:center;}
@@ -458,7 +469,11 @@ const PRESETS=[
 {id:'p25',name:'Creatine 5g (no calories)',cal:0,protein:0,carbs:0,fat:0},
 {id:'p26',name:'KFC 2-Piece Meal',cal:780,protein:46,carbs:48,fat:36},
 {id:'p27',name:'Taco Bell Chicken Burrito',cal:490,protein:26,carbs:58,fat:16},
-];
+/* Hand-entered long before data/foods.json existed, and none of them was ever
+   checked against a published source. They stay because they are the only food
+   available on a first run with no network, but they are labelled honestly so
+   search never presents an old guess as though it were verified. */
+].map(f=>({...f,conf:"estimate",src:"built-in preset, never verified against a published source"}));
 /* ── DEFAULT SETTINGS ─────────────────────────── */
 const DEF_SETTINGS={
 name:'Adnan',
@@ -491,7 +506,7 @@ const DB={
 };
 /* ── STATE ───────────────────────────────────── */
 const S={
-  screen:0,today:'',log:null,cfg:null,workout:null,
+  screen:0,today:'',log:null,cfg:null,workout:null,foods:[],
   workoutDay:0,calMonth:null,chartRange:30,wtChart:null,
   restTimers:{},searchTimer:null,toastTimer:null,
 };
@@ -553,7 +568,7 @@ function resetIfStale(){
   });
   DB.set('ft_schema',SCHEMA);
 }
-function freshLog(date){return{date,workout:{completed:false,dayIndex:-1,exercises:{},startTime:null},nutrition:{meals:[],water:0},checkins:{gym:false,protein:false,water:false},steps:0,weight:null};}
+function freshLog(date){return{date,workout:{completed:false,dayIndex:-1,exercises:{},startTime:null},nutrition:{meals:[],water:0},checkins:{gym:false,protein:false,water:false},steps:0,weight:null,creatine:0};}
 function greeting(){const h=new Date().getHours();if(h<5)return'Good night';if(h<12)return'Good morning';if(h<17)return'Good afternoon';if(h<21)return'Good evening';return'Good night';}
 function fmtDate(ds){const d=new Date(ds+'T12:00:00');return d.toLocaleDateString('en-CA',{weekday:'long',month:'long',day:'numeric'});}
 function fmtTime(s){return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
@@ -959,8 +974,13 @@ function renderNutrition(){
     </div>
     <button class="shake-btn" onclick="quickShake()">
       <div style="font-size:24px">🥛</div>
-      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--coral)">ON Whey Protein Shake</div><div style="font-size:11px;color:var(--t2);margin-top:2px">130 kcal · 24g protein — one-tap log</div></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--coral)">ON Whey Protein Shake</div><div style="font-size:11px;color:var(--t2);margin-top:2px">130 kcal, 24g protein, one-tap log</div></div>
       <div class="shake-add">+ Log</div>
+    </button>
+    <button class="creat-row" onclick="toggleCreatine()">
+      <div class="creat-chk ${S.log.creatine?'on':''}">${S.log.creatine?'\u2713':''}</div>
+      <div style="flex:1;text-align:left"><div style="font-size:14px;font-weight:600;color:var(--t1)">Creatine ${S.cfg.targets.creatine||5}g</div>
+      <div style="font-size:11px;color:var(--t2);margin-top:2px">${S.log.creatine?'Done today':'Not yet today'}</div></div>
     </button>
     <div class="food-search-wrap">
       <div class="search-ico">${svgIcon('search',18,'var(--t3)')}</div>
@@ -1027,18 +1047,76 @@ function addWater(ml){
   if(w>=wg&&!S.log.checkins.water){S.log.checkins.water=true;DB.saveLog(S.today,S.log);setTimeout(()=>toast('🎯','Water goal reached!',`${(wg/1000).toFixed(1)}L complete 🎉`),1200);}
 }
 function quickShake(){const s=PRESETS.find(p=>p.id==='p12');if(s)addMealItem(s,'Other');}
+/* Creatine carries no calories, so putting it in the meal list would only add
+   noise to a screen that exists to hit numbers. It is a daily yes or no, which
+   is also the only adherence signal that matters for it. */
+function toggleCreatine(){
+  S.log.creatine=S.log.creatine?0:(S.cfg.targets.creatine||5);
+  DB.saveLog(S.today,S.log);
+  renderScreen(2);
+  if(S.log.creatine)toast('\u{1F48A}','Creatine logged',S.log.creatine+'g. Timing does not matter, showing up every day does.');
+}
+/* The food database is data/foods.json, not inlined here. Those entries would
+   roughly double the size of this file, and it is a data file edited on its own
+   schedule. The service worker is network-first with a cache fallback, so this
+   keeps working offline after the first load. PRESETS stay inline as the
+   guaranteed core for a very first run with no network at all. */
+async function loadFoods(){
+  try{
+    const r=await fetch('./data/foods.json');
+    if(!r.ok)return;
+    const d=await r.json();
+    if(Array.isArray(d.entries))S.foods=d.entries;
+  }catch(e){}
+}
+/* Custom foods win over the shipped database, which wins over the inline
+   presets, so a correction he makes himself is never shadowed by ours. */
+function allFoods(){
+  const seen=new Set(),out=[];
+  for(const f of [...DB.customFoods(),...S.foods,...PRESETS]){
+    const k=(f.name||'').toLowerCase().trim();
+    if(!k||seen.has(k))continue;
+    seen.add(k);out.push(f);
+  }
+  return out;
+}
+function findFood(id){return allFoods().find(f=>f.id===id);}
+function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+const CONF={published:['conf-pub','pub'],derived:['conf-der','calc'],estimate:['conf-est','est']};
+function confBadge(f){
+  const c=CONF[f.conf];
+  if(!c)return '';
+  return '<span class="conf '+c[0]+'" title="'+esc(f.src||'')+'">'+c[1]+'</span>';
+}
+/* Ranked, not just filtered. A prefix match beats one buried mid-name, and
+   something he actually orders beats something he has never heard of. */
+function searchFoods(m){
+  const hit=[];
+  for(const f of allFoods()){
+    const n=(f.name||'').toLowerCase(), b=(f.brand||'').toLowerCase();
+    let r;
+    if(n.startsWith(m))r=0; else if(b.startsWith(m))r=1; else if(n.includes(m))r=2; else if(b.includes(m))r=3; else continue;
+    /* Big enough that something he genuinely orders outranks a generic preset
+       matched on its first word, and still small enough that a buried match
+       never jumps ahead of a clean prefix hit. */
+    if((f.tags||[]).includes("his-usual"))r-=1.25;
+    hit.push([r,f]);
+  }
+  return hit.sort((a,b)=>a[0]-b[0]).slice(0,10).map(x=>x[1]);
+}
 function handleSearch(q){
   const clr=document.getElementById('sclr'),res=document.getElementById('sresults');
   if(clr)clr.classList.toggle('show',q.length>0);
   if(!q||q.length<2){if(res)res.classList.remove('show');return;}
   const m=q.toLowerCase();
-  const local=[...DB.customFoods(),...PRESETS].filter(f=>f.name.toLowerCase().includes(m)).slice(0,8);
+  const local=searchFoods(m);
   if(res){
     res.classList.add('show');
     res.innerHTML=(local.length?local.map(f=>`<div class="sri" onclick="pickMealType('${f.id}','local')">
-      <div style="flex:1"><div class="sri-name">${f.name}</div><div class="sri-macro">${f.cal} kcal · P:${f.protein}g · C:${f.carbs}g · F:${f.fat}g</div></div>
+      <div style="flex:1"><div class="sri-name">${esc(f.name)}${confBadge(f)}</div>
+      <div class="sri-macro">${f.brand?'<span class="sri-brand">'+esc(f.brand)+'</span> · ':''}${f.cal} kcal · P:${f.protein}g · C:${f.carbs}g · F:${f.fat}g</div></div>
       <div class="sri-add">${svgIcon('plus',14,'var(--orange)')}</div>
-    </div>`).join(''):'<div style="padding:14px 16px;font-size:13px;color:var(--t3)">No presets found</div>')+
+    </div>`).join(''):'<div style="padding:14px 16px;font-size:13px;color:var(--t3)">Nothing matches. Enter it manually below.</div>')+
     `<button class="search-manual-btn" onclick="openManualSheet()">${svgIcon('edit',16,'var(--blue)')} Enter manually</button>`;
   }
   if(S.searchTimer)clearTimeout(S.searchTimer);
@@ -1077,13 +1155,20 @@ const MEAL_TYPES_R=['Suhoor','Iftar','Other','Snack'];
 const MEAL_TYPES_N=['Breakfast','Lunch','Dinner','Snack','Other'];
 function getMealTypes(){return S.cfg.ramadanMode!==false?MEAL_TYPES_R:MEAL_TYPES_N;}
 function pickMealType(foodId,src){
-  const food=[...PRESETS,...DB.customFoods()].find(f=>f.id===foodId);
+  const food=findFood(foodId);
   if(!food)return;
   const types=getMealTypes();
+  /* A restaurant item arrives as one unit, so a portion box there is friction.
+     Rice and chicken breast are logged by weight, and one-tapping the default
+     on those is how a food log quietly turns into fiction. */
+  const weighed=food.grams>0&&(food.cat==='grocery'||food.cat==='recipe');
   openSheet(`<div class="sheet-body">
     <div style="font-size:16px;font-weight:600;margin-bottom:3px">${food.name}</div>
-    <div style="font-size:12px;color:var(--t2);margin-bottom:16px">${food.cal} kcal · ${food.protein}g protein</div>
-    <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px">Add to which meal?</div>
+    <div style="font-size:12px;color:var(--t2);margin-bottom:6px">${food.serving?esc(food.serving)+' · ':''}${food.cal} kcal · ${food.protein}g protein</div>
+    ${food.src?'<div style="font-size:11px;color:var(--t3);margin-bottom:14px">'+confBadge(food)+' '+esc(food.src)+'</div>':'<div style="margin-bottom:14px"></div>'}
+    ${weighed?'<div class="inp-grp"><div class="inp-lbl">Portion (grams)</div><input class="inp-field" id="loc-portion" type="number" value="'+food.grams+'" inputmode="numeric"></div>':''}
+    ${food.note?'<div style="font-size:12px;color:var(--t2);line-height:1.45;margin:12px 0 4px">'+esc(food.note)+'</div>':''}
+    <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 10px">Add to which meal?</div>
     ${types.map(t=>`<button onclick="logFood('${foodId}','${t}')" style="width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px;font-size:15px;font-weight:500;color:var(--t1);text-align:left;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center">${t}<span style="color:var(--orange)">→</span></button>`).join('')}
   </div>`,'Add to meal');
 }
@@ -1099,9 +1184,14 @@ function pickMealTypeAPI(tempId){
   </div>`,'Add to meal');
 }
 function logFood(foodId,mealType){
-  const food=[...PRESETS,...DB.customFoods()].find(f=>f.id===foodId);
+  const food=findFood(foodId);
   if(!food)return;
-  addMealItem(food,mealType);
+  const el=document.getElementById('loc-portion');
+  const g=el?parseFloat(el.value):0;
+  if(!g||!food.grams||g===food.grams)return addMealItem(food,mealType);
+  const k=g/food.grams;
+  addMealItem({...food,name:food.name+' ('+Math.round(g)+'g)',cal:Math.round(food.cal*k),
+    protein:Math.round(food.protein*k),carbs:Math.round(food.carbs*k),fat:Math.round(food.fat*k)},mealType);
 }
 function logFoodAPI(tempId,mealType){
   const food=window['_ft_'+tempId];if(!food)return;
@@ -1829,6 +1919,7 @@ function init(){
   window.addEventListener('hashchange',ingestFromHash);
   initSwipe();
   initPush();
+  loadFoods();
   // Seed initial weight if empty
   const wh=DB.weights();
   if(wh.length===0)DB.addWeight(S.cfg.programStart||S.today,S.cfg.body.startingWeight);
