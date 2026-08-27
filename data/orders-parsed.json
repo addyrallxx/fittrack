@@ -1,0 +1,1103 @@
+{
+  "summary": "Read the 14 food order screenshots and extract structured order data",
+  "agentCount": 5,
+  "logs": [
+    "parsed 14 screenshots"
+  ],
+  "result": {
+    "screens": [
+      {
+        "screenshot": "Screenshot 2026-08-27 044437.png",
+        "kind": "past_order",
+        "app": "unknown",
+        "restaurant": "Subway",
+        "date": "2026-08-27",
+        "items": [
+          {
+            "name": "Hot Honey Chipotle Grilled Chicken (6\")",
+            "qty": 1,
+            "options": [
+              "No Italian",
+              "Toasted",
+              "Italian Herbs & Cheese",
+              "Toasted",
+              "Habanero Jack",
+              "Lettuce",
+              "Spinach",
+              "Cucumbers",
+              "Green Peppers",
+              "Red Onions",
+              "No Banana Peppers",
+              "Hot Honey Sauce",
+              "Chipotle Southwest",
+              "Pepper",
+              "Salt",
+              "Grated Parmesan"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Hot Honey Chipotle Grilled Chicken (6\")",
+            "qty": 1,
+            "options": [
+              "No Italian",
+              "Toasted",
+              "Flatbread",
+              "Toasted",
+              "Habanero Jack",
+              "Lettuce",
+              "Spinach",
+              "Tomatoes",
+              "No Cucumbers",
+              "Green Peppers",
+              "Red Onions",
+              "No Banana Peppers",
+              "Hot Honey Sauce",
+              "Mayonnaise",
+              "No Chipotle Southwest",
+              "Garlic Aioli",
+              "Pepper",
+              "Salt",
+              "Grated Parmesan"
+            ],
+            "price_cad": null
+          }
+        ],
+        "notes": "2 items for $15.07 total, Aug 27 at 4:15 a.m. Past order card, 'View photo & location' link visible at bottom."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044517.png",
+        "kind": "order_list",
+        "app": "unknown",
+        "restaurant": "multiple",
+        "date": "unknown",
+        "items": [
+          {
+            "name": "Osmow's shawarma: On The ROCKS® - Large, Chicken Shawarma, Garlic Sauce, Medium, Lettuce, Tomatoes, Onions",
+            "qty": 1,
+            "options": [
+              "Large",
+              "Chicken Shawarma",
+              "Garlic Sauce",
+              "Medium",
+              "Lettuce",
+              "Tomatoes",
+              "Onions"
+            ],
+            "price_cad": 20.4
+          },
+          {
+            "name": "Shell: Coca-Cola Zero Sugar Soda (2 L)",
+            "qty": 2,
+            "options": [],
+            "price_cad": null
+          },
+          {
+            "name": "Osmow's Shawarma: On The STIX® - Regular, Chicken Shawarma, Garlic Sauce, Little Spicy, Tomatoes, Onions, Hot Peppers",
+            "qty": 1,
+            "options": [
+              "Regular",
+              "Chicken Shawarma",
+              "Garlic Sauce",
+              "Little Spicy",
+              "Tomatoes",
+              "Onions",
+              "Hot Peppers"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Osmow's Shawarma: Half & Half - Large, Chicken Shawarma, Garlic Sauce, Medium, Lettuce, Hot Peppers",
+            "qty": 1,
+            "options": [
+              "Large",
+              "Chicken Shawarma",
+              "Garlic Sauce",
+              "Medium",
+              "Lettuce",
+              "Hot Peppers"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Osmow's Shawarma: Half & Half - Large, Chicken Shawarma, Garlic Sauce, Medium, Lettuce, Tomatoes, Onions, Garlic Sauce (On The Side)",
+            "qty": 1,
+            "options": [
+              "Large",
+              "Chicken Shawarma",
+              "Garlic Sauce",
+              "Medium",
+              "Lettuce",
+              "Tomatoes",
+              "Onions",
+              "Garlic Sauce (On The Side)"
+            ],
+            "price_cad": null
+          }
+        ],
+        "notes": "Three past-order cards visible: Osmow's shawarma 1 item for $20.40 (Aug 25 at 4:03 p.m.); Shell 2 items for $14.46 (Aug 16 at 4:14 a.m., 1 item marked 'Delivered', Coca-Cola Zero Sugar Soda 2L x2 count); Osmow's Shawarma 3 items for $49.67 (Aug 16 at 4:14 a.m.). Individual line item prices not visible, only order totals."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044606.png",
+        "kind": "order_list",
+        "app": "unknown",
+        "restaurant": "multiple",
+        "date": "unknown",
+        "items": [
+          {
+            "name": "Subway: SubDog (6\")",
+            "qty": 1,
+            "options": [
+              "No Italian",
+              "Italian Herbs & Cheese",
+              "Habanero Jack",
+              "No Shredded Monterey Cheddar",
+              "Lettuce",
+              "Crispy Onions",
+              "No Pickles",
+              "Green Peppers",
+              "Red Onions",
+              "No Ketchup",
+              "Hot Honey Sauce",
+              "Mayonnaise",
+              "No Mustard",
+              "Garlic Aioli",
+              "Pepper",
+              "Salt",
+              "Grated Parmesan"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Subway: SubDog (6\")",
+            "qty": 1,
+            "options": [
+              "Italian",
+              "Habanero Jack",
+              "No Shredded Monterey Cheddar",
+              "Lettuce",
+              "No Crispy Onions",
+              "No Pickles",
+              "Green Peppers",
+              "Red Onions",
+              "No Ketchup",
+              "Hot Honey Sauce",
+              "Mayonnaise",
+              "No Mustard",
+              "Garlic Aioli",
+              "Pepper",
+              "Salt",
+              "Grated Parmesan"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Wendy's: Dave's Single® (Cals: 590)",
+            "qty": 1,
+            "options": [
+              "Premium Bun",
+              "Tomato",
+              "Lettuce",
+              "Processed Cheese Slice",
+              "Mayonnaise",
+              "Ketchup",
+              "No Crinkle Cut Pickles",
+              "Onion",
+              "Napkin"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Wendy's: Dave's Single® (Cals: 590)",
+            "qty": 1,
+            "options": [
+              "No Premium Bun",
+              "Sandwich Bun",
+              "Tomato",
+              "Lettuce",
+              "Processed Cheese Slice",
+              "Mayonnaise",
+              "Ketchup",
+              "No Crinkle Cut Pickles",
+              "Onion",
+              "Napkin"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Domino's Pizza: Chicken Alfredo Pasta",
+            "qty": 2,
+            "options": [],
+            "price_cad": null
+          }
+        ],
+        "notes": "Three past-order cards: Subway 2 items for $14.58 (Aug 14 at 4:53 a.m.); Wendy's 2 items for $11.98 (May 19 at 9:19 a.m.); Domino's Pizza 2 items for $16.40 (May 18 at 2:05 a.m.). Domino's card appears cut off at bottom of screenshot, may have additional items not visible. Individual line item prices not shown, only order totals. Dave's Single listed calories 590 each."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044614.png",
+        "kind": "order_list",
+        "app": "doordash",
+        "restaurant": "multiple",
+        "date": "2026-05-05",
+        "items": [
+          {
+            "name": "Calgary Pizza Master: Large Pizza (BOGO)",
+            "qty": 2,
+            "options": [
+              "Pepperoni pizza",
+              "Butter chicken pizza"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Subway: Teriyaki Crunch (6\")",
+            "qty": 2,
+            "options": [
+              "No Italian",
+              "Toasted",
+              "Italian Herbs & Cheese",
+              "Toasted",
+              "Processed Cheddar",
+              "Lettuce",
+              "Spinach",
+              "No Tomatoes",
+              "Crispy Onions",
+              "Cucumbers",
+              "Green Peppers",
+              "Red Onions",
+              "Jalapenos",
+              "Nashville-Style Hot Sauce",
+              "Mayonnaise",
+              "Chipotle Southwest",
+              "Sweet Onion Teriyaki Sauce",
+              "Garlic Aioli",
+              "Pepper",
+              "Salt"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Subway: Hot Honey Chicken (6\")",
+            "qty": 1,
+            "options": [
+              "Ghostpepper Bread",
+              "Toasted",
+              "Habanero Jack",
+              "Lettuce",
+              "Spinach",
+              "No Cucumbers",
+              "Green Peppers",
+              "Red Onions",
+              "No Banana Peppers",
+              "Hot Honey Sauce",
+              "Mayonnaise",
+              "Garlic Aioli",
+              "Pepper",
+              "Salt"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Subway: Hot Honey Chicken (6\")",
+            "qty": 1,
+            "options": [
+              "Ghostpepper Bread",
+              "Toasted",
+              "Habanero Jack",
+              "Lettuce",
+              "Spinach",
+              "No Cucumbers",
+              "Green Peppers",
+              "Red Onions",
+              "Banana Peppers",
+              "Hot Honey Sauce",
+              "Chipotle Southwest",
+              "Pepper",
+              "Salt"
+            ],
+            "price_cad": null
+          }
+        ],
+        "notes": "Calgary Pizza Master: 2 items for $35.40, May 05 at 7:16 p.m. Subway: 4 items for $31.09, May 05 at 5:04 a.m."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044716.png",
+        "kind": "order_list",
+        "app": "doordash",
+        "restaurant": "multiple",
+        "date": "unknown",
+        "items": [
+          {
+            "name": "Popeyes: 4Pc Signature Chicken Combo",
+            "qty": 1,
+            "options": [
+              "Spicy",
+              "Leg and Thigh (Dark Meat Only)",
+              "Regular Cajun Fries",
+              "Bottled FUZE ICED TEA",
+              "Deposit",
+              "Recycling Fee",
+              "Biscuit"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Popeyes: 4Pc Signature Chicken Combo",
+            "qty": 2,
+            "options": [
+              "Spicy",
+              "Mixed (Dark and White Meat)",
+              "Regular Mashed Potatoes with Cajun Gravy",
+              "Bottled Diet Coke",
+              "Deposit",
+              "Recycling Fee",
+              "Biscuit"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Popeyes: Signature Sauce",
+            "qty": 1,
+            "options": [],
+            "price_cad": null
+          },
+          {
+            "name": "Biryani Garden: Chicken Biriyani Combo",
+            "qty": 2,
+            "options": [
+              "Diet Cola"
+            ],
+            "price_cad": null
+          }
+        ],
+        "notes": "Popeyes: 5 items for $53.84, Apr 27 at 10:35 p.m., list truncated by a 'Show more' toggle not expanded, so not all items visible. Biryani Garden: 2 items for $31.82, Apr 24 at 4:24 p.m. Date field left unknown because only partial dates (month/day, no year) are visible; raw text captured here."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044727.png",
+        "kind": "order_list",
+        "app": "doordash",
+        "restaurant": "multiple",
+        "date": "unknown",
+        "items": [
+          {
+            "name": "Five Guys: Cheeseburger",
+            "qty": 1,
+            "options": [
+              "Mayo",
+              "Ketchup",
+              "BBQ Sauce",
+              "Tomatoes",
+              "Jalapeno Peppers",
+              "Green Peppers",
+              "Grilled Mushrooms",
+              "Grilled Onions"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Five Guys: Cheese Dog",
+            "qty": 1,
+            "options": [
+              "Mayo",
+              "Ketchup",
+              "A.1. Steak Sauce",
+              "BBQ Sauce",
+              "Tomatoes",
+              "Jalapeno Peppers",
+              "Grilled Mushrooms",
+              "Grilled Onions"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Five Guys: Large Cajun Fries",
+            "qty": 1,
+            "options": [],
+            "price_cad": null
+          },
+          {
+            "name": "Five Guys: Cheeseburger",
+            "qty": 1,
+            "options": [
+              "Mayo",
+              "Ketchup",
+              "Onion",
+              "Lettuce",
+              "Tomatoes",
+              "Green Peppers",
+              "Grilled Mushrooms",
+              "Grilled Onions"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Five Guys: Cheese Dog",
+            "qty": 1,
+            "options": [
+              "Mayo",
+              "Ketchup",
+              "Onion",
+              "Tomatoes",
+              "Green Peppers",
+              "Grilled Mushrooms",
+              "Grilled Onions"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "KFC: Go Bucket - Snacker Wrap",
+            "qty": 4,
+            "options": [
+              "Regular Snacker Wrap",
+              "Individual Fries"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "KFC: Go Bucket - 1 Drumstick",
+            "qty": 4,
+            "options": [
+              "1 Drumstick",
+              "Individual Fries"
+            ],
+            "price_cad": null
+          }
+        ],
+        "notes": "Five Guys: 5 items for $38.83, Apr 22 at 2:58 p.m. KFC: 8 items for $29.43, Apr 16 at 2:41 a.m., list may continue below screenshot bottom edge (cut off)."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044735.png",
+        "kind": "order_list",
+        "app": "doordash",
+        "restaurant": "multiple",
+        "date": "unknown",
+        "items": [
+          {
+            "name": "KFC: Go Bucket - 1 Drumstick",
+            "qty": 2,
+            "options": [
+              "1 Drumstick",
+              "Individual Fries"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "KFC: Go Bucket - Snacker Wrap",
+            "qty": 2,
+            "options": [
+              "No Regular Snacker Wrap",
+              "Spicy Snacker Wrap",
+              "Individual Fries"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "KFC: Go Bucket - 1 Tender",
+            "qty": 1,
+            "options": [
+              "1 Original Recipe Tender",
+              "Individual Fries",
+              "No KFC Sauce",
+              "Supercharger"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Subway: Nashville-Style Hot Chicken (6\")",
+            "qty": 2,
+            "options": [
+              "No Italian",
+              "Toasted",
+              "Italian Herbs & Cheese",
+              "2X Habanero Jack",
+              "Lettuce",
+              "Spinach",
+              "Tomatoes",
+              "Crispy Onions",
+              "No Pickles",
+              "Green Peppers",
+              "Red Onions",
+              "Nashville-Style Hot Sauce",
+              "Garlic Aioli",
+              "No Peppercorn Ranch",
+              "Pepper",
+              "Salt",
+              "Grated Parmesan"
+            ],
+            "price_cad": null
+          }
+        ],
+        "notes": "KFC order: 6 items for $22.08 total, Apr 15 at 6:08 a.m.; 'Show more' link indicates additional KFC items not expanded/visible. Subway order: 2 items for $15.98 total, Apr 14 at 6:06 a.m. Both dates lack year, so date field set to unknown."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044745.png",
+        "kind": "order_list",
+        "app": "doordash",
+        "restaurant": "multiple",
+        "date": "unknown",
+        "items": [
+          {
+            "name": "Chicken World: Peri rice platter",
+            "qty": 4,
+            "options": [
+              "Regular"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Subway: Teriyaki Crunch (6\")",
+            "qty": 1,
+            "options": [
+              "No Italian",
+              "Toasted",
+              "Italian Herbs & Cheese",
+              "2X Habanero Jack",
+              "No 2X Processed Cheddar",
+              "No Lettuce",
+              "Spinach",
+              "Tomatoes",
+              "Crispy Onions",
+              "Cucumbers",
+              "Green Peppers",
+              "Red Onions",
+              "Piri-Piri Sauce",
+              "Mayonnaise",
+              "Chipotle Southwest",
+              "Sweet Onion Teriyaki Sauce",
+              "Garlic Aioli",
+              "Pepper",
+              "Salt",
+              "Grated Parmesan"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Subway: Teriyaki Crunch (6\")",
+            "qty": 1,
+            "options": [
+              "No Italian",
+              "Toasted",
+              "Italian Herbs & Cheese",
+              "No 2X Processed Cheddar",
+              "2X Shredded Monterey Cheddar",
+              "Lettuce",
+              "No Spinach",
+              "No Tomatoes",
+              "Crispy Onions",
+              "No Cucumbers",
+              "No Green Peppers",
+              "Red Onions",
+              "Jalapenos",
+              "Mayonnaise",
+              "Smoky Honey Mustard",
+              "Sweet Onion Teriyaki Sauce",
+              "Garlic Aioli",
+              "House Sauce",
+              "Pepper",
+              "Salt",
+              "Grated Parmesan"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Subway: Nashville-Style Hot Chicken (6\")",
+            "qty": 2,
+            "options": [
+              "No Italian",
+              "Toasted",
+              "Italian Herbs & Cheese",
+              "2X Habanero Jack",
+              "No Lettuce",
+              "Spinach",
+              "Tomatoes",
+              "No Crispy Onions",
+              "No Pickles",
+              "Green Peppers",
+              "Red Onions",
+              "No Nashville-Style Hot Sauce",
+              "Chipotle Southwest",
+              "Garlic Aioli",
+              "Peppercorn Ranch",
+              "Pepper",
+              "Salt",
+              "Grated Parmesan"
+            ],
+            "price_cad": null
+          }
+        ],
+        "notes": "Chicken World order: 4 items for $49.85 total, Mar 18 at 2:30 a.m. Subway order: 4 items for $30.96 total, Mar 14 at 5:52 a.m. Years not shown, date field set to unknown."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044752.png",
+        "kind": "order_list",
+        "app": "doordash",
+        "restaurant": "multiple",
+        "date": "unknown",
+        "items": [
+          {
+            "name": "Flirty Bird Nashville Hot Chicken: The Sando",
+            "qty": 1,
+            "options": [
+              "Mild Spice (Is Just a Little Spicy)"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Flirty Bird Nashville Hot Chicken: The Tenders",
+            "qty": 1,
+            "options": [
+              "Mild Spice (Is Just a Little Spicy)",
+              "Comeback Sauce"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Osmow's Shawarma: Shawarma Wrap",
+            "qty": 2,
+            "options": [
+              "Regular",
+              "Chicken Shawarma",
+              "Garlic Sauce",
+              "Mild",
+              "Lettuce",
+              "Tomatoes",
+              "Onions"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Subway: Nashville-Style Hot Chicken (6\")",
+            "qty": 1,
+            "options": [
+              "No Italian",
+              "Toasted",
+              "Italian Herbs & Cheese",
+              "No 2X Habanero Jack",
+              "2X Canadian Cheddar",
+              "No Lettuce",
+              "Spinach",
+              "Tomatoes",
+              "Crispy Onions",
+              "No Pickles",
+              "Green Peppers",
+              "Red Onions",
+              "Nashville-Style Hot Sauce",
+              "Mayonnaise",
+              "Garlic Aioli",
+              "No Peppercorn Ranch",
+              "Pepper",
+              "Salt",
+              "Grated Parmesan"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Subway: Nashville-Style Hot Chicken (6\")",
+            "qty": 1,
+            "options": [
+              "No Italian",
+              "Toasted",
+              "Multigrain",
+              "2X Habanero Jack",
+              "No Lettuce",
+              "Spinach",
+              "Tomatoes",
+              "No Crispy Onions",
+              "Cucumbers",
+              "No Pickles",
+              "Red Onions",
+              "No Nashville-Style Hot Sauce",
+              "Mayonnaise",
+              "Chipotle Southwest",
+              "Garlic Aioli",
+              "Peppercorn Ranch",
+              "Pepper",
+              "Salt",
+              "Grated Parmesan"
+            ],
+            "price_cad": null
+          }
+        ],
+        "notes": "Flirty Bird order: 2 items for $19.99 total, Mar 11 at 7:29 p.m. Osmow's order: 2 items for $16.75 total, Mar 05 at 4:19 a.m. Subway order: 2 items for $16.11 total, Jan 21 at 6:42 a.m. Years not shown, date field set to unknown."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044759.png",
+        "kind": "order_list",
+        "app": "unknown",
+        "restaurant": "multiple",
+        "date": "unknown",
+        "items": [
+          {
+            "name": "PrimeTime Donair & Poutine: Big Boy Smash Burger Combo",
+            "qty": 1,
+            "options": [
+              "Three Smash Patties",
+              "Melted Cheese",
+              "Lettuce",
+              "Tomato",
+              "Smash Sauce",
+              "Side Fries",
+              "Diet Pepsi Bottle (591 ml)"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "PrimeTime Donair & Poutine: Side of Inferno Sauce",
+            "qty": 1,
+            "options": [],
+            "price_cad": null
+          },
+          {
+            "name": "Calgary Pizza Master: Large pizza (Butter chicken, Sausage, Salami, Bacon, Tandoori Chicken, Garlic, Chilli flakes, Cilantro)",
+            "qty": 1,
+            "options": [
+              "Butter chicken",
+              "Sausage",
+              "Salami",
+              "Bacon",
+              "Tandoori Chicken",
+              "Garlic",
+              "Chilli flakes",
+              "Cilantro"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Calgary Pizza Master: Large pizza (BBQ, Sausage, Pepperoni, Beef, Spicy BBQ Chicken, Garlic, Chilli flakes, Cilantro)",
+            "qty": 1,
+            "options": [
+              "BBQ",
+              "Sausage",
+              "Pepperoni",
+              "Beef",
+              "Spicy BBQ Chicken",
+              "Garlic",
+              "Chilli flakes",
+              "Cilantro"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Tim Hortons: Crispy Cilantro Lime Loaded Bowl w/ Cheese",
+            "qty": 2,
+            "options": [
+              "Regular"
+            ],
+            "price_cad": null
+          }
+        ],
+        "notes": "List of 3 past orders in one screenshot. PrimeTime Donair & Poutine: 2 items for $16.96, Jan 16 at 4:44 p.m. Calgary Pizza Master: 2 items for $28.89, Jan 15 at 10:24 p.m. Tim Hortons: 2 items for $15.58, Jan 13 at 7:32 p.m. No year visible, no app logo/branding visible."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044809.png",
+        "kind": "order_list",
+        "app": "unknown",
+        "restaurant": "multiple",
+        "date": "unknown",
+        "items": [
+          {
+            "name": "Calgary Pizza Master: Large pizza (BBQ, Sausage, Pepperoni, Beef, Tandoori Chicken, Chilli flakes, Cilantro)",
+            "qty": 1,
+            "options": [
+              "BBQ",
+              "Sausage",
+              "Pepperoni",
+              "Beef",
+              "Tandoori Chicken",
+              "Chilli flakes",
+              "Cilantro"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Calgary Pizza Master: Large pizza (Butter chicken, Sausage, Bacon, Tandoori Chicken, Green Pepper, Garlic, Chilli flakes, Cilantro)",
+            "qty": 1,
+            "options": [
+              "Butter chicken",
+              "Sausage",
+              "Bacon",
+              "Tandoori Chicken",
+              "Green Pepper",
+              "Garlic",
+              "Chilli flakes",
+              "Cilantro"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Spice Avenue: Vuna Khichuri Chicken/Beef",
+            "qty": 1,
+            "options": [
+              "Chicken"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Spice Avenue: Vuna Khichuri Chicken/Beef",
+            "qty": 1,
+            "options": [
+              "Beef"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Shawarma Palace Montgomery: Chicken shawarma Platter #7",
+            "qty": 2,
+            "options": [
+              "Garlic Sauce (Recommended)",
+              "Spicy Garlic",
+              "Sweet Sauce (Donair Sauce)",
+              "GREEK SALAD (if selected, other selected veggies will not be applied)"
+            ],
+            "price_cad": null
+          }
+        ],
+        "notes": "List of 3 past orders in one screenshot. Calgary Pizza Master: 2 items for $28.89, Jan 12 at 10:32 p.m. Spice Avenue: 2 items for $27.07, Jan 10 at 1:58 p.m. Shawarma Palace Montgomery: 2 items for $29.54, Jan 06 at 11:27 a.m. No year visible, no app logo/branding visible."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044822.png",
+        "kind": "order_list",
+        "app": "unknown",
+        "restaurant": "multiple",
+        "date": "unknown",
+        "items": [
+          {
+            "name": "Shawarma Palace Montgomery: Mix Chicken, Lamb & Beef shawarma platter #11 (no donair)",
+            "qty": 2,
+            "options": [
+              "Garlic Sauce (Recommended)",
+              "Spicy Garlic",
+              "Sweet Sauce (Donair Sauce)",
+              "GREEK SALAD (if selected, other selected veggies will not be applied)"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Shawarma Palace Carrington: Mix Chicken, Lamb & Beef shawarma platter #11 (no donair)",
+            "qty": 2,
+            "options": [
+              "Garlic Sauce (Recommended)",
+              "Spicy Garlic",
+              "Sweet Sauce (Donair Sauce)",
+              "GREEK SALAD (if selected, other selected veggies will not be applied)"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Shawarma Palace Carrington: Juice options",
+            "qty": 1,
+            "options": [
+              "Mango"
+            ],
+            "price_cad": null
+          }
+        ],
+        "notes": "List of 2 past orders in one screenshot. Shawarma Palace Montgomery: 2 items for $31.79, Dec 27 at 6:39 p.m. Shawarma Palace Carrington: 3 items for $33.00, Dec 21 at 12:14 a.m. No year visible, no app logo/branding visible."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044831.png",
+        "kind": "order_list",
+        "app": "doordash",
+        "restaurant": "multiple",
+        "date": "unknown",
+        "items": [
+          {
+            "name": "Pizza 73: 12pc Wedgie Bread",
+            "qty": 2,
+            "options": [],
+            "price_cad": 0
+          },
+          {
+            "name": "Flipp'n Burgers: Beefy Bacon Cheddar Cheese Burger",
+            "qty": 2,
+            "options": [
+              "White Bun",
+              "Lettuce",
+              "Tomato",
+              "Red Onion",
+              "Flipp'n Sauce",
+              "Mayo",
+              "Garlic"
+            ],
+            "price_cad": 21.55
+          },
+          {
+            "name": "Foodyard: Butter Chicken Bowl",
+            "qty": 2,
+            "options": [],
+            "price_cad": 28.68
+          }
+        ],
+        "notes": "Three past order cards visible: Pizza 73 (2 items for $0.00, BOGO promo, Dec 16 at 1:52 a.m.), Flipp'n Burgers (2 items for $21.55, Dec 13 at 12:42 a.m.), Foodyard (2 items for $28.68, Dec 03 at 3:11 a.m.). Dates lack year, raw text preserved here."
+      },
+      {
+        "screenshot": "Screenshot 2026-08-27 044851.png",
+        "kind": "order_list",
+        "app": "doordash",
+        "restaurant": "multiple",
+        "date": "unknown",
+        "items": [
+          {
+            "name": "McDonald's: Chicken McMuffin [360.0 Cals]",
+            "qty": 2,
+            "options": [
+              "Chicken Patty [130.0 Cals]",
+              "Cheese [45.0 Cals]",
+              "Mayo-Style Sauce [40.0 Cals]",
+              "Butter [15.0 Cals]"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "McDonald's: Banana Chocolate Chunk Muffin [430.0 Cals]",
+            "qty": 1,
+            "options": [
+              "Heated"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Boardwalk Fries Burgers Shakes: Chipotle Burger Combo",
+            "qty": 1,
+            "options": [
+              "Regular Bun",
+              "Single",
+              "Small Golden Tater Bites",
+              "Fountain Drinks",
+              "Diet Cola"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Boardwalk Fries Burgers Shakes: Chipotle Burger Combo",
+            "qty": 1,
+            "options": [
+              "Regular Bun",
+              "Single",
+              "Small Golden Tater Bites",
+              "Fountain Drinks",
+              "Cola"
+            ],
+            "price_cad": null
+          },
+          {
+            "name": "Boardwalk Fries Burgers Shakes: Chipotle Beef Bacon Fries",
+            "qty": 2,
+            "options": [],
+            "price_cad": null
+          }
+        ],
+        "notes": "Two past order cards visible: McDonald's (3 items for $13.24 total, Oct 12 at 6:53 a.m., calorie counts shown per item/component) and Boardwalk Fries Burgers Shakes (4 items for $41.18 total, Oct 08 at 6:43 p.m.). Per-line prices not shown, only order totals. Dates lack year."
+      }
+    ]
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Parse"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "parse:1",
+      "phaseIndex": 1,
+      "phaseTitle": "Parse",
+      "agentId": "a3eb945bf53c0d005",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787827993691,
+      "queuedAt": 1787827991249,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Read these 3 screenshot image files with the Read tool, one at a time, and transcribe what each shows.\n\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044437.png\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044517.png\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044606.png\n\nThese are food deliver…",
+      "lastProgressAt": 1787828047890,
+      "tokens": 91356,
+      "toolCalls": 5,
+      "durationMs": 50775,
+      "resultPreview": "{\"screens\":[{\"screenshot\":\"Screenshot 2026-08-27 044437.png\",\"kind\":\"past_order\",\"app\":\"unknown\",\"restaurant\":\"Subway\",\"date\":\"2026-08-27\",\"items\":[{\"name\":\"Hot Honey Chipotle Grilled Chicken (6\\\")\",\"qty\":1,\"options\":[\"No Italian\",\"Toasted\",\"Italian Herbs & Cheese\",\"Toasted\",\"Habanero Jack\",\"Lettuce\",\"Spinach\",\"Cucumbers\",\"Green Peppers\",\"Red Onions\",\"No Banana Peppers\",\"Hot Honey Sauce\",\"Chipotle…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "parse:2",
+      "phaseIndex": 1,
+      "phaseTitle": "Parse",
+      "agentId": "a814beb6ebaf7f730",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787827993552,
+      "queuedAt": 1787827991249,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Read these 3 screenshot image files with the Read tool, one at a time, and transcribe what each shows.\n\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044614.png\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044716.png\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044727.png\n\nThese are food deliver…",
+      "lastProgressAt": 1787828025052,
+      "tokens": 88473,
+      "toolCalls": 4,
+      "durationMs": 27938,
+      "resultPreview": "{\"screens\":[{\"screenshot\":\"Screenshot 2026-08-27 044614.png\",\"kind\":\"order_list\",\"app\":\"doordash\",\"restaurant\":\"multiple\",\"date\":\"2026-05-05\",\"items\":[{\"name\":\"Calgary Pizza Master: Large Pizza (BOGO)\",\"qty\":2,\"options\":[\"Pepperoni pizza\",\"Butter chicken pizza\"],\"price_cad\":null},{\"name\":\"Subway: Teriyaki Crunch (6\\\")\",\"qty\":2,\"options\":[\"No Italian\",\"Toasted\",\"Italian Herbs & Cheese\",\"Toasted\",\"P…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "parse:3",
+      "phaseIndex": 1,
+      "phaseTitle": "Parse",
+      "agentId": "a9de9ceb209b5dd92",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787827993516,
+      "queuedAt": 1787827991249,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Read these 3 screenshot image files with the Read tool, one at a time, and transcribe what each shows.\n\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044735.png\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044745.png\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044752.png\n\nThese are food deliver…",
+      "lastProgressAt": 1787828042428,
+      "tokens": 91631,
+      "toolCalls": 5,
+      "durationMs": 48912,
+      "resultPreview": "{\"screens\":[{\"screenshot\":\"Screenshot 2026-08-27 044735.png\",\"kind\":\"order_list\",\"app\":\"doordash\",\"restaurant\":\"multiple\",\"date\":\"unknown\",\"items\":[{\"name\":\"KFC: Go Bucket - 1 Drumstick\",\"qty\":2,\"options\":[\"1 Drumstick\",\"Individual Fries\"],\"price_cad\":null},{\"name\":\"KFC: Go Bucket - Snacker Wrap\",\"qty\":2,\"options\":[\"No Regular Snacker Wrap\",\"Spicy Snacker Wrap\",\"Individual Fries\"],\"price_cad\":null…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "parse:4",
+      "phaseIndex": 1,
+      "phaseTitle": "Parse",
+      "agentId": "aa1bf3994edb67580",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787827993550,
+      "queuedAt": 1787827991249,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Read these 3 screenshot image files with the Read tool, one at a time, and transcribe what each shows.\n\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044759.png\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044809.png\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044822.png\n\nThese are food deliver…",
+      "lastProgressAt": 1787828044104,
+      "tokens": 90666,
+      "toolCalls": 5,
+      "durationMs": 46990,
+      "resultPreview": "{\"screens\":[{\"screenshot\":\"Screenshot 2026-08-27 044759.png\",\"kind\":\"order_list\",\"app\":\"unknown\",\"restaurant\":\"multiple\",\"date\":\"unknown\",\"items\":[{\"name\":\"PrimeTime Donair & Poutine: Big Boy Smash Burger Combo\",\"qty\":1,\"options\":[\"Three Smash Patties\",\"Melted Cheese\",\"Lettuce\",\"Tomato\",\"Smash Sauce\",\"Side Fries\",\"Diet Pepsi Bottle (591 ml)\"],\"price_cad\":null},{\"name\":\"PrimeTime Donair & Poutine: …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "parse:5",
+      "phaseIndex": 1,
+      "phaseTitle": "Parse",
+      "agentId": "aab78491de602f3b7",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787827993554,
+      "queuedAt": 1787827991249,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Read these 2 screenshot image files with the Read tool, one at a time, and transcribe what each shows.\n\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044831.png\n- C:/Users/adnan/projects/fittrack/data/order-screenshots/Screenshot 2026-08-27 044851.png\n\nThese are food delivery app screenshots from a user in Calgary, Canada. For EACH image return one entry.\n\nRules:\n…",
+      "lastProgressAt": 1787828027218,
+      "tokens": 87425,
+      "toolCalls": 4,
+      "durationMs": 30103,
+      "resultPreview": "{\"screens\":[{\"screenshot\":\"Screenshot 2026-08-27 044831.png\",\"kind\":\"order_list\",\"app\":\"doordash\",\"restaurant\":\"multiple\",\"date\":\"unknown\",\"items\":[{\"name\":\"Pizza 73: 12pc Wedgie Bread\",\"qty\":2,\"options\":[],\"price_cad\":0},{\"name\":\"Flipp'n Burgers: Beefy Bacon Cheddar Cheese Burger\",\"qty\":2,\"options\":[\"White Bun\",\"Lettuce\",\"Tomato\",\"Red Onion\",\"Flipp'n Sauce\",\"Mayo\",\"Garlic\"],\"price_cad\":21.55},{\"n…"
+    }
+  ],
+  "totalTokens": 449551,
+  "totalToolCalls": 23
+}

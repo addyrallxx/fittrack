@@ -1,0 +1,4561 @@
+{
+ "version": 1,
+ "count": 244,
+ "entries": [
+  {
+   "id": "pizza-73-12pc-wedgie-bread",
+   "name": "12pc Wedgie Bread",
+   "brand": "Pizza 73",
+   "cat": "restaurant",
+   "serving": "1 order of 12 garlic cheese bread wedges",
+   "grams": 480,
+   "cal": 1320,
+   "protein": 36,
+   "carbs": 144,
+   "fat": 60,
+   "src": "estimated: no published Pizza 73 nutrition found, comparable to a generic garlic cheese bread wedge order scaled to 12 pieces",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "low-protein-density"
+   ],
+   "note": "He got this one as a BOGO promo item alongside a burger order; treat it as a side to split, not a full serving. A few wedges rather than the whole 12 keeps the carbs in check."
+  },
+  {
+   "id": "popeyes-4pc-combo-spicy-fries-tea",
+   "name": "4Pc Signature Chicken Combo, Spicy, Leg & Thigh, Cajun Fries, Iced Tea",
+   "brand": "Popeyes",
+   "cat": "restaurant",
+   "serving": "1 combo: 4 pc spicy dark-meat chicken, regular Cajun fries, biscuit, bottled Fuze iced tea",
+   "grams": 750,
+   "cal": 1560,
+   "protein": 58,
+   "carbs": 140,
+   "fat": 84,
+   "src": "derived from Popeyes Canada published 4-piece chicken nutrition (approx. 830 kcal for dark meat), published biscuit and Cajun fries figures, sweetened iced tea estimated",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "high-protein",
+    "fried"
+   ],
+   "note": "The single heaviest item in this file: 1,560 kcal is nearly a full day's calorie target in one order. Swapping the iced tea for a diet drink and fries for mashed potatoes (see the other combo variant below) cuts close to 300 kcal for the same chicken and protein."
+  },
+  {
+   "id": "popeyes-4pc-combo-spicy-mashed-diet",
+   "name": "4Pc Signature Chicken Combo, Spicy, Mixed, Mashed Potatoes, Diet Coke",
+   "brand": "Popeyes",
+   "cat": "restaurant",
+   "serving": "1 combo: 4 pc spicy mixed dark and white meat chicken, mashed potatoes with Cajun gravy, biscuit, bottled Diet Coke",
+   "grams": 650,
+   "cal": 1270,
+   "protein": 57,
+   "carbs": 87,
+   "fat": 77,
+   "src": "derived from Popeyes Canada published 4-piece chicken nutrition, published mashed potatoes and biscuit figures, Diet Coke is 0 kcal",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "high-protein",
+    "fried"
+   ],
+   "note": "This is the combo variant he should default to over the fries-and-sweet-tea version above: same chicken and protein, roughly 290 fewer kcal, just from the side and drink choice."
+  },
+  {
+   "id": "mcdonalds-banana-chocolate-chunk-muffin",
+   "name": "Banana Chocolate Chunk Muffin",
+   "brand": "McDonald's",
+   "cat": "restaurant",
+   "serving": "1 muffin, heated",
+   "grams": 120,
+   "cal": 430,
+   "protein": 6,
+   "carbs": 73,
+   "fat": 13,
+   "src": "McDonald's Canada published nutrition (430 kcal, as shown on his DoorDash order screen); carbs/fat split corrected to 73C/13F to match McDonald's own published breakdown, the old 65C/15F split didn't match",
+   "conf": "published",
+   "tags": [
+    "his-usual",
+    "low-protein-density"
+   ],
+   "note": "Almost pure carbs and fat with very little protein; on retatrutide with an underrating risk, this is fine as extra calories but shouldn't replace a protein-bearing item in the same order."
+  },
+  {
+   "id": "calgary-pizza-master-bbq-loaded-slice",
+   "name": "BBQ Loaded Pizza Slice (Large)",
+   "brand": "Calgary Pizza Master",
+   "cat": "restaurant",
+   "serving": "1 of 8 slices, BBQ sauce, pepperoni, beef, spicy BBQ chicken, garlic, chilli flakes, cilantro (no sausage)",
+   "grams": 120,
+   "cal": 275,
+   "protein": 13,
+   "carbs": 29,
+   "fat": 12,
+   "src": "estimated: no published Calgary Pizza Master nutrition found, comparable to a generic loaded meat BBQ pizza slice; modeled with beef pepperoni in place of pork pepperoni (confirm with the shop); sausage topping dropped from the build and its calories/macros subtracted, see note",
+   "conf": "estimate",
+   "tags": [
+    "his-usual"
+   ],
+   "note": "The shop's sausage topping is pork by default and has no confirmed non-pork version, so it was excluded from this build entirely rather than guessed at. Otherwise similar profile to the butter chicken build, slightly leaner because BBQ sauce carries less fat than the creamy butter chicken base."
+  },
+  {
+   "id": "flippn-burgers-beefy-bacon-cheddar-burger",
+   "name": "Beefy Bacon Cheddar Cheese Burger",
+   "brand": "Flipp'n Burgers",
+   "cat": "restaurant",
+   "serving": "1 burger, white bun, lettuce, tomato, red onion, Flipp'n sauce, mayo, garlic, cheddar, bacon",
+   "grams": 320,
+   "cal": 750,
+   "protein": 38,
+   "carbs": 45,
+   "fat": 45,
+   "src": "estimated: no published Flipp'n Burgers nutrition found, comparable to a generic bacon cheddar smash-style burger; modeled with beef bacon in place of pork bacon since he doesn't eat pork (confirm with the shop which bacon they use)",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "high-protein"
+   ],
+   "note": "Two sauces (Flipp'n sauce and mayo) on one burger; dropping one is a simple 80 to 100 kcal trim."
+  },
+  {
+   "id": "primetime-big-boy-smash-burger-combo",
+   "name": "Big Boy Smash Burger Combo",
+   "brand": "PrimeTime Donair & Poutine",
+   "cat": "restaurant",
+   "serving": "1 combo: three smash patties, melted cheese, lettuce, tomato, smash sauce, side fries, Diet Pepsi",
+   "grams": 700,
+   "cal": 1400,
+   "protein": 70,
+   "carbs": 95,
+   "fat": 85,
+   "src": "estimated: no published PrimeTime Donair & Poutine nutrition found, comparable to a triple smash-patty burger combo with fries",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "high-protein"
+   ],
+   "note": "High protein from three patties, but fat is also very high, over the full 60 g daily fat target in one meal. Two patties instead of three would keep this a high-protein order while cutting roughly 250 kcal and 20 g fat."
+  },
+  {
+   "id": "black-coffee",
+   "name": "Black Coffee",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "1 cup (240 mL)",
+   "grams": 240,
+   "cal": 2,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 0,
+   "src": "USDA FDC 173806, brewed coffee",
+   "conf": "published",
+   "tags": [
+    "his-usual",
+    "zero-calorie",
+    "low-effort"
+   ],
+   "note": "Can blunt appetite further, watch total intake if already skipping meals."
+  },
+  {
+   "id": "foodyard-butter-chicken-bowl",
+   "name": "Butter Chicken Bowl",
+   "brand": "Foodyard",
+   "cat": "restaurant",
+   "serving": "1 bowl, butter chicken over rice",
+   "grams": 420,
+   "cal": 650,
+   "protein": 35,
+   "carbs": 60,
+   "fat": 28,
+   "src": "estimated: no published Foodyard nutrition found, comparable to a standard butter chicken and rice bowl",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "high-protein"
+   ],
+   "note": "A reasonably balanced bowl order; the butter chicken cream sauce is the fat source, everything else is lean."
+  },
+  {
+   "id": "calgary-pizza-master-butter-chicken-loaded-slice",
+   "name": "Butter Chicken Loaded Pizza Slice (Large)",
+   "brand": "Calgary Pizza Master",
+   "cat": "restaurant",
+   "serving": "1 of 8 slices, butter chicken sauce, salami, bacon, tandoori chicken, garlic, chilli flakes, cilantro (no sausage)",
+   "grams": 125,
+   "cal": 300,
+   "protein": 14,
+   "carbs": 29,
+   "fat": 15,
+   "src": "estimated: no published Calgary Pizza Master nutrition found, comparable to a generic loaded meat pizza slice with a creamy sauce; modeled with beef salami and turkey bacon in place of the usual pork versions since he doesn't eat pork (confirm with the shop); sausage topping dropped from the build and its calories/macros subtracted, see note",
+   "conf": "estimate",
+   "tags": [
+    "his-usual"
+   ],
+   "note": "The shop's sausage topping is pork by default and has no confirmed non-pork version, unlike the salami and bacon here, so it was excluded from this build entirely rather than guessed at. Three meat toppings plus a rich butter chicken sauce remains: two slices of this is still a meaningful chunk of the daily fat target."
+  },
+  {
+   "id": "five-guys-cheese-dog",
+   "name": "Cheese Dog (his build)",
+   "brand": "Five Guys",
+   "cat": "restaurant",
+   "serving": "1 all-beef hot dog with cheese, mayo, ketchup, A.1. sauce, BBQ sauce, tomatoes, jalapenos, grilled mushrooms, grilled onions",
+   "grams": 280,
+   "cal": 815,
+   "protein": 22,
+   "carbs": 67,
+   "fat": 52,
+   "src": "derived: Five Guys published Cheese Dog base (fastfoodnutrition.org, 615 kcal/41F/41C/22P) plus published per-topping figures for all four sauces he adds (mayo 100 kcal/11F, ketchup 15 kcal/4C, BBQ sauce 60 kcal/16C, A.1. sauce approx. 15 kcal/3C per Kraft's label), free veggie toppings treated as negligible; a plain cheese dog cannot be lower than this build, so the prior 530 kcal figure was wrong",
+   "conf": "derived",
+   "tags": [
+    "his-usual"
+   ],
+   "note": "Four full-strength sauces (mayo, ketchup, A.1., BBQ) on one hot dog add roughly 200 kcal and 11 g fat over the plain cheese dog; picking one or two sauces instead of all four is the easy trim here, not the 10 to 15 g this file used to claim."
+  },
+  {
+   "id": "five-guys-cheeseburger",
+   "name": "Cheeseburger (his build)",
+   "brand": "Five Guys",
+   "cat": "restaurant",
+   "serving": "1 cheeseburger (two beef patties, standard Five Guys default), mayo, ketchup, BBQ sauce, tomatoes, jalapenos, green peppers, grilled mushrooms, grilled onions",
+   "grams": 400,
+   "cal": 1015,
+   "protein": 47,
+   "carbs": 60,
+   "fat": 66,
+   "src": "derived: Five Guys published Cheeseburger base (two patties, 840 kcal/47P/40C/55F) plus published per-topping figures for the three sauces he adds (mayo 100 kcal/11F, ketchup 15 kcal/4C, BBQ sauce 60 kcal/16C); a single mayo packet alone is 90 to 100 kcal, so the old +40 kcal estimate for three sauces was too low",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "high-protein"
+   ],
+   "note": "Five Guys' regular cheeseburger is two patties by default; a Little Cheeseburger (one patty) would roughly halve the base while keeping most of the toppings he actually likes (mushrooms, grilled onions, peppers). Mayo alone is close to 100 kcal of the sauce total here, dropping it is the biggest single trim."
+  },
+  {
+   "id": "dominos-chicken-alfredo-pasta",
+   "name": "Chicken Alfredo Pasta",
+   "brand": "Domino's",
+   "cat": "restaurant",
+   "serving": "1 regular pasta bowl",
+   "grams": 326,
+   "cal": 620,
+   "protein": 24,
+   "carbs": 60,
+   "fat": 28,
+   "src": "Domino's Canada published nutrition, Chicken Alfredo Pasta (regular)",
+   "conf": "published",
+   "tags": [
+    "his-usual"
+   ],
+   "note": "He orders 2 at a time. Alfredo sauce is the fat driver here (17 g of the 28 g is saturated per Domino's own numbers); a marinara-based pasta would keep the protein and cut 10-plus grams of fat."
+  },
+  {
+   "id": "biryani-garden-chicken-biryani-combo",
+   "name": "Chicken Biriyani Combo",
+   "brand": "Biryani Garden",
+   "cat": "restaurant",
+   "serving": "1 combo platter with rice, chicken biryani, side salad/raita, plus a Diet Cola",
+   "grams": 650,
+   "cal": 950,
+   "protein": 40,
+   "carbs": 110,
+   "fat": 38,
+   "src": "estimated: no published Biryani Garden nutrition found, comparable to a typical South Asian chicken biryani combo platter portion",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "rice-heavy"
+   ],
+   "note": "Rice-heavy dish that alone covers most of his daily 165 g carb target. Eating half the rice and keeping all the chicken would shift this toward a much better protein-to-carb ratio for his goals."
+  },
+  {
+   "id": "mcdonalds-chicken-mcmuffin",
+   "name": "Chicken McMuffin",
+   "brand": "McDonald's",
+   "cat": "restaurant",
+   "serving": "1 muffin sandwich, chicken patty, cheese, mayo-style sauce, butter",
+   "grams": 140,
+   "cal": 360,
+   "protein": 16,
+   "carbs": 35,
+   "fat": 16,
+   "src": "McDonald's Canada published nutrition (360 kcal, as shown per-component on his DoorDash order screen)",
+   "conf": "published",
+   "tags": [
+    "his-usual",
+    "low-effort"
+   ],
+   "note": "He orders 2 at a time. Decent breakfast protein source relative to its size."
+  },
+  {
+   "id": "shawarma-palace-chicken-platter-7",
+   "name": "Chicken Shawarma Platter #7",
+   "brand": "Shawarma Palace",
+   "cat": "restaurant",
+   "serving": "1 platter, chicken shawarma, garlic sauce, spicy garlic, sweet sauce, Greek salad",
+   "grams": 550,
+   "cal": 900,
+   "protein": 45,
+   "carbs": 70,
+   "fat": 48,
+   "src": "estimated: no published Shawarma Palace nutrition found, comparable to a typical chicken shawarma platter with rice/salad and multiple sauces",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "high-protein",
+    "heavy-sauce"
+   ],
+   "note": "Three sauces on one platter (garlic, spicy garlic, sweet donair sauce) stack up fat fast. Picking one sauce instead of all three is a realistic 100-plus kcal save."
+  },
+  {
+   "id": "boardwalk-chipotle-beef-bacon-fries",
+   "name": "Chipotle Beef Bacon Fries",
+   "brand": "Boardwalk Fries Burgers Shakes",
+   "cat": "restaurant",
+   "serving": "1 order, loaded fries with beef bacon and chipotle sauce",
+   "grams": 400,
+   "cal": 900,
+   "protein": 28,
+   "carbs": 75,
+   "fat": 55,
+   "src": "estimated: no published Boardwalk Fries Burgers Shakes nutrition found, comparable to a generic loaded bacon fries side",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "low-protein-density"
+   ],
+   "note": "Already uses beef bacon, so no pork substitution needed here. He orders 2 of these alongside the burger combos above; loaded fries plus a burger combo in one order is a very large total, worth splitting across two sittings."
+  },
+  {
+   "id": "boardwalk-chipotle-burger-combo",
+   "name": "Chipotle Burger Combo (Single, Regular Bun, Tater Bites, Diet Cola)",
+   "brand": "Boardwalk Fries Burgers Shakes",
+   "cat": "restaurant",
+   "serving": "1 combo, single chipotle burger, regular bun, small tater bites, fountain diet cola",
+   "grams": 550,
+   "cal": 1050,
+   "protein": 40,
+   "carbs": 95,
+   "fat": 58,
+   "src": "estimated: no published Boardwalk Fries Burgers Shakes nutrition found, comparable to a standard smash burger combo with a small fried side",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "high-protein"
+   ],
+   "note": "Diet cola instead of regular soda is already the right call here and saves roughly 150 kcal versus a sugared drink."
+  },
+  {
+   "id": "shell-coca-cola-zero-sugar",
+   "name": "Coca-Cola Zero Sugar",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "1 can/serving (355 ml) from a 2 L bottle he buys at Shell",
+   "grams": 355,
+   "cal": 0,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 0,
+   "src": "Coca-Cola published nutrition, Coca-Cola Zero Sugar is 0 kcal per serving",
+   "conf": "published",
+   "tags": [
+    "his-usual",
+    "zero-calorie"
+   ],
+   "note": "Zero calorie, no macro impact. Fine to log purely for hydration/habit tracking."
+  },
+  {
+   "id": "coke-zero-330ml-can",
+   "name": "Coca-Cola Zero Sugar, 330 mL can",
+   "brand": "Coca-Cola",
+   "cat": "grocery",
+   "serving": "1 can (330 mL)",
+   "grams": 330,
+   "cal": 0,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 0,
+   "src": "Coca-Cola Canada nutrition page 2025",
+   "conf": "published",
+   "tags": [
+    "his-usual",
+    "zero-calorie",
+    "low-effort"
+   ],
+   "note": ""
+  },
+  {
+   "id": "coke-zero-500ml",
+   "name": "Coca-Cola Zero Sugar, 500 mL",
+   "brand": "Coca-Cola",
+   "cat": "grocery",
+   "serving": "500 mL (from 2 L bottle)",
+   "grams": 500,
+   "cal": 0,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 0,
+   "src": "Coca-Cola Canada nutrition page 2025, scaled from per 100 mL value of 0 kcal",
+   "conf": "published",
+   "tags": [
+    "his-usual",
+    "zero-calorie",
+    "low-effort"
+   ],
+   "note": "His usual pour from the 2 L bottle he orders."
+  },
+  {
+   "id": "creatine-5g",
+   "name": "Creatine Monohydrate",
+   "brand": "",
+   "cat": "supplement",
+   "serving": "1 scoop (5 g)",
+   "grams": 5,
+   "cal": 0,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 0,
+   "src": "USDA FDC, creatine monohydrate is metabolically inert, 0 kcal per serving",
+   "conf": "published",
+   "tags": [
+    "his-usual",
+    "daily",
+    "low-effort",
+    "one-tap"
+   ],
+   "note": "Timing does not matter, only daily consistency does. Take with water any time of day."
+  },
+  {
+   "id": "tim-hortons-crispy-cilantro-lime-loaded-bowl",
+   "name": "Crispy Cilantro Lime Loaded Bowl w/ Cheese",
+   "brand": "Tim Hortons",
+   "cat": "restaurant",
+   "serving": "1 regular loaded bowl with cheese",
+   "grams": 400,
+   "cal": 700,
+   "protein": 28,
+   "carbs": 70,
+   "fat": 33,
+   "src": "estimated from comparable Tim Hortons loaded bowl items; Tim Hortons does publish Canadian nutrition for this line but the exact figure for this specific bowl was not confirmed here, so treat as an estimate until checked against timhortons.ca",
+   "conf": "estimate",
+   "tags": [
+    "his-usual"
+   ],
+   "note": "Worth checking Tim Hortons' own nutrition page for the exact number since they do publish it; this is a placeholder estimate in the meantime."
+  },
+  {
+   "id": "wendys-daves-single",
+   "name": "Dave's Single",
+   "brand": "Wendy's",
+   "cat": "restaurant",
+   "serving": "1 burger, quarter pound beef, cheese, mayo, ketchup, lettuce, tomato, onion, bun (premium or regular)",
+   "grams": 220,
+   "cal": 590,
+   "protein": 29,
+   "carbs": 34,
+   "fat": 36,
+   "src": "Wendy's Canada published nutrition, Dave's Single (590 kcal, as also shown on his DoorDash order screen)",
+   "conf": "published",
+   "tags": [
+    "his-usual"
+   ],
+   "note": "He has ordered it with the premium bun and with the plain sandwich bun; the difference is small, roughly 20 kcal. Dropping mayo would save about 90 kcal and 10 g fat for minimal taste loss on a burger this simple."
+  },
+  {
+   "id": "fuze-iced-tea",
+   "name": "Fuze Iced Tea",
+   "brand": "Fuze",
+   "cat": "grocery",
+   "serving": "1 bottle (591 mL)",
+   "grams": 591,
+   "cal": 150,
+   "protein": 0,
+   "carbs": 39,
+   "fat": 0,
+   "src": "Fuze Beverage Canada nutrition label",
+   "conf": "published",
+   "tags": [
+    "his-usual",
+    "low-effort"
+   ],
+   "note": ""
+  },
+  {
+   "id": "kfc-go-bucket-drumstick",
+   "name": "Go Bucket, 1 Drumstick + Individual Fries",
+   "brand": "KFC",
+   "cat": "restaurant",
+   "serving": "1 Original Recipe drumstick plus individual fries",
+   "grams": 210,
+   "cal": 450,
+   "protein": 20,
+   "carbs": 47,
+   "fat": 21,
+   "src": "derived: KFC Canada's own current nutrition sheet (kfc.ca, updated Feb 18 2025) lists Original Recipe Drumstick at 140 kcal/8F/2C/15P, unchanged from the earlier note here, plus Seasoned French Fries Individual size at 310 kcal/13F/45C/5P. Summed that is 450 kcal, not the 370 kcal this entry used to show; the drumstick figure was already right, the fries portion was undercounted",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "high-protein"
+   ],
+   "note": "Best protein-per-calorie chicken item in his whole KFC rotation, but the individual fries side is most of this combo's calories (310 of 450). He orders multiples of these Go Buckets in a single order; more drumsticks and fewer fries/wraps would push his overall protein up for a similar calorie total."
+  },
+  {
+   "id": "kfc-go-bucket-tender",
+   "name": "Go Bucket, 1 Original Recipe Tender + Individual Fries",
+   "brand": "KFC",
+   "cat": "restaurant",
+   "serving": "1 Original Recipe tender plus individual fries, no KFC sauce",
+   "grams": 210,
+   "cal": 410,
+   "protein": 15,
+   "carbs": 40,
+   "fat": 21,
+   "src": "derived from KFC Canada published Original Recipe tender and individual fries nutrition",
+   "conf": "derived",
+   "tags": [
+    "his-usual"
+   ],
+   "note": "He skips the KFC sauce on this one already, which is the right move; keep doing that."
+  },
+  {
+   "id": "kfc-go-bucket-snacker-wrap-regular",
+   "name": "Go Bucket, Regular Snacker Wrap + Individual Fries",
+   "brand": "KFC",
+   "cat": "restaurant",
+   "serving": "1 regular Snacker Wrap plus individual fries",
+   "grams": 260,
+   "cal": 530,
+   "protein": 15,
+   "carbs": 63,
+   "fat": 24,
+   "src": "derived from KFC Canada published Snacker Wrap and individual fries nutrition",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "low-effort"
+   ],
+   "note": "Low protein for the calorie count. Two of these plus a piece of Original Recipe chicken would hit more protein for similar total kcal."
+  },
+  {
+   "id": "kfc-go-bucket-snacker-wrap-spicy",
+   "name": "Go Bucket, Spicy Snacker Wrap + Individual Fries",
+   "brand": "KFC",
+   "cat": "restaurant",
+   "serving": "1 spicy Snacker Wrap plus individual fries",
+   "grams": 260,
+   "cal": 550,
+   "protein": 15,
+   "carbs": 64,
+   "fat": 25,
+   "src": "derived from KFC Canada published Snacker Wrap and individual fries nutrition, spicy sauce estimated similar to regular",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "low-effort"
+   ],
+   "note": "Same profile as the regular Snacker Wrap; spice adds negligible calories."
+  },
+  {
+   "id": "osmows-half-and-half-large",
+   "name": "Half & Half (Large, Chicken Shawarma, Garlic Sauce)",
+   "brand": "Osmow's",
+   "cat": "restaurant",
+   "serving": "1 large Half & Half bowl, chicken shawarma, medium garlic sauce, lettuce, tomatoes/hot peppers vary by order",
+   "grams": 520,
+   "cal": 900,
+   "protein": 42,
+   "carbs": 80,
+   "fat": 45,
+   "src": "estimated: no published Osmow's Canada nutrition found, comparable to a large mixed rice-and-fries shawarma bowl with garlic sauce",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "heavy-sauce"
+   ],
+   "note": "He has ordered this with garlic sauce mixed in and also with garlic sauce on the side; on the side lets him control the amount, worth using every time to cut 50 to 100 kcal of sauce."
+  },
+  {
+   "id": "subway-hot-honey-chicken-ghostpepper",
+   "name": "Hot Honey Chicken (6 inch, Ghostpepper Bread)",
+   "brand": "Subway",
+   "cat": "restaurant",
+   "serving": "1 six inch sub, Ghostpepper Bread, toasted, habanero jack, hot honey sauce, mayonnaise, garlic aioli",
+   "grams": 280,
+   "cal": 620,
+   "protein": 31,
+   "carbs": 55,
+   "fat": 30,
+   "src": "derived from Subway Canada published bread, chicken, cheese and sauce component nutrition",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "high-protein",
+    "heavy-sauce"
+   ],
+   "note": "Mayonnaise plus garlic aioli together are close to 170 kcal and 19 g fat of the total. Dropping one of the two sauces keeps the sub recognizable and saves close to that amount."
+  },
+  {
+   "id": "subway-hot-honey-chipotle-grilled-chicken",
+   "name": "Hot Honey Chipotle Grilled Chicken (6 inch, his build)",
+   "brand": "Subway",
+   "cat": "restaurant",
+   "serving": "1 six inch sub, toasted, Italian Herbs & Cheese or Flatbread, habanero jack, hot honey sauce, chipotle southwest (sometimes mayo and garlic aioli added)",
+   "grams": 280,
+   "cal": 530,
+   "protein": 31,
+   "carbs": 56,
+   "fat": 19,
+   "src": "derived from Subway Canada published bread, grilled chicken, cheese and sauce nutrition components, summed",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "high-protein",
+    "heavy-sauce"
+   ],
+   "note": "He orders this two ways: one with hot honey plus chipotle southwest, one with hot honey plus mayo and garlic aioli. Both are two full-fat sauce packets. Dropping to one sauce (hot honey alone) saves roughly 100 to 130 kcal and 15 to 20 g fat without losing the sub."
+  },
+  {
+   "id": "five-guys-large-cajun-fries",
+   "name": "Large Cajun Fries",
+   "brand": "Five Guys",
+   "cat": "restaurant",
+   "serving": "1 large order (Five Guys portions are notoriously oversized, roughly double a typical large fries elsewhere)",
+   "grams": 600,
+   "cal": 1328,
+   "protein": 20,
+   "carbs": 184,
+   "fat": 57,
+   "src": "Five Guys published nutrition for Large Cajun Style Fries (myfooddiary.com/fatsecret aggregation of Five Guys' own figures): 1328 kcal, 57 g fat, 184 g carbs, 20 g protein; the previous split (71F/154C/18P) had the fat and carbs numbers swapped-ish and didn't match the published breakdown",
+   "conf": "published",
+   "tags": [
+    "his-usual",
+    "low-protein-density"
+   ],
+   "note": "This one order of fries is close to his entire daily carb target by itself. Splitting a large order across two meals, or ordering Regular instead of Large, is the single biggest easy save in his whole order history."
+  },
+  {
+   "id": "shawarma-palace-mango-juice",
+   "name": "Mango Juice",
+   "brand": "Shawarma Palace",
+   "cat": "restaurant",
+   "serving": "1 cup",
+   "grams": 350,
+   "cal": 180,
+   "protein": 0,
+   "carbs": 44,
+   "fat": 0,
+   "src": "estimated, comparable to a standard restaurant mango juice/nectar serving, no published figure found",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "low-protein-density"
+   ],
+   "note": "44 g of straight sugar-equivalent carbs with zero protein. Water or a diet drink alongside the platter would free up real carb budget for the meal itself."
+  },
+  {
+   "id": "milk-2percent-cup",
+   "name": "Milk, 2%",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "1 cup (250 mL)",
+   "grams": 250,
+   "cal": 128,
+   "protein": 8,
+   "carbs": 12,
+   "fat": 5,
+   "src": "USDA FDC 746782, 2% milk",
+   "conf": "published",
+   "tags": [
+    "his-usual",
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Cheapest protein-per-effort drink he has, worth defaulting to over water when appetite is low."
+  },
+  {
+   "id": "shawarma-palace-mix-platter-11-no-donair",
+   "name": "Mix Chicken, Lamb & Beef Shawarma Platter #11 (no donair)",
+   "brand": "Shawarma Palace",
+   "cat": "restaurant",
+   "serving": "1 platter, mixed chicken/lamb/beef shawarma, garlic sauce, spicy garlic, sweet sauce, Greek salad",
+   "grams": 600,
+   "cal": 1000,
+   "protein": 50,
+   "carbs": 75,
+   "fat": 55,
+   "src": "estimated: no published Shawarma Palace nutrition found, comparable to a mixed lamb/beef/chicken shawarma platter with multiple sauces",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "high-protein",
+    "heavy-sauce"
+   ],
+   "note": "Same order from both the Montgomery and Carrington locations. Lamb pushes the fat noticeably above the pure chicken platter #7; if protein is the priority over flavor variety, the chicken-only platter is the better default."
+  },
+  {
+   "id": "multivitamin",
+   "name": "Multivitamin, one a day",
+   "brand": "Centrum Men",
+   "cat": "supplement",
+   "serving": "1 tablet",
+   "grams": 2,
+   "cal": 5,
+   "protein": 0,
+   "carbs": 1,
+   "fat": 0,
+   "src": "Centrum Canada product label",
+   "conf": "published",
+   "tags": [
+    "his-usual",
+    "daily",
+    "low-effort"
+   ],
+   "note": "Take with a meal for absorption, but do not stress the exact timing, daily consistency is what counts."
+  },
+  {
+   "id": "subway-nashville-hot-chicken-loaded",
+   "name": "Nashville-Style Hot Chicken (6 inch, his loaded build)",
+   "brand": "Subway",
+   "cat": "restaurant",
+   "serving": "1 six inch sub, Italian Herbs & Cheese toasted, 2x habanero jack, chipotle southwest, garlic aioli, peppercorn ranch",
+   "grams": 300,
+   "cal": 740,
+   "protein": 34,
+   "carbs": 49,
+   "fat": 44,
+   "src": "derived from Subway Canada published bread, chicken, double-cheese and sauce component nutrition, summed for a 3-sauce build seen in his order history",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "heavy-sauce",
+    "low-effort"
+   ],
+   "note": "Biggest lean-swap opportunity in his whole Subway rotation. Chipotle southwest, garlic aioli and peppercorn ranch stacked together are roughly 280 kcal and 30 g fat of pure sauce. Same sandwich with just one of these saves 250 to 300 kcal, no change to bread, cheese, or protein."
+  },
+  {
+   "id": "subway-nashville-hot-chicken-standard",
+   "name": "Nashville-Style Hot Chicken (6 inch, standard build)",
+   "brand": "Subway",
+   "cat": "restaurant",
+   "serving": "1 six inch sub, Italian Herbs & Cheese toasted, 2x habanero jack, crispy onions, Nashville-style hot sauce, garlic aioli",
+   "grams": 300,
+   "cal": 610,
+   "protein": 35,
+   "carbs": 57,
+   "fat": 26,
+   "src": "derived from Subway Canada published bread, chicken, double-cheese and sauce component nutrition",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "high-protein"
+   ],
+   "note": "His best-balanced Subway build: 35 g protein for 610 kcal is a solid ratio for the daily 150 g protein target. Double cheese is the main add-on versus a single-cheese sub, worth roughly 50 kcal and 4 g fat."
+  },
+  {
+   "id": "osmows-on-the-rocks-large",
+   "name": "On The Rocks Bowl (Large, Chicken Shawarma, Garlic Sauce)",
+   "brand": "Osmow's",
+   "cat": "restaurant",
+   "serving": "1 large bowl, chicken shawarma, medium garlic sauce, lettuce, tomatoes, onions",
+   "grams": 550,
+   "cal": 950,
+   "protein": 45,
+   "carbs": 85,
+   "fat": 48,
+   "src": "estimated: no published Osmow's Canada nutrition found, comparable to a large fries-or-rice shawarma bowl with a medium serving of garlic sauce (garlic sauce is a toum-style emulsion, essentially all fat)",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "heavy-sauce"
+   ],
+   "note": "Garlic sauce (toum) is oil-based and is most of the fat here. Asking for 'light garlic sauce' instead of medium would plausibly cut 150 to 200 kcal and 15 to 20 g fat without changing the order otherwise."
+  },
+  {
+   "id": "osmows-on-the-stix-regular",
+   "name": "On The Stix (Regular, Chicken Shawarma, Garlic Sauce, Spicy)",
+   "brand": "Osmow's",
+   "cat": "restaurant",
+   "serving": "1 regular skewer-style order, chicken shawarma, garlic sauce, little spicy, tomatoes, onions, hot peppers",
+   "grams": 380,
+   "cal": 650,
+   "protein": 32,
+   "carbs": 55,
+   "fat": 32,
+   "src": "estimated: no published Osmow's Canada nutrition found, comparable to a regular-size shawarma skewer platter",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "high-protein"
+   ],
+   "note": "Lighter than his Large orders from the same chain. Good protein-per-calorie choice when he wants Osmow's without going all the way to a Large."
+  },
+  {
+   "id": "calgary-pizza-master-pepperoni-slice",
+   "name": "Pepperoni Pizza Slice (Large)",
+   "brand": "Calgary Pizza Master",
+   "cat": "restaurant",
+   "serving": "1 of 8 slices from a large pepperoni pizza",
+   "grams": 120,
+   "cal": 280,
+   "protein": 12,
+   "carbs": 28,
+   "fat": 14,
+   "src": "estimated: no published Calgary Pizza Master nutrition found, comparable to a generic large pepperoni pizza slice; modeled with beef pepperoni since standard pepperoni is pork and he doesn't eat pork (confirm with the shop which pepperoni they use)",
+   "conf": "estimate",
+   "tags": [
+    "his-usual"
+   ],
+   "note": "He and a friend split a BOGO large pizza order, so realistic serving is 2 to 4 slices, not the whole pie."
+  },
+  {
+   "id": "chicken-world-peri-peri-rice-platter",
+   "name": "Peri Peri Rice Platter (Regular)",
+   "brand": "Chicken World",
+   "cat": "restaurant",
+   "serving": "1 regular platter, peri peri chicken over rice",
+   "grams": 480,
+   "cal": 750,
+   "protein": 40,
+   "carbs": 85,
+   "fat": 25,
+   "src": "estimated: no published Chicken World nutrition found, comparable to a typical peri peri chicken and rice platter",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "high-protein",
+    "rice-heavy"
+   ],
+   "note": "He orders 4 of these at once, likely feeding more than one person; treat the per-platter numbers above as the single-serving figure."
+  },
+  {
+   "id": "osmows-shawarma-wrap",
+   "name": "Shawarma Wrap (Regular, Chicken, Garlic Sauce)",
+   "brand": "Osmow's",
+   "cat": "restaurant",
+   "serving": "1 regular chicken shawarma wrap, garlic sauce, mild, lettuce, tomatoes, onions",
+   "grams": 400,
+   "cal": 750,
+   "protein": 35,
+   "carbs": 65,
+   "fat": 38,
+   "src": "estimated: no published Osmow's Canada nutrition found, comparable to a standard chicken shawarma wrap with garlic sauce",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "His most portable Osmow's order and a reasonable single-meal protein source."
+  },
+  {
+   "id": "primetime-side-inferno-sauce",
+   "name": "Side of Inferno Sauce",
+   "brand": "PrimeTime Donair & Poutine",
+   "cat": "restaurant",
+   "serving": "1 side sauce cup",
+   "grams": 30,
+   "cal": 30,
+   "protein": 0,
+   "carbs": 3,
+   "fat": 2,
+   "src": "estimated, comparable to a small hot sauce side, no published figure found",
+   "conf": "estimate",
+   "tags": [
+    "his-usual"
+   ],
+   "note": "Negligible calories, mostly flavor, not a lever worth touching."
+  },
+  {
+   "id": "popeyes-signature-sauce",
+   "name": "Signature Sauce (side)",
+   "brand": "Popeyes",
+   "cat": "restaurant",
+   "serving": "1 side dip cup",
+   "grams": 28,
+   "cal": 110,
+   "protein": 0,
+   "carbs": 1,
+   "fat": 12,
+   "src": "estimated, comparable to a standard fast-food mayo-based dip cup, no published Popeyes Canada figure found for this specific sauce",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "heavy-sauce"
+   ],
+   "note": "Pure added fat with no protein. Easy to skip entirely without changing the meal."
+  },
+  {
+   "id": "subway-subdog",
+   "name": "SubDog (6 inch, his build)",
+   "brand": "Subway",
+   "cat": "restaurant",
+   "serving": "1 six inch SubDog, habanero jack, crispy onions, hot honey sauce, mayonnaise, garlic aioli",
+   "grams": 300,
+   "cal": 730,
+   "protein": 21,
+   "carbs": 59,
+   "fat": 45,
+   "src": "derived from Subway Canada published SubDog base plus bread, cheese and sauce component nutrition",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "heavy-sauce",
+    "low-protein-density"
+   ],
+   "note": "Worst protein-per-calorie sub in his rotation: three sauces (hot honey, mayonnaise, garlic aioli) add roughly 200 kcal and 23 g fat on top of the dog itself, for only 21 g protein. Cutting to just hot honey would save close to 170 kcal and 19 g fat."
+  },
+  {
+   "id": "tea-with-milk",
+   "name": "Tea with Milk",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "1 cup (240 mL) with 30 mL milk",
+   "grams": 270,
+   "cal": 20,
+   "protein": 1,
+   "carbs": 2,
+   "fat": 1,
+   "src": "derived from USDA FDC brewed tea (0 kcal) plus 30 mL 2% milk (~20 kcal)",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "low-effort"
+   ],
+   "note": "Traditional Bangladeshi style cha, a small daily protein and calorie top-up, harmless at this size."
+  },
+  {
+   "id": "subway-teriyaki-crunch-loaded",
+   "name": "Teriyaki Crunch (6 inch, his loaded build)",
+   "brand": "Subway",
+   "cat": "restaurant",
+   "serving": "1 six inch sub, Italian Herbs & Cheese toasted, processed cheddar, crispy onions, jalapenos, plus up to 5 sauces (Nashville-style hot, mayonnaise, chipotle southwest, sweet onion teriyaki, garlic aioli)",
+   "grams": 320,
+   "cal": 790,
+   "protein": 32,
+   "carbs": 67,
+   "fat": 42,
+   "src": "derived from Subway Canada published bread, chicken, cheese and sauce component nutrition, summed for a 5-sauce build seen in his order history",
+   "conf": "derived",
+   "tags": [
+    "his-usual",
+    "heavy-sauce",
+    "low-effort"
+   ],
+   "note": "His heaviest sauce-stack sub: up to five sauces on one sandwich. Trimming to just sweet onion teriyaki would save roughly 250 to 300 kcal and 30 g fat while keeping the flavor he actually orders it for."
+  },
+  {
+   "id": "flirty-bird-the-sando",
+   "name": "The Sando (Mild)",
+   "brand": "Flirty Bird Nashville Hot Chicken",
+   "cat": "restaurant",
+   "serving": "1 fried chicken sandwich, mild spice",
+   "grams": 280,
+   "cal": 700,
+   "protein": 32,
+   "carbs": 60,
+   "fat": 38,
+   "src": "estimated: no published Flirty Bird nutrition found, comparable to a standard Nashville hot fried chicken sandwich",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "fried"
+   ],
+   "note": "Fried chicken sandwiches like this usually carry 30 to 40 g fat mostly from the fry oil and the mayo-based sauce; asking for sauce on the side is the easy trim."
+  },
+  {
+   "id": "flirty-bird-the-tenders",
+   "name": "The Tenders (Mild, Comeback Sauce)",
+   "brand": "Flirty Bird Nashville Hot Chicken",
+   "cat": "restaurant",
+   "serving": "1 order of tenders, mild spice, with Comeback Sauce",
+   "grams": 260,
+   "cal": 650,
+   "protein": 35,
+   "carbs": 45,
+   "fat": 36,
+   "src": "estimated: no published Flirty Bird nutrition found, comparable to a standard fried chicken tender order with a mayo-based dipping sauce",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "high-protein",
+    "fried"
+   ],
+   "note": "Comeback sauce is mayo-based; ordering it on the side and using less would meaningfully cut the fat here."
+  },
+  {
+   "id": "spice-avenue-vuna-khichuri-beef",
+   "name": "Vuna Khichuri, Beef",
+   "brand": "Spice Avenue",
+   "cat": "restaurant",
+   "serving": "1 order, mixed lentil-rice khichuri with bhuna-style beef",
+   "grams": 460,
+   "cal": 780,
+   "protein": 35,
+   "carbs": 78,
+   "fat": 34,
+   "src": "estimated: no published Spice Avenue nutrition found, comparable to a typical Bengali beef bhuna khichuri portion",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "rice-heavy"
+   ],
+   "note": "Higher fat than the chicken version because beef bhuna carries more fat per gram of meat."
+  },
+  {
+   "id": "spice-avenue-vuna-khichuri-chicken",
+   "name": "Vuna Khichuri, Chicken",
+   "brand": "Spice Avenue",
+   "cat": "restaurant",
+   "serving": "1 order, mixed lentil-rice khichuri with bhuna-style chicken",
+   "grams": 450,
+   "cal": 700,
+   "protein": 32,
+   "carbs": 80,
+   "fat": 26,
+   "src": "estimated: no published Spice Avenue nutrition found, comparable to a typical Bengali chicken bhuna khichuri portion",
+   "conf": "estimate",
+   "tags": [
+    "his-usual",
+    "rice-heavy"
+   ],
+   "note": "One of the more balanced items in this file: rice, lentils and chicken together rather than a straight fried item. The bhuna gravy oil is the main fat source; asking for less oil would trim a few grams of fat without changing the dish."
+  },
+  {
+   "id": "daves-hot-chicken-3-tender-combo",
+   "name": "3-Tender Combo, No/Lite spice (no fries)",
+   "brand": "Dave's Hot Chicken",
+   "cat": "restaurant",
+   "serving": "3 tenders, ~250g",
+   "grams": 250,
+   "cal": 490,
+   "protein": 45,
+   "carbs": 30,
+   "fat": 20,
+   "src": "daveshotchickenmenu.us nutrition aggregator, values vary 490-550 kcal by spice level across sources. Beacon Hill NW location",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Skip the fries side and slaw comes with less fat than the mac and cheese option. Breading adds carbs, this is not a lean cut but the protein total is solid."
+  },
+  {
+   "id": "air-fryer-chicken-breast",
+   "name": "Air fryer chicken breast",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 breast, ~200 g cooked",
+   "grams": 200,
+   "cal": 280,
+   "protein": 52,
+   "carbs": 0,
+   "fat": 6,
+   "src": "derived from USDA FDC boneless skinless chicken breast raw, cooked yield adjusted",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "air-fryer-chicken-thighs",
+   "name": "Air fryer chicken thighs (2, seasoned)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "2 thighs, ~250 g cooked",
+   "grams": 250,
+   "cal": 420,
+   "protein": 48,
+   "carbs": 1,
+   "fat": 24,
+   "src": "derived from USDA FDC boneless skinless chicken thigh raw, cooked yield adjusted, oil spray",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "high-protein"
+   ],
+   "note": "Season, air fry, done. No sauce."
+  },
+  {
+   "id": "almonds-costco",
+   "name": "Almonds",
+   "brand": "Kirkland Signature",
+   "cat": "grocery",
+   "serving": "30 g (~23 almonds)",
+   "grams": 30,
+   "cal": 174,
+   "protein": 6,
+   "carbs": 6,
+   "fat": 15,
+   "src": "Costco Canada Kirkland Signature packaging nutrition facts",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "aloo-bhaji",
+   "name": "Aloo bhaji (potato fry)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~150 g",
+   "grams": 150,
+   "cal": 210,
+   "protein": 3,
+   "carbs": 28,
+   "fat": 10,
+   "src": "derived from USDA FDC raw potato plus pan-fry oil ratio",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "bangladeshi",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "baked-salmon-fillet",
+   "name": "Baked salmon fillet (farmed Atlantic)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 fillet, ~170 g cooked",
+   "grams": 170,
+   "cal": 350,
+   "protein": 38,
+   "carbs": 0,
+   "fat": 21,
+   "src": "USDA FDC, Atlantic salmon farmed cooked dry heat (206 kcal per 100 g), scaled to a 170 g cooked fillet. Previously cited raw wild Atlantic salmon, which is not commercially sold in Canada.",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "banana",
+   "name": "Banana",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "1 medium, ~118 g",
+   "grams": 118,
+   "cal": 105,
+   "protein": 1,
+   "carbs": 24,
+   "fat": 0,
+   "src": "USDA FDC, banana raw",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "generic-banh-mi-grilled-chicken",
+   "name": "Banh Mi, Grilled Chicken (no pate)",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 sandwich, ~280g",
+   "grams": 280,
+   "cal": 480,
+   "protein": 28,
+   "carbs": 55,
+   "fat": 16,
+   "src": "estimated from a standard Vietnamese banh mi with grilled chicken, pate and mayo reduced",
+   "conf": "estimate",
+   "tags": [],
+   "note": "Ask for no pate (it is usually pork liver based) and mayo on the side. Chicken or tofu fillings only, skip any pork-based versions like banh mi thit."
+  },
+  {
+   "id": "basmati-rice-raw",
+   "name": "Basmati rice, raw",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 356,
+   "protein": 8,
+   "carbs": 77,
+   "fat": 1,
+   "src": "USDA FDC, basmati rice raw",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": "Common Bangladeshi grocer and Superstore brands: Kohinoor, Tilda, Royal."
+  },
+  {
+   "id": "bcaa-scoop",
+   "name": "BCAA Powder, 1 scoop",
+   "brand": "Optimum Nutrition",
+   "cat": "supplement",
+   "serving": "1 scoop (7 g)",
+   "grams": 7,
+   "cal": 5,
+   "protein": 1,
+   "carbs": 0,
+   "fat": 0,
+   "src": "Optimum Nutrition BCAA Canada label",
+   "conf": "published",
+   "tags": [
+    "low-effort"
+   ],
+   "note": "Not a real substitute for whole protein grams, useful only around training if he trains fasted."
+  },
+  {
+   "id": "beef-bhuna",
+   "name": "Beef bhuna",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~200 g",
+   "grams": 200,
+   "cal": 390,
+   "protein": 29,
+   "carbs": 7,
+   "fat": 27,
+   "src": "derived from USDA FDC beef chuck raw, onion, oil, home-recipe ratios",
+   "conf": "derived",
+   "tags": [
+    "effort-real",
+    "high-protein",
+    "bangladeshi"
+   ],
+   "note": ""
+  },
+  {
+   "id": "baekjeong-beef-bulgogi-250g",
+   "name": "Beef Bulgogi (250g raw portion)",
+   "brand": "Baekjeong Korean BBQ",
+   "cat": "restaurant",
+   "serving": "250g raw beef",
+   "grams": 250,
+   "cal": 450,
+   "protein": 35,
+   "carbs": 15,
+   "fat": 28,
+   "src": "Beacon Hill NW, no published nutrition, estimated from 250g marinated beef bulgogi",
+   "conf": "estimate",
+   "tags": [],
+   "note": "This menu also sells pork belly (samgyeopsal), order beef or chicken cuts only. Do not order the pork items."
+  },
+  {
+   "id": "rice-table-beef-bulgogi-bowl",
+   "name": "Beef Bulgogi Bowl",
+   "brand": "Rice Table Korean Kitchen",
+   "cat": "restaurant",
+   "serving": "~450g bowl",
+   "grams": 450,
+   "cal": 680,
+   "protein": 38,
+   "carbs": 78,
+   "fat": 20,
+   "src": "estimated similarly to the chicken bulgogi bowl, adjusted for beef's higher fat content",
+   "conf": "estimate",
+   "tags": [],
+   "note": "Same modification as the chicken version: rice half portion, ask for extra meat instead of extra rice."
+  },
+  {
+   "id": "beef-curry-plain",
+   "name": "Beef curry (jhol style)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~250 g",
+   "grams": 250,
+   "cal": 380,
+   "protein": 27,
+   "carbs": 9,
+   "fat": 25,
+   "src": "derived from USDA FDC beef chuck raw and standard curry gravy ratios",
+   "conf": "derived",
+   "tags": [
+    "effort-real",
+    "high-protein",
+    "bangladeshi"
+   ],
+   "note": "More gravy than bhuna."
+  },
+  {
+   "id": "beef-kala-bhuna",
+   "name": "Beef kala bhuna",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~200 g",
+   "grams": 200,
+   "cal": 400,
+   "protein": 29,
+   "carbs": 6,
+   "fat": 28,
+   "src": "derived from USDA FDC beef chuck raw, long slow-cooked with heavy oil, Chittagong style",
+   "conf": "estimate",
+   "tags": [
+    "effort-real",
+    "bangladeshi"
+   ],
+   "note": "Darker, oilier than standard bhuna."
+  },
+  {
+   "id": "kolachi-beef-seekh-kabab-platter",
+   "name": "Beef Seekh Kabab Platter (2 kababs, rice, salad)",
+   "brand": "Kolachi BBQ & Grill",
+   "cat": "restaurant",
+   "serving": "1 platter (~450g)",
+   "grams": 450,
+   "cal": 650,
+   "protein": 40,
+   "carbs": 45,
+   "fat": 30,
+   "src": "kolachibbq.ca menu, no published nutrition, estimated from 2x100g grilled minced beef kabab plus 1 cup rice and salad",
+   "conf": "estimate",
+   "tags": [
+    "halal",
+    "high-protein"
+   ],
+   "note": "Ask for rice on the side and only eat half of it, the kabab meat is the protein value here, not the rice."
+  },
+  {
+   "id": "lean-beef-stew-cubes",
+   "name": "Beef stewing cubes, lean, raw",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 150,
+   "protein": 21,
+   "carbs": 0,
+   "fat": 7,
+   "src": "USDA FDC, beef chuck raw, lean trim",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "black-beans-canned",
+   "name": "Black beans, canned, drained",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g drained",
+   "grams": 100,
+   "cal": 130,
+   "protein": 9,
+   "carbs": 21,
+   "fat": 1,
+   "src": "USDA FDC, black beans canned drained",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "blueberries-fresh",
+   "name": "Blueberries, fresh",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g",
+   "grams": 100,
+   "cal": 57,
+   "protein": 1,
+   "carbs": 14,
+   "fat": 0,
+   "src": "USDA FDC, blueberries raw",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "boiled-eggs-two",
+   "name": "Boiled eggs (2 whole)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "2 eggs, ~100 g",
+   "grams": 100,
+   "cal": 140,
+   "protein": 13,
+   "carbs": 1,
+   "fat": 10,
+   "src": "USDA FDC whole egg, hard boiled",
+   "conf": "published",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "mucho-burrito-double-chicken-bowl",
+   "name": "Burrito Bowl, Double Grilled Chicken, no rice, extra lettuce and salsa",
+   "brand": "Mucho Burrito",
+   "cat": "restaurant",
+   "serving": "1 bowl",
+   "grams": 400,
+   "cal": 400,
+   "protein": 50,
+   "carbs": 20,
+   "fat": 14,
+   "src": "derived from Mucho Burrito's published per-filling data (chorizo filling is 300 kcal/21P/2C/23F per mynetdiary), grilled chicken filling doubled plus vegetables, no rice, no cheese, no sour cream",
+   "conf": "derived",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Skip rice, cheese, and sour cream entirely, use salsa and lettuce for volume instead of queso. Building it this way turns a 1000+ kcal burrito into one of the better bowls on this list."
+  },
+  {
+   "id": "foodyard-butter-chicken-crispy-wrap",
+   "name": "Butter Chicken Crispy Chicken Wrap",
+   "brand": "Foodyard",
+   "cat": "restaurant",
+   "serving": "1 wrap",
+   "grams": 350,
+   "cal": 750,
+   "protein": 32,
+   "carbs": 68,
+   "fat": 38,
+   "src": "foodyard.ca menu, estimated from description (fried chicken patty, butter chicken sauce, slaw in wrap); same restaurant as foodyard-butter-chicken-bowl, added separately from the menu rather than from his order history",
+   "conf": "estimate",
+   "tags": [
+    "halal",
+    "not-order-history"
+   ],
+   "note": "Ask if the chicken can be grilled instead of crispy fried. Sauce goes on the side either way, this wrap's fat is mostly the fry and the mayo-heavy sauce."
+  },
+  {
+   "id": "twist-of-taj-butter-chicken-rice",
+   "name": "Butter Chicken with rice",
+   "brand": "Twist of TAJ",
+   "cat": "restaurant",
+   "serving": "~400g curry plus 1 cup rice",
+   "grams": 500,
+   "cal": 850,
+   "protein": 40,
+   "carbs": 70,
+   "fat": 45,
+   "src": "twistoftaj.net menu, estimated from cream/butter-heavy tomato gravy plus boneless chicken thigh plus rice",
+   "conf": "estimate",
+   "tags": [
+    "halal"
+   ],
+   "note": "Ask for the cream sauce on the side and spoon it over lightly. This dish is the fat trap of the menu, not the protein win."
+  },
+  {
+   "id": "generic-butter-chicken-half-rice",
+   "name": "Butter Chicken, half rice, sauce on side",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "~350g curry plus half cup rice",
+   "grams": 400,
+   "cal": 520,
+   "protein": 35,
+   "carbs": 45,
+   "fat": 22,
+   "src": "estimated from a standard Indian delivery butter chicken order with the cream sauce portion controlled and rice halved",
+   "conf": "estimate",
+   "tags": [],
+   "note": "Spoon the cream sauce over the chicken lightly instead of pouring the whole container. Most of the fat in butter chicken is the sauce, not the meat."
+  },
+  {
+   "id": "generic-sushi-california-roll-salmon-side",
+   "name": "California Roll plus extra salmon sashimi side",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 roll (8pc) plus 4pc sashimi",
+   "grams": 350,
+   "cal": 500,
+   "protein": 30,
+   "carbs": 55,
+   "fat": 16,
+   "src": "estimated from a standard 8-piece California roll plus 4 pieces of salmon sashimi",
+   "conf": "estimate",
+   "tags": [],
+   "note": "If you want a roll for the texture, add a sashimi side rather than a second roll, it boosts protein without stacking more rice."
+  },
+  {
+   "id": "canned-tuna-oil",
+   "name": "Canned tuna in oil, drained",
+   "brand": "Clover Leaf",
+   "cat": "grocery",
+   "serving": "1 can drained, ~85 g",
+   "grams": 85,
+   "cal": 150,
+   "protein": 21,
+   "carbs": 0,
+   "fat": 7,
+   "src": "Clover Leaf Canada nutrition facts, flaked light tuna in oil",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "canned-tuna-water",
+   "name": "Canned tuna in water, drained",
+   "brand": "Clover Leaf",
+   "cat": "grocery",
+   "serving": "1 can drained, ~85 g",
+   "grams": 85,
+   "cal": 99,
+   "protein": 22,
+   "carbs": 0,
+   "fat": 1,
+   "src": "Clover Leaf Canada nutrition facts, flaked light tuna in water",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "casein-protein-scoop",
+   "name": "Casein Protein Powder, 1 scoop",
+   "brand": "Optimum Nutrition Gold Standard 100% Casein",
+   "cat": "supplement",
+   "serving": "1 scoop (33 g)",
+   "grams": 33,
+   "cal": 120,
+   "protein": 24,
+   "carbs": 3,
+   "fat": 1,
+   "src": "Optimum Nutrition Gold Standard Casein Canada label",
+   "conf": "published",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Slow digesting, best last thing before bed since appetite is already gone by evening anyway."
+  },
+  {
+   "id": "dal-chana",
+   "name": "Chana dal (split chickpea dal)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~240 g",
+   "grams": 240,
+   "cal": 270,
+   "protein": 15,
+   "carbs": 34,
+   "fat": 8,
+   "src": "derived from USDA FDC cooked chana dal plus tempering oil",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "bangladeshi",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "cheddar-cheese-balderson",
+   "name": "Cheddar cheese, block",
+   "brand": "Balderson",
+   "cat": "grocery",
+   "serving": "30 g",
+   "grams": 30,
+   "cal": 120,
+   "protein": 7,
+   "carbs": 0,
+   "fat": 10,
+   "src": "Balderson Canada nutrition facts, old cheddar",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "chicken-rice-meal-prep-bowl",
+   "name": "Chicken and rice meal prep bowl",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~400 g",
+   "grams": 400,
+   "cal": 520,
+   "protein": 48,
+   "carbs": 55,
+   "fat": 11,
+   "src": "derived from USDA FDC chicken breast cooked, white rice cooked, and steamed vegetables",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "california-thai-chicken-basil-stir-fry",
+   "name": "Chicken Basil Stir-fry (Pad Krapow, no rice)",
+   "brand": "California Thai",
+   "cat": "restaurant",
+   "serving": "~350g, chicken and vegetables only",
+   "grams": 350,
+   "cal": 420,
+   "protein": 40,
+   "carbs": 15,
+   "fat": 22,
+   "src": "estimated from a standard Thai basil chicken stir-fry, rice ordered separately or skipped",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Order the rice as a separate small side or skip it, this is a much better protein-to-calorie dish than pad Thai at the same restaurant."
+  },
+  {
+   "id": "chicken-bhuna",
+   "name": "Chicken bhuna (dry curry)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~200 g",
+   "grams": 200,
+   "cal": 340,
+   "protein": 30,
+   "carbs": 6,
+   "fat": 21,
+   "src": "derived from USDA FDC chicken thigh raw, onion, oil, reduced-gravy method",
+   "conf": "derived",
+   "tags": [
+    "effort-real",
+    "high-protein",
+    "bangladeshi"
+   ],
+   "note": "Less gravy than jhol, more oil per gram."
+  },
+  {
+   "id": "chicken-biryani",
+   "name": "Chicken biryani",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 plate, ~350 g",
+   "grams": 350,
+   "cal": 620,
+   "protein": 30,
+   "carbs": 70,
+   "fat": 24,
+   "src": "derived from USDA FDC basmati rice raw, chicken thigh raw, ghee, standard biryani ratios",
+   "conf": "estimate",
+   "tags": [
+    "effort-real",
+    "high-protein",
+    "bangladeshi"
+   ],
+   "note": "Rice is part of this dish, not logged separately."
+  },
+  {
+   "id": "twist-of-taj-chicken-biryani",
+   "name": "Chicken Biryani",
+   "brand": "Twist of TAJ",
+   "cat": "restaurant",
+   "serving": "~450g container",
+   "grams": 450,
+   "cal": 750,
+   "protein": 35,
+   "carbs": 90,
+   "fat": 25,
+   "src": "twistoftaj.net menu, estimated from typical dum-style chicken biryani portion (150g chicken, 2.5 cups rice, oil/ghee)",
+   "conf": "estimate",
+   "tags": [
+    "halal"
+   ],
+   "note": "Eat about half the rice and all the chicken pieces you can find in it. As delivered this is carb-heavy relative to protein."
+  },
+  {
+   "id": "chicken-breast-raw",
+   "name": "Chicken breast, skinless boneless, raw",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 120,
+   "protein": 22,
+   "carbs": 0,
+   "fat": 3,
+   "src": "USDA FDC, chicken breast skinless boneless raw",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": "Superstore/Walmart/Costco family pack staple."
+  },
+  {
+   "id": "rice-table-chicken-bulgogi-bowl",
+   "name": "Chicken Bulgogi Bowl",
+   "brand": "Rice Table Korean Kitchen",
+   "cat": "restaurant",
+   "serving": "~450g bowl",
+   "grams": 450,
+   "cal": 650,
+   "protein": 35,
+   "carbs": 80,
+   "fat": 18,
+   "src": "Beacon Hill NW restaurant listing, no published nutrition, estimated from chicken bulgogi plus rice bowl composition",
+   "conf": "estimate",
+   "tags": [],
+   "note": "Ask for rice half portion and extra chicken if the app allows a swap. Bulgogi marinade is soy and sugar heavy, so the carb number is real, not fat."
+  },
+  {
+   "id": "chicken-curry-murgir-jhol",
+   "name": "Chicken curry (murgir jhol)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, bone-in, ~250 g",
+   "grams": 250,
+   "cal": 330,
+   "protein": 28,
+   "carbs": 8,
+   "fat": 20,
+   "src": "derived from USDA FDC raw chicken thigh/drumstick, onion, oil, tomato, home-recipe ratios",
+   "conf": "derived",
+   "tags": [
+    "effort-real",
+    "high-protein",
+    "bangladeshi"
+   ],
+   "note": "Bone-in pieces, mustard oil base. Rice counted separately."
+  },
+  {
+   "id": "chicken-drumsticks-raw",
+   "name": "Chicken drumsticks, skin on, raw",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 140,
+   "protein": 18,
+   "carbs": 0,
+   "fat": 8,
+   "src": "USDA FDC, chicken drumstick raw with skin",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": "Common Superstore/Save-On family pack cut."
+  },
+  {
+   "id": "marhaba-chicken-kabsa",
+   "name": "Chicken Kabsa",
+   "brand": "Marhaba Restaurant",
+   "cat": "restaurant",
+   "serving": "~400g",
+   "grams": 400,
+   "cal": 800,
+   "protein": 40,
+   "carbs": 85,
+   "fat": 30,
+   "src": "marhabarestaurant.ca menu, estimated from typical spiced rice plus roasted chicken quarter. Same NE distance caveat as above",
+   "conf": "estimate",
+   "tags": [
+    "halal"
+   ],
+   "note": "Ask for extra chicken instead of extra rice if the app allows a modifier. Otherwise eat the chicken quarter first, then decide if you still want the rice."
+  },
+  {
+   "id": "kolachi-chicken-karahi-naan",
+   "name": "Chicken Karahi with 1 naan",
+   "brand": "Kolachi BBQ & Grill",
+   "cat": "restaurant",
+   "serving": "~500g karahi plus 1 naan",
+   "grams": 550,
+   "cal": 700,
+   "protein": 45,
+   "carbs": 55,
+   "fat": 32,
+   "src": "kolachibbq.ca menu, estimated from typical tomato-based bone-in chicken karahi (ghee-heavy) plus 1 naan",
+   "conf": "estimate",
+   "tags": [
+    "halal"
+   ],
+   "note": "Ghee load in karahi swings a lot by kitchen, treat the fat number as a floor, not a ceiling. Skip the naan if you can, it adds carbs with no protein."
+  },
+  {
+   "id": "generic-chicken-katsu-baked",
+   "name": "Chicken Katsu (baked, not fried, side salad not rice)",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 order, ~300g",
+   "grams": 300,
+   "cal": 420,
+   "protein": 42,
+   "carbs": 25,
+   "fat": 16,
+   "src": "estimated from a baked panko chicken breast preparation at a Japanese delivery restaurant, rice swapped for a side salad",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Not every place will do baked instead of fried on request, ask before ordering. If it has to be fried, drop the rice to keep the meal from stacking two sources of carbs and fat."
+  },
+  {
+   "id": "generic-koobideh-kabob-plate",
+   "name": "Chicken Koobideh Kabob Plate, no rice",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "~350g, 2 skewers plus salad",
+   "grams": 350,
+   "cal": 500,
+   "protein": 48,
+   "carbs": 10,
+   "fat": 28,
+   "src": "estimated from a typical Persian/Middle Eastern grill koobideh kabob plate with rice removed",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Koobideh is ground meat mixed with a fair amount of fat by tradition, do not expect a lean number, but skipping the saffron rice keeps the carbs in check."
+  },
+  {
+   "id": "chicken-korma",
+   "name": "Chicken korma",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~200 g",
+   "grams": 200,
+   "cal": 380,
+   "protein": 26,
+   "carbs": 9,
+   "fat": 26,
+   "src": "derived from USDA FDC chicken thigh raw plus yogurt and cream-based gravy ratios",
+   "conf": "estimate",
+   "tags": [
+    "effort-real",
+    "bangladeshi"
+   ],
+   "note": "Richer, yogurt/cream heavy compared to bhuna."
+  },
+  {
+   "id": "generic-thai-chicken-larb-salad",
+   "name": "Chicken Larb Salad (no rice)",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 salad, ~350g",
+   "grams": 350,
+   "cal": 380,
+   "protein": 38,
+   "carbs": 20,
+   "fat": 16,
+   "src": "estimated from a standard Thai larb gai (minced chicken salad with lime, fish sauce, herbs), sticky rice side dropped",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "This is a much better protein-per-calorie order at a Thai restaurant than pad Thai or curry. Skip the sticky rice that often comes as a side."
+  },
+  {
+   "id": "california-thai-chicken-pad-thai",
+   "name": "Chicken Pad Thai",
+   "brand": "California Thai",
+   "cat": "restaurant",
+   "serving": "~400g",
+   "grams": 400,
+   "cal": 750,
+   "protein": 30,
+   "carbs": 90,
+   "fat": 25,
+   "src": "Beacon Hill NW restaurant listing, no published nutrition, estimated from a standard restaurant pad Thai portion",
+   "conf": "estimate",
+   "tags": [],
+   "note": "Ask for light oil and extra chicken. Pad Thai is a carb-and-oil dish by design, protein is always the bottleneck here."
+  },
+  {
+   "id": "vietnam-palace-chicken-pho-large",
+   "name": "Chicken Pho (large)",
+   "brand": "Vietnam Palace Grill & Noodle House",
+   "cat": "restaurant",
+   "serving": "~700g bowl (broth, noodles, chicken)",
+   "grams": 700,
+   "cal": 500,
+   "protein": 30,
+   "carbs": 65,
+   "fat": 10,
+   "src": "listed in Sage Hill restaurant search, no published nutrition, estimated from a standard large chicken pho",
+   "conf": "estimate",
+   "tags": [],
+   "note": "Ask for extra chicken and confirm the broth is chicken or beef stock, not pork based, and skip any fried garnish on top. Low fat for the calories, good choice if protein is boosted."
+  },
+  {
+   "id": "chicken-rezala",
+   "name": "Chicken rezala",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~200 g",
+   "grams": 200,
+   "cal": 350,
+   "protein": 25,
+   "carbs": 8,
+   "fat": 23,
+   "src": "derived from USDA FDC chicken thigh raw plus yogurt/cashew paste gravy",
+   "conf": "estimate",
+   "tags": [
+    "effort-real",
+    "bangladeshi"
+   ],
+   "note": ""
+  },
+  {
+   "id": "tahinis-chicken-shawarma-meat-only",
+   "name": "Chicken Shawarma (meat only)",
+   "brand": "Tahini's",
+   "cat": "restaurant",
+   "serving": "185g",
+   "grams": 185,
+   "cal": 210,
+   "protein": 34,
+   "carbs": 1,
+   "fat": 7,
+   "src": "mynetdiary.com and tahinis.com/nutritional-info, Tahini's published nutrition",
+   "conf": "published",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "As close to a pure protein order as a shawarma chain gets. Add it as a side to a bowl or eat it plain, do not add fries."
+  },
+  {
+   "id": "baladi-chicken-shawarma-plate-rice",
+   "name": "Chicken Shawarma Plate with rice",
+   "brand": "Baladi Shawarma",
+   "cat": "restaurant",
+   "serving": "~450g",
+   "grams": 450,
+   "cal": 750,
+   "protein": 40,
+   "carbs": 70,
+   "fat": 30,
+   "src": "listed near Sage Hill Plaza, no published menu nutrition, estimated from a standard shawarma-over-rice plate",
+   "conf": "estimate",
+   "tags": [
+    "halal",
+    "high-protein"
+   ],
+   "note": "Rice half portion, garlic sauce on the side. This is a decent local option if you keep the sauce controlled."
+  },
+  {
+   "id": "marhaba-chicken-shawarma-platter",
+   "name": "Chicken Shawarma Platter with rice and fries",
+   "brand": "Marhaba Restaurant",
+   "cat": "restaurant",
+   "serving": "~500g platter",
+   "grams": 500,
+   "cal": 950,
+   "protein": 45,
+   "carbs": 90,
+   "fat": 45,
+   "src": "marhabarestaurant.ca menu, estimated from shawarma plus rice plus fries combo described on menu. Note: Westwinds NE location, roughly 20 min from Sherwood NW, verify delivery radius before relying on it",
+   "conf": "estimate",
+   "tags": [
+    "halal"
+   ],
+   "note": "Skip the fries and take half the rice. As delivered this is a 2400-calorie-day trap in a single meal."
+  },
+  {
+   "id": "jaffa-chicken-shawarma-wrap",
+   "name": "Chicken Shawarma Wrap",
+   "brand": "Jaffa Shawarma",
+   "cat": "restaurant",
+   "serving": "1 wrap, ~350g",
+   "grams": 350,
+   "cal": 650,
+   "protein": 30,
+   "carbs": 60,
+   "fat": 30,
+   "src": "order.online listing for Jaffa Shawarma, estimated from standard Middle Eastern chicken shawarma wrap with garlic sauce",
+   "conf": "estimate",
+   "tags": [
+    "halal"
+   ],
+   "note": "Order extra chicken and light garlic sauce (not extra sauce). Garlic sauce is almost pure oil and is where the fat number comes from."
+  },
+  {
+   "id": "tahinis-chicken-shawarma-wrap-medium",
+   "name": "Chicken Shawarma Wrap, Medium",
+   "brand": "Tahini's",
+   "cat": "restaurant",
+   "serving": "1 wrap",
+   "grams": 300,
+   "cal": 510,
+   "protein": 33,
+   "carbs": 58,
+   "fat": 16,
+   "src": "derived: mynetdiary.com lists this Tahini's item at 510 kcal/33P/58C/8F, but 33*4+58*4+8*9=436, well short of 510; Tahini's current nutritional PDF (tahinis.com/nutritional-info) no longer lists a 'Medium' size (only Regular/Extreme), so the exact figure can't be re-confirmed against the current sheet. Calories and protein/carbs are kept as published; fat was re-derived to 16 g so the macros reconcile with the stated calorie count, since 8 g is not physically enough fat to reach 510 kcal from 33 g protein and 58 g carbs alone",
+   "conf": "derived",
+   "tags": [],
+   "note": "Ask for extra chicken and light garlic sauce; this is a protein-forward wrap, but the fat figure had to be corrected upward from the mynetdiary listing to make the math add up, so treat the 16 g fat as a derived estimate, not a hard published number."
+  },
+  {
+   "id": "paros-chicken-souvlaki-pita",
+   "name": "Chicken Souvlaki Pita (no fries)",
+   "brand": "Paros Real Greek",
+   "cat": "restaurant",
+   "serving": "1 pita wrap",
+   "grams": 320,
+   "cal": 450,
+   "protein": 35,
+   "carbs": 40,
+   "fat": 16,
+   "src": "estimated from a standard chicken souvlaki pita, fries dropped from the combo",
+   "conf": "estimate",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Better calorie-for-calorie than the platter if you are not that hungry. Skip the fries side that usually comes bundled, ask for it as pita only."
+  },
+  {
+   "id": "paros-chicken-souvlaki-platter",
+   "name": "Chicken Souvlaki Platter",
+   "brand": "Paros Real Greek",
+   "cat": "restaurant",
+   "serving": "~450g with rice and salad",
+   "grams": 450,
+   "cal": 750,
+   "protein": 50,
+   "carbs": 55,
+   "fat": 30,
+   "src": "Beacon Hill NW restaurant listing, no published nutrition, estimated from a typical Greek chicken souvlaki platter",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Order chicken only, not the mixed gyro (which is often lamb/pork blend). Tzatziki on the side, sub half the rice for extra Greek salad."
+  },
+  {
+   "id": "chicken-tehari",
+   "name": "Chicken tehari",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 plate, ~300 g",
+   "grams": 300,
+   "cal": 560,
+   "protein": 26,
+   "carbs": 66,
+   "fat": 21,
+   "src": "estimated from chicken biryani macros scaled down for tehari's simpler mustard-oil rice base",
+   "conf": "estimate",
+   "tags": [
+    "effort-real",
+    "bangladeshi"
+   ],
+   "note": ""
+  },
+  {
+   "id": "chicken-thigh-raw",
+   "name": "Chicken thigh, boneless skinless, raw",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 130,
+   "protein": 18,
+   "carbs": 0,
+   "fat": 6,
+   "src": "USDA FDC, chicken thigh boneless skinless raw",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "kolachi-chicken-tikka-boti-platter",
+   "name": "Chicken Tikka Boti Platter (grilled chicken chunks, no rice)",
+   "brand": "Kolachi BBQ & Grill",
+   "cat": "restaurant",
+   "serving": "1 platter, ~350g chicken plus salad",
+   "grams": 400,
+   "cal": 480,
+   "protein": 55,
+   "carbs": 10,
+   "fat": 24,
+   "src": "estimated from typical bone-in tikka boti order (skewered marinated chicken, minimal breading) at a similar Pakistani BBQ house",
+   "conf": "estimate",
+   "tags": [
+    "halal",
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Order it plain (no rice, no naan). This is close to the best protein per calorie item on any South Asian menu in the area."
+  },
+  {
+   "id": "generic-tandoori-chicken-tikka-masala-half-rice",
+   "name": "Chicken Tikka Masala, half rice",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "~350g curry plus half cup rice",
+   "grams": 400,
+   "cal": 500,
+   "protein": 40,
+   "carbs": 40,
+   "fat": 22,
+   "src": "estimated from a standard Indian delivery tikka masala order with rice halved",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Slightly better protein number than butter chicken since the base is tandoori-grilled chicken rather than a cream-heavy braise. Still ask for sauce on the side."
+  },
+  {
+   "id": "generic-chicken-tikka-skewers-plate",
+   "name": "Chicken Tikka Skewers Plate, no rice",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "~350g, 3 skewers plus salad",
+   "grams": 350,
+   "cal": 420,
+   "protein": 50,
+   "carbs": 10,
+   "fat": 20,
+   "src": "estimated from a standard tandoori chicken tikka skewer plate with rice dropped for salad",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "This is the South Asian equivalent of the halal kebab plate above: skip rice and naan entirely, this is one of the best protein orders in the whole cuisine category."
+  },
+  {
+   "id": "chickpea-salad-bowl",
+   "name": "Chickpea salad bowl with feta",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~250 g",
+   "grams": 250,
+   "cal": 330,
+   "protein": 15,
+   "carbs": 34,
+   "fat": 15,
+   "src": "derived from USDA FDC canned chickpeas drained, mixed vegetables, and feta cheese portion",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "chickpeas-canned",
+   "name": "Chickpeas, canned, drained",
+   "brand": "No Name",
+   "cat": "grocery",
+   "serving": "100 g drained",
+   "grams": 100,
+   "cal": 139,
+   "protein": 7,
+   "carbs": 23,
+   "fat": 2,
+   "src": "USDA FDC, chickpeas canned drained, cross-checked with No Name Canada nutrition facts",
+   "conf": "derived",
+   "tags": [
+    "staple",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "chickpeas-dried-raw",
+   "name": "Chickpeas, dried, raw",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 378,
+   "protein": 20,
+   "carbs": 63,
+   "fat": 6,
+   "src": "USDA FDC, chickpeas raw",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "chocolate-milk-cup",
+   "name": "Chocolate Milk",
+   "brand": "Neilson",
+   "cat": "grocery",
+   "serving": "1 cup (250 mL)",
+   "grams": 250,
+   "cal": 190,
+   "protein": 8,
+   "carbs": 26,
+   "fat": 5,
+   "src": "Neilson Canada nutrition label",
+   "conf": "published",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "An easy way to hit both protein and the calorie floor at once on a bad appetite day."
+  },
+  {
+   "id": "panago-classic-chicken-pizza-slice",
+   "name": "Classic Chicken Pizza, Hand-Tossed, 1 slice",
+   "brand": "Panago Pizza",
+   "cat": "restaurant",
+   "serving": "1 slice",
+   "grams": 130,
+   "cal": 280,
+   "protein": 16,
+   "carbs": 27,
+   "fat": 12,
+   "src": "panago.com/nutrition, derived from the published True Canadian slice values adjusted for a chicken topping instead of bacon (True Canadian topping is pork bacon, avoid it)",
+   "conf": "derived",
+   "tags": [],
+   "note": "Order the Classic Chicken or Veggie pizza, not True Canadian, which is a pork bacon topping. Pizza is never a high-protein order, treat 3 slices as one meal and skip a second helping."
+  },
+  {
+   "id": "protein-water-clear",
+   "name": "Clear Protein Water",
+   "brand": "Aloha",
+   "cat": "supplement",
+   "serving": "1 bottle (473 mL)",
+   "grams": 473,
+   "cal": 90,
+   "protein": 20,
+   "carbs": 3,
+   "fat": 0,
+   "src": "Aloha official nutrition facts",
+   "conf": "published",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Drinks like a soda rather than a shake, useful when a thick shake feels like too much food on a suppressed appetite day."
+  },
+  {
+   "id": "coke-regular-355ml-can",
+   "name": "Coca-Cola Classic, 355 mL can",
+   "brand": "Coca-Cola",
+   "cat": "grocery",
+   "serving": "1 can (355 mL)",
+   "grams": 355,
+   "cal": 140,
+   "protein": 0,
+   "carbs": 39,
+   "fat": 0,
+   "src": "Coca-Cola Canada nutrition page 2025; the can actually sold in Canada is 355 mL at 140 kcal/39 g carbs, not the 330 mL/139 kcal figure this entry used to show (39 g carbs against 139 kcal didn't reconcile with any real can size anyway)",
+   "conf": "published",
+   "tags": [
+    "low-effort"
+   ],
+   "note": "Full sugar, mind the 165 g carb daily target."
+  },
+  {
+   "id": "collagen-peptides-scoop",
+   "name": "Collagen Peptides, 1 scoop",
+   "brand": "Vital Proteins",
+   "cat": "supplement",
+   "serving": "1 scoop (20 g)",
+   "grams": 20,
+   "cal": 70,
+   "protein": 18,
+   "carbs": 0,
+   "fat": 0,
+   "src": "Vital Proteins Canada nutrition label",
+   "conf": "published",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Dissolves flavorless in coffee or tea, an easy way to sneak protein grams into a drink he is having anyway."
+  },
+  {
+   "id": "cottage-cheese-fruit-bowl",
+   "name": "Cottage cheese bowl with fruit",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~250 g",
+   "grams": 250,
+   "cal": 230,
+   "protein": 26,
+   "carbs": 20,
+   "fat": 5,
+   "src": "derived from USDA FDC low-fat cottage cheese and mixed fruit portion",
+   "conf": "derived",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "cottage-cheese-savory",
+   "name": "Cottage cheese with everything bagel seasoning",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~220 g",
+   "grams": 220,
+   "cal": 190,
+   "protein": 25,
+   "carbs": 7,
+   "fat": 6,
+   "src": "derived from USDA FDC low-fat cottage cheese, seasoning is negligible calories",
+   "conf": "derived",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "cottage-cheese-1-lactantia",
+   "name": "Cottage cheese, 1%",
+   "brand": "Lactantia",
+   "cat": "grocery",
+   "serving": "125 g",
+   "grams": 125,
+   "cal": 90,
+   "protein": 15,
+   "carbs": 4,
+   "fat": 1,
+   "src": "Lactantia Canada nutrition facts, 1% cottage cheese",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "cottage-cheese-2-astro",
+   "name": "Cottage cheese, 2%",
+   "brand": "Astro",
+   "cat": "grocery",
+   "serving": "125 g",
+   "grams": 125,
+   "cal": 110,
+   "protein": 16,
+   "carbs": 5,
+   "fat": 3,
+   "src": "Astro (Danone) Canada nutrition facts, 2% cottage cheese",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "deli-chicken-wrap",
+   "name": "Deli chicken wrap",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 wrap, ~220 g",
+   "grams": 220,
+   "cal": 340,
+   "protein": 29,
+   "carbs": 32,
+   "fat": 10,
+   "src": "derived from USDA FDC sliced deli chicken breast, tortilla, and lettuce/sauce portions",
+   "conf": "derived",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "deli-turkey-sandwich",
+   "name": "Deli turkey sandwich",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 sandwich, ~220 g",
+   "grams": 220,
+   "cal": 320,
+   "protein": 27,
+   "carbs": 34,
+   "fat": 8,
+   "src": "derived from USDA FDC sliced deli turkey breast and 2 slices bread",
+   "conf": "derived",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "diet-coke-330ml-can",
+   "name": "Diet Coke, 330 mL can",
+   "brand": "Coca-Cola",
+   "cat": "grocery",
+   "serving": "1 can (330 mL)",
+   "grams": 330,
+   "cal": 0,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 0,
+   "src": "Coca-Cola Canada nutrition page 2025",
+   "conf": "published",
+   "tags": [
+    "zero-calorie",
+    "low-effort"
+   ],
+   "note": ""
+  },
+  {
+   "id": "diet-ginger-ale",
+   "name": "Diet Ginger Ale",
+   "brand": "Canada Dry",
+   "cat": "grocery",
+   "serving": "1 can (355 mL)",
+   "grams": 355,
+   "cal": 0,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 0,
+   "src": "Canada Dry Canada nutrition label",
+   "conf": "published",
+   "tags": [
+    "zero-calorie",
+    "low-effort"
+   ],
+   "note": "Settles nausea, which is common on retatrutide, worth keeping stocked for that reason alone."
+  },
+  {
+   "id": "dim-bhaji-egg",
+   "name": "Dim bhaji (egg bhaji)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 plate, ~150 g",
+   "grams": 150,
+   "cal": 220,
+   "protein": 12,
+   "carbs": 6,
+   "fat": 16,
+   "src": "derived from USDA FDC whole egg raw x2 to x3, onion, chili, oil scramble",
+   "conf": "derived",
+   "tags": [
+    "effort-none",
+    "bangladeshi",
+    "high-protein"
+   ],
+   "note": "Bangladeshi style egg scramble with onion and green chili."
+  },
+  {
+   "id": "egg-curry-dim-bhuna",
+   "name": "Egg curry (dim bhuna), 2 eggs",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, 2 eggs in gravy, ~200 g",
+   "grams": 200,
+   "cal": 260,
+   "protein": 14,
+   "carbs": 8,
+   "fat": 19,
+   "src": "derived from USDA FDC whole egg raw x2 plus onion/tomato/oil gravy",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "bangladeshi",
+    "vegetarian-ish"
+   ],
+   "note": ""
+  },
+  {
+   "id": "brokin-yolk-egg-white-veggie-omelette",
+   "name": "Egg White & Veggie Omelette",
+   "brand": "The Bro'Kin Yolk",
+   "cat": "restaurant",
+   "serving": "~300g plate, no meat side",
+   "grams": 300,
+   "cal": 350,
+   "protein": 30,
+   "carbs": 15,
+   "fat": 18,
+   "src": "Beacon Hill NW breakfast spot, no published nutrition, estimated from a standard egg-white veggie omelette",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Order it vegetarian to keep pork breakfast meats (bacon, sausage) out entirely. Ask for hollandaise or cheese on the side, not folded in."
+  },
+  {
+   "id": "egg-white-omelette-veg",
+   "name": "Egg white omelette with vegetables",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 omelette, ~200 g",
+   "grams": 200,
+   "cal": 150,
+   "protein": 24,
+   "carbs": 6,
+   "fat": 3,
+   "src": "derived from USDA FDC liquid egg white and mixed diced vegetables",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "egg-whites-liquid",
+   "name": "Egg whites, liquid (Naturegg)",
+   "brand": "Naturegg",
+   "cat": "grocery",
+   "serving": "100 g (~3.3 egg whites)",
+   "grams": 100,
+   "cal": 52,
+   "protein": 11,
+   "carbs": 1,
+   "fat": 0,
+   "src": "Naturegg Canada nutrition facts, liquid egg white",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "egg-large-raw",
+   "name": "Egg, large, raw",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "1 egg, ~50 g",
+   "grams": 50,
+   "cal": 72,
+   "protein": 6,
+   "carbs": 0,
+   "fat": 5,
+   "src": "USDA FDC, egg whole raw",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "electrolyte-packet",
+   "name": "Electrolyte Powder Packet",
+   "brand": "LMNT",
+   "cat": "supplement",
+   "serving": "1 packet",
+   "grams": 6,
+   "cal": 5,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 0,
+   "src": "LMNT official nutrition facts",
+   "conf": "published",
+   "tags": [
+    "low-effort"
+   ],
+   "note": "Worth prioritizing on GLP-1: sodium and potassium intake drops with reduced food volume, and low electrolytes are a common cause of the fatigue and headaches people blame on the drug."
+  },
+  {
+   "id": "electrolyte-tablet",
+   "name": "Electrolyte Tablet, dissolved",
+   "brand": "Nuun",
+   "cat": "supplement",
+   "serving": "1 tablet in water",
+   "grams": 5,
+   "cal": 10,
+   "protein": 0,
+   "carbs": 2,
+   "fat": 0,
+   "src": "Nuun Sport official nutrition facts",
+   "conf": "published",
+   "tags": [
+    "low-effort"
+   ],
+   "note": "Same rationale as other electrolyte entries, easy to keep in a water bottle at his desk."
+  },
+  {
+   "id": "bagel-everything-dempsters",
+   "name": "Everything bagel",
+   "brand": "Dempster's",
+   "cat": "grocery",
+   "serving": "1 bagel, ~95 g",
+   "grams": 95,
+   "cal": 260,
+   "protein": 10,
+   "carbs": 52,
+   "fat": 2,
+   "src": "Dempster's Canada nutrition facts, everything bagel",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "generic-falafel-chicken-combo-plate",
+   "name": "Falafel and Chicken Combo Plate, hummus, no rice",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 plate, ~400g",
+   "grams": 400,
+   "cal": 550,
+   "protein": 42,
+   "carbs": 35,
+   "fat": 26,
+   "src": "estimated from a half falafel, half grilled chicken combo plate with hummus, common at Mediterranean delivery spots",
+   "conf": "estimate",
+   "tags": [],
+   "note": "Falafel is fried and carb-heavy on its own, the chicken half is what is carrying the protein number here. Go full chicken instead of the combo on a day protein is tight."
+  },
+  {
+   "id": "fish-curry-rui",
+   "name": "Fish curry, rui",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~200 g",
+   "grams": 200,
+   "cal": 260,
+   "protein": 26,
+   "carbs": 6,
+   "fat": 15,
+   "src": "derived from USDA FDC freshwater fish (rohu-comparable carp) raw plus mustard oil gravy",
+   "conf": "estimate",
+   "tags": [
+    "effort-real",
+    "high-protein",
+    "bangladeshi"
+   ],
+   "note": "Rui is not in USDA FDC directly, estimated from comparable carp species."
+  },
+  {
+   "id": "fish-curry-tilapia",
+   "name": "Fish curry, tilapia",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~200 g",
+   "grams": 200,
+   "cal": 230,
+   "protein": 28,
+   "carbs": 6,
+   "fat": 10,
+   "src": "derived from USDA FDC tilapia raw plus onion/tomato/oil gravy",
+   "conf": "derived",
+   "tags": [
+    "effort-real",
+    "high-protein",
+    "bangladeshi"
+   ],
+   "note": ""
+  },
+  {
+   "id": "frozen-chicken-breast-costco",
+   "name": "Frozen boneless chicken breast",
+   "brand": "Kirkland Signature",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 110,
+   "protein": 23,
+   "carbs": 0,
+   "fat": 2,
+   "src": "Costco Canada Kirkland Signature packaging nutrition facts",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "frozen-broccoli",
+   "name": "Frozen broccoli",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g",
+   "grams": 100,
+   "cal": 37,
+   "protein": 3,
+   "carbs": 6,
+   "fat": 0,
+   "src": "USDA FDC, broccoli frozen",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "frozen-mixed-vegetables",
+   "name": "Frozen mixed vegetables",
+   "brand": "PC",
+   "cat": "grocery",
+   "serving": "100 g",
+   "grams": 100,
+   "cal": 65,
+   "protein": 3,
+   "carbs": 13,
+   "fat": 0,
+   "src": "USDA FDC, mixed vegetables frozen, cross-checked with PC Canada nutrition facts",
+   "conf": "derived",
+   "tags": [
+    "staple",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "frozen-peas",
+   "name": "Frozen peas",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g",
+   "grams": 100,
+   "cal": 81,
+   "protein": 5,
+   "carbs": 14,
+   "fat": 0,
+   "src": "USDA FDC, peas green frozen",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "gatorade-591ml",
+   "name": "Gatorade Thirst Quencher",
+   "brand": "Gatorade",
+   "cat": "grocery",
+   "serving": "1 bottle (591 mL)",
+   "grams": 591,
+   "cal": 140,
+   "protein": 0,
+   "carbs": 36,
+   "fat": 0,
+   "src": "Gatorade Canada nutrition label",
+   "conf": "published",
+   "tags": [
+    "low-effort"
+   ],
+   "note": "Doubles as an electrolyte source if plain electrolyte packets are not on hand."
+  },
+  {
+   "id": "generic-greek-chicken-gyro-bowl-no-pita",
+   "name": "Greek Chicken Gyro Bowl, no pita, double chicken",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 bowl, ~400g",
+   "grams": 400,
+   "cal": 480,
+   "protein": 50,
+   "carbs": 25,
+   "fat": 20,
+   "src": "estimated from a Greek gyro bowl builder with pita dropped and chicken doubled, tzatziki and salad included",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Confirm it is a chicken gyro, not the traditional lamb/beef blend which is fattier per gram. Tzatziki is fairly light as sauces go, no need to put it on the side."
+  },
+  {
+   "id": "greek-yogurt-berries-bowl",
+   "name": "Greek yogurt bowl with berries and honey",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~300 g",
+   "grams": 300,
+   "cal": 260,
+   "protein": 22,
+   "carbs": 32,
+   "fat": 4,
+   "src": "derived from USDA FDC plain nonfat Greek yogurt, mixed berries, and honey portions",
+   "conf": "derived",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "greek-yogurt-pb-bowl",
+   "name": "Greek yogurt bowl with peanut butter",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~300 g",
+   "grams": 300,
+   "cal": 340,
+   "protein": 28,
+   "carbs": 18,
+   "fat": 17,
+   "src": "derived from USDA FDC plain nonfat Greek yogurt and peanut butter portion",
+   "conf": "derived",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "greek-yogurt-oikos-0",
+   "name": "Greek yogurt, plain, 0%",
+   "brand": "Oikos",
+   "cat": "grocery",
+   "serving": "1 cup, 175 g",
+   "grams": 175,
+   "cal": 100,
+   "protein": 18,
+   "carbs": 7,
+   "fat": 0,
+   "src": "Danone Oikos Canada nutrition facts, plain 0% Greek yogurt",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "greek-yogurt-liberte-2",
+   "name": "Greek yogurt, plain, 2%",
+   "brand": "Liberte",
+   "cat": "grocery",
+   "serving": "175 g",
+   "grams": 175,
+   "cal": 140,
+   "protein": 16,
+   "carbs": 7,
+   "fat": 5,
+   "src": "Liberte Canada nutrition facts, Mediterranee style 2% plain",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "greek-yogurt-iogo-vanilla",
+   "name": "Greek yogurt, vanilla",
+   "brand": "iogo",
+   "cat": "grocery",
+   "serving": "100 g",
+   "grams": 100,
+   "cal": 90,
+   "protein": 9,
+   "carbs": 10,
+   "fat": 2,
+   "src": "iogo Canada nutrition facts, 0% Greek vanilla",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "green-lentils-raw",
+   "name": "Green lentils, raw",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 353,
+   "protein": 25,
+   "carbs": 60,
+   "fat": 1,
+   "src": "USDA FDC, lentils raw",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "vietnam-palace-beef-vermicelli-bowl",
+   "name": "Grilled Beef Vermicelli Bowl (bun bo nuong, no spring roll)",
+   "brand": "Vietnam Palace Grill & Noodle House",
+   "cat": "restaurant",
+   "serving": "~500g bowl",
+   "grams": 500,
+   "cal": 550,
+   "protein": 35,
+   "carbs": 60,
+   "fat": 16,
+   "src": "estimated from a standard grilled beef vermicelli noodle bowl with fish sauce dressing, spring roll removed",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Skip the fried spring roll (egg roll) add-on entirely, it roughly doubles the fat for almost no protein. Ask for extra grilled beef instead."
+  },
+  {
+   "id": "state-and-main-grilled-chicken-breast-entree",
+   "name": "Grilled Chicken Breast entree with vegetables",
+   "brand": "State & Main Kitchen & Bar",
+   "cat": "restaurant",
+   "serving": "~350g",
+   "grams": 350,
+   "cal": 550,
+   "protein": 45,
+   "carbs": 30,
+   "fat": 25,
+   "src": "Nolan Hill/Beacon Hill NW, no published nutrition, estimated from a standard grilled chicken breast entree",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Ask for any butter or cream sauce on the side. Full-service kitchens like this one tend to finish grilled chicken with a pan sauce that adds fat without adding protein."
+  },
+  {
+   "id": "blowers-grafton-grilled-chicken-caesar-salad",
+   "name": "Grilled Chicken Caesar Salad (dressing on side)",
+   "brand": "Blowers & Grafton",
+   "cat": "restaurant",
+   "serving": "1 entree salad",
+   "grams": 350,
+   "cal": 450,
+   "protein": 42,
+   "carbs": 15,
+   "fat": 26,
+   "src": "estimated from a standard grilled chicken Caesar salad, dressing and croutons controlled",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Caesar dressing is the calorie sink in this dish, always order it on the side and use half. Ask for no bacon bits, same gastropub bacon-default issue as the sandwich."
+  },
+  {
+   "id": "aw-grilled-chicken-deluxe-sandwich",
+   "name": "Grilled Chicken Deluxe sandwich",
+   "brand": "A&W Canada",
+   "cat": "restaurant",
+   "serving": "194g",
+   "grams": 194,
+   "cal": 320,
+   "protein": 23,
+   "carbs": 37,
+   "fat": 9,
+   "src": "myfooddiary.com, sourced from A&W published nutrition data",
+   "conf": "published",
+   "tags": [
+    "low-effort"
+   ],
+   "note": "Skip the mayo-based sauce or ask for it light, that is most of the fat on an otherwise lean sandwich. Add a side salad instead of fries."
+  },
+  {
+   "id": "foodyard-grilled-chicken-donair-plate",
+   "name": "Grilled Chicken Donair Plate (no fries)",
+   "brand": "Foodyard",
+   "cat": "restaurant",
+   "serving": "~400g plate",
+   "grams": 400,
+   "cal": 600,
+   "protein": 42,
+   "carbs": 50,
+   "fat": 24,
+   "src": "estimated from a comparable grilled chicken donair plate with rice and salad, no fries; same restaurant as foodyard-butter-chicken-bowl, added separately from the menu rather than from his order history",
+   "conf": "estimate",
+   "tags": [
+    "halal",
+    "high-protein",
+    "not-order-history"
+   ],
+   "note": "Sub fries for extra salad or rice and this becomes the better order at Foodyard versus the loaded fries or the crispy wrap."
+  },
+  {
+   "id": "blowers-grafton-grilled-chicken-sandwich",
+   "name": "Grilled Chicken Sandwich (ask no bacon)",
+   "brand": "Blowers & Grafton",
+   "cat": "restaurant",
+   "serving": "1 sandwich",
+   "grams": 350,
+   "cal": 650,
+   "protein": 40,
+   "carbs": 55,
+   "fat": 28,
+   "src": "Beacon Hill NW gastropub, no published nutrition, estimated from a standard grilled chicken sandwich with cheese and mayo",
+   "conf": "estimate",
+   "tags": [],
+   "note": "The menu default on this sandwich usually includes bacon, you must ask for it off. Mayo on the side too if you want the fat number to hold."
+  },
+  {
+   "id": "ground-beef-stir-fry",
+   "name": "Ground beef stir fry (lean)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~250 g",
+   "grams": 250,
+   "cal": 380,
+   "protein": 30,
+   "carbs": 14,
+   "fat": 22,
+   "src": "derived from USDA FDC lean ground beef raw plus frozen stir fry vegetables and oil",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "ground-beef-extra-lean-raw",
+   "name": "Ground beef, extra lean, raw",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 165,
+   "protein": 20,
+   "carbs": 0,
+   "fat": 9,
+   "src": "USDA FDC, ground beef 90 to 93% lean raw",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": "Canadian extra lean label, under 10 percent fat."
+  },
+  {
+   "id": "ground-beef-lean-raw",
+   "name": "Ground beef, lean, raw",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 217,
+   "protein": 19,
+   "carbs": 0,
+   "fat": 15,
+   "src": "USDA FDC, ground beef 85% lean raw",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": "Canadian package label typically reads lean, roughly 15 to 17 percent fat."
+  },
+  {
+   "id": "ground-turkey-lean",
+   "name": "Ground turkey, lean",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 150,
+   "protein": 20,
+   "carbs": 0,
+   "fat": 8,
+   "src": "USDA FDC, ground turkey raw",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "generic-halal-kebab-plate-no-rice",
+   "name": "Halal Kebab Plate, no rice, extra salad",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 plate, ~400g",
+   "grams": 400,
+   "cal": 480,
+   "protein": 55,
+   "carbs": 15,
+   "fat": 22,
+   "src": "estimated from a typical halal grill kebab plate with rice swapped for salad",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Swapping the rice for salad is the single highest-leverage move at any halal grill spot, it usually swings this from a 700+ kcal plate to under 500 without losing any protein."
+  },
+  {
+   "id": "generic-halal-shawarma-bowl-double-chicken",
+   "name": "Halal Shawarma Bowl, double chicken, half rice, no pita",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 bowl, ~450g",
+   "grams": 450,
+   "cal": 550,
+   "protein": 50,
+   "carbs": 40,
+   "fat": 20,
+   "src": "estimated from a typical halal grill bowl builder (double protein, half rice base, hummus, no pita), similar to Mediterranean fast-casual chains found on delivery apps in NW Calgary",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "This is the template order for any halal grill bowl place: double meat, half rice or half rice/half salad mix, hummus instead of ranch or garlic sauce, skip the pita."
+  },
+  {
+   "id": "generic-halal-shawarma-salad-no-pita",
+   "name": "Halal Shawarma Salad (no pita, no rice, double chicken)",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 salad, ~400g",
+   "grams": 400,
+   "cal": 420,
+   "protein": 48,
+   "carbs": 15,
+   "fat": 18,
+   "src": "estimated from a typical halal shawarma salad build with pita and rice both dropped",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "The lowest-calorie, highest-protein version of a shawarma order on this whole list. Good option on a day where you are close to your calorie floor and need protein without the carbs."
+  },
+  {
+   "id": "barcelos-half-chicken-breast",
+   "name": "Half Chicken Breast (grilled, no skin)",
+   "brand": "Barcelos Flame Grilled Chicken",
+   "cat": "restaurant",
+   "serving": "~300g",
+   "grams": 300,
+   "cal": 540,
+   "protein": 85,
+   "carbs": 4,
+   "fat": 18,
+   "src": "derived by doubling the quarter chicken breast estimate above",
+   "conf": "derived",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "If a quarter chicken alone leaves you short on protein for the day, size up to the half instead of adding a side. Still no skin, still sauce on the side."
+  },
+  {
+   "id": "khichuri-plain",
+   "name": "Khichuri (rice and lentil, plain)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~300 g",
+   "grams": 300,
+   "cal": 390,
+   "protein": 13,
+   "carbs": 65,
+   "fat": 9,
+   "src": "derived from USDA FDC raw rice and red/moong lentil ratios, cooked with oil",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "bangladeshi",
+    "comfort-food"
+   ],
+   "note": "Rice is baked into the dish here, not separate."
+  },
+  {
+   "id": "kidney-beans-canned",
+   "name": "Kidney beans, canned, drained",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g drained",
+   "grams": 100,
+   "cal": 127,
+   "protein": 9,
+   "carbs": 23,
+   "fat": 0,
+   "src": "USDA FDC, kidney beans canned drained",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "tahinis-large-chicken-shawarma-rice",
+   "name": "Large Chicken Shawarma and Rice",
+   "brand": "Tahini's",
+   "cat": "restaurant",
+   "serving": "1 bowl",
+   "grams": 450,
+   "cal": 770,
+   "protein": 43,
+   "carbs": 86,
+   "fat": 28,
+   "src": "derived: mynetdiary.com lists this Tahini's item at 770 kcal/43P/86C/16F, but 43*4+86*4+16*9=660, short of 770 by more than the item's own Regular-size sibling would suggest; Tahini's current nutritional PDF does not list a 'Large' rice bowl by this exact name to re-confirm against. Calories and protein/carbs are kept as published; fat was re-derived to 28 g so the macros reconcile with the stated calorie count",
+   "conf": "derived",
+   "tags": [
+    "his-usual-adjacent"
+   ],
+   "note": "Ask for rice half portion or add an extra order of the meat-only shawarma on top instead of more rice. The originally listed 16 g fat did not reconcile with the calorie count, it was corrected to 28 g; treat that figure as derived, not a hard published number."
+  },
+  {
+   "id": "generic-vietnamese-lemongrass-chicken-vermicelli",
+   "name": "Lemongrass Grilled Chicken Vermicelli Bowl (bun ga nuong)",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 bowl, ~500g",
+   "grams": 500,
+   "cal": 520,
+   "protein": 38,
+   "carbs": 58,
+   "fat": 14,
+   "src": "estimated from a standard Vietnamese lemongrass grilled chicken vermicelli bowl, no fried spring roll",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Order chicken, not pork (bun thit nuong is usually pork). Skip the fried spring roll add-on, it is the fat spike in this dish, not the noodles."
+  },
+  {
+   "id": "magnesium-glycinate",
+   "name": "Magnesium Glycinate 200 mg",
+   "brand": "Webber Naturals",
+   "cat": "supplement",
+   "serving": "1 capsule",
+   "grams": 1,
+   "cal": 0,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 0,
+   "src": "Webber Naturals Canada product label",
+   "conf": "published",
+   "tags": [
+    "daily",
+    "low-effort"
+   ],
+   "note": "Best taken in the evening, it is mildly calming and can help sleep."
+  },
+  {
+   "id": "dal-masoor",
+   "name": "Masoor dal (red lentil dal)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~240 g",
+   "grams": 240,
+   "cal": 210,
+   "protein": 13,
+   "carbs": 28,
+   "fat": 6,
+   "src": "derived from USDA FDC cooked red lentils plus oil/onion tempering",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "bangladeshi",
+    "vegetarian"
+   ],
+   "note": "Thin, everyday style dal."
+  },
+  {
+   "id": "mary-browns-medium-chicken-breast",
+   "name": "Medium Chicken Breast (Original fried, bone-in)",
+   "brand": "Mary Brown's Chicken",
+   "cat": "restaurant",
+   "serving": "1 piece",
+   "grams": 150,
+   "cal": 318,
+   "protein": 26,
+   "carbs": 11,
+   "fat": 19,
+   "src": "mynetdiary.com, Mary Brown's published nutrition",
+   "conf": "published",
+   "tags": [],
+   "note": "Order 2 pieces to actually hit a useful protein number, and skip the biscuit and fries that usually come bundled with the combo."
+  },
+  {
+   "id": "milk-2-percent",
+   "name": "Milk, 2%",
+   "brand": "Beatrice",
+   "cat": "grocery",
+   "serving": "250 ml",
+   "grams": 258,
+   "cal": 130,
+   "protein": 9,
+   "carbs": 12,
+   "fat": 5,
+   "src": "Beatrice Canada nutrition facts, 2% milk",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "milk-skim",
+   "name": "Milk, skim",
+   "brand": "Neilson",
+   "cat": "grocery",
+   "serving": "250 ml",
+   "grams": 258,
+   "cal": 90,
+   "protein": 9,
+   "carbs": 13,
+   "fat": 0,
+   "src": "Neilson Canada nutrition facts, skim milk",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "milk-whole",
+   "name": "Milk, whole (3.25%)",
+   "brand": "Lactantia",
+   "cat": "grocery",
+   "serving": "250 ml",
+   "grams": 258,
+   "cal": 150,
+   "protein": 8,
+   "carbs": 12,
+   "fat": 8,
+   "src": "Lactantia Canada nutrition facts, homogenized milk",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "vegetable-bhaji-mixed",
+   "name": "Mixed vegetable bhaji (torkari)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~150 g",
+   "grams": 150,
+   "cal": 140,
+   "protein": 3,
+   "carbs": 14,
+   "fat": 9,
+   "src": "derived from USDA FDC frozen mixed vegetables plus stir-fry oil",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "bangladeshi",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "energy-drink-monster-zero",
+   "name": "Monster Zero Ultra",
+   "brand": "Monster",
+   "cat": "grocery",
+   "serving": "1 can (473 mL)",
+   "grams": 473,
+   "cal": 10,
+   "protein": 0,
+   "carbs": 3,
+   "fat": 0,
+   "src": "Monster Energy Canada nutrition label",
+   "conf": "published",
+   "tags": [
+    "zero-calorie",
+    "low-effort"
+   ],
+   "note": "Near zero calorie option if a caffeine hit is wanted without cutting further into the calorie floor."
+  },
+  {
+   "id": "dal-moong-bhuna",
+   "name": "Moong dal bhuna (fried dal)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~240 g",
+   "grams": 240,
+   "cal": 260,
+   "protein": 14,
+   "carbs": 26,
+   "fat": 11,
+   "src": "derived from USDA FDC cooked mung/moong dal plus extra ghee/oil frying step",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "bangladeshi",
+    "vegetarian"
+   ],
+   "note": "Thicker, richer than plain dal."
+  },
+  {
+   "id": "mozzarella-shredded-saputo",
+   "name": "Mozzarella, shredded",
+   "brand": "Saputo",
+   "cat": "grocery",
+   "serving": "30 g",
+   "grams": 30,
+   "cal": 90,
+   "protein": 7,
+   "carbs": 1,
+   "fat": 7,
+   "src": "Saputo Canada nutrition facts, shredded mozzarella",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "mustard-oil",
+   "name": "Mustard oil",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "1 tbsp, 14 g",
+   "grams": 14,
+   "cal": 124,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 14,
+   "src": "USDA FDC, mustard oil",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "bangladeshi"
+   ],
+   "note": "Base fat for most Bangladeshi curries, sold at Bangladeshi grocers."
+  },
+  {
+   "id": "mutton-curry-khashi",
+   "name": "Mutton curry (khashi)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~200 g",
+   "grams": 200,
+   "cal": 400,
+   "protein": 26,
+   "carbs": 7,
+   "fat": 29,
+   "src": "derived from USDA FDC raw goat/lamb meat and standard curry ratios",
+   "conf": "estimate",
+   "tags": [
+    "effort-real",
+    "bangladeshi"
+   ],
+   "note": "Occasional dish, not weekly."
+  },
+  {
+   "id": "naan-kawan",
+   "name": "Naan",
+   "brand": "Kawan",
+   "cat": "grocery",
+   "serving": "1 piece, ~90 g",
+   "grams": 90,
+   "cal": 250,
+   "protein": 7,
+   "carbs": 45,
+   "fat": 4,
+   "src": "Kawan Canada packaging nutrition facts, plain naan",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "omega-3-fish-oil",
+   "name": "Omega 3 Fish Oil 1000 mg",
+   "brand": "Webber Naturals",
+   "cat": "supplement",
+   "serving": "1 softgel",
+   "grams": 1,
+   "cal": 10,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 1,
+   "src": "Webber Naturals Canada product label",
+   "conf": "published",
+   "tags": [
+    "daily",
+    "low-effort"
+   ],
+   "note": "Take with a meal to cut the fishy aftertaste and improve absorption, same fat soluble logic as vitamin D."
+  },
+  {
+   "id": "onion-raw",
+   "name": "Onion, raw",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g",
+   "grams": 100,
+   "cal": 40,
+   "protein": 1,
+   "carbs": 9,
+   "fat": 0,
+   "src": "USDA FDC, onion raw",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "churchs-original-chicken-breast",
+   "name": "Original Chicken Breast",
+   "brand": "Church's Texas Chicken",
+   "cat": "restaurant",
+   "serving": "1 piece, ~113g",
+   "grams": 113,
+   "cal": 200,
+   "protein": 22,
+   "carbs": 3,
+   "fat": 11,
+   "src": "churchs.com nutrition page, figure cross-checked via fatsecret aggregation; kept as an estimate rather than published because sources diverge meaningfully by piece and region (200-250 kcal, 22-42 g protein depending on source), and no single Church's-published figure could be confirmed for this exact 113 g Sage Hill Quarter NW piece",
+   "conf": "estimate",
+   "tags": [],
+   "note": "Order 2 pieces minimum, one piece alone is not worth the trip. Skip the biscuit and pick a corn on the cob or coleslaw side over fries."
+  },
+  {
+   "id": "overnight-oats-yogurt",
+   "name": "Overnight oats with Greek yogurt",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 jar, ~350 g",
+   "grams": 350,
+   "cal": 400,
+   "protein": 26,
+   "carbs": 54,
+   "fat": 9,
+   "src": "derived from USDA FDC rolled oats dry, plain Greek yogurt, milk, honey",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "high-protein"
+   ],
+   "note": "Made the night before, zero morning effort."
+  },
+  {
+   "id": "peanut-butter-banana-toast",
+   "name": "Peanut butter banana toast",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 slice, ~150 g",
+   "grams": 150,
+   "cal": 280,
+   "protein": 8,
+   "carbs": 36,
+   "fat": 12,
+   "src": "derived from USDA FDC whole wheat bread, peanut butter, and half a banana",
+   "conf": "derived",
+   "tags": [
+    "effort-none"
+   ],
+   "note": ""
+  },
+  {
+   "id": "peanut-butter-natural-pc",
+   "name": "Peanut butter, natural",
+   "brand": "PC",
+   "cat": "grocery",
+   "serving": "2 tbsp, 32 g",
+   "grams": 32,
+   "cal": 190,
+   "protein": 7,
+   "carbs": 6,
+   "fat": 16,
+   "src": "PC Canada nutrition facts, natural peanut butter",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "peanut-butter-kraft",
+   "name": "Peanut butter, smooth",
+   "brand": "Kraft",
+   "cat": "grocery",
+   "serving": "2 tbsp, 32 g",
+   "grams": 32,
+   "cal": 190,
+   "protein": 8,
+   "carbs": 6,
+   "fat": 16,
+   "src": "Kraft Canada nutrition facts, smooth peanut butter",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "plain-basmati-rice-cooked",
+   "name": "Plain basmati rice, cooked",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 cup cooked, ~200 g",
+   "grams": 200,
+   "cal": 220,
+   "protein": 5,
+   "carbs": 47,
+   "fat": 1,
+   "src": "USDA FDC, basmati rice cooked",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "effort-none"
+   ],
+   "note": ""
+  },
+  {
+   "id": "plain-white-rice-cooked",
+   "name": "Plain white rice, cooked",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 cup cooked, ~200 g",
+   "grams": 200,
+   "cal": 240,
+   "protein": 5,
+   "carbs": 53,
+   "fat": 0,
+   "src": "USDA FDC, white rice long-grain cooked",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "effort-none"
+   ],
+   "note": "Logged separately from curry per his request."
+  },
+  {
+   "id": "generic-poke-bowl-double-protein",
+   "name": "Poke Bowl, double salmon/tuna, half rice, extra vegetables",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 bowl, ~450g",
+   "grams": 450,
+   "cal": 520,
+   "protein": 42,
+   "carbs": 45,
+   "fat": 18,
+   "src": "estimated from typical poke shop nutrition calculators (double protein add-on, base swapped to half rice, sauces controlled)",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Double the protein scoop, take the rice base as a half portion, and ask for spicy mayo or eel sauce on the side, those sauces are the main variable that can double the fat number."
+  },
+  {
+   "id": "generic-poke-tofu-chicken-bowl",
+   "name": "Poke-style Bowl, Tofu and Chicken hybrid, extra protein add-on",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 bowl, ~420g",
+   "grams": 420,
+   "cal": 480,
+   "protein": 40,
+   "carbs": 40,
+   "fat": 18,
+   "src": "estimated from a typical build-your-own poke bowl with a tofu plus chicken protein combo and an added protein scoop",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Useful variation on the standard poke order for a day when you want a change from fish. Same rule applies: sauces on the side, half the rice base."
+  },
+  {
+   "id": "protein-bar-quest",
+   "name": "Protein Bar",
+   "brand": "Quest Nutrition",
+   "cat": "supplement",
+   "serving": "1 bar (60 g)",
+   "grams": 60,
+   "cal": 200,
+   "protein": 21,
+   "carbs": 6,
+   "fat": 8,
+   "src": "Quest Nutrition Canada nutrition label: 200 kcal, 21 g protein, 8 g fat are printed as-is; the label's Total Carbohydrate line reads about 21 to 22 g, but roughly 14 to 17 g of that is fibre plus a small amount of sugar alcohol, neither of which Quest counts at 4 kcal/g. The carbs field here stores the net-carb figure (about 6 g) rather than total carbohydrate, so the logged macros reconcile with the printed 200 kcal instead of overshooting it",
+   "conf": "published",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Good backup protein hit for a low appetite day, easier to get down than a shake or a meal late in the day. Quest's 200 kcal is a net-carb calorie count, fibre and sugar alcohols are subtracted before the math, which is why the printed total carbohydrate (about 21 g) looks like it should add up to more than 200 kcal. That is a legitimate labeling convention, not a data error, so the carbs value logged here is net carbs, not total carbs."
+  },
+  {
+   "id": "protein-bar-generic",
+   "name": "Protein bar, chocolate",
+   "brand": "Costco Signature",
+   "cat": "grocery",
+   "serving": "1 bar, ~60 g",
+   "grams": 60,
+   "cal": 220,
+   "protein": 20,
+   "carbs": 22,
+   "fat": 8,
+   "src": "Costco Signature packaging nutrition facts, chocolate protein bar",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "protein-oats-whey",
+   "name": "Protein oats (oats plus whey and milk)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~350 g",
+   "grams": 350,
+   "cal": 420,
+   "protein": 34,
+   "carbs": 50,
+   "fat": 9,
+   "src": "derived from USDA FDC rolled oats dry, 2% milk, and one scoop whey isolate",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "protein-pancakes",
+   "name": "Protein pancakes (oats, egg, whey)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "~3 pancakes, 200 g",
+   "grams": 200,
+   "cal": 330,
+   "protein": 30,
+   "carbs": 30,
+   "fat": 9,
+   "src": "derived from USDA FDC rolled oats, whole egg, and one scoop whey isolate",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "freshii-protein-power-bowl",
+   "name": "Protein Power Bowl (double chicken, brown rice, broccoli)",
+   "brand": "Freshii",
+   "cat": "restaurant",
+   "serving": "1 bowl",
+   "grams": 450,
+   "cal": 580,
+   "protein": 56,
+   "carbs": 51,
+   "fat": 21,
+   "src": "Freshii Lifestyle Bowls marketing description, cross-referenced via fastfoodnutrition.org/ca/freshii; kept as an estimate rather than published because Freshii has not issued a first-party nutrition PDF for this item, though multiple independent trackers agree on the same 580/56/51/21 figures",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Already close to ideal for a delivery order, ask for dressing on the side and this needs no further modification."
+  },
+  {
+   "id": "protein-shake-whey-milk",
+   "name": "Protein shake (whey and milk)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 shake, ~350 g",
+   "grams": 350,
+   "cal": 260,
+   "protein": 34,
+   "carbs": 16,
+   "fat": 6,
+   "src": "derived from one scoop whey isolate label plus 2% milk",
+   "conf": "derived",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "barcelos-quarter-chicken-breast",
+   "name": "Quarter Chicken Breast (grilled, no skin)",
+   "brand": "Barcelos Flame Grilled Chicken",
+   "cat": "restaurant",
+   "serving": "~150g",
+   "grams": 150,
+   "cal": 280,
+   "protein": 45,
+   "carbs": 2,
+   "fat": 10,
+   "src": "Beacon Hill NW location, no published nutrition found, estimated from a comparable flame-grilled chicken chain (Swiss Chalet skinless quarter, fastfoodnutrition.org/ca/swiss-chalet)",
+   "conf": "estimate",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "One of the highest protein-per-calorie orders in Sherwood NW. Pair with a side salad, not fries, and skip the piri piri butter baste if you want the fat number to hold."
+  },
+  {
+   "id": "swiss-chalet-quarter-chicken-white-skinless",
+   "name": "Quarter Chicken, White Meat, skinless",
+   "brand": "Swiss Chalet",
+   "cat": "restaurant",
+   "serving": "1 quarter, no sauce",
+   "grams": 200,
+   "cal": 220,
+   "protein": 42,
+   "carbs": 0,
+   "fat": 5,
+   "src": "fastfoodnutrition.org/ca/swiss-chalet, Swiss Chalet Canada published nutrition, Beacon Hill NW location",
+   "conf": "published",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Order the chalet sauce on the side, it is sugar and starch heavy. This is one of the cleanest protein-per-calorie chain orders in the area, pair with a baked potato or veg side, not fries."
+  },
+  {
+   "id": "energy-drink-red-bull",
+   "name": "Red Bull Energy Drink",
+   "brand": "Red Bull",
+   "cat": "grocery",
+   "serving": "1 can (250 mL)",
+   "grams": 250,
+   "cal": 110,
+   "protein": 0,
+   "carbs": 28,
+   "fat": 0,
+   "src": "Red Bull Canada nutrition label",
+   "conf": "published",
+   "tags": [
+    "low-effort"
+   ],
+   "note": "Caffeine can further blunt appetite, log honestly even on low intake days."
+  },
+  {
+   "id": "red-lentils-raw",
+   "name": "Red lentils (masoor dal), raw",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 352,
+   "protein": 25,
+   "carbs": 60,
+   "fat": 1,
+   "src": "USDA FDC, lentils raw",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "rolled-oats",
+   "name": "Rolled oats",
+   "brand": "Quaker",
+   "cat": "grocery",
+   "serving": "100 g dry",
+   "grams": 100,
+   "cal": 389,
+   "protein": 17,
+   "carbs": 66,
+   "fat": 7,
+   "src": "Quaker Oats Canada nutrition facts, quick oats dry",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "roti-kawan",
+   "name": "Roti, whole wheat",
+   "brand": "Kawan",
+   "cat": "grocery",
+   "serving": "1 piece, ~40 g",
+   "grams": 40,
+   "cal": 110,
+   "protein": 3,
+   "carbs": 19,
+   "fat": 2,
+   "src": "Kawan Canada packaging nutrition facts, whole wheat roti",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "bangladeshi"
+   ],
+   "note": "Sold at Bangladeshi and South Asian grocers."
+  },
+  {
+   "id": "rotisserie-chicken-costco",
+   "name": "Rotisserie chicken",
+   "brand": "Kirkland Signature",
+   "cat": "grocery",
+   "serving": "100 g",
+   "grams": 100,
+   "cal": 190,
+   "protein": 25,
+   "carbs": 1,
+   "fat": 10,
+   "src": "Costco Canada published rotisserie chicken nutrition facts",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "generic-rotisserie-chicken-breast-portion",
+   "name": "Rotisserie Chicken, Breast Portion (delivery rotisserie chicken)",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "~150g breast meat, no skin",
+   "grams": 150,
+   "cal": 280,
+   "protein": 50,
+   "carbs": 0,
+   "fat": 8,
+   "src": "estimated from typical delivery rotisserie chicken breast meat, skin removed",
+   "conf": "estimate",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Remove the skin, it roughly doubles the fat for no protein gain. Order a side of vegetables or a small potato, not the gravy."
+  },
+  {
+   "id": "rotisserie-chicken-shredded",
+   "name": "Rotisserie chicken, shredded (store bought)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "~150 g",
+   "grams": 150,
+   "cal": 260,
+   "protein": 36,
+   "carbs": 0,
+   "fat": 12,
+   "src": "derived from USDA FDC roasted chicken meat and skin, typical grocery rotisserie ratio",
+   "conf": "estimate",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": "Skin left on, ratio estimated versus skinless roasted chicken."
+  },
+  {
+   "id": "rui-fish-frozen",
+   "name": "Rui fish, frozen",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 97,
+   "protein": 16,
+   "carbs": 0,
+   "fat": 3,
+   "src": "estimated from USDA FDC comparable freshwater carp species, no direct FDC entry for rui",
+   "conf": "estimate",
+   "tags": [
+    "staple",
+    "bangladeshi"
+   ],
+   "note": "Sold frozen at Bangladeshi grocers in NW Calgary."
+  },
+  {
+   "id": "salmon-fillet-fresh",
+   "name": "Salmon fillet, fresh (farmed Atlantic)",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 208,
+   "protein": 20,
+   "carbs": 0,
+   "fat": 13,
+   "src": "USDA FDC, Atlantic salmon, farmed, raw (FDC 175167); the previous figure cited wild Atlantic salmon, which is not commercially sold in Canada, anything bought fresh in Calgary is farmed",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "generic-salmon-poke-quinoa-bowl",
+   "name": "Salmon Poke Bowl, quinoa base, double protein",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 bowl, ~450g",
+   "grams": 450,
+   "cal": 540,
+   "protein": 44,
+   "carbs": 42,
+   "fat": 20,
+   "src": "estimated from a poke bowl builder swapping the rice base for quinoa and doubling the salmon portion",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Quinoa base is not meaningfully better than rice calorie for calorie, the real lever is still doubling the protein scoop and going light on the mayo-based sauces."
+  },
+  {
+   "id": "generic-sushi-sashimi-combo",
+   "name": "Sashimi Combo (salmon, tuna, no rice), 12 pieces",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "12 pieces, ~250g fish",
+   "grams": 250,
+   "cal": 320,
+   "protein": 45,
+   "carbs": 4,
+   "fat": 14,
+   "src": "estimated from USDA raw salmon and tuna values for a 12-piece sashimi combo with no rice",
+   "conf": "estimate",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Skip the roll entirely and order sashimi only, this removes almost all the carbs while keeping the protein. Soy sauce is basically free, use it freely."
+  },
+  {
+   "id": "scrambled-eggs-cheese",
+   "name": "Scrambled eggs with cheese (3 eggs)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "3 eggs plus cheese, ~180 g",
+   "grams": 180,
+   "cal": 320,
+   "protein": 25,
+   "carbs": 2,
+   "fat": 24,
+   "src": "derived from USDA FDC whole egg raw x3 plus 30 g cheddar cheese",
+   "conf": "derived",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "scrambled-eggs-plain",
+   "name": "Scrambled eggs, plain (3 eggs)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "3 eggs, ~150 g",
+   "grams": 150,
+   "cal": 230,
+   "protein": 19,
+   "carbs": 2,
+   "fat": 16,
+   "src": "USDA FDC whole egg raw x3, cooked with light butter",
+   "conf": "derived",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "shatkora-beef",
+   "name": "Shatkora beef",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~220 g",
+   "grams": 220,
+   "cal": 370,
+   "protein": 27,
+   "carbs": 10,
+   "fat": 24,
+   "src": "derived from USDA FDC beef chuck raw, citron (shatkora) negligible macros, oil",
+   "conf": "derived",
+   "tags": [
+    "effort-real",
+    "high-protein",
+    "bangladeshi"
+   ],
+   "note": "Sylheti specialty, bitter citrus peel adds negligible calories."
+  },
+  {
+   "id": "shorshe-fish",
+   "name": "Shorshe fish (mustard fish curry)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~200 g",
+   "grams": 200,
+   "cal": 270,
+   "protein": 25,
+   "carbs": 5,
+   "fat": 17,
+   "src": "derived from USDA FDC tilapia/carp raw plus mustard paste and mustard oil",
+   "conf": "estimate",
+   "tags": [
+    "effort-real",
+    "high-protein",
+    "bangladeshi"
+   ],
+   "note": "Mustard paste adds fat versus plain fish curry."
+  },
+  {
+   "id": "skim-milk-powder",
+   "name": "Skim milk powder",
+   "brand": "Carnation",
+   "cat": "grocery",
+   "serving": "30 g (makes 250 ml)",
+   "grams": 30,
+   "cal": 110,
+   "protein": 11,
+   "carbs": 16,
+   "fat": 0,
+   "src": "Carnation Canada nutrition facts, skim milk powder",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "skyr-plain-liberte",
+   "name": "Skyr, plain",
+   "brand": "Liberte",
+   "cat": "grocery",
+   "serving": "175 g",
+   "grams": 175,
+   "cal": 100,
+   "protein": 19,
+   "carbs": 7,
+   "fat": 0,
+   "src": "Liberte Canada nutrition facts, Icelandic style skyr plain",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "deli-chicken-breast-maple-leaf",
+   "name": "Sliced deli chicken breast",
+   "brand": "Maple Leaf",
+   "cat": "grocery",
+   "serving": "100 g",
+   "grams": 100,
+   "cal": 100,
+   "protein": 19,
+   "carbs": 2,
+   "fat": 2,
+   "src": "Maple Leaf Canada nutrition facts, oven roasted chicken breast slices",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "deli-turkey-breast-maple-leaf",
+   "name": "Sliced deli turkey breast",
+   "brand": "Maple Leaf",
+   "cat": "grocery",
+   "serving": "100 g",
+   "grams": 100,
+   "cal": 95,
+   "protein": 19,
+   "carbs": 2,
+   "fat": 1,
+   "src": "Maple Leaf Canada nutrition facts, oven roasted turkey breast slices",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "sparkling-water",
+   "name": "Sparkling Water, plain",
+   "brand": "San Pellegrino",
+   "cat": "grocery",
+   "serving": "1 can (330 mL)",
+   "grams": 330,
+   "cal": 0,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 0,
+   "src": "San Pellegrino Canada nutrition label",
+   "conf": "published",
+   "tags": [
+    "zero-calorie",
+    "low-effort"
+   ],
+   "note": ""
+  },
+  {
+   "id": "baekjeong-spicy-chicken-bbq",
+   "name": "Spicy Chicken BBQ (dak galbi style, 250g)",
+   "brand": "Baekjeong Korean BBQ",
+   "cat": "restaurant",
+   "serving": "250g",
+   "grams": 250,
+   "cal": 480,
+   "protein": 42,
+   "carbs": 20,
+   "fat": 26,
+   "src": "estimated from a comparable spicy chicken BBQ portion at a Korean grill, same menu family as the bulgogi listed above",
+   "conf": "estimate",
+   "tags": [],
+   "note": "Same rule as the beef bulgogi: this restaurant's menu includes pork, confirm the item is a chicken cut before ordering delivery."
+  },
+  {
+   "id": "steak-bites-rice",
+   "name": "Steak bites with rice (sirloin)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~200 g steak plus rice separate",
+   "grams": 200,
+   "cal": 360,
+   "protein": 38,
+   "carbs": 0,
+   "fat": 22,
+   "src": "derived from USDA FDC beef sirloin raw, cooked yield adjusted",
+   "conf": "derived",
+   "tags": [
+    "effort-low",
+    "high-protein"
+   ],
+   "note": "Rice logged separately as its own entry."
+  },
+  {
+   "id": "steel-cut-oats",
+   "name": "Steel cut oats",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g dry",
+   "grams": 100,
+   "cal": 379,
+   "protein": 13,
+   "carbs": 68,
+   "fat": 7,
+   "src": "USDA FDC, oats raw",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "strawberries-fresh",
+   "name": "Strawberries, fresh",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g",
+   "grams": 100,
+   "cal": 32,
+   "protein": 1,
+   "carbs": 7,
+   "fat": 0,
+   "src": "USDA FDC, strawberries raw",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "sweetened-tea",
+   "name": "Sweetened Tea",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "1 cup (240 mL) with 1 tbsp sugar",
+   "grams": 255,
+   "cal": 48,
+   "protein": 0,
+   "carbs": 12,
+   "fat": 0,
+   "src": "derived from USDA FDC brewed tea (0 kcal) plus 1 tbsp sugar (~48 kcal, 12 g carbs)",
+   "conf": "derived",
+   "tags": [
+    "low-effort"
+   ],
+   "note": ""
+  },
+  {
+   "id": "twist-of-taj-tandoori-bbq-platter",
+   "name": "Tandoori BBQ Platter (mixed grill, no rice)",
+   "brand": "Twist of TAJ",
+   "cat": "restaurant",
+   "serving": "~400g mixed tandoori chicken and seekh",
+   "grams": 400,
+   "cal": 650,
+   "protein": 60,
+   "carbs": 10,
+   "fat": 38,
+   "src": "twistoftaj.net menu, estimated from mixed tandoori grill portion, minimal breading, marinade oil",
+   "conf": "estimate",
+   "tags": [
+    "halal",
+    "high-protein"
+   ],
+   "note": "This is the single best per-calorie protein order at this restaurant. Skip rice entirely and get extra salad instead."
+  },
+  {
+   "id": "generic-teriyaki-chicken-bowl",
+   "name": "Teriyaki Chicken Bowl (half rice, double chicken)",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 bowl, ~450g",
+   "grams": 450,
+   "cal": 520,
+   "protein": 48,
+   "carbs": 45,
+   "fat": 16,
+   "src": "estimated from a standard Japanese grill teriyaki chicken bowl with rice halved and chicken portion doubled",
+   "conf": "estimate",
+   "tags": [
+    "high-protein"
+   ],
+   "note": "Ask for teriyaki sauce on the side, it is mostly sugar and is where the carb number can run away if the kitchen is generous with it."
+  },
+  {
+   "id": "tilapia-fillet-frozen",
+   "name": "Tilapia fillet, frozen",
+   "brand": "",
+   "cat": "grocery",
+   "serving": "100 g raw",
+   "grams": 100,
+   "cal": 96,
+   "protein": 20,
+   "carbs": 0,
+   "fat": 2,
+   "src": "USDA FDC, tilapia raw",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "tofu-firm-sunrise",
+   "name": "Tofu, firm",
+   "brand": "Sunrise",
+   "cat": "grocery",
+   "serving": "100 g",
+   "grams": 100,
+   "cal": 105,
+   "protein": 12,
+   "carbs": 2,
+   "fat": 6,
+   "src": "Sunrise Canada packaging nutrition facts, firm tofu, cross-checked with USDA FDC firm tofu raw",
+   "conf": "derived",
+   "tags": [
+    "staple",
+    "vegetarian"
+   ],
+   "note": ""
+  },
+  {
+   "id": "generic-thai-tom-yum-chicken-soup",
+   "name": "Tom Yum Chicken Soup, extra chicken, no rice",
+   "brand": "",
+   "cat": "restaurant",
+   "serving": "1 large bowl, ~500g",
+   "grams": 500,
+   "cal": 280,
+   "protein": 35,
+   "carbs": 15,
+   "fat": 9,
+   "src": "estimated from a standard Thai tom yum soup with an added chicken portion, jasmine rice ordered separately or skipped",
+   "conf": "estimate",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Very low calorie for the protein it delivers, useful on a day where appetite is especially suppressed and you need volume without a large calorie hit. Add rice only if you have calories left to spend."
+  },
+  {
+   "id": "tuna-on-toast",
+   "name": "Tuna on toast",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 plate, ~200 g",
+   "grams": 200,
+   "cal": 330,
+   "protein": 32,
+   "carbs": 28,
+   "fat": 11,
+   "src": "derived from tuna salad recipe plus 2 slices whole wheat bread",
+   "conf": "derived",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "tuna-salad",
+   "name": "Tuna salad (canned tuna and mayo)",
+   "brand": "",
+   "cat": "recipe",
+   "serving": "1 bowl, ~150 g",
+   "grams": 150,
+   "cal": 220,
+   "protein": 26,
+   "carbs": 2,
+   "fat": 12,
+   "src": "derived from USDA FDC canned tuna in water drained plus light mayo",
+   "conf": "derived",
+   "tags": [
+    "effort-none",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "brokin-yolk-turkey-bacon-egg-white-wrap",
+   "name": "Turkey Bacon and Egg White Wrap",
+   "brand": "The Bro'Kin Yolk",
+   "cat": "restaurant",
+   "serving": "1 wrap",
+   "grams": 300,
+   "cal": 420,
+   "protein": 32,
+   "carbs": 35,
+   "fat": 16,
+   "src": "estimated from a standard turkey bacon and egg white breakfast wrap, confirm turkey bacon specifically (pork-free) not regular bacon",
+   "conf": "estimate",
+   "tags": [],
+   "note": "Confirm with the restaurant that this is turkey bacon and not pork bacon before ordering, some breakfast spots default to regular bacon unless you specify."
+  },
+  {
+   "id": "vitamin-d",
+   "name": "Vitamin D3 1000 IU",
+   "brand": "Webber Naturals",
+   "cat": "supplement",
+   "serving": "1 softgel",
+   "grams": 1,
+   "cal": 5,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 1,
+   "src": "Webber Naturals Canada product label",
+   "conf": "published",
+   "tags": [
+    "daily",
+    "low-effort"
+   ],
+   "note": "Fat soluble: take with a meal that has some fat in it, not on an empty stomach, or absorption drops."
+  },
+  {
+   "id": "whey-protein-powder",
+   "name": "Whey protein powder",
+   "brand": "Kirkland Signature",
+   "cat": "grocery",
+   "serving": "1 scoop, 30 g",
+   "grams": 30,
+   "cal": 120,
+   "protein": 24,
+   "carbs": 3,
+   "fat": 1,
+   "src": "Costco Canada Kirkland Signature whey protein packaging nutrition facts",
+   "conf": "published",
+   "tags": [
+    "staple",
+    "high-protein"
+   ],
+   "note": ""
+  },
+  {
+   "id": "whey-protein-scoop",
+   "name": "Whey Protein Powder, 1 scoop",
+   "brand": "Optimum Nutrition Gold Standard",
+   "cat": "supplement",
+   "serving": "1 scoop (30.4 g)",
+   "grams": 30,
+   "cal": 120,
+   "protein": 24,
+   "carbs": 3,
+   "fat": 1,
+   "src": "Optimum Nutrition Gold Standard 100% Whey Canada label",
+   "conf": "published",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Front load this earlier in the day. Appetite drops off later on retatrutide so a scoop skipped in the morning usually stays skipped."
+  },
+  {
+   "id": "whey-protein-scoop-pvl",
+   "name": "Whey Protein Powder, 1 scoop",
+   "brand": "PVL Iso-Goat / PVL Whey",
+   "cat": "supplement",
+   "serving": "1 scoop (33 g)",
+   "grams": 33,
+   "cal": 130,
+   "protein": 25,
+   "carbs": 2,
+   "fat": 2,
+   "src": "PVL nutrition label, Canadian brand",
+   "conf": "published",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Front load earlier in the day for the same appetite-suppression reason as other proteins."
+  },
+  {
+   "id": "protein-powder-generic-scoop",
+   "name": "Whey Protein Powder, generic 1 scoop",
+   "brand": "",
+   "cat": "supplement",
+   "serving": "1 scoop (~32 g)",
+   "grams": 32,
+   "cal": 120,
+   "protein": 24,
+   "carbs": 3,
+   "fat": 1,
+   "src": "estimated, averaged from Optimum Nutrition and PVL published labels",
+   "conf": "estimate",
+   "tags": [
+    "high-protein",
+    "low-effort"
+   ],
+   "note": "Use when brand is unknown. Front load, same appetite logic as other protein scoops."
+  },
+  {
+   "id": "white-bread-wonder",
+   "name": "White bread, 2 slices",
+   "brand": "Wonder Bread",
+   "cat": "grocery",
+   "serving": "2 slices, ~60 g",
+   "grams": 60,
+   "cal": 150,
+   "protein": 5,
+   "carbs": 28,
+   "fat": 2,
+   "src": "Wonder Bread Canada nutrition facts, white bread",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "whole-wheat-bread-dempsters",
+   "name": "Whole wheat bread, 2 slices",
+   "brand": "Dempster's",
+   "cat": "grocery",
+   "serving": "2 slices, ~60 g",
+   "grams": 60,
+   "cal": 140,
+   "protein": 6,
+   "carbs": 26,
+   "fat": 2,
+   "src": "Dempster's Canada nutrition facts, whole wheat bread",
+   "conf": "published",
+   "tags": [
+    "staple"
+   ],
+   "note": ""
+  },
+  {
+   "id": "zinc-supplement",
+   "name": "Zinc 25 mg",
+   "brand": "Webber Naturals",
+   "cat": "supplement",
+   "serving": "1 tablet",
+   "grams": 1,
+   "cal": 0,
+   "protein": 0,
+   "carbs": 0,
+   "fat": 0,
+   "src": "Webber Naturals Canada product label",
+   "conf": "published",
+   "tags": [
+    "daily",
+    "low-effort"
+   ],
+   "note": "Take with food, taken on an empty stomach it commonly causes nausea, which is the last thing needed on GLP-1."
+  }
+ ]
+}
