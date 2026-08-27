@@ -179,7 +179,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .macro-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .macro-bar-lbl{font-size:12px;font-weight:500;color:var(--t2);width:54px;}
 .macro-bar-track{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
-.macro-bar-fill{height:100%;border-radius:3px;transition:width 0.9s var(--spring);}
+.macro-bar-fill{height:100%;border-radius:3px;transition:width 0.9s var(--ease-data);}
 .macro-bar-val{font-size:11px;font-weight:600;color:var(--t2);width:60px;text-align:right;}
 .food-search-wrap{margin:0 16px 12px;position:relative;}
 .food-search-input{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px 44px 13px 44px;font-size:15px;color:var(--t1);transition:border-color 0.2s;}
@@ -594,7 +594,9 @@ function animRing(id,val,max){
   const r=35,c=2*Math.PI*r,el=document.getElementById('rt-'+id);
   if(!el)return;
   const pct=Math.min(val/max,1);
-  setTimeout(()=>{el.style.transition='stroke-dashoffset 1.3s cubic-bezier(0.34,1.56,0.64,1)';el.style.strokeDashoffset=c*(1-pct);},60);
+  /* --ease-data, not --spring. This inline style overrides the .ring-track CSS
+     rule, so fixing the stylesheet alone left the ring still overshooting. */
+  setTimeout(()=>{el.style.transition='stroke-dashoffset 1.3s var(--ease-data)';el.style.strokeDashoffset=c*(1-pct);},60);
 }
 function countUp(id,target,dec=0){
   const el=document.getElementById('rv-'+id);if(!el)return;
@@ -750,7 +752,7 @@ function renderWorkout(){
         <div style="font-size:12px;font-weight:600;color:var(--t2)">${done}/${total} exercises done</div>
         <div style="font-size:11px;color:var(--t3)">${Math.round(pct)}%</div>
       </div>
-      <div class="prog-track"><div class="prog-fill" id="wk-prog" style="width:${pct}%;background:var(--blue);transition:width 0.6s var(--spring)"></div></div>
+      <div class="prog-track"><div class="prog-fill" id="wk-prog" style="width:${pct}%;background:var(--blue);transition:width 0.6s var(--ease-data)"></div></div>
     </div>
     <div class="warmup-banner"><div class="warmup-title">🔥 Warm-up first</div><div class="warmup-txt">${d.warmup}</div></div>
     <div class="ex-list">${cards}</div>
