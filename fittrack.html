@@ -624,7 +624,7 @@ function resetIfStale(){
   });
   DB.set('ft_schema',SCHEMA);
 }
-function freshLog(date){return{date,workout:{completed:false,dayIndex:-1,exercises:{},startTime:null},nutrition:{meals:[],water:0},checkins:{gym:false,protein:false,water:false},steps:0,weight:null,creatine:0};}
+function freshLog(date){return{date,workout:{completed:false,dayIndex:-1,exercises:{},startTime:null},nutrition:{meals:[],water:0},checkins:{gym:false,protein:false,water:false},steps:0,weight:null,creatine:0,rhr:null};}
 function greeting(){const h=new Date().getHours();if(h<5)return'Good night';if(h<12)return'Good morning';if(h<17)return'Good afternoon';if(h<21)return'Good evening';return'Good night';}
 function fmtDate(ds){const d=new Date(ds+'T12:00:00');return d.toLocaleDateString('en-CA',{weekday:'long',month:'long',day:'numeric'});}
 function fmtTime(s){return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
@@ -1300,6 +1300,137 @@ function addMealItem(food,mealType){
   const tProt=S.log.nutrition.meals.reduce((a,m)=>a+(m.protein||0),0);
   if(tProt>=S.cfg.targets.protein&&!S.log.checkins.protein){S.log.checkins.protein=true;DB.saveLog(S.today,S.log);setTimeout(()=>toast('🥩','Protein goal reached!',`${Math.round(tProt)}g / ${S.cfg.targets.protein}g 💪`),1000);}
 }
+/* ── PREDICTION ─────────────────────────────────────────────────────────
+   Everything below is deliberately pessimistic. He asked for that in those
+   words, and it is also the only version that survives contact with reality:
+   an app that promises 65 kg by October and misses gets deleted in November.
+
+   Every number here degrades to an honest not-enough-data-yet rather than
+   guessing from three data points. Saying nothing is always available. */
+const KCAL_PER_KG=7700;   /* energy in a kg of body fat, the standard figure */
+
+/* Scale weight is mostly water. A single reading moves a kilo on salt and
+   carbs alone, which on a 0.4 kg per week goal is a whole week of signal
+   buried in noise. An exponential average with a 10 day half life is the
+   standard fix, and it is time aware so a week of missed weigh-ins does not
+   get treated as a week of no change. */
+function trendSeries(weights,halfLife){
+  const hl=halfLife||10;
+  const w=(weights||[]).filter(x=>x&&x.date&&typeof x.weight==='number').slice().sort((a,b)=>a.date<b.date?-1:1);
+  if(!w.length)return [];
+  const out=[{date:w[0].date,trend:w[0].weight}];
+  for(let i=1;i<w.length;i++){
+    const dt=Math.max(1,(new Date(w[i].date+'T12:00:00')-new Date(w[i-1].date+'T12:00:00'))/86400000);
+    const a=1-Math.pow(0.5,dt/hl);
+    out.push({date:w[i].date,trend:out[i-1].trend+a*(w[i].weight-out[i-1].trend)});
+  }
+  return out;
+}
+/* Least squares slope in kg per week over the trailing window. Needs a real
+   span, not just a count: five weigh-ins in one week say nothing about a rate. */
+function weeklyRate(trend,days){
+  if(!trend||trend.length<3)return null;
+  const end=new Date(trend[trend.length-1].date+'T12:00:00');
+  const pts=trend.filter(t=>(end-new Date(t.date+'T12:00:00'))/86400000<=days)
+    .map(t=>[(new Date(t.date+'T12:00:00')-end)/86400000,t.trend]);
+  if(pts.length<3)return null;
+  if(Math.abs(pts[0][0])<14)return null;
+  const n=pts.length;
+  const mx=pts.reduce((a,q)=>a+q[0],0)/n, my=pts.reduce((a,q)=>a+q[1],0)/n;
+  let num=0,den=0;
+  for(const q of pts){num+=(q[0]-mx)*(q[1]-my);den+=(q[0]-mx)*(q[0]-mx);}
+  if(!den)return null;
+  return (num/den)*7;   /* kg per week, negative means losing */
+}
+/* His own maintenance calories, worked backwards from what he ate and what the
+   scale actually did, which beats any equation. Refuses to answer without
+   enough logged days: a mean intake built from four logged days out of
+   twenty-one is not an estimate, it is a number with a confident face on. */
+function estimateTDEE(days){
+  const trend=trendSeries(DB.weights());
+  if(trend.length<3)return {ok:false,why:'Needs at least three weigh-ins.'};
+  const last=trend[trend.length-1];
+  const first=trend.find(t=>(new Date(last.date+'T12:00:00')-new Date(t.date+'T12:00:00'))/86400000<=days);
+  if(!first)return {ok:false,why:'Needs a longer run of weigh-ins.'};
+  const span=Math.round((new Date(last.date+'T12:00:00')-new Date(first.date+'T12:00:00'))/86400000);
+  if(span<14)return {ok:false,why:'Needs at least two weeks between weigh-ins.'};
+  let logged=0,total=0;
+  for(let i=0;i<span;i++){
+    const l=DB.log(shiftDate(last.date,-i));
+    const cal=l&&l.nutrition?(l.nutrition.meals||[]).reduce((a,m)=>a+(m.cal||0),0):0;
+    if(cal>0){logged++;total+=cal;}
+  }
+  const need=Math.ceil(span*0.6);
+  if(logged<need)return {ok:false,why:'Only '+logged+' of the last '+span+' days have food logged. This needs about '+need+'.'};
+  const meanIntake=total/logged;
+  const deltaKg=last.trend-first.trend;
+  const tdee=Math.round(meanIntake-(deltaKg*KCAL_PER_KG/span));
+  /* A back-calculated number outside this band means the input is wrong, most
+     likely unlogged food, so it is refused rather than shown. */
+  if(tdee<1200||tdee>4000)return {ok:false,why:'The numbers do not add up, which usually means some days of eating went unlogged.'};
+  return {ok:true,tdee,meanIntake:Math.round(meanIntake),logged,span,deltaKg};
+}
+/* Never the flattering answer. Where the recent rate and the whole-program rate
+   disagree, the slower one wins, because the fast one is usually water. */
+function projectTarget(){
+  const trend=trendSeries(DB.weights());
+  if(trend.length<3)return {ok:false,why:'Three weigh-ins at least a fortnight apart and this starts working.'};
+  const cur=trend[trend.length-1].trend;
+  const target=S.cfg.body.targetWeight;
+  if(cur<=target)return {ok:true,done:true,cur};
+  const rates=[weeklyRate(trend,28),weeklyRate(trend,3650)].filter(x=>x!==null);
+  if(!rates.length)return {ok:false,why:'Not enough weigh-ins spread over enough days yet.',cur};
+  const rate=Math.max.apply(null,rates);   /* least negative, so the slower loss */
+  /* Gaining is a different fact from not losing, and rounding it into the same
+     sentence is the kind of softening that makes the whole screen untrustworthy. */
+  if(rate>0.05)return {ok:false,why:"The trend is up, not down, by "+Math.abs(toDisp(rate)).toFixed(2)+" "+wUnit()+" a week. No date is projected from that.",cur,rate};
+  if(rate>-0.05)return {ok:false,why:'No measurable downward trend yet. That is information, not failure: it usually means intake is closer to maintenance than it feels.',cur,rate};
+  const weeks=(cur-target)/Math.abs(rate);
+  if(weeks>104)return {ok:false,why:'At the current rate this is more than two years out, which is not a useful projection.',cur,rate};
+  const when=new Date(S.today+'T12:00:00');
+  when.setDate(when.getDate()+Math.round(weeks*7));
+  return {ok:true,cur,rate,weeks:Math.round(weeks),date:when.toISOString().slice(0,10)};
+}
+/* Retatrutide's glucagon arm raises resting heart rate, more than tirzepatide
+   or semaglutide do. His dose is far below the trial doses that produced the
+   5 to 10 bpm figures, so a rise is not expected, which is exactly why it is
+   worth watching: it is the cheapest early warning available to him. */
+function rhrSeries(){
+  const out=[];
+  for(const d of recentDates(120)){
+    const l=DB.log(d);
+    if(l&&typeof l.rhr==='number'&&l.rhr>0)out.push({date:d,rhr:l.rhr});
+  }
+  return out.reverse();
+}
+function median(a){const b=a.slice().sort((x,y)=>x-y);const m=b.length>>1;return b.length%2?b[m]:(b[m-1]+b[m])/2;}
+function rhrStatus(){
+  const s=rhrSeries();
+  if(s.length<3)return {ok:false,n:s.length};
+  const base=median(s.slice(0,5).map(x=>x.rhr));
+  const tail=s.slice(-5);
+  const recent=Math.round(tail.reduce((a,x)=>a+x.rhr,0)/tail.length);
+  const delta=recent-base;
+  let level='fine',msg='In line with your own baseline.';
+  if(delta>=10){level='high';msg='Up '+delta+' bpm on your baseline. That is the size of rise the trials saw at much larger doses. Worth raising with a doctor rather than stepping the dose up.';}
+  else if(delta>=5){level='watch';msg='Up '+delta+' bpm on your baseline. Keep logging it, and hold the dose steady while it is climbing.';}
+  return {ok:true,base,recent,delta,level,msg,n:s.length};
+}
+function openRhrSheet(){
+  const cur=S.log.rhr||'';
+  openSheet('<div class="sheet-body">'+
+    '<div style="font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:14px">Take it sitting still, before coffee, before your dose. Using the same conditions every time matters more than the exact number.</div>'+
+    '<div class="inp-grp"><div class="inp-lbl">Resting heart rate (bpm)</div><input class="inp-field" id="rhr-in" type="number" value="'+cur+'" inputmode="numeric" placeholder="62"></div>'+
+    '<button class="sheet-btn sheet-btn-primary" onclick="saveRhr()">Save</button>'+
+  '</div>','Resting heart rate');
+}
+function saveRhr(){
+  const v=parseInt(document.getElementById('rhr-in')?.value);
+  if(!v||v<30||v>140)return;
+  S.log.rhr=v;DB.saveLog(S.today,S.log);
+  closeSheet();renderScreen(3);
+  toast('\u2764\uFE0F','Resting HR logged',v+' bpm');
+}
 /* ── PROGRESS SCREEN ────────────────────────── */
 function renderProgress(){
   const wh=DB.weights(),all=DB.allLogs(),c=S.cfg;
@@ -1310,7 +1441,7 @@ function renderProgress(){
   const gs=calcStreak(all,'gym'),ps=calcStreak(all,'protein'),ws=calcStreak(all,'water');
   document.getElementById('s3').innerHTML=`
   <div>
-    <div class="screen-header"><div><div class="header-title">Progress</div><div class="header-sub">Your transformation journey</div></div></div>
+    <div class="screen-header"><div><div class="header-title">Progress</div><div class="header-sub">What the numbers actually say</div></div></div>
     <div class="section-label">Weight history</div>
     <div class="wt-chart-card">
       <div class="chart-hdr">
@@ -1327,6 +1458,52 @@ function renderProgress(){
         </div>
       </div>
       <div class="chart-wrap"><canvas id="wt-chart"></canvas></div>
+    </div>
+    <div class="section-label">Trend and projection</div>
+    <div class="bstats-card">
+      ${(()=>{
+        const t=trendSeries(DB.weights());
+        const pr=projectTarget();
+        const tw=t.length?t[t.length-1].trend:null;
+        const rateTxt=pr.rate!=null?((pr.rate<0?'down ':'up ')+Math.abs(toDisp(Math.abs(pr.rate))).toFixed(2)+' '+wUnit()+' a week'):'rate not established yet';
+        return '<div class="flex-bc" style="margin-bottom:10px">'+
+          '<div><div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px">Trend weight</div>'+
+          '<div style="font-size:24px;font-weight:700;color:var(--purple);margin-top:2px">'+(tw!=null?fmtW(tw)+' '+wUnit():'--')+'</div></div>'+
+          '<div style="text-align:right;font-size:12px;color:var(--t2);max-width:52%">'+(tw!=null?'Smoothed over 10 days, so a salty meal does not read as a kilo gained.':'Log a few weigh-ins and this fills in.')+'</div>'+
+        '</div>'+
+        '<div style="padding-top:11px;border-top:1px solid var(--border);font-size:13px;line-height:1.55;color:var(--t2)">'+
+        (pr.done?('You are at or under '+fmtWU(S.cfg.body.targetWeight)+'. Target reached.')
+          :pr.ok?('Currently '+rateTxt+'. At that rate you reach '+fmtWU(S.cfg.body.targetWeight)+' around <b style="color:var(--t1)">'+fmtDate(pr.date)+'</b>, about '+pr.weeks+' weeks out. This assumes nothing improves, and it moves every time you weigh in.')
+          :pr.why)+
+        '</div>';
+      })()}
+    </div>
+    <div class="section-label">Your actual maintenance</div>
+    <div class="bstats-card">
+      ${(()=>{
+        const e=estimateTDEE(28);
+        if(!e.ok)return '<div style="font-size:13px;color:var(--t2);line-height:1.55">'+e.why+'<br><br>This works out what you actually burn from what you ate and what the scale did, which beats any formula. It needs the food log to be reasonably complete to mean anything.</div>';
+        const gap=e.tdee-e.meanIntake;
+        return '<div class="stats-grid">'+
+          '<div class="stat-box"><div class="stat-box-lbl">You burn</div><div class="stat-box-val" style="color:var(--orange)">'+e.tdee+'</div><div class="stat-box-unit">kcal/day</div></div>'+
+          '<div class="stat-box"><div class="stat-box-lbl">You ate</div><div class="stat-box-val" style="color:var(--blue-light)">'+e.meanIntake+'</div><div class="stat-box-unit">kcal/day</div></div>'+
+          '<div class="stat-box"><div class="stat-box-lbl">'+(gap>0?'Deficit':'Surplus')+'</div><div class="stat-box-val" style="color:'+(gap>0?'var(--green)':'var(--coral)')+'">'+Math.abs(gap)+'</div><div class="stat-box-unit">kcal/day</div></div>'+
+        '</div>'+
+        '<div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--border);font-size:12px;color:var(--t3);line-height:1.5">From '+e.logged+' logged days out of the last '+e.span+'. On this drug the risk is eating too little, not too much: below '+(S.cfg.targets.calories-200)+' kcal you start paying for it in muscle.</div>';
+      })()}
+    </div>
+    <div class="section-label">Resting heart rate</div>
+    <div class="bstats-card">
+      ${(()=>{
+        const r=rhrStatus();
+        const col=r.ok?(r.level==='high'?'var(--coral)':r.level==='watch'?'var(--orange)':'var(--green)'):'var(--t3)';
+        return '<div class="flex-bc">'+
+          '<div><div style="font-size:24px;font-weight:700;color:'+col+'">'+(r.ok?r.recent+' bpm':(S.log.rhr?S.log.rhr+' bpm':'--'))+'</div>'+
+          '<div style="font-size:12px;color:var(--t2);margin-top:3px">'+(r.ok?'Baseline '+r.base+' bpm':(r.n||0)+' of 3 readings needed')+'</div></div>'+
+          '<button onclick="openRhrSheet()" style="padding:10px 16px;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--t2)">'+(S.log.rhr?'Update':'Log today')+'</button>'+
+        '</div>'+
+        '<div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);line-height:1.5">'+(r.ok?r.msg:'Retatrutide can lift resting heart rate through its glucagon arm, more than the other drugs in this class do. Your dose is well below the trial doses, so a rise is not expected. Logging it anyway is the cheapest early warning you have.')+'</div>';
+      })()}
     </div>
     <div class="section-label">Streaks</div>
     <div class="streak-row">
