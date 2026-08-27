@@ -26,6 +26,11 @@
   --red:#FF453A;--yellow:#FFD60A;
   --t1:#FFFFFF;--t2:#AEAEB2;--t3:#636366;--t4:#3A3A3C;
   --spring:cubic-bezier(0.34,1.56,0.64,1);
+  /* Data-bearing fills use ease-out-quint, never --spring. A spring overshoots
+     its target by ~11%, so a ring or bar driven by a real number would render
+     past that number before settling back. Fine on a button press, misleading
+     on a value the user is meant to read. */
+  --ease-data:cubic-bezier(0.22,1,0.36,1);
   --smooth:cubic-bezier(0.25,0.46,0.45,0.94);
   --r-sm:10px;--r-md:16px;--r-lg:20px;--r-xl:28px;
   --tab-h:64px;--safe-b:env(safe-area-inset-bottom,16px);--safe-t:env(safe-area-inset-top,0px);
@@ -71,7 +76,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .ring-svg-wrap{position:relative;width:86px;height:86px;}
 .ring-svg-wrap svg{width:86px;height:86px;transform:rotate(-90deg);}
 .ring-bg{stroke:var(--s3);fill:none;}
-.ring-track{fill:none;stroke-linecap:round;transition:stroke-dashoffset 1.3s var(--spring);}
+.ring-track{fill:none;stroke-linecap:round;transition:stroke-dashoffset 1.3s var(--ease-data);}
 .ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .ring-val{font-size:16px;font-weight:800;line-height:1;letter-spacing:-0.5px;}
 .ring-unit{font-size:9px;color:var(--t2);font-weight:500;margin-top:2px;}
@@ -91,7 +96,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .steps-card{margin:0 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;}
 .steps-num{font-size:32px;font-weight:800;color:var(--green);letter-spacing:-1px;line-height:1;}
 .prog-track{height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
-.prog-fill{height:100%;border-radius:3px;transition:width 1s var(--spring);}
+.prog-fill{height:100%;border-radius:3px;transition:width 1s var(--ease-data);}
 /* QUICK ACTIONS */
 .qa-grid{margin:0 16px 12px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;}
 .qa-btn{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;transition:transform 0.15s var(--spring);}
