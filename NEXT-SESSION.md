@@ -146,13 +146,21 @@ equipment, iOS PWA + Web Push, competitor apps, Cloudflare push
 implementation), roughly 122k chars, with adversarial verification passes on
 the pharmacology and nutrition numbers:
 
-`C:\Users\adnan\AppData\Local\Temp\claude\C--Users-adnan-projects\ddfed865-54ab-49dc-918d-5d36017fe15a\tasks\webhwli0d.output`
+Already copied into the repo, so the temp path no longer matters:
 
-Per-agent returns: the workflow `journal.jsonl` under
-`.claude\projects\C--Users-adnan-projects\ddfed865-54ab-49dc-918d-5d36017fe15a\subagents\workflows\wf_b9acf853-ebc\`
+- `docs/research/2026-08-26-rebuild-research.json` (160 KB) - keyed
+  `reta`, `food`, `gym`, `ios`, `competitors`, `push`, `verification`
+- `docs/research/2026-08-26-agent-journal.jsonl` (132 KB) - per-agent returns
 
-**This is a temp path and will be cleaned up. Copy anything still needed into
-`docs/research/` before relying on it.**
+It is large, so read one key at a time rather than the whole file:
+
+```bash
+node -e "const d=require('./docs/research/2026-08-26-rebuild-research.json');console.log(JSON.stringify(d.result.food,null,1))"
+```
+
+The `push` key is now spent: everything in it is implemented. `food`, `gym`,
+`ios` and `competitors` are still unused and are the inputs for the remaining
+work below.
 
 ---
 
