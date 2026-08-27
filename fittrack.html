@@ -11,8 +11,26 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-512.png">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
-<meta name="apple-mobile-web-app-title" content="FitTrack">
 <meta name="application-name" content="FitTrack">
+<!-- The apple- prefixed capability tag above is still what iOS reads. This is
+     the standardised name, whose absence Chrome warns about. -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark">
+<!-- iOS launch images. Without these an installed PWA flashes white on every
+     open, which on a pure black app reads as a broken web page rather than an
+     app. The media queries carry CSS POINT sizes, not the pixel sizes in the
+     filenames, and 414x896 appears twice because only the pixel ratio tells
+     the iPhone 11 apart from the 11 Pro Max. -->
+<link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-1284x2778.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 :root{
@@ -101,6 +119,30 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .qa-grid{margin:0 16px 12px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;}
 .qa-btn{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;transition:transform 0.15s var(--spring);}
 .qa-btn:active{transform:scale(0.92);}
+/* First run only. A full cover rather than a screen, so it cannot be swiped
+   away or tabbed past before there is a profile to render anything from. */
+#onboard{position:fixed;inset:0;z-index:400;background:var(--black);overflow-y:auto;display:none;padding:calc(var(--safe-t) + 28px) 22px calc(var(--safe-b) + 28px);}
+#onboard.show{display:block;}
+.ob-step{font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.ob-h{font-size:26px;font-weight:700;line-height:1.2;margin-bottom:8px;}
+.ob-p{font-size:14px;color:var(--t2);line-height:1.55;margin-bottom:22px;}
+.ob-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+.ob-opt{flex:1;min-width:78px;padding:14px 10px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);font-size:14px;font-weight:600;color:var(--t2);text-align:center;}
+.ob-opt.on{background:var(--orange-dim);border-color:var(--orange-border);color:var(--orange);}
+.ob-tog{width:100%;display:flex;align-items:flex-start;gap:12px;padding:14px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);margin-bottom:10px;text-align:left;}
+.ob-tog.on{border-color:var(--orange-border);}
+.ob-box{width:22px;height:22px;border-radius:6px;border:2px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#000;margin-top:1px;}
+.ob-tog.on .ob-box{background:var(--orange);border-color:var(--orange);}
+.ob-nav{display:flex;gap:10px;margin-top:26px;}
+.ob-btn{flex:1;padding:16px;border-radius:var(--r-md);font-size:15px;font-weight:700;}
+.ob-btn-p{background:var(--orange);color:#000;}
+.ob-btn-s{background:var(--s2);color:var(--t2);border:1px solid var(--border);flex:0 0 88px;}
+.ob-plan{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;margin-bottom:14px;}
+.ob-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--border);}
+.ob-row:last-child{border-bottom:none;}
+.ob-k{font-size:13px;color:var(--t2);}
+.ob-v{font-size:15px;font-weight:700;color:var(--t1);}
+.ob-err{font-size:13px;color:var(--coral);margin-bottom:12px;min-height:18px;}
 /* Published numbers and guesses must be distinguishable at a glance. He asked
    for accuracy, so the app never renders an estimate as if it were fact. */
 .conf{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:1px 5px;border-radius:4px;margin-left:6px;vertical-align:1px;}
@@ -349,6 +391,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
   </div>
   <div id="tab-bar"></div>
 </div>
+<div id="onboard"></div>
 <div id="backdrop"></div>
 <div id="sheet-wrap"></div>
 <div id="celebration">
@@ -548,7 +591,10 @@ ramadanMode:false, /* archived 2026-08-26, see docs/archive/ramadan-mode.md */
 const DB={
   get(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def;}catch(e){return def;}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}},
-  settings(){return this.get('ft_settings',DEF_SETTINGS);},
+  /* A copy, never the shared constant. Handing out DEF_SETTINGS by reference
+     means the first write to S.cfg silently edits the defaults for the rest of
+     the session, so a half finished onboarding would leak into the fallback. */
+  settings(){return this.get('ft_settings',null)||JSON.parse(JSON.stringify(DEF_SETTINGS));},
   saveSettings(s){this.set('ft_settings',s);},
   workout(){return this.get('ft_workout',DEFAULT_WORKOUT);},
   saveWorkout(w){this.set('ft_workout',w);},
@@ -1300,6 +1346,159 @@ function addMealItem(food,mealType){
   const tProt=S.log.nutrition.meals.reduce((a,m)=>a+(m.protein||0),0);
   if(tProt>=S.cfg.targets.protein&&!S.log.checkins.protein){S.log.checkins.protein=true;DB.saveLog(S.today,S.log);setTimeout(()=>toast('🥩','Protein goal reached!',`${Math.round(tProt)}g / ${S.cfg.targets.protein}g 💪`),1000);}
 }
+/* ── ONBOARDING ─────────────────────────────────────────────────────────
+   The app shipped with one person's body hardcoded into DEF_SETTINGS. That is
+   fine for one user and useless the moment he sends the link to a friend, who
+   would silently inherit his height, his weight and his calorie target.
+
+   Kept short on purpose. The people installing this describe themselves the
+   same way he does, and a fitness app that opens with a twenty field form gets
+   closed and never opened again. */
+function computeTargets(d){
+  const w=d.weightKg,h=d.heightCm,age=d.age,male=d.sex!=='female';
+  /* Mifflin-St Jeor. Katch-McArdle is better above roughly 30 percent body fat
+     but needs a lean mass figure nobody has on day one, and the app replaces
+     all of this with a measured maintenance number once there is data. */
+  const bmr=Math.round(10*w+6.25*h-5*age+(male?5:-161));
+  /* Deliberately low multipliers. Three gym sessions on top of an otherwise
+     sedentary week is not an active lifestyle, and overstating it sets a target
+     that quietly stalls progress and reads as the plan not working. */
+  const mult=d.sessions>=5?1.35:d.sessions>=3?1.25:d.sessions>=1?1.2:1.15;
+  const tdee=Math.round(bmr*mult);
+  /* On a GLP-1 the failure mode is undereating, not overeating: appetite is
+     suppressed and lean mass is what gets spent. So, a smaller deficit. */
+  const deficit=d.glp1?300:500;
+  const floor=Math.max(1400,Math.round(bmr*0.95/50)*50);
+  const calories=Math.max(floor,Math.round((tdee-deficit)/50)*50);
+  const protein=Math.round(w*2.1);
+  const fat=Math.round(w*0.84);
+  const carbs=Math.max(50,Math.round((calories-protein*4-fat*9)/4));
+  /* 49 ml per kg, rounded to the nearest 250 so the target is a number he can
+     hold in his head and hit with whole bottles rather than a precise 3.488. */
+  const water=Math.round(w*49/250)*250;
+  return {bmr,tdee,calories,protein,carbs,fat,water,steps:8000,creatine:d.creatine?5:0,floor};
+}
+function needsOnboard(){try{return !localStorage.getItem('ft_settings');}catch(e){return false;}}
+function openOnboard(){
+  S.ob={step:0,err:'',d:{sex:'male',units:'kg',sessions:3,glp1:false,creatine:false,protein:false}};
+  document.getElementById('onboard').classList.add('show');
+  renderOnboard();
+}
+function obSet(k,v){S.ob.d[k]=v;S.ob.err='';renderOnboard();}
+function obTog(k){S.ob.d[k]=!S.ob.d[k];renderOnboard();}
+/* Reads whatever is on screen before moving, so a half typed number is not lost
+   to a re-render the moment any other control on the step is touched. */
+function obCapture(){
+  const g=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
+  const d=S.ob.d;
+  if(document.getElementById('ob-h'))d.heightRaw=g('ob-h');
+  if(document.getElementById('ob-bd'))d.birthday=g('ob-bd');
+  if(document.getElementById('ob-w'))d.weightRaw=g('ob-w');
+  if(document.getElementById('ob-t'))d.targetRaw=g('ob-t');
+  if(document.getElementById('ob-n'))d.name=g('ob-n');
+}
+function obValidate(){
+  const d=S.ob.d;
+  if(S.ob.step===1){
+    const h=parseFloat(d.heightRaw);
+    if(!h||h<120||h>230)return 'Height should be between 120 and 230 cm.';
+    if(!d.birthday)return 'Pick your date of birth, the calorie maths needs an age.';
+    const age=Math.floor((new Date(S.today+'T12:00:00')-new Date(d.birthday+'T12:00:00'))/31557600000);
+    if(!(age>=13&&age<=100))return 'That date of birth does not look right.';
+    d.heightCm=h;d.age=age;
+  }
+  if(S.ob.step===2){
+    const kg=x=>d.units==='lb'?x/2.20462:x;
+    const w=parseFloat(d.weightRaw),t=parseFloat(d.targetRaw);
+    if(!w)return 'Enter your current weight.';
+    if(!t)return 'Enter the weight you are aiming for.';
+    d.weightKg=Math.round(kg(w)*10)/10;d.targetKg=Math.round(kg(t)*10)/10;
+    if(d.weightKg<35||d.weightKg>250)return 'That weight is outside what this app can plan for.';
+    if(Math.abs(d.targetKg-d.weightKg)>40)return 'That is a very large gap. Set a nearer target first and move it later.';
+  }
+  return '';
+}
+function obNext(){
+  obCapture();
+  const err=obValidate();
+  if(err){S.ob.err=err;return renderOnboard();}
+  S.ob.err='';S.ob.step++;renderOnboard();
+  document.getElementById('onboard').scrollTop=0;
+}
+function obBack(){obCapture();S.ob.err='';S.ob.step--;renderOnboard();}
+function obFinish(){
+  const d=S.ob.d,t=computeTargets(d);
+  const cfg=JSON.parse(JSON.stringify(DEF_SETTINGS));
+  cfg.name=d.name||'';
+  cfg.units=d.units;
+  cfg.profile={heightCm:d.heightCm,birthday:d.birthday,sex:d.sex};
+  cfg.programStart=S.today;
+  cfg.gymTarget=d.sessions;
+  cfg.glp1=!!d.glp1;
+  cfg.targets={calories:t.calories,protein:t.protein,carbs:t.carbs,fat:t.fat,water:t.water,steps:t.steps,creatine:t.creatine,floor:t.floor};
+  cfg.body={currentWeight:d.weightKg,startingWeight:d.weightKg,targetWeight:d.targetKg,bodyFat:null,startBodyFat:null,muscleMass:null};
+  cfg.notifications={water:{enabled:true},gym:{enabled:true},weight:{enabled:true},dose:{enabled:!!d.glp1}};
+  DB.saveSettings(cfg);
+  S.cfg=cfg;
+  DB.addWeight(S.today,d.weightKg);
+  document.getElementById('onboard').classList.remove('show');
+  S.ob=null;
+  renderScreen(S.screen);
+  toast('\u{1F44B}','Plan ready',t.calories+' kcal and '+t.protein+'g protein a day. All of it editable in Settings.');
+}
+function renderOnboard(){
+  const d=S.ob.d,st=S.ob.step;
+  const u=d.units==='lb'?'lb':'kg';
+  const opt=(k,v,label)=>'<button class="ob-opt'+(d[k]===v?' on':'')+'" onclick="obCapture();obSet(\''+k+'\','+(typeof v==='string'?'\''+v+'\'':v)+')">'+label+'</button>';
+  const tog=(k,title,body)=>'<button class="ob-tog'+(d[k]?' on':'')+'" onclick="obTog(\''+k+'\')"><div class="ob-box">'+(d[k]?'\u2713':'')+'</div><div><div style="font-size:14px;font-weight:600;color:var(--t1)">'+title+'</div><div style="font-size:12px;color:var(--t2);line-height:1.45;margin-top:3px">'+body+'</div></div></button>';
+  const body=[];
+  if(st===0){
+    body.push('<div class="ob-step">FitTrack</div>',
+      '<div class="ob-h">A few questions, then it is yours.</div>',
+      '<div class="ob-p">This builds a starting plan from your own numbers. Everything stays on this phone: there is no account and nothing to sign up for. Every target it sets is editable afterwards, and the app replaces its own estimates with measured ones as soon as you have logged enough for it to know better.</div>',
+      '<div class="inp-grp"><div class="inp-lbl">What should it call you? (optional)</div><input class="inp-field" id="ob-n" type="text" value="'+(d.name||'')+'" placeholder="Your name" autocorrect="off"></div>');
+  } else if(st===1){
+    body.push('<div class="ob-step">Step 1 of 4</div><div class="ob-h">About you</div>',
+      '<div class="ob-p">Used for the calorie maths and nothing else.</div>',
+      '<div class="ob-opts">'+opt('sex','male','Male')+opt('sex','female','Female')+'</div>',
+      '<div class="inp-grp"><div class="inp-lbl">Height (cm)</div><input class="inp-field" id="ob-h" type="number" inputmode="decimal" value="'+(d.heightRaw||'')+'" placeholder="171.5"></div>',
+      '<div class="inp-grp"><div class="inp-lbl">Date of birth</div><input class="inp-field" id="ob-bd" type="date" value="'+(d.birthday||'')+'" max="'+S.today+'"></div>');
+  } else if(st===2){
+    body.push('<div class="ob-step">Step 2 of 4</div><div class="ob-h">Where you are, where you want to be</div>',
+      '<div class="ob-p">A nearer target beats an ambitious one. You can move it whenever you like.</div>',
+      '<div class="ob-opts">'+opt('units','kg','Kilograms')+opt('units','lb','Pounds')+'</div>',
+      '<div class="inp-grp"><div class="inp-lbl">Current weight ('+u+')</div><input class="inp-field" id="ob-w" type="number" inputmode="decimal" value="'+(d.weightRaw||'')+'"></div>',
+      '<div class="inp-grp"><div class="inp-lbl">Target weight ('+u+')</div><input class="inp-field" id="ob-t" type="number" inputmode="decimal" value="'+(d.targetRaw||'')+'"></div>');
+  } else if(st===3){
+    body.push('<div class="ob-step">Step 3 of 4</div><div class="ob-h">Training</div>',
+      '<div class="ob-p">Realistically, how many sessions a week? Not the best week you have ever had, the ordinary one. The program is three interchangeable full body sessions you can do on any days, so this only sets the weekly target the reminders count against.</div>',
+      '<div class="ob-opts">'+[0,1,2,3,4,5].map(n=>opt('sessions',n,n===0?'None':String(n))).join('')+'</div>',
+      '<div class="ob-step" style="margin-top:20px">Step 4 of 4</div><div class="ob-h">Anything you are taking</div>',
+      '<div class="ob-p">All optional, and each one changes what the app says to you.</div>',
+      tog('glp1','A GLP-1 medication','Semaglutide, tirzepatide, retatrutide and the like. Sets a smaller deficit, because on these the real risk is eating too little and losing muscle, and turns on the weekly dose reminder.'),
+      tog('creatine','Creatine','Adds a one tap daily log.'),
+      tog('protein','Protein powder','Adds a one tap shake to the food screen.'));
+  } else {
+    const t=computeTargets(d);
+    const w=x=>d.units==='lb'?(x*2.20462).toFixed(1)+' lb':x.toFixed(1)+' kg';
+    body.push('<div class="ob-step">Your starting plan</div><div class="ob-h">Here is what that works out to</div>',
+      '<div class="ob-p">An estimate, and it says so. Once you have logged a couple of weeks the app works out what you actually burn from your own data and stops guessing.</div>',
+      '<div class="ob-plan">',
+      '<div class="ob-row"><div class="ob-k">Daily calories</div><div class="ob-v">'+t.calories+' kcal</div></div>',
+      '<div class="ob-row"><div class="ob-k">Protein</div><div class="ob-v">'+t.protein+' g</div></div>',
+      '<div class="ob-row"><div class="ob-k">Carbs</div><div class="ob-v">'+t.carbs+' g</div></div>',
+      '<div class="ob-row"><div class="ob-k">Fat</div><div class="ob-v">'+t.fat+' g</div></div>',
+      '<div class="ob-row"><div class="ob-k">Water</div><div class="ob-v">'+(t.water/1000).toFixed(1)+' L</div></div>',
+      '<div class="ob-row"><div class="ob-k">Steps</div><div class="ob-v">'+t.steps.toLocaleString()+'</div></div>',
+      '<div class="ob-row"><div class="ob-k">Gym</div><div class="ob-v">'+d.sessions+' a week</div></div>',
+      '</div>',
+      '<div style="font-size:12px;color:var(--t3);line-height:1.55">Estimated maintenance is '+t.tdee+' kcal, so this runs a '+Math.max(0,t.tdee-t.calories)+' kcal daily deficit, roughly '+((t.tdee-t.calories)*7/7700).toFixed(2)+' kg a week. Never eat below '+t.floor+' kcal: past that you are spending muscle, not fat. Target '+w(d.targetKg)+' from '+w(d.weightKg)+'.</div>');
+  }
+  const last=st===4;
+  const nav='<div class="ob-nav">'+(st>0?'<button class="ob-btn ob-btn-s" onclick="obBack()">Back</button>':'')+
+    '<button class="ob-btn ob-btn-p" onclick="'+(last?'obFinish()':'obNext()')+'">'+(last?'Start':st===0?'Get started':'Continue')+'</button></div>';
+  document.getElementById('onboard').innerHTML=body.join('')+'<div class="ob-err">'+(S.ob.err||'')+'</div>'+nav;
+}
 /* ── PREDICTION ─────────────────────────────────────────────────────────
    Everything below is deliberately pessimistic. He asked for that in those
    words, and it is also the only version that survives contact with reality:
@@ -1489,7 +1688,7 @@ function renderProgress(){
           '<div class="stat-box"><div class="stat-box-lbl">You ate</div><div class="stat-box-val" style="color:var(--blue-light)">'+e.meanIntake+'</div><div class="stat-box-unit">kcal/day</div></div>'+
           '<div class="stat-box"><div class="stat-box-lbl">'+(gap>0?'Deficit':'Surplus')+'</div><div class="stat-box-val" style="color:'+(gap>0?'var(--green)':'var(--coral)')+'">'+Math.abs(gap)+'</div><div class="stat-box-unit">kcal/day</div></div>'+
         '</div>'+
-        '<div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--border);font-size:12px;color:var(--t3);line-height:1.5">From '+e.logged+' logged days out of the last '+e.span+'. On this drug the risk is eating too little, not too much: below '+(S.cfg.targets.calories-200)+' kcal you start paying for it in muscle.</div>';
+        '<div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--border);font-size:12px;color:var(--t3);line-height:1.5">From '+e.logged+' logged days out of the last '+e.span+'. On this drug the risk is eating too little, not too much: below '+(S.cfg.targets.floor||S.cfg.targets.calories-200)+' kcal you start paying for it in muscle.</div>';
       })()}
     </div>
     <div class="section-label">Resting heart rate</div>
@@ -2165,6 +2364,7 @@ function buildTabs(){
 /* ── INIT ───────────────────────────────────── */
 function init(){
   S.today=todayStr();
+  const firstRun=needsOnboard();
   resetIfStale();
   S.cfg=DB.settings();
   S.workout=DB.workout();
@@ -2189,7 +2389,10 @@ function init(){
   initPush();
   loadFoods();
   loadProgram();
-  // Seed initial weight if empty
+  // Onboarding collects a real weight in a moment. Seeding the placeholder
+  // first would put a fictional entry at the head of the chart that every
+  // trend and projection then reads as his actual starting point.
+  if(firstRun){openOnboard();return;}
   const wh=DB.weights();
   if(wh.length===0)DB.addWeight(S.cfg.programStart||S.today,S.cfg.body.startingWeight);
 }
