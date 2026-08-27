@@ -1,0 +1,6 @@
+# Local secrets for `wrangler dev`. Holds VAPID_PRIVATE_KEY.
+# This repo is public. Never commit this file.
+.dev.vars
+
+node_modules/
+.wrangler/
