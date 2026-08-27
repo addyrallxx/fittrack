@@ -1,0 +1,29 @@
+name = "fittrack-push"
+main = "src/index.js"
+compatibility_date = "2026-08-27"
+
+# Every 30 minutes. Each reminder time in src/index.js lands on :00 or :30, so
+# a 30-minute tick can never miss one. Cron triggers are always UTC and there
+# is no per-trigger timezone setting, so the Worker resolves each user's own
+# local wall clock inside scheduled() instead.
+#
+# The free plan allows 5 cron triggers per ACCOUNT (not per Worker). This uses
+# one of them. Several blog posts quote different numbers; the Cloudflare docs
+# are the source of truth.
+[triggers]
+crons = ["*/30 * * * *"]
+
+[[kv_namespaces]]
+binding = "KV"
+id = "28caa8c97997496899b70f56889f18a7"
+
+[vars]
+# Public half of the VAPID pair. Safe to commit: the browser receives it as
+# applicationServerKey anyway, and it must match VAPID_PUBLIC in fittrack.html.
+VAPID_PUBLIC_KEY = "BB3_s3JhI7PA6q8YLZYmKepjaW394uuyxkzjWUz2Bm3HMguRlYv3v5rOeU_KaL_JCpz1uLqb0sQgIx-75a3RC_0"
+# Contact address required by RFC 8292 so a push service can reach the sender.
+VAPID_SUBJECT = "mailto:adnanshakib888@gmail.com"
+
+# VAPID_PRIVATE_KEY is NOT here and must never be. Set it once with:
+#   npx wrangler secret put VAPID_PRIVATE_KEY
+# See README.md for the deploy sequence.
