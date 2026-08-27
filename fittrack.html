@@ -526,6 +526,8 @@ function saveStepsFor(date,v){
 function ingestFromHash(){
   const h=(location.hash||'').replace(/^#/,'');if(!h)return;
   const q=new URLSearchParams(h);
+  const act=q.get('act');
+  if(act){history.replaceState(null,'',location.pathname+location.search);handleAction(act);return;}
   const raw=q.get('steps');if(raw==null)return;
   const v=parseInt(raw,10);if(isNaN(v)||v<0||v>200000)return;
   const d=q.get('date')||S.today;
@@ -1329,7 +1331,7 @@ function toggleNotif(key){
   S.cfg.notifications[key].enabled=!S.cfg.notifications[key].enabled;
   DB.saveSettings(S.cfg);
   renderScreen(4);
-  if(S.cfg.notifications[key].enabled)scheduleNotifs();
+  syncPush();
 }
 /* Retained deliberately: the settings row that called this is hidden, not
    deleted. Restoring Ramadan mode means un-hiding that row. */
@@ -1533,31 +1535,128 @@ function saveNewEx(){
   S.workout.days[S.workoutDay].exercises.push(ex);DB.saveWorkout(S.workout);
   closeSheet();renderScreen(1);toast('✅',`${name} added`,'');
 }
+/* ── PUSH NOTIFICATIONS ─────────────────────────────────
+   The old version used in-page setTimeout + new Notification(). Those timers
+   die the instant the PWA is backgrounded, which is exactly why every toggle
+   read "on" and nothing ever arrived. Real delivery needs a service worker
+   plus a server that can send while the app is closed.
+
+   PUSH_API empty means the reminder server is not deployed yet. The app still
+   registers the worker and subscribes, and says so plainly rather than
+   claiming reminders are live when nothing is scheduled. */
+const PUSH_API='';
+const VAPID_PUBLIC='BB3_s3JhI7PA6q8YLZYmKepjaW394uuyxkzjWUz2Bm3HMguRlYv3v5rOeU_KaL_JCpz1uLqb0sQgIx-75a3RC_0';
+
+function urlB64ToU8(s){
+  const pad='='.repeat((4-s.length%4)%4);
+  const raw=atob((s+pad).replace(/-/g,'+').replace(/_/g,'/'));
+  return Uint8Array.from(raw,c=>c.charCodeAt(0));
+}
+/* Stable per-device id. Not an account: it only needs to be unique enough for
+   the server to key one subscription and one set of preferences off. */
+function deviceId(){
+  let id=DB.get('ft_uid','');
+  if(!id){id='u_'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);DB.set('ft_uid',id);}
+  return id;
+}
+function tzName(){try{return Intl.DateTimeFormat().resolvedOptions().timeZone||'America/Edmonton';}catch(e){return 'America/Edmonton';}}
+function isIOS(){return /iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
+/* iOS has no Push API in an ordinary Safari tab, at any version. Only an
+   installed home-screen app gets one, so this decides which advice to show. */
+function isStandalone(){return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;}
+
+async function sendSub(sub){
+  if(!PUSH_API||!sub)return false;
+  try{
+    const r=await fetch(PUSH_API+'/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({id:deviceId(),tz:tzName(),sub,prefs:S.cfg.notifications||{}})});
+    return r.ok;
+  }catch(e){return false;}
+}
+/* Re-post whatever subscription exists. Called on launch and whenever a
+   reminder toggle changes, so the server's copy cannot drift from the app's. */
+async function syncPush(){
+  if(!('serviceWorker' in navigator))return false;
+  try{
+    const reg=await navigator.serviceWorker.getRegistration();
+    const sub=reg&&await reg.pushManager.getSubscription();
+    return sub?sendSub(sub.toJSON()):false;
+  }catch(e){return false;}
+}
+function initPush(){
+  if(!('serviceWorker' in navigator))return;
+  navigator.serviceWorker.register('sw.js',{scope:'./'}).then(()=>{
+    if(('Notification' in window)&&Notification.permission==='granted')syncPush();
+  }).catch(e=>console.warn('SW registration failed',e));
+  navigator.serviceWorker.addEventListener('message',e=>{
+    const d=e.data||{};
+    if(d.type==='action')handleAction(d.act);
+    if(d.type==='resubscribed')sendSub(d.sub);
+  });
+}
+/* Notification action buttons route through the same functions the on-screen
+   buttons use, so a tap from the lock screen and a tap inside the app write
+   identically. No parallel write path to keep in sync. */
+function handleAction(act){
+  if(!act)return;
+  const p=String(act).split(':');
+  /* Validate rather than defaulting. A NaN amount falling back to a plausible
+     250 would silently log water that was never drunk, which is worse than
+     ignoring the tap: the log is what every projection is built on. */
+  if(p[0]==='water'){
+    // Digits only. parseInt('250abc') is 250, and the hash form of this is
+    // reachable from any link, so accept an exact number or nothing at all.
+    if(!/^\d{1,4}$/.test(p[1]||''))return;
+    const ml=parseInt(p[1],10);if(ml>0&&ml<=2000)addWater(ml);return;
+  }
+  if(p[0]==='weight'){openWeightSheet();return;}
+  if(p[0]==='steps'){openStepsSheet(S.today);return;}
+  if(p[0]==='gym'){go(1);return;}
+}
+
 function openNotifInfo(){
+  const perm=('Notification' in window)?Notification.permission:'none';
+  const install=isIOS()&&!isStandalone();
+  let title,detail,cta=true;
+  if(perm==='none'){title='Not supported here';detail='This browser cannot show notifications. Try Chrome on Android, or Safari on iPhone.';cta=false;}
+  else if(install){title='Add to Home Screen first';detail='Tap Share, then Add to Home Screen, then open FitTrack from the new icon and come back here. An ordinary Safari tab cannot receive notifications at all, no matter what you allow.';cta=false;}
+  else if(perm==='denied'){title='Blocked';detail='Notifications were denied for this site. Re-allow them in your browser site settings, then reopen this.';cta=false;}
+  else if(perm==='granted'){title='Notifications are allowed';detail=PUSH_API?'Reminders are scheduled on the server, so they arrive whether or not the app is open.':'The reminder server is not live yet, so nothing is scheduled. Turning this on now means it starts working the moment it is.';}
+  else{title='Set up reminders';detail='Water through the day, a nudge twice on gym days, weight on Monday morning, and your dose reminder. All of it runs on the server, so it works with the app closed.';}
   openSheet(`<div style="padding:0 20px 20px">
-    <div style="font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:20px">To receive reminders, add this page to your Home Screen and allow notifications in your browser settings.</div>
-    <button class="sheet-btn sheet-btn-primary" onclick="reqNotif()">🔔 Enable notifications</button>
-    <button class="sheet-btn sheet-btn-secondary" onclick="closeSheet()">Not now</button>
+    <div style="font-size:15px;font-weight:700;color:var(--t1);margin-bottom:6px">${title}</div>
+    <div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:20px">${detail}</div>
+    ${cta?'<button class="sheet-btn sheet-btn-primary" onclick="reqNotif()">Enable notifications</button>':''}
+    <button class="sheet-btn sheet-btn-secondary" onclick="closeSheet()">${cta?'Not now':'Close'}</button>
   </div>`,'Notifications');
 }
 async function reqNotif(){
-  if(!('Notification' in window)){closeSheet();return;}
-  const p=await Notification.requestPermission();closeSheet();
-  if(p==='granted'){toast('🔔','Notifications enabled!','You\'ll get daily reminders');scheduleNotifs();}
-  else toast('❌','Permission denied','Enable in browser settings');
-}
-function scheduleNotifs(){
-  if(!('Notification' in window)||Notification.permission!=='granted')return;
-  const schedule=[{key:'weight',h:12,m:0,title:'Time to log your weight',body:'Keep your progress tracked 📊'},
-    {key:'protein',h:20,m:0,title:'Protein check-in',body:`Hit ${S.cfg.targets.protein}g protein today?`},
-    {key:'gym',h:22,m:0,title:'Did you train today?',body:'Log your workout before midnight 💪'}];
-  const now=new Date();
-  schedule.forEach(n=>{
-    if(S.cfg.notifications?.[n.key]?.enabled===false)return;
-    const t=new Date(now.getFullYear(),now.getMonth(),now.getDate(),n.h,n.m,0);
-    const delay=t.getTime()-now.getTime();
-    if(delay>0)setTimeout(()=>new Notification(n.title,{body:n.body}),delay);
-  });
+  if(!('Notification' in window)||!('serviceWorker' in navigator)){
+    closeSheet();toast('❌','Not supported','This browser has no push support');return;
+  }
+  /* requestPermission must be the first thing awaited. On iOS the user-gesture
+     context is lost across any earlier await and the prompt silently never
+     appears, which looks identical to a bug. */
+  let perm;
+  try{perm=await Notification.requestPermission();}catch(e){perm='denied';}
+  if(perm!=='granted'){closeSheet();toast('❌','Permission denied','Allow notifications in your site settings');return;}
+  try{
+    const reg=await navigator.serviceWorker.register('sw.js',{scope:'./'});
+    await navigator.serviceWorker.ready;
+    let sub=await reg.pushManager.getSubscription();
+    if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlB64ToU8(VAPID_PUBLIC)});
+    closeSheet();
+    const ok=await sendSub(sub.toJSON());
+    if(ok)toast('🔔','Reminders are live','Water, gym, weight and dose');
+    else if(!PUSH_API)toast('🔔','Notifications allowed','Reminder server is not live yet');
+    else toast('⚠️','Allowed, but not synced','Could not reach the reminder server');
+    /* Fire one immediately through the service worker. It proves the whole
+       pipeline end to end, and it is the difference between "it says on" and
+       "I have seen one arrive". */
+    reg.showNotification('FitTrack is set up',{body:'Your reminders will look like this.',icon:'icon-192.png',badge:'icon-192.png',tag:'ft-setup'});
+  }catch(e){
+    closeSheet();toast('❌','Could not subscribe',String(e&&e.message||e).slice(0,64));
+  }
 }
 function exportData(){
   const data={settings:DB.get('ft_settings',{}),workout:DB.get('ft_workout',{}),logs:DB.allLogs(),weights:DB.weights(),customFoods:DB.customFoods(),exportDate:new Date().toISOString()};
@@ -1662,7 +1761,7 @@ function init(){
   ingestFromHash();
   window.addEventListener('hashchange',ingestFromHash);
   initSwipe();
-  scheduleNotifs();
+  initPush();
   // Seed initial weight if empty
   const wh=DB.weights();
   if(wh.length===0)DB.addWeight(S.cfg.programStart||S.today,S.cfg.body.startingWeight);
