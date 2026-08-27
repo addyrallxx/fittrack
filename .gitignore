@@ -1,2 +1,5 @@
 data/order-screenshots/*
 !data/order-screenshots/README.md
+
+# wrangler build and state cache
+.wrangler/
