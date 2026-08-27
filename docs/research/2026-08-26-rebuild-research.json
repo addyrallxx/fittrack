@@ -1,0 +1,1804 @@
+{
+  "summary": "Parallel research for the FitTrack rebuild: retatrutide protocol, Calgary NW food data, Crunch gym equipment, iOS PWA push, competitor features",
+  "agentCount": 8,
+  "logs": [],
+  "result": {
+    "reta": {
+      "approvalStatus": "NOT approved anywhere as of Aug 2026 — investigational only. FDA: no approval; Lilly announced (Jul 23, 2026) it will submit a BLA to FDA in Q1 2027, with review typically 10-12 months, so realistic FDA approval is late 2027/2028 at the earliest (freemedicaljournals.com/blog/retatrutide-fda-approval-status-2026, drugs.com/history/retatrutide.html). Health Canada: as of the Jun 30 2026 update, retatrutide does not even appear on Health Canada's public list of new-drug submissions under review — it hasn't reached step one (glp1prices.ca/blog/retatrutide-canada, glp3planner.com/resources/retatrutide-approved-countries). Current real-world access anywhere (including what the user is doing) is via research-chemical/compounding channels outside any approved, regulated supply chain — CBS News reported doctors prescribing it off-label/investigationally despite no approval (cbsnews.com/projects/2026/experimental-weight-loss-drug/). This is unverified/uncontrolled sourcing by definition; the app should flag this to the user, not treat retatrutide as a normal supplement.",
+      "mechanism": "Retatrutide (LY3437943) is a single 39-amino-acid peptide, fatty-acid-conjugated for a ~6-day half-life enabling once-weekly dosing, that simultaneously agonizes three receptors: GLP-1R, GIPR, and the glucagon receptor (GCGR) (medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926; nature.com/articles/s41421-024-00700-0). GLP-1R agonism drives appetite suppression and delayed gastric emptying — the same mechanism as semaglutide. GIPR agonism contributes to insulin sensitization and, per Lilly's own description, was engineered to be relatively stronger in this molecule while GLP-1R/GCGR activity is comparatively more attenuated. The GCGR (glucagon) component is what differentiates retatrutide from tirzepatide (which has no glucagon activity) and semaglutide: in animal models, glucagon-receptor activation adds an energy-expenditure effect on top of the appetite-suppression from the other two receptors, meaning part of retatrutide's edge over dual/single agonists is plausibly not just \"eating less\" but modestly higher resting energy use — this same glucagon activity is also the most likely driver of its heart-rate side effect (see side effects). Unverified: exact human energy-expenditure magnitude from the glucagon arm alone has not been isolated in a clean human RCT that I found; treat the \"increased energy expenditure\" claim as mechanistically plausible from animal data, not as a quantified human effect.",
+      "sideEffects": [
+        {
+          "effect": "Nausea",
+          "frequency": "Strongly dose-dependent. ~14.5% at the 1mg dose (close to the user's actual dose) vs 45.2% at 12mg in the phase 2 trial; relative risk vs placebo was 2.69 at 4mg, 4.27 at 8mg, 4.00 at 12mg. Fast-titration arms (jumping straight to a higher dose) saw nausea as high as 60% at 8mg — starting dose and titration speed matter a lot (pace-cme.org/news/results-of-phase-2-trial-with-gip-glp-1-and-glucagon-receptor-agonist-to-treat-obesity/2456473/).",
+          "doseRelated": "yes, strongly",
+          "mitigation": "Slow titration (which the user's schedule already does: 1mg x2 weeks, then 1.5mg), small low-fat/low-fiber meals during escalation weeks, stop eating well before feeling full, avoid greasy/heavy food the day of and day after injection."
+        },
+        {
+          "effect": "Diarrhea / vomiting / constipation (GI cluster)",
+          "frequency": "Most common adverse events overall in the phase 2 NEJM trial; mostly mild-to-moderate, concentrated in the dose-escalation period and easing at a stable maintenance dose (nejm.org/doi/full/10.1056/NEJMoa2301972).",
+          "doseRelated": "yes",
+          "mitigation": "Hydration, fiber/fluid for constipation, bland food and electrolytes for diarrhea; at his low dose (1-1.5mg) this cluster should be milder than the widely-reported 8-12mg trial experience."
+        },
+        {
+          "effect": "Increased resting heart rate",
+          "frequency": "~5-10 bpm average increase observed in trials, peaking around week 24 and declining thereafter; higher than tirzepatide (~2-4 bpm) or semaglutide (~1-4 bpm), attributed to the glucagon-receptor component unique to retatrutide (secondnature.io/us/guides/weight-loss-medications/retatrutide-side-effects; PMC12918571 systematic review/meta-analysis). Reported arrhythmia/palpitation rates across phase 2/3 were 2-11% on retatrutide vs ~2% on placebo, none classified as serious in trial data (doctronic.ai/blog/can-retatrutide-cause-heart-palpitations/).",
+          "doseRelated": "yes — this is dose-dependent and the user's 1-1.5mg dose is far below the 8-12mg doses that produced the reported 5-10bpm figure, so expect a smaller effect, unverified exactly how much smaller since no trial isolated HR change at 1-1.5mg specifically.",
+          "mitigation": "Track resting heart rate (his app should log it); if resting HR rises meaningfully and stays elevated, or he gets palpitations, that's a flag to raise with a doctor, not to just push through."
+        },
+        {
+          "effect": "Gallstone risk / biliary events",
+          "frequency": "Class effect of rapid, substantial weight loss (any GLP-1-class drug), not retatrutide-specific; risk rises with faster/greater weight loss.",
+          "doseRelated": "indirect — tied to rate of weight loss, not dose per se",
+          "mitigation": "At his low dose the rate of loss should be modest (see below), which is protective; still worth knowing right-upper-quadrant pain after fatty meals is a symptom to escalate, not ignore."
+        }
+      ],
+      "leanMassRisk": "Two different evidence sources apply, and neither is a perfect match for a 1-1.5mg, 71kg, non-diabetic user, so treat this as directional. (1) Class data across GLP-1/GLP-1-GIP drugs (semaglutide, tirzepatide): lean/fat-free mass has comprised roughly 25-40% of total weight lost in recent trials (mdpi.com/2218-1989/16/6/364; getfitcraft.com/science/glp-1-muscle-loss-research). (2) Retatrutide-specific: a phase 2 DXA substudy in people with type 2 diabetes (different population, different dose arms than his — 0.5/4/8/12mg) found total fat mass fell 4.9% (0.5mg) up to ~23-26% (8-12mg) vs 4.5% on placebo, and reported that lean mass loss as a share of total weight loss was similar to or somewhat better than comparators, not worse (thelancet.com/journals/landia/article/PIIS2213-8587(25)00092-0/abstract; pubmed.ncbi.nlm.nih.gov/40609566/). Taking a reasonable midpoint from the broader incretin-class literature: expect roughly 20-30% of his total weight lost to be lean mass by default, WITHOUT resistance training and adequate protein — and that ratio is exactly what's modifiable. A 2025 case-series (n=3) combining semaglutide/tirzepatide with 3-5x/week resistance training and 0.73-1.04 g protein/lb fat-free mass produced lean-tissue changes ranging from -6.9% to +5.8% despite 13-33% total weight loss (pmc.ncbi.nlm.nih.gov/articles/PMC12536186/); a separate 2025 cohort (n=200) pairing GLP-1 therapy with resistance-training education and protein generally >0.36g/lb bodyweight lost ~13% body weight but only ~3% muscle mass over 6 months (davidprotein.com/blogs/the-column/protein-glp1-medications-muscle-preservation). Bottom line for programming the app: lean-mass loss is not fixed by the drug, it is primarily a function of protein intake and resistance-training adherence, both controllable even by a low-commitment user who trains 3x/week.",
+      "nutritionGuidance": {
+        "proteinGperKg": "1.6-2.0 g/kg bodyweight/day (at 71.2kg that's ~114-142g/day). This sits at the upper end of what's cited for resistance-training individuals in a deficit (1.2-1.6g/kg baseline recommendation, up to 2.0g/kg with resistance training per multiple sources including davidprotein.com and roidly.com/2026/03/06/retatrutide-muscle-loss). Given his appetite will be suppressed by the drug and he's already lazy/low-commitment, front-load protein at the start of each meal since he won't have appetite budget left for it later in the day.",
+        "deficitAdvice": "Do not chase an aggressive deficit on top of the drug's own appetite suppression — the appetite suppression at 1-1.5mg is real but much milder than at trial doses (8-12mg), so a moderate self-imposed deficit (roughly 300-500 kcal/day below maintenance) is reasonable and safer than relying on the drug alone to crash intake. Consuming under ~60-75% of maintenance calories risks muscle being broken down for energy even with adequate protein (uchealth.org/today/nutrition-vital-when-taking-glp-1-weight-loss-drugs/). Needs his TDEE calculated, which needs height and age — not yet supplied, flag for app onboarding.",
+        "hydration": "GI side effects (nausea/diarrhea/constipation) plus reduced overall food/fluid intake from appetite suppression raise dehydration risk; no specific retatrutide hydration RCT found, general GLP-1-class guidance of steady fluid intake through the day (not chugging large volumes at once, which worsens fullness/nausea) applies.",
+        "micronutrients": "Not specifically studied for retatrutide at this dose; general GLP-1-class concern is that reduced food volume can push out fiber/micronutrient-dense foods first because the user has limited 'stomach budget' — prioritize whole foods (vegetables, fruit, whole grains) over ultra-processed low-volume calories when appetite allows, per general GLP-1 dietary guidance (mhs.net/blog/2026/03/glp-1-diet-what-to-eat-when-taking-weight-loss-medications). Unverified: no retatrutide-specific micronutrient deficiency data found.",
+        "creatine": "Reasonable to continue. Creatine monohydrate 3-5g/day is one of the most-studied supplements and an RCT using gold-standard kidney testing found no effect on GFR, creatinine clearance, urea, electrolytes or proteinuria even in resistance-trained adults on high protein — but that finding is sourced through a secondary aggregator (weightlossproviderguide.com/glp-1-and-creatine) here, not the primary RCT, so flag as moderately-verified. No completed study has specifically shown creatine preserves muscle in people on a GLP-1/triple-agonist — its plausible benefit rides on the resistance training and protein doing the actual work, not the creatine itself."
+      },
+      "trainingGuidance": "Resistance training, not cardio, is the lever that protects lean mass here — the case-series and cohort data above show lean-mass outcomes ranging from meaningful loss to actual gain at similar total weight loss, with resistance-training frequency and protein as the differentiators, not the drug dose (pmc.ncbi.nlm.nih.gov/articles/PMC12536186/). His stated commitment (3x/week, 45-60min at Crunch Fitness) matches the 3-5x/week frequency used in the favorable-outcome case series, so the plan should be built around that, not around adding more days — a 4th \"bonus\" day is more likely to get skipped and doesn't move the needle enough to justify programming for it given his stated low-commitment profile. Program full-body compound movements (squat/hinge/press/pull pattern each session) over body-part splits, since 3x/week full-body hits each muscle group with enough frequency to signal \"keep this tissue\" even on a week where one session gets missed — a split gets a muscle group skipped entirely if one day drops. Cardio is optional/secondary: it doesn't preserve lean mass the way resistance training does and competes for the same limited calorie/recovery budget while in a deficit; if used at all, keep it light (walking) rather than adding a real cardio-fatigue cost on top of training + a caloric deficit + a drug that already raises resting heart rate. Unverified: no retatrutide-specific resistance-training RCT completed yet — the cited trial (clinicaltrials.gov/study/NCT07457437, \"Function and Lean Mass Preservation With Resistance Exercise During a GLP-1RA Treatment\") is registered but results were not found, so this guidance is extrapolated from GLP-1/tirzepatide-class evidence, not retatrutide-specific evidence.",
+      "doseTimingVsTraining": "No retatrutide-specific or GLP-1-class data found on optimal injection timing relative to training sessions. General, unverified-for-this-drug practical reasoning: nausea/GI symptoms are usually worst in the 24-48h post-injection and during the first days after a dose increase, so scheduling harder training sessions away from injection day (e.g., inject the day after a training day, not right before one) is a reasonable low-cost heuristic, not an evidence-backed protocol. Flag as a practical suggestion, not a sourced claim.",
+      "weekByWeek": [
+        {
+          "week": "2026-08-24",
+          "dose": "1mg (starting dose)",
+          "appetiteLevel": "Mild-moderate suppression typical in week 1; trial 1mg-arm nausea rate was ~14.5%, so GI symptoms possible but usually mild at this dose.",
+          "expect": "Little to no visible/scale change expected yet — early GI adjustment week. Do not judge the drug or the plan on week 1 numbers."
+        },
+        {
+          "week": "2026-08-31",
+          "dose": "1mg (2nd week at same dose)",
+          "appetiteLevel": "Should be settling; less GI symptom load than week 1 typically, though individual variation is real.",
+          "expect": "Scale weight may start trending down modestly (data noise dominates at 71kg scale-weight resolution); this is the last week to establish a baseline weekly-average weight before the first dose increase changes the picture."
+        },
+        {
+          "week": "2026-09-07",
+          "dose": "1.5mg (dose increase)",
+          "appetiteLevel": "Expect a step back up in GI symptoms/appetite suppression for a few days after this increase, similar to (smaller than) what trial dose-escalation weeks showed.",
+          "expect": "Possible short GI-symptom bump; don't schedule the hardest lift of the week in the 48h right after this specific injection if it can be avoided."
+        },
+        {
+          "week": "2026-09-14",
+          "dose": "1.5mg (2nd week at 1.5mg, per plan a maintenance-style hold)",
+          "appetiteLevel": "Should be re-settling toward the milder week-2-at-a-dose pattern seen at 1mg.",
+          "expect": "By week 4 overall, the 1mg-arm trial trajectory (-7.2% at 24 weeks, -8.7% at 48 weeks) is the best available anchor, and it front-loads early — but that's a 48-week trial curve, not a 4-week one, so realistically expect only a small, mostly-noise scale change by this point. Do not extrapolate a 4-week trend into a monthly loss rate."
+        }
+      ],
+      "expectedWeightLossRate": "Conservative, dose-matched anchor: in the phase 2 NEJM trial, the 1mg arm (closest match to his 1-1.5mg dosing) lost -7.2% of body weight at 24 weeks and -8.7% at 48 weeks vs -1.6%/-2.1% on placebo (search result citing nejm.org/doi/full/10.1056/NEJMoa2301972, n=69 in the 1mg arm, trial NCT04881760). At his weight (71.2kg) that trajectory maps to roughly 5.1kg by 24 weeks and 6.2kg by 48 weeks IF he tracked the 1mg-arm trial population exactly — he won't exactly, since he's titrating to 1.5mg (slightly higher than the flat-1mg trial arm, so plausibly somewhat faster) but is a real-world user with imperfect adherence and no trial-protocol structure (plausibly slower). Do not promise the widely-quoted 20-30% figures — those come from 8-12mg maintenance doses held for 48-80 weeks in TRIUMPH-1 (up to 28.3% at 80 weeks, 30.3% at 104 weeks per investor.lilly.com/news-releases/news-release-details/lillys-triple-agonist-retatrutide-delivered-powerful-weight-loss and ajmc.com/view/retatrutide-achieves-up-to-30-3-average-weight-loss-in-phase-3-triumph-1-trial) — his dose is roughly 1/8th to 1/6th of that. A realistic weekly rate to program the app around: roughly 0.1-0.25 kg/week on average over the first 2-3 months, front-loaded (faster in weeks 1-8, tapering after), assuming he holds around 1.5mg — NOT the 0.5-1kg+/week sometimes seen anecdotally at high trial doses. Unverified: no trial arm exactly replicates his specific titration schedule (1mg→1.5mg), so this is an extrapolation from the closest available dose-matched data, not a direct citation.",
+      "safetyFlags": [
+        "This is an investigational, unapproved drug (no FDA, no Health Canada approval as of Aug 2026) obtained outside the regulated pharmaceutical supply chain — the app should not present it as a routine supplement; medical supervision (bloodwork, physician check-ins) is appropriate given the lack of regulatory oversight on the product itself.",
+        "Persistent or severe abdominal pain, especially right-upper-quadrant pain (possible gallstone), or pain radiating to the back (possible pancreatitis) — stop and seek medical care, this is a known class-wide risk tied to rapid weight loss.",
+        "Resting heart rate rising and staying elevated, or new palpitations — retatrutide's glucagon-receptor activity is specifically linked to HR increases (~5-10bpm at trial doses) unlike semaglutide/tirzepatide; worth a baseline HR reading now and periodic checks.",
+        "Persistent vomiting, inability to keep fluids down, or signs of dehydration (dizziness, dark urine) — GI side effects that don't resolve after the escalation period warrant dose reassessment, not pushing through.",
+        "Height and age are not yet supplied and are required to calculate BMI, TDEE, and set a realistic calorie deficit target — flagged explicitly per the task brief, do not invent these values.",
+        "No InBody/DEXA means lean-mass tracking has to be inferred (scale weight trend + progressive-overload performance in the gym as a proxy for \"am I losing strength/muscle\") rather than measured directly — set that expectation in the app rather than promising body-composition precision the tools don't support.",
+        "Rapid/large drops in scale weight (much faster than the ~0.1-0.25kg/week conservative estimate above) at this low a dose would be unusual and worth a gut-check on whether intake has dropped too far (see the 60-75% of maintenance-calories floor above) rather than assumed to be \"working extra well.\""
+      ],
+      "sources": [
+        "https://www.nejm.org/doi/full/10.1056/NEJMoa2301972",
+        "https://pubmed.ncbi.nlm.nih.gov/37366315/",
+        "https://investor.lilly.com/news-releases/news-release-details/lillys-phase-2-retatrutide-results-published-new-england-journal",
+        "https://investor.lilly.com/news-releases/news-release-details/lillys-triple-agonist-retatrutide-delivered-powerful-weight-loss",
+        "https://investor.lilly.com/news-releases/news-release-details/lillys-triple-agonist-retatrutide-successful-two-additional",
+        "https://www.ajmc.com/view/retatrutide-achieves-up-to-30-3-average-weight-loss-in-phase-3-triumph-1-trial",
+        "https://pharmaceutical-journal.com/article/news/phase-iii-retatrutide-study-demonstrates-30-weight-loss",
+        "https://freemedicaljournals.com/blog/retatrutide-fda-approval-status-2026/",
+        "https://www.drugs.com/history/retatrutide.html",
+        "https://www.cbsnews.com/projects/2026/experimental-weight-loss-drug/",
+        "https://glp1prices.ca/blog/retatrutide-canada",
+        "https://glp3planner.com/resources/retatrutide-approved-countries",
+        "https://medical.lilly.com/us/products/answers/what-is-the-mechanism-of-action-of-retatrutide-301926",
+        "https://www.nature.com/articles/s41421-024-00700-0",
+        "https://www.thelancet.com/journals/landia/article/PIIS2213-8587(25)00092-0/abstract",
+        "https://pubmed.ncbi.nlm.nih.gov/40609566/",
+        "https://pace-cme.org/news/results-of-phase-2-trial-with-gip-glp-1-and-glucagon-receptor-agonist-to-treat-obesity/2456473/",
+        "https://www.secondnature.io/us/guides/weight-loss-medications/retatrutide-side-effects",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12918571/",
+        "https://www.doctronic.ai/blog/can-retatrutide-cause-heart-palpitations/",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC12536186/",
+        "https://davidprotein.com/blogs/the-column/protein-glp1-medications-muscle-preservation",
+        "https://www.mdpi.com/2218-1989/16/6/364",
+        "https://getfitcraft.com/science/glp-1-muscle-loss-research",
+        "https://weightlossproviderguide.com/glp-1-and-creatine",
+        "https://www.uchealth.org/today/nutrition-vital-when-taking-glp-1-weight-loss-drugs/",
+        "https://clinicaltrials.gov/study/NCT07457437"
+      ]
+    },
+    "food": {
+      "restaurants": [
+        {
+          "restaurant": "Kolachi BBQ & Grill",
+          "item": "Beef Seekh Kabab Platter (2 kababs, rice, salad)",
+          "servingDesc": "~450g plate",
+          "kcal": 650,
+          "proteinG": 40,
+          "carbsG": 45,
+          "fatG": 30,
+          "source": "https://www.kolachibbq.ca/ (menu categories: BBQ/kebab, karahi) — no published nutrition, estimated from typical seekh kabab (2x100g grilled minced beef) + 1 cup rice + salad",
+          "confidence": "estimated",
+          "halal": "yes (halal Pakistani, Sage Hill NW)",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes"
+          ]
+        },
+        {
+          "restaurant": "Kolachi BBQ & Grill",
+          "item": "Chicken Karahi with 1 naan",
+          "servingDesc": "~500g karahi + 1 naan",
+          "kcal": 700,
+          "proteinG": 45,
+          "carbsG": 55,
+          "fatG": 32,
+          "source": "https://www.kolachibbq.ca/ — estimated from typical tomato-based bone-in chicken karahi (ghee-heavy) plus 1 naan",
+          "confidence": "estimated",
+          "halal": "yes",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes"
+          ]
+        },
+        {
+          "restaurant": "Twist of TAJ",
+          "item": "Chicken Biryani",
+          "servingDesc": "~450g container",
+          "kcal": 750,
+          "proteinG": 35,
+          "carbsG": 90,
+          "fatG": 25,
+          "source": "https://www.twistoftaj.net/menu — estimated from typical dum-style chicken biryani portion (150g chicken, 2.5 cups rice, oil/ghee)",
+          "confidence": "estimated",
+          "halal": "yes (100% halal certified, Nolan Hill NW)",
+          "deliveryApps": [
+            "UberEats",
+            "DoorDash",
+            "SkipTheDishes"
+          ]
+        },
+        {
+          "restaurant": "Twist of TAJ",
+          "item": "Butter Chicken with rice",
+          "servingDesc": "~400g curry + 1 cup rice",
+          "kcal": 850,
+          "proteinG": 40,
+          "carbsG": 70,
+          "fatG": 45,
+          "source": "https://www.twistoftaj.net/menu — estimated from cream/butter-heavy tomato gravy + boneless chicken thigh + rice",
+          "confidence": "estimated",
+          "halal": "yes",
+          "deliveryApps": [
+            "UberEats",
+            "DoorDash",
+            "SkipTheDishes"
+          ]
+        },
+        {
+          "restaurant": "Twist of TAJ",
+          "item": "Tandoori BBQ Platter (mixed grill, no rice)",
+          "servingDesc": "~400g mixed tandoori chicken/seekh",
+          "kcal": 650,
+          "proteinG": 60,
+          "carbsG": 10,
+          "fatG": 38,
+          "source": "https://www.twistoftaj.net/menu — estimated from mixed tandoori grill portion, minimal breading, marinade oil",
+          "confidence": "estimated",
+          "halal": "yes",
+          "deliveryApps": [
+            "UberEats",
+            "DoorDash",
+            "SkipTheDishes"
+          ]
+        },
+        {
+          "restaurant": "Foodyard (Sage Hill)",
+          "item": "Butter Chicken Crispy Chicken Wrap",
+          "servingDesc": "1 wrap",
+          "kcal": 750,
+          "proteinG": 32,
+          "carbsG": 68,
+          "fatG": 38,
+          "source": "https://www.foodyard.ca/menu — estimated from description (fried chicken patty + butter chicken sauce + slaw in wrap)",
+          "confidence": "estimated",
+          "halal": "yes (100% halal)",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Foodyard (Sage Hill)",
+          "item": "Halal Steak Loaded Fries (share size)",
+          "servingDesc": "~500g",
+          "kcal": 1100,
+          "proteinG": 40,
+          "carbsG": 100,
+          "fatG": 60,
+          "source": "https://www.foodyard.ca/menu — estimated from description (fries, chopped steak, melted cheese, animal sauce)",
+          "confidence": "estimated",
+          "halal": "yes",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Marhaba Restaurant",
+          "item": "Chicken Shawarma Platter with rice and fries",
+          "servingDesc": "~500g platter",
+          "kcal": 950,
+          "proteinG": 45,
+          "carbsG": 90,
+          "fatG": 45,
+          "source": "https://marhabarestaurant.ca/menu/ — estimated from shawarma + rice + fries combo described on menu",
+          "confidence": "estimated",
+          "halal": "yes (Arabic & Indian halal, Westwinds NE — ~20 min from Sherwood NW, not a close local option)",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes"
+          ]
+        },
+        {
+          "restaurant": "Marhaba Restaurant",
+          "item": "Chicken Kabsa",
+          "servingDesc": "~400g",
+          "kcal": 800,
+          "proteinG": 40,
+          "carbsG": 85,
+          "fatG": 30,
+          "source": "https://marhabarestaurant.ca/menu/ — estimated from typical spiced rice + roasted chicken quarter",
+          "confidence": "estimated",
+          "halal": "yes",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes"
+          ]
+        },
+        {
+          "restaurant": "Jaffa Shawarma",
+          "item": "Chicken Shawarma Wrap",
+          "servingDesc": "1 wrap ~350g",
+          "kcal": 650,
+          "proteinG": 30,
+          "carbsG": 60,
+          "fatG": 30,
+          "source": "https://order.online/store/jaffa-shawarma-24343592 — estimated from standard Middle Eastern chicken shawarma wrap with garlic sauce",
+          "confidence": "estimated",
+          "halal": "yes (Middle Eastern, Country Hills Blvd NE)",
+          "deliveryApps": [
+            "DoorDash"
+          ]
+        },
+        {
+          "restaurant": "Baladi Shawarma",
+          "item": "Chicken Shawarma Plate with rice",
+          "servingDesc": "~450g",
+          "kcal": 750,
+          "proteinG": 40,
+          "carbsG": 70,
+          "fatG": 30,
+          "source": "Listed near Sage Hill Plaza in Yelp/heyrestaurants search results — no menu nutrition published, estimated from standard shawarma-over-rice plate",
+          "confidence": "estimated",
+          "halal": "yes (halal Middle Eastern, Sage Hill area)",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes"
+          ]
+        },
+        {
+          "restaurant": "Vietnam Palace Grill & Noodle House",
+          "item": "Chicken Pho (large)",
+          "servingDesc": "~700g bowl (broth+noodles+chicken)",
+          "kcal": 500,
+          "proteinG": 30,
+          "carbsG": 65,
+          "fatG": 10,
+          "source": "Listed in Sage Hill restaurant search — no published nutrition, estimated from standard large chicken pho; order chicken/beef broth, confirm no pork stock or char siu topping",
+          "confidence": "estimated",
+          "halal": "unknown — not certified halal, verify broth base and ask no pork toppings",
+          "deliveryApps": [
+            "DoorDash",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Barcelos Flame Grilled Chicken",
+          "item": "Quarter Chicken Breast (grilled, no skin)",
+          "servingDesc": "~150g",
+          "kcal": 280,
+          "proteinG": 45,
+          "carbsG": 2,
+          "fatG": 10,
+          "source": "Beacon Hill NW location per Yelp listing; no published nutrition found — estimated from comparable flame-grilled chicken chain (Swiss Chalet skinless quarter) data at fastfoodnutrition.org/ca/swiss-chalet",
+          "confidence": "estimated",
+          "halal": "unknown, verify with location",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Paros Real Greek",
+          "item": "Chicken Souvlaki Platter",
+          "servingDesc": "~450g with rice/salad",
+          "kcal": 750,
+          "proteinG": 50,
+          "carbsG": 55,
+          "fatG": 30,
+          "source": "Beacon Hill NW per restaurant listing — no published nutrition, estimated from typical Greek chicken souvlaki platter",
+          "confidence": "estimated",
+          "halal": "no certification found — chicken-only order should be pork-free by default (no gyro pork/lamb mix ordered)",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Rice Table Korean Kitchen",
+          "item": "Chicken Bulgogi Bowl",
+          "servingDesc": "~450g bowl",
+          "kcal": 650,
+          "proteinG": 35,
+          "carbsG": 80,
+          "fatG": 18,
+          "source": "Beacon Hill NW per restaurant listing — no published nutrition, estimated from chicken bulgogi + rice bowl composition",
+          "confidence": "estimated",
+          "halal": "unknown, no pork ingredient in this dish by default",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes"
+          ]
+        },
+        {
+          "restaurant": "California Thai",
+          "item": "Chicken Pad Thai",
+          "servingDesc": "~400g",
+          "kcal": 750,
+          "proteinG": 30,
+          "carbsG": 90,
+          "fatG": 25,
+          "source": "Beacon Hill NW per restaurant listing — no published nutrition, estimated from standard restaurant pad Thai portion",
+          "confidence": "estimated",
+          "halal": "unknown, chicken-only version has no pork by default",
+          "deliveryApps": [
+            "DoorDash",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Dave's Hot Chicken",
+          "item": "3-Tender Combo, No/Lite spice (no fries)",
+          "servingDesc": "3 tenders ~250g",
+          "kcal": 490,
+          "proteinG": 45,
+          "carbsG": 30,
+          "fatG": 20,
+          "source": "https://daveshotchickenmenu.us/nutrition/ (chain nutrition aggregator, values vary 490-550 kcal by spice level across sources) — Beacon Hill NW location",
+          "confidence": "chain-equivalent",
+          "halal": "not certified halal, chicken-based, no pork",
+          "deliveryApps": [
+            "DoorDash",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Baekjeong Korean BBQ",
+          "item": "Beef Bulgogi (250g raw portion)",
+          "servingDesc": "250g raw beef",
+          "kcal": 450,
+          "proteinG": 35,
+          "carbsG": 15,
+          "fatG": 28,
+          "source": "Beacon Hill NW — no published nutrition, estimated from 250g marinated beef bulgogi; AVOID pork belly (samgyeopsal) items on this menu entirely",
+          "confidence": "estimated",
+          "halal": "not halal-certified; order beef/chicken cuts only, this menu also sells pork",
+          "deliveryApps": [
+            "DoorDash"
+          ]
+        },
+        {
+          "restaurant": "Blowers & Grafton",
+          "item": "Grilled Chicken Sandwich (ask no bacon)",
+          "servingDesc": "1 sandwich",
+          "kcal": 650,
+          "proteinG": 40,
+          "carbsG": 55,
+          "fatG": 28,
+          "source": "Beacon Hill NW gastropub — no published nutrition, estimated from standard grilled chicken sandwich with cheese and mayo; menu default may include bacon, must be requested off",
+          "confidence": "estimated",
+          "halal": "unknown, must confirm no bacon/pork ingredients when ordering",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes"
+          ]
+        },
+        {
+          "restaurant": "The Bro'Kin Yolk",
+          "item": "Egg White & Veggie Omelette",
+          "servingDesc": "~300g plate, no meat side",
+          "kcal": 350,
+          "proteinG": 30,
+          "carbsG": 15,
+          "fatG": 18,
+          "source": "Beacon Hill NW breakfast spot — no published nutrition, estimated from standard egg-white veggie omelette; avoid bacon/sausage sides",
+          "confidence": "estimated",
+          "halal": "unknown, order vegetarian to avoid pork breakfast meats",
+          "deliveryApps": [
+            "DoorDash",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "State & Main Kitchen & Bar",
+          "item": "Grilled Chicken Breast entree with vegetables",
+          "servingDesc": "~350g",
+          "kcal": 550,
+          "proteinG": 45,
+          "carbsG": 30,
+          "fatG": 25,
+          "source": "Nolan Hill/Beacon Hill NW — no published nutrition, estimated from standard grilled chicken breast entree",
+          "confidence": "estimated",
+          "halal": "unknown, chicken-only order should be pork-free by default",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes"
+          ]
+        },
+        {
+          "restaurant": "A&W Canada",
+          "item": "Grilled Chicken Deluxe sandwich",
+          "servingDesc": "194g",
+          "kcal": 320,
+          "proteinG": 23,
+          "carbsG": 37,
+          "fatG": 9,
+          "source": "https://www.myfooddiary.com/foods/7333082/a-and-w-grilled-chicken-club (sourced from A&W published nutrition data)",
+          "confidence": "published",
+          "halal": "not halal-certified, no pork in this item",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "A&W Canada",
+          "item": "Chicken Slider, Grilled",
+          "servingDesc": "127g",
+          "kcal": 200,
+          "proteinG": 10,
+          "carbsG": 19,
+          "fatG": 6,
+          "source": "https://mobile.fatsecret.com/calories-nutrition/a-w/chicken-slider-grilled (A&W published data)",
+          "confidence": "published",
+          "halal": "not halal-certified, no pork",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Wendy's Canada",
+          "item": "Grilled Chicken Sandwich",
+          "servingDesc": "1 sandwich",
+          "kcal": 370,
+          "proteinG": 32,
+          "carbsG": 36,
+          "fatG": 10,
+          "source": "https://fastfoodnutrition.org/wendys/grilled-chicken-sandwich (aggregated from Wendy's published nutrition)",
+          "confidence": "chain-equivalent",
+          "halal": "not halal-certified, no pork",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Popeyes Canada",
+          "item": "Classic Chicken Sandwich",
+          "servingDesc": "1 sandwich",
+          "kcal": 700,
+          "proteinG": 28,
+          "carbsG": 50,
+          "fatG": 42,
+          "source": "https://plkcanadadeliveryassets.s3.us-east-1.amazonaws.com/PLK+CAN+Nutrition+Guide+-+2025.pdf (Popeyes Canada official 2025 nutrition guide)",
+          "confidence": "published",
+          "halal": "not halal-certified, no pork",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Mary Brown's Chicken",
+          "item": "Medium Chicken Breast (Original fried, bone-in)",
+          "servingDesc": "1 piece",
+          "kcal": 318,
+          "proteinG": 26,
+          "carbsG": 11,
+          "fatG": 19,
+          "source": "https://www.mynetdiary.com/food/calories-in-medium-chicken-breast-by-mary-brown-s-peace-42249171-0.html (Mary Brown's published nutrition)",
+          "confidence": "published",
+          "halal": "not halal-certified, no pork (chicken only chain)",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Panago Pizza",
+          "item": "True Canadian Pizza, Hand-Tossed (1 medium slice)",
+          "servingDesc": "1 slice",
+          "kcal": 270,
+          "proteinG": 14,
+          "carbsG": 27,
+          "fatG": 12,
+          "source": "https://www.panago.com/nutrition (Panago official nutrition page, per third-party aggregation)",
+          "confidence": "published",
+          "halal": "not halal-certified; True Canadian topping is bacon-based (pork) — order Classic/Chicken/Veggie pizzas instead to avoid pork",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Tahini's",
+          "item": "Chicken Shawarma (meat only)",
+          "servingDesc": "185g",
+          "kcal": 210,
+          "proteinG": 34,
+          "carbsG": 1,
+          "fatG": 7,
+          "source": "https://www.mynetdiary.com/food/calories-in-chicken-shawarma-185g-by-tahini-s-serving-34537148-0.html (Tahini's published nutritional info, see also tahinis.com/nutritional-info)",
+          "confidence": "published",
+          "halal": "not halal-certified but no pork on menu (shawarma chain)",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Tahini's",
+          "item": "Chicken Shawarma Wrap, Medium",
+          "servingDesc": "1 wrap",
+          "kcal": 510,
+          "proteinG": 33,
+          "carbsG": 58,
+          "fatG": 8,
+          "source": "https://www.mynetdiary.com/food/calories-in-chicken-shawarma-wrap-medium-by-tahini-s-serving-34537105-0.html",
+          "confidence": "published",
+          "halal": "no pork",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Tahini's",
+          "item": "Large Chicken Shawarma and Rice",
+          "servingDesc": "1 bowl",
+          "kcal": 770,
+          "proteinG": 43,
+          "carbsG": 86,
+          "fatG": 16,
+          "source": "https://www.mynetdiary.com/food/calories-in-large-chicken-shawarma-and-rice-by-tahini-s-serving-34537117-0.html",
+          "confidence": "published",
+          "halal": "no pork",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Subway",
+          "item": "Grilled Chicken - No Bready (Protein) Bowl",
+          "servingDesc": "330g",
+          "kcal": 200,
+          "proteinG": 35,
+          "carbsG": 9,
+          "fatG": 4,
+          "source": "https://www.fatsecret.com/calories-nutrition/subway/grilled-chicken-protein-bowl (Subway published nutrition data)",
+          "confidence": "published",
+          "halal": "not halal-certified; order chicken/turkey/tuna items only, avoid ham/bacon",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Mucho Burrito",
+          "item": "Bare Burrito Bowl, Grilled Chicken (Pollo) filling only",
+          "servingDesc": "1 filling portion",
+          "kcal": 90,
+          "proteinG": 18,
+          "carbsG": 1,
+          "fatG": 2,
+          "source": "mynetdiary.com Mucho Burrito filling data (chorizo filling published at 300kcal/21P/2C/23F confirms per-filling format; chicken filling figure carb value not published, estimated near-zero)",
+          "confidence": "chain-equivalent",
+          "halal": "not halal-certified, chorizo filling may not be pork (verify) — recommend chicken/steak/veggie fillings only",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Osmow's Shawarma",
+          "item": "Regular Chicken Shawarma (meat + toppings, no wrap)",
+          "servingDesc": "1 regular size",
+          "kcal": 545,
+          "proteinG": 41,
+          "carbsG": 16,
+          "fatG": 22,
+          "source": "https://www.mynetdiary.com/food/calories-in-regular-chicken-shawarma-by-osmow-s-serving-26916188-0.html (Osmow's published nutrition, also see osmows.com/nutrition-calculator)",
+          "confidence": "published",
+          "halal": "not halal-certified, no pork on menu",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Osmow's Shawarma",
+          "item": "Super Chicken Shawarma (double meat)",
+          "servingDesc": "1 super size",
+          "kcal": 868,
+          "proteinG": 71,
+          "carbsG": 31,
+          "fatG": 32,
+          "source": "https://www.mynetdiary.com/food/calories-in-super-chicken-shawarma-by-osmow-s-serving-26916189-0.html",
+          "confidence": "published",
+          "halal": "no pork",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Osmow's Shawarma",
+          "item": "Chicken Shawarma Wrap, Regular",
+          "servingDesc": "1 wrap",
+          "kcal": 565,
+          "proteinG": 27,
+          "carbsG": 41,
+          "fatG": 31.5,
+          "source": "https://www.mynetdiary.com/food/calories-in-chicken-shawarma-wrap-regular-by-osmow-s-serving-44923208-0.html",
+          "confidence": "published",
+          "halal": "no pork",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Swiss Chalet",
+          "item": "Quarter Chicken, White Meat, skinless",
+          "servingDesc": "1 quarter, no sauce",
+          "kcal": 220,
+          "proteinG": 42,
+          "carbsG": 0,
+          "fatG": 5,
+          "source": "https://fastfoodnutrition.org/ca/swiss-chalet/white-meat-quarter-chicken/skinless (aggregated from Swiss Chalet Canada published nutrition)",
+          "confidence": "chain-equivalent",
+          "halal": "not halal-certified, no pork on menu, Beacon Hill NW location",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Church's Texas Chicken",
+          "item": "Original Chicken Breast",
+          "servingDesc": "1 piece, ~113g",
+          "kcal": 200,
+          "proteinG": 22,
+          "carbsG": 3,
+          "fatG": 11,
+          "source": "https://www.churchs.com/nutrition-allergen-facts/ (Church's official nutrition; figure sourced via fatsecret.ca aggregation of US/CA data, minor variance reported 200-250 kcal across sources)",
+          "confidence": "chain-equivalent",
+          "halal": "not halal-certified, no pork, Sage Hill Quarter NW location",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        },
+        {
+          "restaurant": "Freshii",
+          "item": "Protein Power Bowl (double chicken, brown rice, broccoli)",
+          "servingDesc": "1 bowl",
+          "kcal": 580,
+          "proteinG": 56,
+          "carbsG": 51,
+          "fatG": 21,
+          "source": "Freshii marketing/menu description of Lifestyle Bowls line — https://cfa.ca/franchisecanada/freshii-introduces-protein-focused-lifestyle-bowls/ ; exact macros not on an official Freshii nutrition PDF found, cross-referenced via fastfoodnutrition.org/ca/freshii",
+          "confidence": "chain-equivalent",
+          "halal": "not halal-certified, no pork on menu",
+          "deliveryApps": [
+            "DoorDash",
+            "SkipTheDishes",
+            "UberEats"
+          ]
+        }
+      ],
+      "homeRecipes": [
+        {
+          "name": "Chicken Bhuna",
+          "cuisine": "Bangladeshi",
+          "portionDesc": "~300g cooked (bone-in thigh/leg, thick masala)",
+          "kcal": 420,
+          "proteinG": 35,
+          "carbsG": 8,
+          "fatG": 27,
+          "effort": "medium (30-40 min, needs onion masala base)",
+          "source": "Estimated from typical home-style bhuna: ~250g bone-in chicken + onion/tomato masala with 2-3 tbsp oil; general recipe composition, no single published lab value"
+        },
+        {
+          "name": "Beef Bhuna",
+          "cuisine": "Bangladeshi",
+          "portionDesc": "~300g cooked",
+          "kcal": 480,
+          "proteinG": 32,
+          "carbsG": 8,
+          "fatG": 35,
+          "effort": "medium-high (45-60 min, beef takes longer to tenderize)",
+          "source": "Estimated from typical home-style beef bhuna composition, chuck/shank cut with oil-heavy masala"
+        },
+        {
+          "name": "Khichuri (rice + moong/masoor dal)",
+          "cuisine": "Bangladeshi",
+          "portionDesc": "~350g cooked (1.5 cups)",
+          "kcal": 420,
+          "proteinG": 14,
+          "carbsG": 70,
+          "fatG": 9,
+          "effort": "low (one-pot, 30 min)",
+          "source": "Estimated from standard rice+lentil ratio (1:1) cooked with ghee/oil; USDA base values for rice and lentils"
+        },
+        {
+          "name": "Chicken Curry with Potato",
+          "cuisine": "Bangladeshi",
+          "portionDesc": "~350g (2 pieces chicken + 1 potato + gravy)",
+          "kcal": 450,
+          "proteinG": 32,
+          "carbsG": 20,
+          "fatG": 26,
+          "effort": "medium (35-45 min)",
+          "source": "Estimated from standard home chicken-aloo curry composition"
+        },
+        {
+          "name": "Masoor Dal (red lentil, plain)",
+          "cuisine": "Bangladeshi",
+          "portionDesc": "1 cup cooked (~200g)",
+          "kcal": 180,
+          "proteinG": 12,
+          "carbsG": 27,
+          "fatG": 3,
+          "effort": "low (20-25 min)",
+          "source": "USDA FoodData Central cooked lentils reference, adjusted for light oil tempering"
+        },
+        {
+          "name": "Egg Curry (Dim Bhuna)",
+          "cuisine": "Bangladeshi",
+          "portionDesc": "2 whole eggs in gravy (~250g)",
+          "kcal": 320,
+          "proteinG": 18,
+          "carbsG": 12,
+          "fatG": 22,
+          "effort": "low-medium (25 min)",
+          "source": "Estimated from 2 boiled eggs + onion-tomato masala with oil, standard home proportions"
+        },
+        {
+          "name": "Plain Basmati Rice",
+          "cuisine": "Bangladeshi/South Asian staple",
+          "portionDesc": "1 cup cooked (~195g)",
+          "kcal": 205,
+          "proteinG": 4,
+          "carbsG": 45,
+          "fatG": 0.4,
+          "effort": "low (rice cooker)",
+          "source": "USDA FoodData Central, cooked white basmati rice"
+        },
+        {
+          "name": "Chicken Biryani (home-style)",
+          "cuisine": "Bangladeshi/South Asian",
+          "portionDesc": "~400g serving",
+          "kcal": 650,
+          "proteinG": 35,
+          "carbsG": 75,
+          "fatG": 22,
+          "effort": "high (1.5-2 hrs, layering/dum technique)",
+          "source": "Estimated from typical dum biryani ratio: ~150g chicken, 2.5 cups rice, ghee/oil"
+        },
+        {
+          "name": "Beef Tehari",
+          "cuisine": "Bangladeshi",
+          "portionDesc": "~400g",
+          "kcal": 700,
+          "proteinG": 30,
+          "carbsG": 80,
+          "fatG": 28,
+          "effort": "high (1.5 hrs)",
+          "source": "Estimated from beef + mustard-oil-cooked rice, standard Bangladeshi tehari proportions"
+        },
+        {
+          "name": "Rui/Katla Fish Curry with rice",
+          "cuisine": "Bangladeshi",
+          "portionDesc": "1 fish piece (~120g) + gravy + 1 cup rice",
+          "kcal": 480,
+          "proteinG": 28,
+          "carbsG": 50,
+          "fatG": 18,
+          "effort": "medium (30-40 min)",
+          "source": "Estimated from typical Bengali fish curry (mustard oil base) plus rice serving"
+        },
+        {
+          "name": "Grilled Chicken Breast, Rice & Broccoli",
+          "cuisine": "Western high-protein",
+          "portionDesc": "150g chicken + 1 cup rice + 1 cup broccoli",
+          "kcal": 500,
+          "proteinG": 45,
+          "carbsG": 55,
+          "fatG": 8,
+          "effort": "low (25 min, meal-prep friendly)",
+          "source": "USDA values for chicken breast (165kcal/31P per 100g), rice, and broccoli combined"
+        },
+        {
+          "name": "Lean Ground Beef Stir-fry with rice",
+          "cuisine": "Western",
+          "portionDesc": "150g cooked 93/7 beef + veg + 1 cup rice",
+          "kcal": 550,
+          "proteinG": 38,
+          "carbsG": 45,
+          "fatG": 22,
+          "effort": "low (20 min)",
+          "source": "USDA lean ground beef (93/7) values combined with rice and vegetables"
+        },
+        {
+          "name": "Baked Salmon with Sweet Potato",
+          "cuisine": "Western",
+          "portionDesc": "150g salmon + 1 medium sweet potato",
+          "kcal": 480,
+          "proteinG": 38,
+          "carbsG": 35,
+          "fatG": 20,
+          "effort": "low (25 min); salmon pricier/less common at Sherwood NW grocers, plan around sales",
+          "source": "USDA salmon (Atlantic, farmed) and sweet potato reference values"
+        },
+        {
+          "name": "3-Egg-White + 1-Whole-Egg Veggie Omelette",
+          "cuisine": "Western",
+          "portionDesc": "1 omelette (~250g with veg)",
+          "kcal": 220,
+          "proteinG": 27,
+          "carbsG": 4,
+          "fatG": 10,
+          "effort": "low (10 min)",
+          "source": "USDA egg and egg white reference values"
+        },
+        {
+          "name": "Greek Yogurt Protein Bowl",
+          "cuisine": "Western",
+          "portionDesc": "1 cup 0% Greek yogurt + 1 scoop whey + berries",
+          "kcal": 300,
+          "proteinG": 40,
+          "carbsG": 25,
+          "fatG": 3,
+          "effort": "low (5 min, no cooking)",
+          "source": "Combined from PC 0% Greek yogurt (10g protein/100g) and Optimum Nutrition whey (24g protein/scoop) published labels"
+        },
+        {
+          "name": "Chicken Breast Stir-fry with Mixed Vegetables",
+          "cuisine": "Western",
+          "portionDesc": "200g chicken + 2 cups mixed veg, light oil",
+          "kcal": 380,
+          "proteinG": 48,
+          "carbsG": 15,
+          "fatG": 12,
+          "effort": "low (20 min)",
+          "source": "USDA chicken breast values plus mixed vegetable estimate"
+        },
+        {
+          "name": "Tuna Salad (light mayo)",
+          "cuisine": "Western",
+          "portionDesc": "1 can tuna + 1 tbsp light mayo + veg",
+          "kcal": 250,
+          "proteinG": 30,
+          "carbsG": 6,
+          "fatG": 10,
+          "effort": "low (5 min, no cooking)",
+          "source": "Clover Leaf tuna published values plus light mayo estimate"
+        },
+        {
+          "name": "Lean Beef Chili with Beans",
+          "cuisine": "Western",
+          "portionDesc": "~400g bowl",
+          "kcal": 450,
+          "proteinG": 35,
+          "carbsG": 40,
+          "fatG": 15,
+          "effort": "low-medium (30-40 min, batch-cookable)",
+          "source": "Estimated from lean ground beef (93/7), canned beans, and tomato base standard ratios"
+        },
+        {
+          "name": "Protein Oats",
+          "cuisine": "Western",
+          "portionDesc": "1 cup dry oats + 1 scoop whey + milk",
+          "kcal": 420,
+          "proteinG": 35,
+          "carbsG": 50,
+          "fatG": 8,
+          "effort": "low (10 min)",
+          "source": "Quaker oats label plus Optimum Nutrition whey label combined"
+        },
+        {
+          "name": "Cottage Cheese & Fruit Bowl",
+          "cuisine": "Western",
+          "portionDesc": "3/4 cup cottage cheese + 1/2 cup fruit",
+          "kcal": 220,
+          "proteinG": 25,
+          "carbsG": 15,
+          "fatG": 5,
+          "effort": "low (2 min, no cooking)",
+          "source": "PC/Danone 2% cottage cheese label plus USDA fruit values"
+        }
+      ],
+      "groceryStaples": [
+        {
+          "name": "Optimum Nutrition Gold Standard 100% Whey",
+          "brand": "Optimum Nutrition",
+          "portionDesc": "1 scoop (~30.4g), sold at Costco/Superstore",
+          "kcal": 120,
+          "proteinG": 24,
+          "carbsG": 3,
+          "fatG": 1,
+          "source": "https://www.optimumnutrition.com/en-us/products/gold-standard-100-whey-protein-powder"
+        },
+        {
+          "name": "0% Greek Yogurt, Plain",
+          "brand": "President's Choice (PC)",
+          "portionDesc": "100g",
+          "kcal": 59,
+          "proteinG": 10,
+          "carbsG": 4,
+          "fatG": 0.4,
+          "source": "https://www.nofrills.ca/en/0-mf-greek-yogurt-plain-club-size/p/21518400_EA"
+        },
+        {
+          "name": "Triple Zero Greek Yogurt",
+          "brand": "Oikos",
+          "portionDesc": "1 cup (133g)",
+          "kcal": 90,
+          "proteinG": 15,
+          "carbsG": 6,
+          "fatG": 0,
+          "source": "https://www.oikos.ca/en/lifestyle/greek-yogurt-protein"
+        },
+        {
+          "name": "Large Eggs",
+          "brand": "any (Superstore/Walmart)",
+          "portionDesc": "1 egg (50g)",
+          "kcal": 72,
+          "proteinG": 6.3,
+          "carbsG": 0.4,
+          "fatG": 5,
+          "source": "USDA FoodData Central, egg whole raw"
+        },
+        {
+          "name": "Boneless Skinless Chicken Breast, raw",
+          "brand": "any (Superstore/Costco)",
+          "portionDesc": "100g",
+          "kcal": 165,
+          "proteinG": 31,
+          "carbsG": 0,
+          "fatG": 3.6,
+          "source": "USDA FoodData Central, chicken breast skinless boneless raw"
+        },
+        {
+          "name": "Kirkland Signature Rotisserie Chicken (breast meat)",
+          "brand": "Costco Kirkland Signature",
+          "portionDesc": "100g",
+          "kcal": 140,
+          "proteinG": 26,
+          "carbsG": 0,
+          "fatG": 3.5,
+          "source": "https://www.eatthismuch.com/calories/rotisserie-chicken-breast-meat-152238"
+        },
+        {
+          "name": "Flaked Light Tuna in Water",
+          "brand": "Clover Leaf",
+          "portionDesc": "1/2 can drained (55g)",
+          "kcal": 60,
+          "proteinG": 13,
+          "carbsG": 0,
+          "fatG": 0.5,
+          "source": "https://www.nofrills.ca/en/flaked-light-tuna-skip-jack-in-water/p/20573583_EA"
+        },
+        {
+          "name": "Lean Ground Beef (93/7), raw",
+          "brand": "any (Superstore/Costco)",
+          "portionDesc": "100g",
+          "kcal": 152,
+          "proteinG": 21,
+          "carbsG": 0,
+          "fatG": 7,
+          "source": "USDA FoodData Central, ground beef 93% lean raw"
+        },
+        {
+          "name": "2% Cottage Cheese",
+          "brand": "PC / Danone",
+          "portionDesc": "125mL (125g)",
+          "kcal": 100,
+          "proteinG": 14,
+          "carbsG": 5,
+          "fatG": 2.5,
+          "source": "Standard Canadian dairy label values, PC 2% cottage cheese"
+        },
+        {
+          "name": "Old Fashioned Rolled Oats",
+          "brand": "Quaker",
+          "portionDesc": "1/2 cup dry (40g)",
+          "kcal": 150,
+          "proteinG": 5,
+          "carbsG": 27,
+          "fatG": 3,
+          "source": "Quaker Oats Canada package nutrition facts, standard rolled oats"
+        },
+        {
+          "name": "Whole Wheat Bread",
+          "brand": "Dempster's",
+          "portionDesc": "1 slice (~35g)",
+          "kcal": 90,
+          "proteinG": 4,
+          "carbsG": 16,
+          "fatG": 1,
+          "source": "Dempster's whole wheat bread package label, typical value"
+        },
+        {
+          "name": "Raw Almonds",
+          "brand": "Kirkland Signature / any",
+          "portionDesc": "30g (small handful, ~23 almonds)",
+          "kcal": 173,
+          "proteinG": 6,
+          "carbsG": 6,
+          "fatG": 15,
+          "source": "USDA FoodData Central, almonds raw"
+        },
+        {
+          "name": "Black Beans, canned",
+          "brand": "Compliments / PC",
+          "portionDesc": "1/2 cup drained (130g)",
+          "kcal": 110,
+          "proteinG": 7,
+          "carbsG": 20,
+          "fatG": 0.5,
+          "source": "USDA FoodData Central, black beans canned drained"
+        },
+        {
+          "name": "Skim Milk",
+          "brand": "any dairy (Superstore/Walmart)",
+          "portionDesc": "1 cup (250mL)",
+          "kcal": 90,
+          "proteinG": 9,
+          "carbsG": 13,
+          "fatG": 0.5,
+          "source": "Canadian Nutrient File, skim milk standard values"
+        },
+        {
+          "name": "Frozen Mixed Vegetables",
+          "brand": "Compliments / PC",
+          "portionDesc": "1 cup (150g)",
+          "kcal": 60,
+          "proteinG": 3,
+          "carbsG": 12,
+          "fatG": 0.3,
+          "source": "USDA FoodData Central, mixed vegetables frozen cooked"
+        },
+        {
+          "name": "Basmati Rice, dry",
+          "brand": "Tilda / Rooster (Superstore, common Bangladeshi-Canadian brand)",
+          "portionDesc": "1/4 cup dry (~50g)",
+          "kcal": 180,
+          "proteinG": 4,
+          "carbsG": 40,
+          "fatG": 0.3,
+          "source": "USDA FoodData Central, white rice dry, adjusted for basmati serving"
+        },
+        {
+          "name": "Frozen Chicken Breast Strips (unbreaded)",
+          "brand": "Kirkland Signature",
+          "portionDesc": "100g",
+          "kcal": 110,
+          "proteinG": 22,
+          "carbsG": 2,
+          "fatG": 1.5,
+          "source": "Costco Kirkland Signature frozen chicken breast strips package (typical values)"
+        },
+        {
+          "name": "Natural Peanut Butter",
+          "brand": "Kraft / PC",
+          "portionDesc": "2 tbsp (32g)",
+          "kcal": 190,
+          "proteinG": 8,
+          "carbsG": 6,
+          "fatG": 16,
+          "source": "Standard Canadian peanut butter package label"
+        },
+        {
+          "name": "Chickpeas, canned",
+          "brand": "Compliments / PC",
+          "portionDesc": "1/2 cup drained (120g)",
+          "kcal": 110,
+          "proteinG": 6,
+          "carbsG": 20,
+          "fatG": 1.5,
+          "source": "USDA FoodData Central, chickpeas canned drained"
+        },
+        {
+          "name": "Sliced Turkey Breast (deli)",
+          "brand": "Maple Leaf (no-pork option)",
+          "portionDesc": "100g",
+          "kcal": 100,
+          "proteinG": 20,
+          "carbsG": 2,
+          "fatG": 1.5,
+          "source": "Maple Leaf deli turkey breast package, typical values (verify specific product, no-pork confirmed by product line)"
+        },
+        {
+          "name": "Tilapia Fillet, frozen raw",
+          "brand": "Kirkland Signature / High Liner",
+          "portionDesc": "100g",
+          "kcal": 96,
+          "proteinG": 20,
+          "carbsG": 0,
+          "fatG": 1.7,
+          "source": "USDA FoodData Central, tilapia raw"
+        }
+      ],
+      "sources": [
+        "https://www.twistoftaj.net/menu",
+        "https://www.kolachibbq.ca/",
+        "https://www.foodyard.ca/menu",
+        "https://marhabarestaurant.ca/menu/",
+        "https://order.online/store/jaffa-shawarma-24343592",
+        "https://tahinis.com/nutritional-info/",
+        "https://www.mynetdiary.com/food/calories-in-chicken-shawarma-185g-by-tahini-s-serving-34537148-0.html",
+        "https://www.mynetdiary.com/food/calories-in-chicken-shawarma-wrap-medium-by-tahini-s-serving-34537105-0.html",
+        "https://www.mynetdiary.com/food/calories-in-large-chicken-shawarma-and-rice-by-tahini-s-serving-34537117-0.html",
+        "https://www.myfooddiary.com/foods/7333082/a-and-w-grilled-chicken-club",
+        "https://mobile.fatsecret.com/calories-nutrition/a-w/chicken-slider-grilled",
+        "https://fastfoodnutrition.org/wendys/grilled-chicken-sandwich",
+        "https://plkcanadadeliveryassets.s3.us-east-1.amazonaws.com/PLK+CAN+Nutrition+Guide+-+2025.pdf",
+        "https://www.mynetdiary.com/food/calories-in-medium-chicken-breast-by-mary-brown-s-peace-42249171-0.html",
+        "https://www.panago.com/nutrition",
+        "https://www.fatsecret.com/calories-nutrition/subway/grilled-chicken-protein-bowl",
+        "https://www.mynetdiary.com/food/calories-in-regular-chicken-shawarma-by-osmow-s-serving-26916188-0.html",
+        "https://www.mynetdiary.com/food/calories-in-super-chicken-shawarma-by-osmow-s-serving-26916189-0.html",
+        "https://www.mynetdiary.com/food/calories-in-chicken-shawarma-wrap-regular-by-osmow-s-serving-44923208-0.html",
+        "https://osmows.com/nutrition-calculator",
+        "https://fastfoodnutrition.org/ca/swiss-chalet/white-meat-quarter-chicken/skinless",
+        "https://www.churchs.com/nutrition-allergen-facts/",
+        "https://cfa.ca/franchisecanada/freshii-introduces-protein-focused-lifestyle-bowls/",
+        "https://fastfoodnutrition.org/ca/freshii",
+        "https://daveshotchickenmenu.us/nutrition/",
+        "https://www.nofrills.ca/en/0-mf-greek-yogurt-plain-club-size/p/21518400_EA",
+        "https://www.oikos.ca/en/lifestyle/greek-yogurt-protein",
+        "https://www.eatthismuch.com/calories/rotisserie-chicken-breast-meat-152238",
+        "https://www.nofrills.ca/en/flaked-light-tuna-skip-jack-in-water/p/20573583_EA",
+        "https://www.optimumnutrition.com/en-us/products/gold-standard-100-whey-protein-powder",
+        "https://www.yelp.ca/search?find_desc=Halal&find_loc=Sage+Hill+Gate+NW,+Calgary,+AB+T3R",
+        "https://www.yelp.ca/search?cflt=restaurants&find_near=beacon-hill-centre-calgary",
+        "https://www.zabihah.com/subregion/504413d2-9f3a-11ef-956c-6045bdeb9f57/calgary"
+      ],
+      "accuracyNotes": "CONFIDENCE LEVELS: \"published\" = pulled from the chain's own nutrition data (via aggregators that mirror it, since brand PDFs repeatedly failed to parse via WebFetch — Popeyes, Church's, and Boston Pizza source PDFs returned binary/unparseable content, so I fell back to third-party aggregators like mynetdiary/fatsecret/fastfoodnutrition.org that cite the brand as source). \"chain-equivalent\" = a national chain's figures but pulled from an aggregator with some inconsistency across sources (e.g. Dave's Hot Chicken tender calories ranged 490-550 kcal depending on source; Church's chicken breast ranged 200-250 kcal; McDonald's/Mary Brown's items were dropped entirely from the final list because I could only confirm calories, not full macros, and I didn't want to fabricate protein/carb/fat splits). \"estimated\" = every independent Sage Hill/Beacon Hill/Nolan Hill restaurant (Kolachi, Twist of TAJ, Foodyard, Marhaba, Jaffa, Baladi, Vietnam Palace, Barcelos, Paros, Rice Table, California Thai, Baekjeong, Blowers & Grafton, Bro'Kin Yolk, State & Main) — none publish nutrition, so these are built from typical dish composition (protein weight, oil/ghee load, rice volume) and could be off by 20-30% in either direction, especially fat (South Asian curries are the biggest swing risk since oil quantity varies enormously by kitchen). PORK CAVEAT: Boston Pizza's Clubhouse-style sandwiches and Panago's \"True Canadian\" pizza default to bacon (pork) — I excluded/flagged those explicitly. Baekjeong Korean BBQ and Blowers & Grafton also sell pork dishes on the same menu; only the specific pork-free items were selected, and ordering must be deliberate (ask \"no bacon\"). MISSING PROFILE DATA: height and age were not supplied and are required for any TDEE/calorie-target calculation (Mifflin-St Jeor or similar) — flagging this back to the orchestrating agent rather than guessing. Weight (71.20 kg, 2026-08-24) is the only anthropometric fact on record. Marhaba Restaurant's listed address (Westwinds Crescent NE) is genuinely across the city from Sherwood NW, not a short local delivery — kept in the list because search results explicitly named it as serving the Sage Hill/Nolan Hill/Evanston area, but flagged for the consuming agent to verify delivery radius before relying on it. Grocery staple macros are standard USDA/Canadian Nutrient File reference values or read off package labels, not independently lab-verified by me — treat as reliable but not gospel to the decimal place. Home recipe macros are fully self-estimated from standard recipe proportions (no lab source exists for a home-cooked dish) — use them as directional planning numbers, not precise logging."
+    },
+    "gym": {
+      "equipment": [
+        {
+          "machineName": "Life Fitness Insignia Series Chest Press (or Dual Axis Chest Press)",
+          "muscleGroup": "Chest, triceps",
+          "category": "selectorised",
+          "brand": "Life Fitness",
+          "howToFind": "Selectorized machine row, usually near the free-weight/press area",
+          "setupCue": "Adjust seat so handles align mid-chest height; select weight via the pin stack"
+        },
+        {
+          "machineName": "Life Fitness Insignia Series Pulldown (or Dual Axis Pulldown)",
+          "muscleGroup": "Lats, upper back, biceps",
+          "category": "selectorised",
+          "brand": "Life Fitness",
+          "howToFind": "Selectorized row, usually paired near the pulldown/row cluster",
+          "setupCue": "Thigh pads locked down, grip wide bar, pull to upper chest"
+        },
+        {
+          "machineName": "Life Fitness Insignia Series Seated Row / Row (selectorized)",
+          "muscleGroup": "Mid-back, lats, biceps",
+          "category": "selectorised",
+          "brand": "Life Fitness",
+          "howToFind": "Next to the pulldown machine in the selectorized section",
+          "setupCue": "Chest pad snug, pull handles to torso, squeeze shoulder blades"
+        },
+        {
+          "machineName": "Life Fitness Insignia Series Seated Leg Press / Arc Leg Press",
+          "muscleGroup": "Quads, glutes, hamstrings",
+          "category": "selectorised",
+          "brand": "Life Fitness",
+          "howToFind": "Leg/lower-body selectorized area",
+          "setupCue": "Feet shoulder-width on plate, knees track over toes, don't lock out"
+        },
+        {
+          "machineName": "Life Fitness Insignia Series Leg Extension",
+          "muscleGroup": "Quads",
+          "category": "selectorised",
+          "brand": "Life Fitness",
+          "howToFind": "Leg selectorized area, usually next to leg curl",
+          "setupCue": "Pad on shins above ankle, back flat against pad"
+        },
+        {
+          "machineName": "Life Fitness Insignia Series Leg Curl (seated or prone)",
+          "muscleGroup": "Hamstrings",
+          "category": "selectorised",
+          "brand": "Life Fitness",
+          "howToFind": "Leg selectorized area",
+          "setupCue": "Pad just above heel, avoid hyperextending lower back"
+        },
+        {
+          "machineName": "Life Fitness Insignia Series Shoulder Press",
+          "muscleGroup": "Shoulders, triceps",
+          "category": "selectorised",
+          "brand": "Life Fitness",
+          "howToFind": "Upper-body selectorized row",
+          "setupCue": "Handles at shoulder height, press straight up without locking elbows"
+        },
+        {
+          "machineName": "Life Fitness Insignia Series Triceps Press / Triceps Extension",
+          "muscleGroup": "Triceps",
+          "category": "selectorised",
+          "brand": "Life Fitness",
+          "howToFind": "Upper-body selectorized row",
+          "setupCue": "Elbows tucked, press down to full extension"
+        },
+        {
+          "machineName": "Life Fitness Signature Series Chest Press (cable/functional trainer variant)",
+          "muscleGroup": "Chest, shoulders, triceps",
+          "category": "cable",
+          "brand": "Life Fitness",
+          "howToFind": "Cable/functional-trainer wall or dual-adjustable-pulley station",
+          "setupCue": "Set pulley height, pick handle attachment, press forward"
+        },
+        {
+          "machineName": "Hammer Strength Plate-Loaded Iso-Lateral Bench Press",
+          "muscleGroup": "Chest, triceps",
+          "category": "plate-loaded",
+          "brand": "Hammer Strength",
+          "howToFind": "Plate-loaded strength zone, usually near the free weights",
+          "setupCue": "Load plates evenly both sides, press each arm independently, control the negative"
+        },
+        {
+          "machineName": "Hammer Strength Iso-Lateral Row (plate-loaded)",
+          "muscleGroup": "Mid-back, lats",
+          "category": "plate-loaded",
+          "brand": "Hammer Strength",
+          "howToFind": "Plate-loaded zone, chest-supported row unit",
+          "setupCue": "Chest against pad, pull handles back independently"
+        },
+        {
+          "machineName": "Hammer Strength Iso-Lateral Leg Press (plate-loaded)",
+          "muscleGroup": "Quads, glutes, hamstrings",
+          "category": "plate-loaded",
+          "brand": "Hammer Strength",
+          "howToFind": "Plate-loaded leg zone",
+          "setupCue": "Feet mid-platform, load plates symmetrically, don't lock knees at top"
+        },
+        {
+          "machineName": "Smith Machine",
+          "muscleGroup": "Full body (squat, bench, shoulder press variants)",
+          "category": "free-weight",
+          "howToFind": "Along a wall in the free-weight section, fixed vertical bar track",
+          "setupCue": "Set safety hooks below your lowest rep depth before loading"
+        },
+        {
+          "machineName": "Adjustable Cable Crossover / Functional Trainer",
+          "muscleGroup": "Chest, back, shoulders, arms, core",
+          "category": "cable",
+          "howToFind": "Dual-tower cable station, usually central in the strength zone",
+          "setupCue": "Set both pulley heights, swap attachments for the exercise called for"
+        },
+        {
+          "machineName": "Flat/Incline/Decline Bench with Barbell Rack (free weights)",
+          "muscleGroup": "Chest, shoulders",
+          "category": "free-weight",
+          "howToFind": "Free-weight area near dumbbell racks",
+          "setupCue": "Standard bench, check J-hook height before unracking"
+        },
+        {
+          "machineName": "Dumbbell Rack (rubber hex, typically 5-100lb)",
+          "muscleGroup": "Full body, accessory work",
+          "category": "free-weight",
+          "howToFind": "Free-weight floor, mirrored wall section",
+          "setupCue": "Pick weight, use bench or standing as exercise requires"
+        },
+        {
+          "machineName": "Squat Rack / Power Rack (with barbell)",
+          "muscleGroup": "Quads, glutes, posterior chain, full body",
+          "category": "free-weight",
+          "howToFind": "Heavy weights section, may be limited in number, sometimes replaced/supplemented by Smith Machine",
+          "setupCue": "Set safety pins, bar at mid-chest height to unrack"
+        },
+        {
+          "machineName": "Life Fitness / Matrix or Precor Treadmill (brand varies by location)",
+          "muscleGroup": "Cardio",
+          "category": "cardio",
+          "howToFind": "Cardio floor, front of gym typically",
+          "setupCue": "Standard console start, incline/speed buttons"
+        },
+        {
+          "machineName": "Stationary Bike / Recumbent Bike (Life Fitness/Matrix/Precor)",
+          "muscleGroup": "Cardio, quads",
+          "category": "cardio",
+          "howToFind": "Cardio floor",
+          "setupCue": "Adjust seat height so knee has slight bend at full extension"
+        },
+        {
+          "machineName": "Elliptical / Stairclimber (Life Fitness/Matrix/Precor)",
+          "muscleGroup": "Cardio, full body",
+          "category": "cardio",
+          "howToFind": "Cardio floor",
+          "setupCue": "Standard console start"
+        },
+        {
+          "machineName": "HIITZone functional training area (turf, kettlebells, battle ropes, plyo boxes, TRX-style straps)",
+          "muscleGroup": "Full body, conditioning",
+          "category": "functional",
+          "howToFind": "Dedicated HIITZone space, separate from main floor, marked with turf",
+          "setupCue": "Space is used for Crunch's own HIIT/circuit classes and open functional training"
+        }
+      ],
+      "layoutNotes": "Crunch clubs are generally zoned: cardio machines up front near the entrance/windows, selectorized (pin-loaded) strength machines in a middle row, free weights (dumbbells, benches, barbells, Smith Machine, limited squat racks) along a back or side wall with mirrors, plate-loaded Hammer Strength machines clustered near the free-weight zone, and a separate turf/functional area (Crunch calls this the \"HIITZone\") used for group HIIT classes and open functional training (kettlebells, battle ropes, plyo boxes). Beacon Hill's own page also lists a \"Power Half Hour Circuit Training\" zone and recovery amenities (HydroMassage, sauna, steam room, red light therapy, Human Touch massage chairs) that are not training equipment but do occupy floor space, useful context for a first-time-nervous member navigating the club. Signage/placards on selectorized machines will read the brand + model line (e.g. \"Life Fitness Insignia Series Chest Press\"); plate-loaded and free-weight equipment placards are simpler (\"Hammer Strength Iso-Lateral Row\").",
+      "locations": [
+        {
+          "name": "Crunch Fitness Beacon Hill",
+          "address": "11420 Sarcee Trail NW, Calgary, AB T3R 0A1",
+          "notes": "Only Crunch Fitness location confirmed in NW Calgary as of Aug 2026. Opened Aug 2025, Crunch's first Calgary location / second in Alberta (after Deer Valley). Open 24/7. Phone +1 403.303.2958 / listed also as 403-279-3430 in some directories, email info@crunchbeaconhill.ca. No second NW Calgary location found in searches (checked Sage Hill, Tuscany specifically, none found) — flag if Adnan actually trains at a different branch."
+        }
+      ],
+      "sources": [
+        "https://www.crunchfitness.ca/locations/beacon-hill",
+        "https://dailyhive.com/calgary/crunch-fitness-beacon-hills-calgary",
+        "https://retail-insider.com/retail-insider/2025/06/crunch-fitness-opens-1st-calgary-location-2nd-in-alberta/",
+        "https://www.prnewswire.com/news-releases/crunch-fitness-selects-life-fitness-as-preferred-supplier-302002030.html",
+        "https://www.healthclubmanagement.co.uk/health-club-management-press-releases/Crunch-Fitness-selects-Life-Fitness-as-preferred-supplier/352524",
+        "https://www.lifefitness.com/en-us/customer-support/education-hub/success-stories/health-club/crunch-fit",
+        "https://www.lifefitness.com/en-us/catalog/strength-training/selectorized/insignia-series-chest-press",
+        "https://www.lifefitness.com/en-us/catalog/strength-training/selectorized/insignia-series-dual-axis-pulldown",
+        "https://www.lifefitness.com/en-us/catalog/strength-training/selectorized/insignia-series-arc-leg-press",
+        "https://www.lifefitness.com/en-us/catalog/strength-training/selectorized/insignia-series-seated-leg-press",
+        "https://www.lifefitness.com/en-us/catalog/strength-training/plate-loaded/plate-loaded-iso-lateral-bench-press",
+        "https://www.fitnessequipmentempire.com/product/hammer-strength-iso-lateral-seated-leg-press/",
+        "UNVERIFIED: exact machine roster physically installed at the Beacon Hill club (leg extension/curl model, cardio brand mix, exact Smith Machine/rack count) — no site photos or equipment manifest found; the equipment list above is the standard Life Fitness + Hammer Strength package Crunch Fitness uses corporate-wide per the 2024 preferred-supplier deal, not a confirmed Beacon Hill-specific inventory."
+      ]
+    },
+    "ios": {
+      "webPushOnIOS": "VERIFIED. Web Push works in an iOS home-screen PWA starting iOS/iPadOS 16.4 (March 2023), and remains current through iOS 26 in 2026. Exact conditions: (1) The site must be added to the Home Screen via Safari's Share sheet > \"Add to Home Screen\" first. Web Push does NOT work for a page merely open in a Safari tab, only for the installed standalone app. Source: webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/, corroborated by pushpad.xyz/blog/ios-special-requirements-for-web-push-notifications. (2) The permission prompt (Notification.requestPermission()) can ONLY be triggered by a direct user gesture, a tap on a button inside the already-installed web app. It cannot be requested on page load or automatically. Same webkit.org source, plus median.co/blog/how-to-add-push-notifications-to-your-mobile-website-on-ios-16-4. (3) Once granted, push notifications behave like native app notifications: Lock Screen, Notification Center, paired Apple Watch, Focus Mode filtering, and Badging API support for the home-screen icon badge count. Source: webkit.org/blog/13878. (4) UNVERIFIED: one secondary source seen only as a search snippet (mobiloud.com) claimed Web Push was blocked for EU users under iOS 17.4+ due to DMA browser-engine rules; could not confirm this is still true in 2026 or was reversed. Low relevance since the friends are Calgary-based, flagged for completeness only. (5) Underlying requirement: a registered service worker and a linked manifest.json are prerequisites for the install/push pipeline; standard PWA plumbing, not iOS-specific, but the app must satisfy it before any of the above applies.",
+      "addToHomeScreen": "VERIFIED, unchanged in 2026, nothing about this can be automated or deep-linked. Flow: user must open the site in Safari specifically. Chrome/Firefox/Edge on iOS are all WebKit-wrapped and lack the \"Add to Home Screen\" UI, so it only works from Safari. Then: tap the Share icon (square with up arrow) in Safari's toolbar > scroll down and tap \"Add to Home Screen\" > confirm the name/icon on the preview screen > tap \"Add\" in the top-right. The icon then appears on the home screen and launches standalone (no Safari chrome) on subsequent taps. There is no automatic install prompt on iOS (unlike Android's beforeinstallprompt), no way to trigger the Add-to-Home-Screen sheet programmatically from JS, and no shareable link that pre-fills the install for a friend, each person must do this manually in Safari on their own device. As of iOS 26, Apple changed default behavior so that any site added to the Home Screen opens as a standalone web app by default even without a manifest, but a manifest.json is still needed for a proper icon/name/theme-color/splash and for install eligibility signals in some contexts. Sources: mobiloud.com/blog/progressive-web-apps-ios (general flow, cross-checked against multiple 2026 PWA guides in search results), apple developer library \"Configuring Web Applications\" (archived but still the canonical meta-tag reference): developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html. Practical implication for this project: the onboarding message to friends must literally say \"open this link in Safari, not in Messages' in-app browser, not Chrome\" since tapping a link inside Messages/Instagram often opens an in-app browser that does NOT expose the Add to Home Screen option in the same way (UNVERIFIED specifics of which in-app browsers block it in 2026, but this is a well-known long-standing gotcha worth warning about).",
+      "safeAreaAndChrome": "VERIFIED core mechanics, some edge cases unverified. Required meta tags for a polished standalone iOS PWA (source: developer.apple.com Supported Meta Tags doc, developer.apple.com/library/iad/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html, cross-checked with intercom.help/progressier status-bar guide and multiple 2026 PWA guides):\n- <meta name=\"apple-mobile-web-app-capable\" content=\"yes\"> : runs full-screen/standalone, no Safari chrome, when launched from home screen.\n- <meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black-translucent\"> : options are default (white bar, black text), black (opaque black bar), or black-translucent (status bar overlays your content, letting you paint behind it — this is what modern-looking PWAs use, combined with viewport-fit=cover).\n- <meta name=\"apple-mobile-web-app-title\" content=\"AppName\"> : short name shown under the home-screen icon; iOS ignores manifest.json's \"name\"/\"short_name\" for this, this meta tag is what controls it (source: multiple docs including the metathis R package doc summarizing Apple's own guidance, cross-checked against gokulkrishh/awesome-meta-and-manifest on GitHub).\n- <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\"> : viewport-fit=cover is required to let content extend under the notch/Dynamic Island and home indicator so you can then pad it back with safe-area insets instead of leaving black bars.\n- <meta name=\"format-detection\" content=\"telephone=no\"> : stops Safari from auto-linking things that look like phone numbers (annoying in a fitness/food-logging app full of numbers).\n- <link rel=\"apple-touch-icon\" href=\"/icon-180.png\"> : iOS does NOT read the manifest.json icons array for the home-screen icon, it needs this link tag. 180x180 PNG, no transparency (iOS composites a white background under transparent pixels, so a transparent PNG looks wrong), no rounded corners (iOS masks it automatically). Additional sizes (152, 167, 120) are optional fallbacks for older devices, one 180x180 icon covers all current iPhones. Source: multiple 2026 icon guides (coywolf.com, imagcon.app) cross-checked against Apple's historical device-size table.\n\nSafe-area CSS: use env(safe-area-inset-top/right/bottom/left) via padding, e.g. padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); on the outermost layout container, or on fixed headers/footers specifically. Requires viewport-fit=cover to be non-zero; without it, env() insets return 0 in many cases (developer.apple.com/forums/thread/699415, developer.apple.com/forums/thread/716552). UNVERIFIED edge case from the same forum threads: some developers report insets returning 0 in portrait when Safari's own chrome already covers the notch, or resetting when the toolbar is hidden in landscape — this is inconsistent/buggy behavior across iOS versions per multiple bug reports, not a clean guarantee, so test on a real device rather than trusting the simulator.\n\nHeight: prefer 100dvh (dynamic viewport height, supported iOS 15.4+) over 100vh for full-bleed layouts, since 100vh in Safari's own browser tab includes space behind the collapsing toolbar and causes jumpy layout; in standalone/home-screen mode 100vh is already correct since there's no Safari chrome. 100dvh has a known \"cold start\" bug (wrong value on first paint before recalculating) per lukechannings.com/blog/2021-06-09-does-safari-15-fix-the-vh-bug/, so pair it with a resize listener or a min-height fallback for safety. To kill the rubber-band overscroll/bounce feel that reads as \"a website, not an app,\" set html, body { overscroll-behavior-y: none; position: fixed; height: 100dvh; overflow: hidden } with an inner scrollable container, or overscroll-behavior: contain on the scrollable element (broad support, standard CSS, not iOS-specific, no dedicated citation needed beyond MDN).",
+      "shortcutsHealthKit": "VERIFIED, and the honest answer is NO for true zero-interaction: an Apple Shortcut CANNOT read HealthKit step data and POST it to a URL on a fully silent, unattended daily schedule with zero user interaction, for two independent, compounding reasons: (1) HEALTHKIT ITSELF BLOCKS READS WHILE LOCKED. HealthKit data is stored in Data Protection class \"Protected Unless Open\"; access is relinquished roughly 10 minutes after the device locks, and health data becomes readable again only after the user re-authenticates (passcode/Face ID/Touch ID) to unlock the device. A background HKObserverQuery can fire while locked but will not return data until unlock; background delivery will not launch the app/Shortcut for new data until the device is unlocked. Source: Apple Developer Forums, developer.apple.com/forums/thread/824819 (\"Clarification on HealthKit Background Access While Device is Locked\") and developer.apple.com/forums/thread/666899, cross-checked against Apple's own security guide support.apple.com/guide/security/protecting-access-to-users-health-data-sec88be9900f/web. The lone documented exception is HKWorkoutSession, irrelevant to a daily step-count pull. (2) SHORTCUTS PERSONAL AUTOMATIONS FORCE A NOTIFICATION FOR \"RUN IMMEDIATELY\". Since the iOS 17-era rename (\"Run After Confirmation\" vs \"Run Immediately\"), Apple removed the ability to fully silence a Personal Automation: even with \"Run Immediately\" selected (no confirmation tap needed to start), the OS still fires a system notification announcing the automation ran, specifically so the user always knows something happened on their device — the \"Notify When Run\" toggle to suppress this does not appear once you pick Run Immediately. Source: matthewcassinelli.com/automations-run-immediately-shortcuts-notifications/. Practical net effect for this project: a Time of Day personal automation set to \"Run Immediately\" targeting a shortcut that reads steps and POSTs them CAN fire on schedule without a confirmation tap, satisfying \"no interaction\" in the loosest sense, but (a) it will only actually succeed at reading HealthKit data if the phone happens to be unlocked (or gets unlocked within roughly 10 minutes of the trigger) at that exact time, which for a friend's personal daily routine is not guaranteed, and (b) the user will see a system notification every time it runs, which is not literally silent. UNVERIFIED: whether time-of-day automations that specifically touch HealthKit have any special-cased exemption from the notification requirement; the source found is general to all \"Run Immediately\" automations and does not call out HealthKit specifically, and Apple has no dedicated documentation page on this interaction that was found. RECOMMENDATION for the app design (not a citation, a design call from this research): do not build the daily-steps import around a guaranteed-silent trigger. Instead, either (a) schedule the automation for a time the friend is realistically already awake and phone-unlocked (e.g., a \"when I open X app\" or a time trigger a few hours after typical wake time) and accept the occasional missed day, which fits the user's own \"must survive missed days\" requirement, or (b) have the Shortcut itself, when it does run, just prompt with a native \"Ask Each Time\" one-tap confirmation rather than fighting for silence, since the phone-unlocked precondition already breaks true zero-interaction. Either way, manual fallback (a text field in the PWA to punch in yesterday's step count) should exist since automatic delivery cannot be guaranteed.",
+      "shortcutSharing": "VERIFIED, straightforward one-tap flow, well documented and unchanged in 2026. In the Shortcuts app: open the shortcut > tap the \"...\" (more) or the share/export icon > tap \"Copy iCloud Link\" (this uploads the shortcut to iCloud and generates a public share URL) > tap \"Copy Link\" > paste that URL into Messages/email/any share sheet. Source: Apple Support, support.apple.com/guide/shortcuts/share-shortcuts-apdf01f8c054/ios (and the same content mirrored across every regional Apple Support domain, e.g. support.apple.com/en-ca/guide/shortcuts/apdf01f8c054/ios, confirming it is current official guidance). On the recipient's side: tapping the iCloud link opens the Shortcuts app (or a web preview first) showing a description/preview of what the shortcut does and what permissions/actions it uses > they tap \"Add Shortcut\" (also referred to as \"Get Shortcut\" in older docs) > it's added to their local Shortcuts library in one tap, no account linking, no App Store step. Optional refinement: the shortcut author can add \"Import Questions\" before sharing, so the recipient is prompted to fill in personal values (e.g., their own POST endpoint URL, a per-user token) at import time rather than the author hardcoding a value that's wrong for every friend — this is the correct mechanism for distributing one shared shortcut to multiple friends who each need to POST to their own unique row/endpoint. Source: same Apple Support share-shortcuts guide, corroborated by imore.com/how-share-your-shortcuts-others-and-how-add-shared-shortcuts. UNVERIFIED nuance: first-time recipients on a fresh device sometimes get an \"Untrusted Shortcut\" warning requiring an extra Settings toggle (Settings > Shortcuts > Allow Untrusted Shortcuts) if they've never run a shared shortcut before; this is commonly reported in older iOS versions but no 2026-specific source confirming current exact wording was found in this pass, flagged rather than asserted.",
+      "iconAndSplash": "VERIFIED. Icon: single <link rel=\"apple-touch-icon\" href=\"/icon-180.png\"> at 180x180 PNG covers all current iPhones (iOS composites a white backing under any transparency and auto-applies the rounded-square mask, so ship a flat, opaque, square PNG with no corner rounding baked in). iOS ignores the manifest.json \"icons\" array entirely for the home-screen icon; only the link tag is read. Splash screens (the \"launch image\" shown for roughly a second while the app cold-starts from the home screen): iOS/iPadOS does not auto-generate one from the icon or manifest the way Android does; it must be supplied via a set of <link rel=\"apple-touch-startup-image\" href=\"...\" media=\"...\"> tags, one image per exact device-resolution/orientation combination, matched to that device's screen via a CSS media query (width/height/device-pixel-ratio/orientation), because there is no single scalable/vector splash mechanism — this is the most tedious part of \"looking native\" on iOS and is why most teams use a generator script (e.g. the pwa-asset-generator npm package, referenced across multiple 2026 guides such as github.com/onderceylan/pwa-asset-generator) rather than hand-authoring a dozen-plus image variants. During the splash phase, the status bar color is taken from manifest.json's theme_color, and the background of the rest of the splash screen from manifest.json's background_color, so those two manifest fields matter even though icons/name do not. Source: github.com/kariIT/ios-pwa-splashscreen and developer.apple.com/forums/thread/733490, cross-checked against multiple 2026 PWA icon guides (imagcon.app/pwa-icon-sizes, logofoundry.app/blog/pwa-icon-requirements-safe-areas). Ponytail-appropriate call for a friends-only, low-stakes app: skip the full splash-image matrix (it is real, tedious, and multiplies fast across device sizes) and ship just the 180x180 apple-touch-icon plus theme_color/background_color in the manifest; the app will briefly show a plain white/black flash instead of a custom splash graphic on cold launch, which is a minor cosmetic gap, not a functional one, and not worth a generator dependency for a handful of iPhones. Upgrade to full splash images later only if it visibly bothers someone.",
+      "gotchas": [
+        "localStorage/IndexedDB/service-worker registrations in a plain Safari TAB are subject to a 7-day no-interaction eviction (WebKit's Intelligent Tracking Prevention storage cap); a Home Screen-installed PWA is exempt because it runs outside Safari and has its own separate usage-days counter that resets on actual use of the app, per webkit.org/blog/14403/updates-to-storage-policy/ and cross-checked against support.apple.com/en-om/guide/security. UNVERIFIED: Apple's own docs are not fully explicit/unambiguous on this exemption per multiple developer-forum threads (e.g. developer.apple.com/forums/thread/710157) that report confusion/edge cases, so treat local storage in this app as best-effort persistence, not guaranteed, and do not store anything the friend can't afford to lose (i.e. sync anything important to a real backend, not just localStorage).",
+        "In-app browsers (Messages link preview, Instagram, sometimes Gmail) can intercept a shared link and open their own embedded WebKit view instead of full Safari; the Add-to-Home-Screen option may be missing or behave differently there. UNVERIFIED exact 2026 behavior per app, but well-known enough to warn friends explicitly: 'open this link in Safari.'",
+        "Web Push requires the notification-permission prompt to originate from a real user tap inside the ALREADY-INSTALLED home-screen app, not the marketing/landing page; a common mistake is asking for permission before the user has even added the app to their home screen, which silently fails. Source: webkit.org/blog/13878.",
+        "HealthKit data is unreadable while the phone is locked and for up to ~10 minutes is inaccessible even after locking (Protected Unless Open class); any automation depending on Health data must assume it can silently fail to produce data on a given day if the phone was locked at trigger time. Source: developer.apple.com/forums/thread/824819.",
+        "Personal Automations set to 'Run Immediately' still push a system notification every time they fire (Apple removed the ability to fully silence them); design the app's UX to expect this notification exists rather than assuming true silence. Source: matthewcassinelli.com/automations-run-immediately-shortcuts-notifications/.",
+        "env(safe-area-inset-*) can return 0px in some iOS versions/orientations even with viewport-fit=cover set, per multiple Apple Developer Forum bug reports (developer.apple.com/forums/thread/699415, /thread/716552); test insets on a real notched/Dynamic-Island device before shipping, don't trust the simulator.",
+        "100dvh has a 'cold start' bug where it reports the wrong value on first paint before the browser chrome settles; pair it with a resize/orientation listener or accept a one-frame layout jump. Source: lukechannings.com/blog/2021-06-09-does-safari-15-fix-the-vh-bug/.",
+        "iOS ignores manifest.json 'name', 'short_name', and 'icons' for a home-screen-installed PWA; those come from apple-mobile-web-app-title and apple-touch-icon link tags instead. Forgetting this is the single most common cause of a PWA that 'installs' but shows the wrong name/icon on iOS. Source: multiple 2026 guides cross-checked, e.g. gist.github.com/hal0gen/5852bd9db240c477f20c."
+      ],
+      "sources": [
+        "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/",
+        "https://webkit.org/blog/13966/webkit-features-in-safari-16-4/",
+        "https://pushpad.xyz/blog/ios-special-requirements-for-web-push-notifications",
+        "https://median.co/blog/how-to-add-push-notifications-to-your-mobile-website-on-ios-16-4",
+        "https://developer.apple.com/forums/thread/824819",
+        "https://developer.apple.com/forums/thread/666899",
+        "https://support.apple.com/guide/security/protecting-access-to-users-health-data-sec88be9900f/web",
+        "https://matthewcassinelli.com/automations-run-immediately-shortcuts-notifications/",
+        "https://support.apple.com/guide/shortcuts/share-shortcuts-apdf01f8c054/ios",
+        "https://support.apple.com/en-ca/guide/shortcuts/apdf01f8c054/ios",
+        "https://www.imore.com/how-share-your-shortcuts-others-and-how-add-shared-shortcuts",
+        "https://developer.apple.com/library/iad/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html",
+        "https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html",
+        "https://webkit.org/blog/14403/updates-to-storage-policy/",
+        "https://developer.apple.com/forums/thread/710157",
+        "https://developer.apple.com/forums/thread/699415",
+        "https://developer.apple.com/forums/thread/716552",
+        "https://lukechannings.com/blog/2021-06-09-does-safari-15-fix-the-vh-bug/",
+        "https://github.com/kariIT/ios-pwa-splashscreen",
+        "https://developer.apple.com/forums/thread/733490",
+        "https://www.mobiloud.com/blog/progressive-web-apps-ios"
+      ]
+    },
+    "competitors": {
+      "apps": [
+        {
+          "name": "MacroFactor",
+          "standoutFeature": "Adaptive TDEE: derives actual expenditure from the relationship between logged intake and weight-trend change over time, rather than an age/height/weight formula. Begins updating on day 3, keeps refining through ~30 days.",
+          "worthStealing": "Steal the concept, not the exact math (undisclosed): weight-trend-vs-intake regression to back out real expenditure instead of a static Mifflin-St Jeor number. This matters a lot here because retatrutide will keep expenditure/appetite in flux — a static TDEE will drift wrong fast."
+        },
+        {
+          "name": "Happy Scale",
+          "standoutFeature": "Lets the user pick between 4 smoothing methods (7-day SMA, simple exponential, double-exponential, proprietary 'Happy Scale Smoothing') and shows a predicted-goal-date estimate off the trend line.",
+          "worthStealing": "Offer exactly one good default (EMA) and don't expose the other 3 knobs — this user is low-commitment, a mode picker is friction they'll never touch. Steal the goal-date projection, not the menu."
+        },
+        {
+          "name": "Libra (Android, libra-app.eu)",
+          "standoutFeature": "Fully documented, open algorithm: time-weighted EMA trend line plus a linear-regression forecast off the trend (not off raw weigh-ins), with graceful fallback for 1-2 data points.",
+          "worthStealing": "Directly reusable formula (see predictionPatterns) — this is the best concretely-specified reference found. Also steal forecasting off the smoothed trend, never off raw scale weight, so a single bad reading can't swing a goal-date estimate."
+        },
+        {
+          "name": "Zero (fasting/health app)",
+          "standoutFeature": "Frames weight/fasting stats as monthly-view pattern surfacing ('what's working, where to adjust') rather than daily pass/fail.",
+          "worthStealing": "Weekly/monthly framing over daily framing for the progress tab — matches the 'survive missed days' requirement. Specific ML claims are marketing copy, unverified, not worth copying."
+        },
+        {
+          "name": "Hevy",
+          "standoutFeature": "Tap a previous set's logged weight/reps to instantly copy it into the current set (the PREVIOUS column); copy a whole past workout from Profile to start a new session; long-press a workout to 'Save as Routine.'",
+          "worthStealing": "Directly steal: pre-fill every set field with last time's value for that exact exercise, one tap to accept. This is the single biggest speed win for a lazy logger."
+        },
+        {
+          "name": "Strong",
+          "standoutFeature": "3 taps total from app-open to a logged set once inside a session; templates let you tap once and 'start workout' fully pre-populated; auto-starts rest timer on log.",
+          "worthStealing": "Steal the tap-count discipline as a design constraint: log-a-set must be reachable in ≤3 taps from anywhere in the session. Auto-starting the rest timer removes a decision, not just a tap."
+        },
+        {
+          "name": "Boostcamp",
+          "standoutFeature": "No setup wizard required to start logging — 5 steps from install to first logged session. Plate-calculator shown inline per set.",
+          "worthStealing": "Steal 'logging works with zero setup' as a fallback path: if this user skips onboarding entirely one day, an empty 'log a set' screen should still work with no template required."
+        }
+      ],
+      "predictionPatterns": "\nFour real, documented approaches, in increasing sophistication:\n\n1. Libra (fully documented, github/support docs) — time-weighted EMA, exact formula:\n   smoothingDays = 7 (default, user-adjustable)\n   smoothingTime = smoothingDays * msPerDay\n   time = currentEntryTimestamp - previousEntryTimestamp\n   power = 1 - e^(-time / smoothingTime)\n   trend_today = trend_yesterday + power * (weight_today - trend_yesterday)\n   Time-weighted so a 3-day gap gets proportionally more \"catch-up\" pull than a 1-day gap — handles missed days by construction, which fits this user directly.\n   Forecast: linear regression over the smoothed trend values inside a rolling window (default 7 days) → slope → project forward, capped at 6 months out. With only 2 trend points, straight linear extrapolation; with 1 point, interpolate trend at window start then extrapolate.\n   Source: https://libra-app.eu/support/trend/, https://libra-app.eu/support/forecast/\n\n2. Hacker's Diet / TrendWeight lineage — classic single-parameter EWMA:\n   trend_n = alpha * weight_n + (1 - alpha) * trend_(n-1)\n   Hacker's Diet recommends alpha = 0.9 for the *smoothed estimate of noise-adjusted current weight* using their particular formulation (their write-up frames it as the complement of what's usually called alpha in other libraries — effectively ~10-day meaningful memory). TrendWeight (open source, github.com/trendweight/trendweight) descends from this lineage; its own README only confirms \"moving averages\" and does not publish its exact constant in the pages fetched — unverified beyond that.\n   Source: https://www.fourmilab.ch/hackdiet/www/hackdiet.html, https://github.com/trendweight/trendweight\n\n3. Happy Scale — proprietary, undisclosed, offers 4 selectable modes (7-day SMA, simple exponential smoothing, double exponential smoothing, \"Happy Scale Smoothing\"). No formula published. Source: https://happyscale.com/support (unverified beyond feature list)\n\n4. MacroFactor — proprietary and explicitly undisclosed: \"a moving average of your weight data that places greater emphasis on more recent weigh-ins,\" described by MacroFactor itself as similar to but not identical to a standard EMA. Uses linear interpolation to fill gaps. No alpha, no window length published anywhere found. Source: https://help.macrofactorapp.com/en/articles/21-weight-trend, https://www.strongerbyscience.com/macrofactor-algorithms-philosophy/ (this URL blocked WebFetch with 403; only the search snippet was usable — mark as partially unverified)\n\nRECOMMENDATION for this build (my call, not a menu of options): use Libra's exact EMA formula since it is the only one fully specified and open, with alpha effectively derived from a 7-day smoothingDays constant rather than a bare fixed alpha — that time-weighting is the right behavior for a \"lazy, low-commitment\" user who will skip days, since a fixed-alpha EWMA silently under-corrects after a gap while Libra's time-weighted version doesn't. Forecast by linear regression on the last ~14-21 days of trend values (longer than Libra's default 7, because retatrutide dosing changes every 7 days and a 7-day regression window would be mostly one dose-level) and only start showing a forecast/trend line once at least 4 weigh-ins exist over at least 5 distinct days — MacroFactor's own copy is vague on a firm minimum, so this threshold is my own reasonable default, flagged as a design choice not a sourced number.\n\nRetatrutide-specific caveat, unverified by any of the above apps but real and worth building for: rapid GLP-1/GIP-driven loss can include meaningful lean mass loss (cited 25-40% of lost weight can be lean tissue in trial data, per Healthline/clinical summaries below) — the trend/forecast tab should not imply all projected loss is fat, and should surface a protein-target reminder rather than pure calorie-deficit framing. Source: https://www.healthline.com/health/drugs/tracking-weight-loss-on-glp-1s, https://meagain.com/glp-1-muscle-loss\n",
+      "onboardingPatterns": "\nOrder that works, synthesized from MacroFactor and MyFitnessPal (Noom's is longer/psychology-heavy and not a fit for a \"make the call, don't ask\" low-commitment user):\n\n1. Goal direction (lose fat / maintain / gain) — MyFitnessPal leads with this, single tap.\n2. Anthropometrics needed for any formula (height, age, sex, current weight) — MacroFactor collects these before showing any target. THIS IS THE FLAGGED GAP: user has not supplied height or age. Do not invent them — the app cannot compute an initial BMR/TDEE estimate (Mifflin-St Jeor or equivalent) without both. Ask the user directly before building the onboarding screen.\n3. Activity/lifestyle level and training frequency — user already gave this (Crunch Fitness, 3x/week, 45-60 min), reuse it rather than re-asking.\n4. Rate-of-change preference — MacroFactor asks the user to pick a target rate (e.g., \"aim to lose 1 lb/week\") and derives the calorie target as expenditure_estimate - deficit_for_that_rate. Source: https://help.macrofactorapp.com/en/articles/206-what-should-i-do-if-my-initial-expenditure-or-recommended-energy-intake-seems-too-high-or-too-low\n5. Weigh-in frequency and coaching-style preference — MacroFactor asks this explicitly rather than assuming daily.\n6. Output: an initial calorie/macro target computed from a standard formula (population-average, openly acknowledged as rough), explicitly framed as provisional until 2+ weeks of real data recalibrates it via the adaptive algorithm.\n\nMyFitnessPal's onboarding is shorter and was reviewer-praised specifically for being short: goal, current weight, target weight, activity level, rate of change — done. Source: search snippet from nutrola.app comparison (unverified beyond snippet, treat as directional not exact).\n\nRecommendation for this build: MyFitnessPal-length questionnaire (5-6 questions, under 60 seconds) producing a MacroFactor-style provisional target that explicitly says \"this will adjust as you log\" — never present the first number as final. Given this user is on retatrutide with a real titration schedule already known (1mg Aug 24, 1mg Aug 31, 1.5mg Sep 7, 1.5mg Sep 14), the onboarding should also capture GLP-1 usage and current dose so appetite-driven low intake days aren't misread as under-eating relative to a target that assumes no medication.\n",
+      "loggingShortcuts": "\nThree concrete patterns, cited to Hevy/Strong/Boostcamp:\n\n1. \"Log this exercise\" one-tap: pre-fill each set's weight/reps with the exact value logged last time for that same exercise (Hevy's PREVIOUS column) — tapping the previous value copies it straight into the active set with zero typing. This is the highest-leverage single feature for a lazy logger: most gym sets are identical to last week's, so most logging becomes tap-tap-tap-done. Source: https://www.hevyapp.com/features/track-exercises/\n\n2. \"Log whole session\" one-tap: copy an entire previous workout as the starting point for today's session (Hevy: from Profile tab), or save any workout as a reusable routine/template you can start with one tap (Hevy's \"Save as Routine\"; Strong's templates - tap template, \"start workout,\" fully pre-populated). Source: https://www.hevyapp.com/use-cases/exercise-log/, search snippet on Strong templates\n\n3. Tap-budget as a hard design constraint: Strong gets from cold-open to a logged set in 3 taps once inside an active session, auto-starts the rest timer on log so there's no separate \"start timer\" action. Boostcamp requires zero setup wizard — a first-time user can be logging within 5 steps of installing. Source: search snippets, repreturn.com and Boostcamp reviews (moderately confident, not primary-sourced screenshots — treat exact tap counts as approximate, not verified against the live app)\n\nRecommendation: build both \"repeat last set\" (per-exercise) and \"repeat last full session\" (one tap) as first-class actions on the log screen, not buried in a menu — and default every new set's fields to last time's numbers rather than blank, since blank fields are the friction that kills low-commitment logging.\n",
+      "adherenceHandling": "\nGrounded in a real 2026 study on fitness-app harm plus the \"never miss twice\" behavioral literature, not a single vendor's copy:\n\n- Streak counters as commonly implemented are actively counterproductive: a broken streak triggers a \"well I've already failed\" thought that predicts giving up rather than resuming, and users report avoiding opening the app specifically to not see a broken streak or a missed-day reminder. Source: https://networkcultures.org/blog/2026/01/19/baby-please-dont-break-the-streak/, https://ogamic.com/blog/streak-anxiety-from-fitness-apps\n- A peer-reviewed-adjacent 2026 study found guilt/shame from missed-target notifications led some users to stop logging entirely or to over-exercise to \"compensate\" for a lapse — both are worse outcomes than just missing a day. Source: https://www.insideprecisionmedicine.com/topics/precision-medicine/fitness-apps-can-have-a-negative-impact-on-users/\n- The fix pattern that keeps showing up across sources: replace daily streaks with weekly/rolling-window goals (\"3 sessions this week,\" \"any movement counts\"), so one missed day doesn't zero out visible progress; and design the \"you missed a day\" state to say nothing evaluative at all — no banner, no red counter, no \"don't break your streak\" copy — just show the next actionable step (today's plan) as if nothing happened. Source: https://ogamic.com/blog/why-fitness-apps-make-consistency-harder (mirrored at getgainstrong.com), James Clear's \"never miss twice\" framing per https://ogamic.com/blog/never-miss-twice-rule-for-working-out\n\nApplied to this user's explicit instruction (\"never be optimistic, I am lazy and low commitment\"): the app should never say anything falsely upbeat (\"You've got this!\") on a miss, but it should also not editorialize negatively — the honest, non-preachy move is silence plus the next concrete action. Weekly totals (workouts done / 3 planned, weigh-ins logged / target) rather than a daily streak number. If 2+ days are missed, the only message the research supports is a neutral one-line nudge with zero guilt framing, not a warning, not encouragement — just state the fact (\"2 sessions left this week to hit 3\") and move on.\n",
+      "antiPatterns": [
+        "Daily all-or-nothing streak counters — documented to cause the exact disengagement they're meant to prevent (source: networkcultures.org, ogamic.com above).",
+        "Guilt-framed or falsely-upbeat push notifications on a missed log day — explicitly barred by this user's own instruction and independently linked to users abandoning tracking altogether (insideprecisionmedicine.com).",
+        "Exposing 4 different smoothing-mode toggles like Happy Scale — a low-commitment user will never configure it; ship one good default.",
+        "Forecasting off raw scale weight instead of the smoothed trend (Libra explicitly avoids this because it makes forecasts jump on a single bad reading).",
+        "A long Noom-style psychology questionnaire at onboarding — too much friction for a self-described lazy user; MyFitnessPal's short version is the better fit.",
+        "Presenting the day-1 calorie/macro target as final rather than provisional — MacroFactor explicitly frames it as a rough starting point pending 2 weeks of real adaptive data; presenting it as authoritative sets up a false sense of precision.",
+        "Treating all GLP-1-era weight loss as fat loss in the trend UI — unverified-by-competitor-apps but clinically real risk (up to 25-40% lean mass per cited trial summaries) that this build should account for even though no reviewed competitor app explicitly solves it well."
+      ],
+      "sources": [
+        "https://help.macrofactorapp.com/en/articles/21-weight-trend",
+        "https://www.strongerbyscience.com/macrofactor-algorithms-philosophy/ (blocked by 403 on direct fetch; only search-result snippet used)",
+        "https://help.macrofactorapp.com/en/articles/126-why-is-my-expenditure-in-macrofactor-different-from-the-output-of-a-tdee-calculator",
+        "https://help.macrofactorapp.com/en/articles/206-what-should-i-do-if-my-initial-expenditure-or-recommended-energy-intake-seems-too-high-or-too-low",
+        "https://libra-app.eu/support/trend/",
+        "https://libra-app.eu/support/forecast/",
+        "https://happyscale.com/support",
+        "https://www.fourmilab.ch/hackdiet/www/hackdiet.html",
+        "https://github.com/trendweight/trendweight",
+        "https://www.hevyapp.com/features/track-exercises/",
+        "https://www.hevyapp.com/use-cases/exercise-log/",
+        "https://www.boostcamp.app/workout-tracker",
+        "https://networkcultures.org/blog/2026/01/19/baby-please-dont-break-the-streak/",
+        "https://ogamic.com/blog/streak-anxiety-from-fitness-apps",
+        "https://ogamic.com/blog/never-miss-twice-rule-for-working-out",
+        "https://ogamic.com/blog/why-fitness-apps-make-consistency-harder",
+        "https://www.insideprecisionmedicine.com/topics/precision-medicine/fitness-apps-can-have-a-negative-impact-on-users/",
+        "https://www.healthline.com/health/drugs/tracking-weight-loss-on-glp-1s",
+        "https://meagain.com/glp-1-muscle-loss"
+      ]
+    },
+    "push": {
+      "vapidFlow": "All of this runs on raw Web Crypto in a Worker — no npm deps needed even for payload encryption, since Workers implement ECDSA/P-256, ECDH, HKDF and AES-GCM natively (developers.cloudflare.com/workers/runtime-apis/web-crypto/).\n\n1. GENERATE THE VAPID KEYPAIR ONCE (a local script or a one-off admin route, not per-request):\n   const kp = await crypto.subtle.generateKey({name:'ECDSA', namedCurve:'P-256'}, true, ['sign','verify']);\n   const rawPub = new Uint8Array(await crypto.subtle.exportKey('raw', kp.publicKey)); // 65 bytes, starts 0x04\n   const pkcs8Priv = new Uint8Array(await crypto.subtle.exportKey('pkcs8', kp.privateKey));\n   Base64url-encode both. Public key becomes both the browser's applicationServerKey and the VAPID Authorization header's \"k=\" value. Store the private key as `wrangler secret put VAPID_PRIVATE_KEY` (base64url PKCS8), re-imported at request time with crypto.subtle.importKey('pkcs8', bytes, {name:'ECDSA', namedCurve:'P-256'}, false, ['sign']).\n\n2. BROWSER SUBSCRIBE FLOW (same API on iOS/Android; iOS just gates when it's callable — see gotchas):\n   const reg = await navigator.serviceWorker.register('/sw.js');\n   const perm = await Notification.requestPermission(); // must run inside a user-gesture handler on iOS\n   if (perm !== 'granted') return;\n   const sub = await reg.pushManager.subscribe({\n     userVisibleOnly: true,\n     applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY_B64URL),\n   });\n   await fetch('/api/subscribe', {method:'POST', body: JSON.stringify(sub)}); // sub.toJSON() = {endpoint, keys:{p256dh, auth}}\n   Source for the full register/subscribe/urlBase64ToUint8Array pattern: developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Tutorials/js13kGames/Re-engageable_Notifications_Push\n\n3. SIGN THE VAPID JWT IN THE WORKER (raw Web Crypto, ~25 lines, confirmed the ECDSA output format matches JWS directly):\n   const header = {typ:'JWT', alg:'ES256'};\n   const payload = {aud: new URL(sub.endpoint).origin, exp: Math.floor(Date.now()/1000)+12*3600, sub:'mailto:you@example.com'};\n   const unsigned = b64url(JSON.stringify(header)) + '.' + b64url(JSON.stringify(payload));\n   const sigBuf = await crypto.subtle.sign({name:'ECDSA', hash:'SHA-256'}, privateKey, new TextEncoder().encode(unsigned));\n   const jwt = unsigned + '.' + b64url(new Uint8Array(sigBuf));\n   Critically: MDN and the WebCrypto spec confirm crypto.subtle.sign for ECDSA returns raw IEEE P1363 (r||s concatenated, 64 bytes for P-256) — this is exactly what JWS ES256 requires, so there is NO DER-to-raw conversion step needed (that step trips up people porting from Node's crypto module, which does emit DER by default). Source: developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/sign and RFC 7518 (JWS) ES256 format definition.\n   exp MUST be <= 24h from now (RFC 8292 / rfc-editor.org/rfc/rfc8292.html — VAPID spec). aud MUST be exactly the origin (scheme+host) of the subscription's endpoint URL, not the full endpoint.\n\n4. AUTHORIZATION HEADER + REQUEST:\n   Authorization: `vapid t=${jwt}, k=${VAPID_PUBLIC_KEY_B64URL}`\n   TTL: '<seconds>' (required by the push service, e.g. 2419200 for 4 weeks; use a short TTL like 300-3600 for time-sensitive reminders since a stale reminder delivered hours late is worse than dropped)\n   Urgency: 'normal' (optional; very-low/low/normal/high)\n   POST to sub.endpoint with no body for a \"tickle\" (empty push, cheapest and simplest), or an encrypted body per step 5 if you want the notification text delivered in the push itself.\n\n5. PAYLOAD ENCRYPTION (RFC 8291, aes128gcm) — ONLY NEEDED IF YOU PUT TEXT IN THE PUSH ITSELF:\n   - ECDH: generate an ephemeral P-256 keypair per message, crypto.subtle.deriveBits with the subscription's p256dh as the peer public key, to get the shared ECDH secret.\n   - HKDF (all via crypto.subtle with the 'HKDF' algorithm, or manual HMAC-SHA-256 if you want single-call control): PRK_key = HMAC-SHA-256(auth_secret, ecdh_secret); combine with info = \"WebPush: info\" || 0x00 || ua_public(65B) || as_public(65B) to get IKM; then standard RFC 8188 HKDF-Expand with salt (16 random bytes) and info = \"Content-Encoding: aes128gcm\" || 0x00 to get the 16-byte CEK, and info = \"Content-Encoding: nonce\" || 0x00 to get the 12-byte nonce.\n   - Wire format: 16-byte salt + 4-byte big-endian record size + 1-byte keyid-length + 65-byte keyid (your ephemeral public key) as the aes128gcm header, then AES-128-GCM-encrypt(plaintext + 0x02 padding-delimiter byte) appended as the single record.\n   - Header on the request: Content-Encoding: aes128gcm (no separate Crypto-Key/Encryption headers — those belonged to the older, deprecated \"aesgcm\" scheme; aes128gcm folds salt/keyid into the body). Source: rfc-editor.org/rfc/rfc8291 (has full byte-level spec and a worked test vector in the appendix — plaintext \"When I grow up, I want to be a watermelon\", exact CEK/nonce/ciphertext bytes — useful to unit-test your implementation against).\n   - PONYTAIL CALL: for a single-user personal reminder app, skip step 5 entirely. Send an empty/tickle push (Content-Encoding omitted, no body) and hardcode the notification title/body client-side in the service worker's 'push' handler based on a `tag` or tiny JSON the SW already knows, OR fetch the real text from your API inside the push handler via ctx.waitUntil(fetch(...)). This avoids ~100 lines of ECDH/HKDF/AES-GCM code and its test-vector-matching risk, for a feature (rich push text) a single user doesn't need. Add real encrypted payloads only if you later want the notification body to differ each time (e.g. today's actual weight trend) without the SW making a network round-trip first.",
+      "workerCron": "Cron Triggers docs: developers.cloudflare.com/workers/runtime-apis/handlers/scheduled/ and limits: developers.cloudflare.com/workers/platform/limits/\n\nSYNTAX: standard 5-field cron in wrangler.toml:\n[triggers]\ncrons = [\"*/15 * * * *\"]\nHandler:\nexport default {\n  async scheduled(controller, env, ctx) {\n    ctx.waitUntil(runReminders(env)); // must be wrapped in waitUntil or the Worker can be killed before async work finishes\n  },\n};\ncontroller.cron gives you the exact matched cron string (character-for-character) if you register multiple crons and branch with a switch.\n\nFREE TIER LIMITS (confirmed against developers.cloudflare.com/workers/platform/limits/, contradicts several blog posts that say \"5 free\" or \"3 free\" without qualifying per-account vs per-worker):\n- 5 Cron Triggers per ACCOUNT on Free (not per Worker) — cronuru/other blogs quoting \"3 per worker\" are describing an older or different limit; trust the CF docs page over search snippets.\n- CPU time per invocation on Free: 10 ms (yes, milliseconds) — this is the sharpest constraint in the whole design. Paid plan gives 30s (<1hr interval crons) or 15 min (>=1hr interval crons).\n- Subrequests per invocation on Free: 50. Paid: 10,000 (up to 10M with adjustment).\n- Requests/day on Free: 100,000 (scheduled invocations draw from this same daily allowance).\n- ALWAYS UTC. No per-trigger timezone setting exists.\n\nFIRING AT A USER'S LOCAL TIME FROM A UTC-ONLY CRON:\nRun one Worker on a frequent cron (e.g. every 15 or 30 minutes — a single personal app has plenty of room under the 5-trigger/10ms budget at that cadence) and, inside scheduled(), compute each user's current local hour:minute with Intl.DateTimeFormat, which correctly handles DST without manual offset math:\n  const localHM = new Intl.DateTimeFormat('en-CA', {\n    timeZone: user.tz, // IANA string, e.g. 'America/Edmonton' for Calgary (MST/MDT, DST-aware)\n    hour: '2-digit', minute: '2-digit', hour12: false,\n  }).format(new Date());\nCompare localHM against each stored reminder's target hour:minute (rounded to the cron's own granularity, e.g. match within the same 15-min bucket), and send only if it matches AND you haven't already sent that reminder today (dedupe key: `sent:{reminderId}:{YYYY-MM-DD in user's tz}` in KV, checked and set in the same invocation).\nCommunity-documented alternative for going below the 1-minute cron floor or fanning out many schedules from one trigger: aulvem.com/blog/2026-07-25-cloudflare-workers-cron-multiplex/ (collapse many logical schedules into one per-minute cron that branches on computed local time, rather than registering a cron trigger per schedule — relevant here since you're capped at 5 triggers/account anyway).\nGOTCHA: at 10ms CPU/invocation on Free, looping over KV lookups + Intl.DateTimeFormat calls + ECDSA JWT signing for more than a handful of users per tick will likely exceed the CPU budget and get the invocation killed mid-way. For a single user this is a non-issue; flag it before this ever becomes multi-tenant.",
+      "serviceWorkerCode": "// sw.js — network-first for anything that can go stale, cache-first ONLY for\n// filenames that change on every build. This is the fix for the black-screen\n// bug: a cache-first HTML/entry-JS strategy can freeze the app on a broken\n// build forever, because the SW never re-checks the network once something\n// is cached, and an old SW can keep controlling the page if skipWaiting/\n// clients.claim aren't called. Source pattern confirmed against multiple\n// 2026 PWA caching-strategy writeups (borstch.com, javascript.ac, dev.to\n// crisiscoresystems) which all converge on: hashed assets = cache-first,\n// HTML/entry documents = network-first, cache name = versioned + cleaned\n// up in activate.\n\nconst BUILD_ID = '__BUILD_ID__'; // replace at build time (git sha / timestamp)\nconst CACHE_NAME = `app-shell-v${BUILD_ID}`;\nconst PRECACHE_URLS = ['/', '/manifest.json']; // add hashed bundle paths from your build manifest here\n\nself.addEventListener('install', (event) => {\n  self.skipWaiting(); // new SW activates immediately, doesn't wait for old tabs to close\n  event.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(PRECACHE_URLS)));\n});\n\nself.addEventListener('activate', (event) => {\n  event.waitUntil(\n    caches.keys()\n      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))))\n      .then(() => self.clients.claim()) // take control of already-open tabs now, not on next reload\n  );\n});\n\nself.addEventListener('fetch', (event) => {\n  const { request } = event;\n  if (request.method !== 'GET') return;\n\n  const isHashedAsset = /\\.[0-9a-f]{8,}\\.(js|css|woff2?)$/.test(new URL(request.url).pathname);\n\n  if (isHashedAsset) {\n    // Safe to cache-first: the filename itself changes every build, so a\n    // cache hit can never be a stale-but-same-name file.\n    event.respondWith(\n      caches.match(request).then((cached) => cached || fetch(request).then((res) => {\n        const copy = res.clone();\n        caches.open(CACHE_NAME).then((c) => c.put(request, copy));\n        return res;\n      }))\n    );\n    return;\n  }\n\n  // Network-first for HTML navigations, unhashed JS/CSS, manifest, everything\n  // else: try the network, only fall back to cache if the network truly\n  // fails (offline). Never silently serve a cached shell while online, even\n  // if the cache has something. This is the line that stops a broken build\n  // from being served forever from cache.\n  event.respondWith(\n    fetch(request)\n      .then((res) => {\n        const copy = res.clone();\n        caches.open(CACHE_NAME).then((c) => c.put(request, copy));\n        return res;\n      })\n      .catch(() => caches.match(request).then((cached) => cached || caches.match('/')))\n  );\n});\n\n// Push handlers do NOT touch the app-shell cache at all, so a broken/corrupt\n// cache can never prevent a notification from firing.\nself.addEventListener('push', (event) => {\n  let data = {};\n  try {\n    data = event.data ? event.data.json() : {};\n  } catch (e) {\n    data = { title: 'Reminder', body: event.data ? event.data.text() : '' };\n  }\n  const title = data.title || 'Fitness reminder';\n  event.waitUntil(\n    self.registration.showNotification(title, {\n      body: data.body || '',\n      icon: '/icon-192.png',\n      badge: '/badge-72.png',\n      tag: data.tag || 'reminder',\n      data: { url: data.url || '/' },\n    })\n  );\n});\n\nself.addEventListener('notificationclick', (event) => {\n  event.notification.close();\n  const url = event.notification.data && event.notification.data.url || '/';\n  event.waitUntil(\n    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {\n      const existing = clients.find((c) => c.url.includes(url));\n      return existing ? existing.focus() : self.clients.openWindow(url);\n    })\n  );\n});\n\n// ESCAPE HATCH (add this if it ever happens again): a tiny, NEVER-cached\n// bootstrap endpoint (e.g. /sw-kill) that the app can fetch on load; if it\n// returns a version newer than what this SW thinks it is, call\n// registration.unregister() and caches.keys().then(ks => ks.forEach(k =>\n// caches.delete(k))) then reload — gives you a remote kill switch without\n// requiring the user to manually uninstall the PWA.",
+      "kvSchema": "One Workers KV namespace is enough at this scale (well under the 1GB/1k-writes-per-day free limits for a single user). Suggested key layout:\n\npush:sub:{userId}\n  -> JSON { endpoint, keys: { p256dh, auth }, createdAt, userAgent }\n  One per active subscription; overwrite on every successful (re)subscribe. Delete on 404/410 (see gotchas).\n\npush:prefs:{userId}\n  -> JSON {\n       tz: \"America/Edmonton\",              // IANA zone for Calgary, DST-aware\n       reminders: [\n         { id: \"meal-log-lunch\", hour: 12, minute: 30, enabled: true },\n         { id: \"meal-log-dinner\", hour: 18, minute: 30, enabled: true },\n         { id: \"weigh-in\", hour: 7, minute: 0, enabled: true },\n         { id: \"gym-session\", hour: 17, minute: 0, enabled: true, days: [1,3,5] }, // Mon/Wed/Fri for the 3x/week Crunch Fitness plan\n         { id: \"retatrutide-dose\", hour: 9, minute: 0, enabled: true, days: [0] } // weekly, day-of-week 0=Sunday if that's injection day — confirm actual weekday, only Aug 31/Sep 7/Sep 14 dates were given, not a weekday\n       ]\n     }\n\npush:sent:{reminderId}:{YYYY-MM-DD}\n  -> \"1\" with a KV expirationTtl of e.g. 172800 (2 days) so it auto-cleans and you never need a delete pass.\n  Written once per reminder per local day, checked at the top of scheduled() to dedupe across the multiple cron ticks that land in the same target window.\n\npush:dose-schedule:{userId} (optional, since retatrutide titration dates/doses are known in advance and don't fit a weekly-recurrence model cleanly)\n  -> JSON [ { date: \"2026-08-31\", mg: 1 }, { date: \"2026-09-07\", mg: 1.5 }, { date: \"2026-09-14\", mg: 1.5 } ]\n  Checked by date match rather than day-of-week, so titration steps fire correctly without recomputing a recurrence rule each time the dose changes.\n\nNote on KV consistency: writes can take up to 60s to propagate to other Cloudflare edge locations (developers.cloudflare.com/kv/concepts/how-kv-works/), and reads of a very-recently-written key from a different location than the write can return stale/absent data during that window. Irrelevant for a single low-frequency personal-reminder writer, but don't build read-your-own-write logic across two near-simultaneous requests without accounting for it.",
+      "gotchas": [
+        "Free-tier Cron Trigger CPU budget is 10ms per invocation (not 10 seconds) — confirmed on developers.cloudflare.com/workers/platform/limits/. ECDSA JWT signing plus a handful of KV reads is fine for one user; do not scale this design to many users without moving to Paid (30s/15min CPU) or batching sends across multiple ticks.",
+        "Cron Trigger limit (5 on Free) is per ACCOUNT, not per Worker — several blog posts (cronuru.com, runhooks.app) state different numbers or imply per-worker; the CF docs page is the source of truth and was fetched directly to confirm this.",
+        "Workers KV is eventually consistent (writes can take up to 60s to reach other edge locations) — irrelevant at single-user write volume but worth knowing if this ever becomes multi-writer.",
+        "iOS Web Push requires the site be added to the Home Screen via Safari's Share sheet first — an ordinary Safari tab has no Push API at all, regardless of iOS version. Minimum iOS version is 16.4 (March 2023). Notification.requestPermission() must be called synchronously inside a user-gesture handler on iOS or it silently fails.",
+        "iOS Safari has no silent/data-only push — every push you send MUST result in a visible notification via showNotification(), or the OS can revoke permission after repeated silent-looking pushes. Don't use push as a background-sync-only mechanism on iOS.",
+        "410 Gone = subscription expired or user unsubscribed; 404 Not Found = the endpoint URL itself is invalid. Both mean: delete the push:sub:{userId} KV record immediately on receiving that status from the push service, or you'll keep failing sends into the void and risk the push service starting to rate-limit your VAPID key at scale (irrelevant risk at n=1, but the delete-on-410/404 handling is still correct practice).",
+        "The pushsubscriptionchange service worker event exists to let you proactively refresh a subscription before it expires, but it's not reliably fired across browsers/spec implementations — treat 410-triggered cleanup on send as the actual source of truth, not pushsubscriptionchange.",
+        "Payload size caps: ~4KB is the practical ceiling most push services (Chrome/Firefox/Edge) enforce; Safari's web push is commonly cited around 2KB. Keep any encrypted payload body small, or skip payload encryption entirely and send tickle pushes (see ponytail note in vapidFlow).",
+        "VAPID JWT 'exp' claim must be <= 24 hours from now per RFC 8292; going over doesn't always error immediately on some push services (see github.com/mozilla-services/autopush/issues/794) but is spec-non-compliant and other services will reject it — just always set exp to something like now+12h.",
+        "crypto.subtle.sign for ECDSA returns raw IEEE P1363 (r||s, 64 bytes for P-256) directly — this happens to be exactly the JWS ES256 wire format, so no DER conversion step is needed in a Workers/browser implementation. This trips people up when porting Node.js code, because Node's built-in crypto module (not Web Crypto) defaults to DER-encoded ECDSA signatures and needs an explicit dsaEncoding:'ieee-p1363' option to match.",
+        "Height and age were not supplied for this user and were not invented — flagging per instructions: any calorie/TDEE/macro target math for the fat-loss + muscle goal needs those two inputs before it can be computed; do not proceed with BMR/TDEE formulas using assumed values."
+      ],
+      "freeTierLimits": "Cloudflare Workers Free plan (confirmed against developers.cloudflare.com/workers/platform/limits/ and /workers/platform/pricing/, 2026): 100,000 requests/day; 10ms CPU time per invocation (same figure applies to Cron Trigger invocations); 50 subrequests per invocation; 5 Cron Triggers per account. Workers KV Free plan: 100,000 reads/day, 1,000 writes/day, 1,000 deletes/day, 1,000 list operations/day, 1GB total storage, all resetting daily at UTC 00:00. All of these are hard caps on Free — requests over the cap fail rather than throttle or queue (per basekv.com/articles/cloudflare-workers-kv-limits-2026, cross-checked against the official pricing page). At single-user, low-frequency-reminder scale, none of these are binding except the 10ms CPU/invocation figure, which is worth designing around from day one (keep the scheduled() handler doing O(few) KV reads and a single JWT sign per tick, not a loop over many users).",
+      "sources": [
+        "https://developers.cloudflare.com/workers/runtime-apis/web-crypto/",
+        "https://developers.cloudflare.com/workers/runtime-apis/handlers/scheduled/",
+        "https://developers.cloudflare.com/workers/platform/limits/",
+        "https://developers.cloudflare.com/workers/platform/pricing/",
+        "https://developers.cloudflare.com/kv/concepts/how-kv-works/",
+        "https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/sign",
+        "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Tutorials/js13kGames/Re-engageable_Notifications_Push",
+        "https://www.rfc-editor.org/rfc/rfc8291",
+        "https://www.rfc-editor.org/rfc/rfc8292.html",
+        "https://pushpad.xyz/blog/web-push-error-410-the-push-subscription-has-expired-or-the-user-has-unsubscribed",
+        "https://pushpad.xyz/blog/web-push-errors-explained-with-http-status-codes",
+        "https://github.com/block65/webcrypto-web-push/blob/master/examples/cloudflare-workers/main.ts",
+        "https://gist.github.com/DJDANNY123/7e597deab553ada6b68110e3ebcfa322",
+        "https://web.dev/articles/push-notifications-web-push-protocol",
+        "https://basekv.com/articles/cloudflare-workers-kv-limits-2026",
+        "https://aulvem.com/blog/2026-07-25-cloudflare-workers-cron-multiplex/",
+        "https://www.magicbell.com/blog/pwa-ios-limitations-safari-support-complete-guide",
+        "https://github.com/andreinwald/webpush-ios-example",
+        "https://borstch.com/blog/caching-strategies-in-pwa-cache-first-network-first-stale-while-revalidate-etc"
+      ]
+    },
+    "verification": {
+      "retatrutide": {
+        "refutedClaims": [
+          {
+            "claim": "Heart rate side effect entry: \"~5-10 bpm average increase observed in trials, peaking around week 24\"",
+            "correctValue": "Multiple independent secondary sources reporting on the NEJM phase 2 data give ~5-7 bpm at the highest doses (8mg/12mg), with one source citing a specific 6.7 bpm increase at 12mg vs 0.9 bpm on placebo. No source found supports a 10 bpm figure at any dose.",
+            "source": "boltpharmacy.co.uk 'Retatrutide Heart Rate Increase' guide (aggregating NEJM 2301972 phase 2 data); helloregimen.com cardiovascular-effects page",
+            "why": "The claims doc's own upper bound (10 bpm) is not found in any source I could locate, even ones summarizing the highest (12mg) dose — a dose 8x the user's actual 1-1.5mg. This looks like a rounded-up overstatement, not a fabricated number, but it should be tightened to 5-7 bpm at trial's highest doses and explicitly caveated as unmeasured at 1-1.5mg (which the doc partially does)."
+          },
+          {
+            "claim": "leanMassRisk: retatrutide DXA substudy \"reported that lean mass loss as a share of total weight loss was similar to or somewhat better than comparators, not worse\"",
+            "correctValue": "Secondary sources characterize the finding as lean mass loss being 'comparable to other obesity treatments' / retatrutide 'didn't lose more muscle than other drugs' — i.e. parity, not superiority. One aggregator computed a ~35.4% lean-mass share of total weight loss (from a 64.6% pooled fat-loss-index across 4/8/12mg), which sits at the higher end of the 25-40% class range the doc itself cites elsewhere, not toward the better end.",
+            "source": "rethinkpeptides.com summary of Coskun et al. 2025 (Lancet Diabetes & Endocrinology, PMID 40609566); springermedicine.com summary",
+            "why": "\"somewhat better than comparators\" is not supported by any source found — the actual language in circulation is parity (\"comparable\"/\"similar\"), and the one numeric estimate available (~35.4% lean share) is at the upper end, not the favorable end, of the class range. This should be softened to \"similar to / not clearly worse than comparators\" rather than implying an advantage."
+          }
+        ],
+        "unverifiable": [
+          "Exact relative-risk multipliers for nausea by dose (2.69x at 4mg, 4.27x at 8mg, 4.00x at 12mg vs placebo) — the underlying nausea percentages (14.5% @1mg, 45.2% @12mg, 60% fast-titration @8mg) were independently confirmed, but the specific RR figures could not be confirmed against a primary source (NEJM full text is paywalled; the cited pace-cme.org page did not contain dose-specific nausea numbers when fetched).",
+          "FDA review length of '10-12 months' post-BLA-acceptance — one synthesis source instead suggested ~60 days to accept the filing plus 6-10 months of review, which is a narrower/faster window than the doc's '10-12 months'; standard (non-priority) PDUFA review is nominally 10 months, so the doc's figure is defensible but not independently pinned down to a single authoritative number.",
+          "Tirzepatide (~2-4 bpm) and semaglutide (~1-4 bpm) heart-rate comparator figures cited alongside the retatrutide number — plausible and consistent with general knowledge of those trials' cardiac safety data, but not independently re-verified in this pass.",
+          "The specific 'expected weight loss rate at 1-1.5mg' figure the app would show the user — the weekByWeek section of the claims JSON was truncated before any quantitative weight-loss-% figure appeared, so there was nothing concrete to check it against. For reference, the phase 2 trial's actual 1mg arm (not titrated to 1.5mg) produced −7.2% least-squares-mean weight loss at 24 weeks and −8.7% at 48 weeks vs −2.1% on placebo — use this as the grounding number if/when the full doc states one.",
+          "2-11% arrhythmia/palpitation rate range and the 'none classified as serious in trial data' characterization — plausible given the broader safety profile described elsewhere, but not independently re-confirmed against a primary source in this pass.",
+          "Human-isolated glucagon-driven energy-expenditure magnitude — the doc already correctly flags this as unverified/animal-data-only; I found nothing in this pass to override that caveat, so it stands as unverified rather than refuted."
+        ],
+        "corrections": [
+          "Nausea-by-dose numbers (14.5% at 1mg, 45.2% at 12mg, 60% fast-titration at 8mg) are CONFIRMED accurate against an independent secondary source reporting the same phase 2 figures verbatim (28/62 at 12mg, 21/35 in the fast-titration 8mg arm) — no correction needed.",
+          "Regulatory status is CONFIRMED accurate on all points: no approval anywhere as of Aug 2026, Lilly targeting a Q1 2027 BLA submission, and Health Canada's public new-drug-submission list not showing retatrutide as of the June 30, 2026 update (independently corroborated by a Lilly spokesperson telling Medscape in June 2026 that retatrutide 'has not been approved anywhere in the world'). No correction needed.",
+          "Mechanism claims (GIPR ~8.9x more potent than native GIP, GLP-1R ~0.4x and GCGR ~0.3x less potent than native hormones vs endogenous ligands, ~6-day half-life enabling weekly dosing, 39-amino-acid fatty-acid-conjugated peptide) are CONFIRMED accurate against Lilly's own medical-affairs page and the Cell Discovery structural-biology paper. No correction needed.",
+          "The CBS News off-label-prescribing claim is CONFIRMED accurate and if anything understates the scale: CBS's investigation found 120+ websites and 50+ clinics staffed by licensed clinicians promoting unapproved retatrutide, plus a 265% surge in Poison Center exposure reports in early 2026. No correction needed, could arguably be strengthened.",
+          "DXA substudy fat-mass-reduction figures (4.9% at 0.5mg, ~23-26% at 8-12mg vs 4.5% placebo) are CONFIRMED close to the primary Lancet substudy's reported 4.9% (0.5mg), 26.1% (8mg pooled), and 23.2% (12mg). No correction needed. This substudy also correctly excluded 1mg/1.5mg dose arms, exactly as the doc caveats.",
+          "The protein target of 1.6-2.0 g/kg is within the range supported by resistance-training-in-a-deficit sports-nutrition literature (general GLP-1 guidance clusters lower, around 1.2-1.6 g/kg, with up to ~2.0-2.2 g/kg cited for resistance-trained individuals in a deficit) — this is a defensible, non-overstated choice given the doc's own hedging, not a fabricated number.",
+          "Soften 'peaking around week 24... ~5-10 bpm' to '~5-7 bpm at the highest trial doses, peaking around week 24' — no source supports the 10 bpm upper bound.",
+          "Soften 'lean mass loss ... similar to or somewhat better than comparators, not worse' to 'similar to / not clearly worse than comparators' — no source found frames retatrutide as outperforming comparators on this metric, only as being on par."
+        ],
+        "verdict": "Largely holds up. No invented trial numbers were found: the dosing/nausea percentages (14.5% at 1mg, 45.2% at 12mg, 60% fast-titration at 8mg), the DXA fat-mass percentages by dose, the mechanism/potency figures, and the full regulatory-status section (FDA non-approval, Q1 2027 BLA target, Health Canada absence as of June 30 2026, CBS News off-label-prescribing reporting) all check out against independent secondary sources consistent with the primary literature. Two claims are mild overstatements rather than fabrications and should be tightened: the heart-rate side effect's upper bound of '~10 bpm' (sources top out around 5-7 bpm even at the highest 12mg dose), and the framing that retatrutide's lean-mass-loss share is 'similar to or somewhat better than' comparators (sources support parity, i.e. 'similar to/not worse than,' not superiority). The protein g/kg recommendation (1.6-2.0 g/kg) is defensible, not overstated, given it's explicitly framed as the upper end of a resistance-training-in-deficit range. Several secondary specifics — exact RR multipliers for nausea, the precise FDA review-month count, and the tirzepatide/semaglutide heart-rate comparator figures — could not be independently pinned to a primary source in this pass and should be treated as lower-confidence until checked against NEJM/FDA primary text directly. No evidence found that the regulatory-status claim is wrong in either direction (not overstated toward 'basically approved,' not understated toward 'banned') — it accurately frames retatrutide as investigational-only with real-world access happening through unregulated/compounding channels, which is the correct signal for the app to flag to the user."
+      },
+      "nutrition": {
+        "badEntries": [
+          {
+            "restaurant": "Marhaba Restaurant",
+            "item": "Chicken Shawarma Platter with rice and fries / Chicken Kabsa",
+            "claimed": "Listed as an NW Calgary halal option (appears in both top-12 kcal and top-12 protein lists)",
+            "actual": "Located in Westwinds, NE Calgary — the entry's own source note admits '~20 min from Sherwood NW, not a close local option'",
+            "source": "marhabarestaurant.ca + own dataset annotation"
+          },
+          {
+            "restaurant": "The Bro'Kin Yolk",
+            "item": "Egg White & Veggie Omelette",
+            "claimed": "Beacon Hill NW location",
+            "actual": "Confirmed Calgary locations are Creekside, Mahogany, and Signal Hill — none named 'Beacon Hill'",
+            "source": "brokinyolk.ca / Tripadvisor listings"
+          }
+        ],
+        "macroMathFailures": [
+          "Osmow's Regular Chicken Shawarma: claims 545 kcal / 41P / 16C / 22F -> macros sum to 426 kcal, 21.8% short of stated calories (worst gap found). Web search confirms the dataset accurately quotes MyNetDiary/Osmow's published figures — the inconsistency is in the source, not a transcription error.",
+          "Osmow's Super Chicken Shawarma: claims 868 kcal / 71P / 31C / 32F -> macros sum to 696 kcal, 19.8% short. Also appears at #1 protein and #3 calorie rank, so this is a load-bearing entry in the list.",
+          "Tahini's Chicken Shawarma Wrap, Medium: claims 510 kcal / 33P / 58C / 8F -> macros sum to 436 kcal, 14.5% short.",
+          "Tahini's Large Chicken Shawarma and Rice: claims 770 kcal / 43P / 86C / 16F -> macros sum to 660 kcal, 14.3% short.",
+          "A&W Chicken Slider, Grilled: claims 200 kcal / 10P / 19C / 6F -> macros sum to 170 kcal, 15% short. Confirmed this matches A&W's own published nutrition sheet, so the chain's own numbers don't internally reconcile."
+        ],
+        "porkViolations": [],
+        "nonexistentPlaces": [],
+        "verdict": "Mostly holds up. Every restaurant spot-checked (8 of the less-familiar names, including Kolachi BBQ & Grill, Twist of TAJ, Foodyard, Baladi Shawarma, California Thai, Rice Table Korean Kitchen, Blowers & Grafton, Bro'Kin Yolk) is a real, currently operating Calgary restaurant at or near its claimed NW neighborhood — no fabricated entries found. No undisclosed pork: the two real pork risks in the list (Baekjeong's pork belly menu, Panago's bacon-topped True Canadian pizza) are already self-flagged in the data's own halal field. The genuine problems are narrower: (1) 5 of the 21 top-calorie/top-protein entries fail the 12% macro-sum check by 14-22%, all concentrated in chain items sourced from MyNetDiary/FatSecret aggregations of Osmow's, Tahini's, and A&W's own published nutrition panels — meaning the chains' own numbers don't internally reconcile, not that this dataset mis-copied them; treat those 5 kcal figures as unreliable regardless. (2) Marhaba Restaurant is NE Calgary, not NW, despite ranking in both top-12 lists — the dataset already flags this in its own source text but the ranking treats it as a normal option anyway. (3) Bro'Kin Yolk's 'Beacon Hill NW' label doesn't match its three confirmed locations (Creekside, Mahogany, Signal Hill)."
+      }
+    }
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Research"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "research:retatrutide",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "af12b6c4c27d038e4",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787791754621,
+      "queuedAt": 1787791752691,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "NOT approved anywhere as of Aug 2026 — investigational only…",
+      "promptPreview": "You are researching for a personal fitness PWA rebuild. The user:\n- Male, 71.20 kg as of 2026-08-24. Height/age not yet supplied - do NOT invent them, flag where they are needed.\n- Goal: lose fat (face, love handles, belly) while building some muscle. No InBody available, only scale weight + app logs.\n- Self-describes as lazy / low commitment. Plans must survive missed days.\n- Muslim: NO PORK anyw…",
+      "lastProgressAt": 1787791997516,
+      "tokens": 107791,
+      "toolCalls": 16,
+      "durationMs": 242895,
+      "resultPreview": "{\"approvalStatus\":\"NOT approved anywhere as of Aug 2026 — investigational only. FDA: no approval; Lilly announced (Jul 23, 2026) it will submit a BLA to FDA in Q1 2027, with review typically 10-12 months, so realistic FDA approval is late 2027/2028 at the earliest (freemedicaljournals.com/blog/retatrutide-fda-approval-status-2026, drugs.com/history/retatrutide.html). Health Canada: as of the Jun 3…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "research:calgary-food",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "a52311c00c1b28402",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787791754173,
+      "queuedAt": 1787791752692,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "CONFIDENCE LEVELS: \"published\" = pulled from the chain's ow…",
+      "promptPreview": "You are researching for a personal fitness PWA rebuild. The user:\n- Male, 71.20 kg as of 2026-08-24. Height/age not yet supplied - do NOT invent them, flag where they are needed.\n- Goal: lose fat (face, love handles, belly) while building some muscle. No InBody available, only scale weight + app logs.\n- Self-describes as lazy / low commitment. Plans must survive missed days.\n- Muslim: NO PORK anyw…",
+      "lastProgressAt": 1787792264179,
+      "tokens": 148752,
+      "toolCalls": 50,
+      "durationMs": 510006,
+      "resultPreview": "{\"restaurants\":[{\"restaurant\":\"Kolachi BBQ & Grill\",\"item\":\"Beef Seekh Kabab Platter (2 kababs, rice, salad)\",\"servingDesc\":\"~450g plate\",\"kcal\":650,\"proteinG\":40,\"carbsG\":45,\"fatG\":30,\"source\":\"https://www.kolachibbq.ca/ (menu categories: BBQ/kebab, karahi) — no published nutrition, estimated from typical seekh kabab (2x100g grilled minced beef) + 1 cup rice + salad\",\"confidence\":\"estimated\",\"hal…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "research:crunch-gym",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "a7f952ed7c4c05b81",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787791754142,
+      "queuedAt": 1787791752692,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Crunch clubs are generally zoned: cardio machines up front …",
+      "promptPreview": "You are researching for a personal fitness PWA rebuild. The user:\n- Male, 71.20 kg as of 2026-08-24. Height/age not yet supplied - do NOT invent them, flag where they are needed.\n- Goal: lose fat (face, love handles, belly) while building some muscle. No InBody available, only scale weight + app logs.\n- Self-describes as lazy / low commitment. Plans must survive missed days.\n- Muslim: NO PORK anyw…",
+      "lastProgressAt": 1787791910730,
+      "tokens": 98918,
+      "toolCalls": 12,
+      "durationMs": 156588,
+      "resultPreview": "{\"equipment\":[{\"machineName\":\"Life Fitness Insignia Series Chest Press (or Dual Axis Chest Press)\",\"muscleGroup\":\"Chest, triceps\",\"category\":\"selectorised\",\"brand\":\"Life Fitness\",\"howToFind\":\"Selectorized machine row, usually near the free-weight/press area\",\"setupCue\":\"Adjust seat so handles align mid-chest height; select weight via the pin stack\"},{\"machineName\":\"Life Fitness Insignia Series Pul…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "research:ios-pwa",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "a9e9bbbed79a4c152",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787791754197,
+      "queuedAt": 1787791752692,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "VERIFIED. Web Push works in an iOS home-screen PWA starting…",
+      "promptPreview": "You are researching for a personal fitness PWA rebuild. The user:\n- Male, 71.20 kg as of 2026-08-24. Height/age not yet supplied - do NOT invent them, flag where they are needed.\n- Goal: lose fat (face, love handles, belly) while building some muscle. No InBody available, only scale weight + app logs.\n- Self-describes as lazy / low commitment. Plans must survive missed days.\n- Muslim: NO PORK anyw…",
+      "lastProgressAt": 1787792080235,
+      "tokens": 104794,
+      "toolCalls": 17,
+      "durationMs": 326037,
+      "resultPreview": "{\"webPushOnIOS\":\"VERIFIED. Web Push works in an iOS home-screen PWA starting iOS/iPadOS 16.4 (March 2023), and remains current through iOS 26 in 2026. Exact conditions: (1) The site must be added to the Home Screen via Safari's Share sheet > \\\"Add to Home Screen\\\" first. Web Push does NOT work for a page merely open in a Safari tab, only for the installed standalone app. Source: webkit.org/blog/13…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "research:competitors",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "ab810c781c2af75b3",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787791754216,
+      "queuedAt": 1787791752692,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Four real, documented approaches, in increasing sophisticat…",
+      "promptPreview": "You are researching for a personal fitness PWA rebuild. The user:\n- Male, 71.20 kg as of 2026-08-24. Height/age not yet supplied - do NOT invent them, flag where they are needed.\n- Goal: lose fat (face, love handles, belly) while building some muscle. No InBody available, only scale weight + app logs.\n- Self-describes as lazy / low commitment. Plans must survive missed days.\n- Muslim: NO PORK anyw…",
+      "lastProgressAt": 1787791929236,
+      "tokens": 108596,
+      "toolCalls": 25,
+      "durationMs": 175018,
+      "resultPreview": "{\"apps\":[{\"name\":\"MacroFactor\",\"standoutFeature\":\"Adaptive TDEE: derives actual expenditure from the relationship between logged intake and weight-trend change over time, rather than an age/height/weight formula. Begins updating on day 3, keeps refining through ~30 days.\",\"worthStealing\":\"Steal the concept, not the exact math (undisclosed): weight-trend-vs-intake regression to back out real expend…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "research:web-push",
+      "phaseIndex": 1,
+      "phaseTitle": "Research",
+      "agentId": "aad403df115e04b0b",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787791754158,
+      "queuedAt": 1787791752692,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "All of this runs on raw Web Crypto in a Worker — no npm dep…",
+      "promptPreview": "You are researching for a personal fitness PWA rebuild. The user:\n- Male, 71.20 kg as of 2026-08-24. Height/age not yet supplied - do NOT invent them, flag where they are needed.\n- Goal: lose fat (face, love handles, belly) while building some muscle. No InBody available, only scale weight + app logs.\n- Self-describes as lazy / low commitment. Plans must survive missed days.\n- Muslim: NO PORK anyw…",
+      "lastProgressAt": 1787792151899,
+      "tokens": 121440,
+      "toolCalls": 28,
+      "durationMs": 397741,
+      "resultPreview": "{\"vapidFlow\":\"All of this runs on raw Web Crypto in a Worker — no npm deps needed even for payload encryption, since Workers implement ECDSA/P-256, ECDH, HKDF and AES-GCM natively (developers.cloudflare.com/workers/runtime-apis/web-crypto/).\\n\\n1. GENERATE THE VAPID KEYPAIR ONCE (a local script or a one-off admin route, not per-request):\\n   const kp = await crypto.subtle.generateKey({name:'ECDSA'…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "verify:retatrutide",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a84c42ed9db028e41",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787792267627,
+      "queuedAt": 1787792265876,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Largely holds up. No invented trial numbers were found: the…",
+      "promptPreview": "Adversarially fact-check these RETATRUTIDE claims. Try to REFUTE them.\nDefault to flagging anything you cannot independently confirm with a citation.\nPay special attention to: dosing numbers, the lean mass loss percentage, expected weight loss\nrate at 1-1.5mg, and the protein g/kg recommendation. Overstated results and invented trial\nnumbers are the failure mode to catch. Also confirm the regulato…",
+      "lastProgressAt": 1787792484013,
+      "tokens": 109077,
+      "toolCalls": 15,
+      "durationMs": 216385,
+      "resultPreview": "{\"refutedClaims\":[{\"claim\":\"Heart rate side effect entry: \\\"~5-10 bpm average increase observed in trials, peaking around week 24\\\"\",\"correctValue\":\"Multiple independent secondary sources reporting on the NEJM phase 2 data give ~5-7 bpm at the highest doses (8mg/12mg), with one source citing a specific 6.7 bpm increase at 12mg vs 0.9 bpm on placebo. No source found supports a 10 bpm figure at any …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "verify:nutrition",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a3e353a56caa88b6c",
+      "model": "claude-sonnet-5",
+      "state": "done",
+      "startedAt": 1787792267706,
+      "queuedAt": 1787792265877,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Mostly holds up. Every restaurant spot-checked (8 of the le…",
+      "promptPreview": "Adversarially spot-check this NUTRITION DATA. Try to REFUTE the numbers.\nPick the 12 highest-calorie and 12 highest-protein entries and independently verify each\nagainst the restaurant's own published nutrition page or a reputable database.\nFlag any entry whose macros do not sum plausibly to its calorie count\n(protein 4 kcal/g, carbs 4 kcal/g, fat 9 kcal/g, tolerance 12%).\nFlag any pork item that …",
+      "lastProgressAt": 1787792466480,
+      "tokens": 118134,
+      "toolCalls": 14,
+      "durationMs": 198774,
+      "resultPreview": "{\"badEntries\":[{\"restaurant\":\"Marhaba Restaurant\",\"item\":\"Chicken Shawarma Platter with rice and fries / Chicken Kabsa\",\"claimed\":\"Listed as an NW Calgary halal option (appears in both top-12 kcal and top-12 protein lists)\",\"actual\":\"Located in Westwinds, NE Calgary — the entry's own source note admits '~20 min from Sherwood NW, not a close local option'\",\"source\":\"marhabarestaurant.ca + own datas…"
+    }
+  ],
+  "totalTokens": 917502,
+  "totalToolCalls": 177
+}

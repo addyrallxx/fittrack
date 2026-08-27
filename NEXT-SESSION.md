@@ -1,0 +1,236 @@
+# FitTrack handoff
+
+**Updated:** 2026-08-26
+**Repo:** `C:\Users\adnan\projects\fittrack` -> `github.com/addyrallxx/fittrack` (public)
+**Live:** https://addyrallxx.github.io/fittrack/fittrack.html
+
+---
+
+## Owner profile (locked 2026-08-26)
+
+| | |
+|---|---|
+| Height | 171.5 cm (5'7.5") |
+| Age | 23, born 2002-11-23 |
+| Weight | 71.20 kg, recorded 2026-08-24 |
+| Body fat | ~31% (eyeball). Was 33% at 73 kg. No InBody available any more |
+| Lean mass | ~49.1 kg |
+| Fat mass | ~22.1 kg |
+| Goal | Lose fat (face, love handles, belly), build some muscle |
+| Gym | Crunch Fitness, NW Calgary. **3 sessions/week, 45-60 min** |
+| Training age | **Detrained. Last gym session ~3 months ago.** Needs a ramp-in |
+| Diet | No pork. Not strictly halal otherwise. Orders DoorDash / Skip / UberEats more than he cooks |
+| Address | Sherwood NW, Calgary |
+| Self-assessment | "I am lazy and have low commitment" - plans must survive missed days |
+
+**Trajectory worth keeping:** 73 kg @ 33% -> 71.2 kg @ 31% means fat mass
+24.1 -> 22.1 kg and lean mass 48.9 -> 49.1 kg. He lost 2 kg of pure fat and
+held lean mass. That is the baseline the prediction engine builds on.
+
+### Derived targets (live in the app)
+
+- BMR: Mifflin-St Jeor 1674 / Katch-McArdle 1431. At 30%+ BF, Katch is the
+  better anchor. **Working TDEE ~2100 kcal.**
+- **1800 kcal, 150 P / 165 C / 60 F.** Hard floor **1600 kcal**.
+- 3.5 L water, 8000 steps, 5 g creatine.
+- Target weight 65.0 kg (~8 kg fat off, ~1 kg lean on, lands near 22% BF).
+
+**On retatrutide the real risk is undereating, not overeating.** The app must
+warn below the floor, not only above the ceiling.
+
+Protein note: cited evidence range is 1.6-2.0 g/kg (114-142 g at his weight).
+The 150 g target is deliberately a stretch above that; **~130 g is the floor
+that matters.** Research point worth building into coaching copy: front-load
+protein at the START of each meal, because appetite suppression means there is
+no appetite budget left later in the day.
+
+### Retatrutide
+
+Started 2026-08-24. Weekly, Mondays, ~2am. Titration: Aug 24 = 1 mg,
+Aug 31 = 1 mg, Sep 7 = 1.5 mg, Sep 14 = 1.5 mg. Also takes creatine and
+protein powder. A friend is on the same protocol.
+
+**Status as of Aug 2026: not approved in any jurisdiction.** Lilly stated
+2026-07-23 it will submit a BLA to FDA in Q1 2027; Health Canada has no
+submission on file. All current access is via research-chemical or compounding
+channels outside a regulated supply chain. The app should state this once,
+plainly, and not treat it as a normal supplement. Do not moralise: he is an
+adult who has made the call and asked for the app to support it.
+
+Research findings that drive features:
+- Triple agonist: GLP-1R + GIPR + **glucagon receptor**. The glucagon arm is
+  what differentiates it from tirzepatide and semaglutide.
+- **Resting HR rises ~5-10 bpm** at trial doses (8-12 mg), vs 2-4 bpm for
+  tirzepatide and 1-4 for semaglutide, attributed to the glucagon arm. His
+  1-1.5 mg dose is far below trial doses so expect less, but **the app should
+  log resting heart rate** as an early-warning signal.
+- Nausea is strongly dose-dependent: **~14.5% at 1 mg** vs 45.2% at 12 mg. His
+  slow titration is the right call and should keep GI effects mild.
+- Lean mass is **20-30% of weight lost by default** without training and
+  protein, and that ratio is the modifiable part. Resistance training plus
+  adequate protein is the entire lever.
+- Gallstone risk tracks rate of loss, not dose. His low dose is protective.
+
+---
+
+## Architecture
+
+Single-file vanilla-JS PWA. **No build step, no dependencies, classic script
+scope so inline `onclick=` handlers keep working.** Chart.js from CDN,
+Open Food Facts API for food search.
+
+`fittrack.html` (~1600 lines) - shell, CSS, all JS
+`manifest.json` - PWA manifest, `start_url: ./fittrack.html`
+`docs/archive/` - dormant features and restore instructions
+`icon-192.png` / `icon-512.png`
+
+### Storage
+
+localStorage, all keys prefixed `ft_`:
+
+| Key | Shape |
+|---|---|
+| `ft_schema` | int. **Bump to wipe on breaking change.** Currently `2` |
+| `ft_settings` | `{units, profile:{heightCm,birthday,sex}, programStart, targets:{...}, body:{...kg}, notifications, ramadanMode}` |
+| `ft_logs` | `{ "YYYY-MM-DD": {date, workout, nutrition:{meals,water}, checkins, steps, weight} }` |
+| `ft_weights` | `[{date:"YYYY-MM-DD", weight}]` |
+| `ft_workout` | day/exercise definitions |
+| `ft_custom_foods` | user-added foods |
+
+**Weight is canonically kilograms everywhere in storage.** Only the display
+layer converts, via `toDisp` / `fromDisp` / `fmtW` / `fmtWU` / `wUnit`.
+Because lb/kg is a pure scale factor those helpers are valid on deltas too.
+
+---
+
+## Done this session
+
+- `ca0fd85` **Home screen on first paint.** Every `.screen` was
+  `position:absolute; inset:0` with no initial transform, so all five stacked
+  at `translateX(0)` and `#s4` (Settings), last in the DOM, painted over Home.
+  The tab bar still highlighted Home, which is why it read as "loads from the
+  right side". Fixed by parking screens off-stage and pinning `#s0` on-stage.
+- `ca0fd85` **kg/lb units.** App had no unit concept and stored pounds with
+  stale 165.0 lb defaults. Storage is now canonically kg. Owner confirmed
+  on-device data is stale and unused, so `SCHEMA=2` wipes pre-v2 storage
+  instead of carrying a converter.
+- `e149866` **Steps on any date.** `DB.saveLog()` always took a date but every
+  caller passed `S.today`, which `init()` sets once and never advances. Added
+  `logFor` / `shiftDate` / `recentDates` / `saveStepsFor`, a date picker capped
+  at today, and a 7-day catch-up list. Plus `ingestFromHash()` accepting
+  `#steps=8432&date=2026-08-25` for one-tap automation, values kept in the
+  fragment so they never reach the Pages server.
+- Ramadan mode archived. Default flipped to `false` and the settings row
+  removed; flag, `MEAL_TYPES_R`, `getMealTypes()` branch and `toggleRamadan()`
+  all retained. Restore steps in `docs/archive/ramadan-mode.md`.
+
+---
+
+## Research artefact
+
+Full 8-agent research output (retatrutide, Calgary NW food data, Crunch
+equipment, iOS PWA + Web Push, competitor apps, Cloudflare push
+implementation), roughly 122k chars, with adversarial verification passes on
+the pharmacology and nutrition numbers:
+
+`C:\Users\adnan\AppData\Local\Temp\claude\C--Users-adnan-projects\ddfed865-54ab-49dc-918d-5d36017fe15a\tasks\webhwli0d.output`
+
+Per-agent returns: the workflow `journal.jsonl` under
+`.claude\projects\C--Users-adnan-projects\ddfed865-54ab-49dc-918d-5d36017fe15a\subagents\workflows\wf_b9acf853-ebc\`
+
+**This is a temp path and will be cleaned up. Copy anything still needed into
+`docs/research/` before relying on it.**
+
+---
+
+## Open work
+
+### 1. Notifications (biggest single item)
+
+**Current state is unfixable as designed.** `scheduleNotifs()` uses in-page
+`setTimeout` + `new Notification()`. Those timers die the moment the PWA is
+backgrounded. There is also **no service worker registered at all** - it was
+lost in the April revert. This is why he has never received a notification
+despite them showing as "on".
+
+Approved approach: **Cloudflare Worker + KV + Cron Triggers**, free tier. His
+Cloudflare account is connected and currently empty (0 workers, 0 KV
+namespaces). Owner approved deploying there. Needs VAPID keys, a real service
+worker with a `push` handler, and per-user timezone so a UTC cron fires at each
+user's local time.
+
+Reminder schedule he asked for:
+- Water every few hours through the day
+- Gym prompt **twice** a day ("when are you hitting the gym today" / "did you
+  already hit it")
+- Weight prompt **Monday morning**
+- Retatrutide dose reminder Monday
+
+**Service worker caching must be network-first or versioned.** A previous
+service worker cached a black-screen build and he had to uninstall the PWA to
+recover. Do not repeat that.
+
+### 2. Food logger
+
+Creatine quick-log. Calgary NW restaurant database (DoorDash/Skip/UberEats),
+Bangladeshi + high-protein Western home recipes, Canadian grocery staples.
+Screenshots folder for him to bulk-drop real past order screenshots.
+Every entry needs `source` and `confidence` fields - he explicitly asked for
+accuracy, so published numbers and estimates must be distinguishable.
+Move the database to `data/foods.json` rather than inlining it, to keep
+`fittrack.html` manageable.
+
+### 3. Workouts
+
+Rebuild for **3 days/week, 45-60 min, detrained** with a 2-week ramp-in.
+Exercises named for the actual machines on the Crunch NW floor so he is never
+confused. Two new logging shortcuts: **log the whole session at once**, and
+**log one exercise at once** instead of set by set.
+
+### 4. Progress tab
+
+Predictive and honest. Trend-weight smoothing, back-calculated TDEE from
+intake vs actual weight change, "at this rate, X by Y" projections.
+**Never optimistic** - his explicit instruction. Must degrade gracefully when
+he misses days rather than shaming or falsely encouraging.
+Add resting heart rate tracking (see retatrutide notes above).
+
+### 5. iOS + sharing
+
+Friends are all on iPhone. Needs iOS PWA polish (safe areas, splash, meta
+tags), Web Push working on iOS 16.4+ home-screen installs, an onboarding flow
+that generates a starting plan from a questionnaire (with retatrutide,
+creatine and protein as opt-in), and a motion onboarding doc he can hand out.
+
+---
+
+## Rules that bite
+
+- **Never big-bang commit.** In April a single commit added five features at
+  once, functions were called before they were defined, and the app went to a
+  black screen. Three fix attempts failed and it was force-reset to `93764db`.
+  Commit one feature at a time.
+- **Syntax-check before every commit.** Extract the largest `<script>` block
+  and run `node --check`. This is the exact guard that would have caught the
+  April black screen.
+- **`DB.set()` swallows every storage error silently.** localStorage failures
+  are invisible today. iOS evicts localStorage, so this is a real data-loss
+  path once friends are using it. Surface write failures and add a backup.
+- The app must stay **free**: install by link plus Add to Home Screen, no app
+  store, no paid services.
+- No em dashes in any copy.
+
+## Local notes
+
+- Old pre-revert lineage worth mining, do not delete:
+  `C:\Fittrack\fittrack.html` (152 KB) and `C:\Fittrack\fittrack update.html`
+  (150 KB) contain the reverted phase banner, run tracker, calendar and Sunday
+  check-in. Larger and newer in feature terms than what is on GitHub.
+- `C:\fittrack-repo` is the old clone. `C:\Users\adnan\projects\fittrack` is
+  now canonical.
+- Test on a real http origin, not `file://` or a `data:` URL. **Storage is
+  disabled inside `data:` URLs**, which makes the app look broken when it is
+  not. `python -m http.server 8899` from the repo dir works.
+- ECC is **enabled** in this session despite the global CLAUDE.md recording it
+  as disabled by default. Its GateGuard hook demands a facts preamble before
+  the first Bash call and before every first Write to a new file.

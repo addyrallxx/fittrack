@@ -463,7 +463,7 @@ programStart:'2026-08-24',
 targets:{calories:1800,protein:150,carbs:165,fat:60,water:3500,steps:8000,creatine:5},
 body:{currentWeight:71.2,startingWeight:71.2,targetWeight:65.0,bodyFat:31,startBodyFat:31,muscleMass:49.1},
 notifications:{weight:{enabled:true,time:'12:00'},protein:{enabled:true,time:'20:00'},gym:{enabled:true,time:'22:00'}},
-ramadanMode:true,
+ramadanMode:false, /* archived 2026-08-26, see docs/archive/ramadan-mode.md */
 };
 /* ── STORAGE ─────────────────────────────────── */
 const DB={
@@ -1290,14 +1290,6 @@ function renderSettings(){
       </div>
     </div>
     <div class="settings-sec">
-      <div class="section-label">Mode</div>
-      <div class="settings-grp">
-        <div class="settings-row">
-          <div class="sr-icon" style="background:rgba(255,214,10,0.15)"><span style="font-size:18px">🌙</span></div>
-          <div><div class="sr-lbl">Ramadan mode</div><div style="font-size:11px;color:var(--t3)">Suhoor / Iftar meal grouping</div></div>
-          <div class="toggle${c.ramadanMode!==false?' on':''}" id="rm-toggle" onclick="toggleRamadan()"><div class="toggle-knob"></div></div>
-        </div>
-      </div>
     </div>
     <div class="settings-sec">
       <div class="section-label">Data</div>
@@ -1334,6 +1326,8 @@ function toggleNotif(key){
   renderScreen(4);
   if(S.cfg.notifications[key].enabled)scheduleNotifs();
 }
+/* Retained deliberately: the settings row that called this is hidden, not
+   deleted. Restoring Ramadan mode means un-hiding that row. */
 function toggleRamadan(){
   S.cfg.ramadanMode=!(S.cfg.ramadanMode!==false);
   DB.saveSettings(S.cfg);renderScreen(4);
