@@ -499,6 +499,37 @@ function fromDisp(v){return wUnit()==='lb'?Number(v)*KG_PER_LB:Number(v);}
 function fmtW(kg,dp){return toDisp(Number(kg)||0).toFixed(dp==null?1:dp);}
 function fmtWU(kg,dp){return fmtW(kg,dp)+' '+wUnit();}
 function setUnits(u){S.cfg.units=(u==='lb')?'lb':'kg';DB.saveSettings(S.cfg);}
+/* -- ARBITRARY-DATE LOGGING -------------------------------------------------
+   DB.saveLog() always took a date, but every caller passed S.today, which is
+   set once in init() and never advances. That is why a day could not be
+   backfilled after midnight. These helpers make any date writable. */
+function logFor(date){return DB.log(date)||freshLog(date);}
+function shiftDate(date,days){
+  const d=new Date(date+'T12:00:00');d.setDate(d.getDate()+days);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function recentDates(n){const out=[];for(let i=0;i<n;i++)out.push(shiftDate(S.today,-i));return out;}
+function shortDate(ds){return new Date(ds+'T12:00:00').toLocaleDateString('en-CA',{weekday:'short',month:'short',day:'numeric'});}
+function saveStepsFor(date,v){
+  const l=logFor(date);l.steps=v;DB.saveLog(date,l);
+  if(date===S.today)S.log=l;
+}
+/* Steps ingest by URL fragment: #steps=8432 or #steps=8432&date=2026-08-25
+   so an iOS Shortcut or an Android HTTP-shortcut can push a day's count in
+   one tap. Kept in the fragment, never the query string, so the value is
+   never sent to the GitHub Pages server. */
+function ingestFromHash(){
+  const h=(location.hash||'').replace(/^#/,'');if(!h)return;
+  const q=new URLSearchParams(h);
+  const raw=q.get('steps');if(raw==null)return;
+  const v=parseInt(raw,10);if(isNaN(v)||v<0||v>200000)return;
+  const d=q.get('date')||S.today;
+  if(!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(d))return;
+  saveStepsFor(d,v);
+  history.replaceState(null,'',location.pathname+location.search);
+  toast('👟',`${v.toLocaleString()} steps imported`,shortDate(d));
+  if(S.screen===0)renderScreen(0);
+}
 /* -- SCHEMA RESET -----------------------------------------------------------
    Pre-v2 installs stored body weight in POUNDS with no units key, so the old
    165.0 default would render as "165.0 kg". Rather than carry a converter for
@@ -1350,20 +1381,37 @@ function saveWeight(){
   closeSheet();toast('⚖️',`Weight logged: ${v} ${wUnit()}`,'Saved to history');
   if(S.screen===0)renderScreen(0);
 }
-function openStepsSheet(){
+function openStepsSheet(date){
+  const d=date||S.today;
+  const cur=(DB.log(d)||{}).steps||0;
   openSheet(`<div class="sheet-body">
     <div class="inp-grp">
-      <div class="inp-lbl">Steps today</div>
-      <input class="inp-field" id="si" type="number" value="${S.log.steps||0}" inputmode="numeric" style="font-size:28px;font-weight:800;text-align:center;padding:20px;color:var(--green)">
+      <div class="inp-lbl">Date</div>
+      <input class="inp-field" id="sd" type="date" value="${d}" max="${S.today}" onchange="openStepsSheet(this.value)">
+    </div>
+    <div class="inp-grp">
+      <div class="inp-lbl">Steps on ${d===S.today?'today':shortDate(d)}</div>
+      <input class="inp-field" id="si" type="number" value="${cur}" inputmode="numeric" style="font-size:28px;font-weight:800;text-align:center;padding:20px;color:var(--green)">
     </div>
     <button class="sheet-btn" style="background:var(--green);color:#fff" onclick="saveSteps()">Save steps</button>
+    <div class="inp-lbl" style="margin-top:20px;margin-bottom:8px">Catch up on the last 7 days</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      ${recentDates(7).map(x=>{
+        const st=(DB.log(x)||{}).steps||0;
+        const on=x===d;
+        return `<button onclick="openStepsSheet('${x}')" style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-radius:10px;background:${on?'var(--green-dim)':'var(--s2)'};border:1px solid ${on?'var(--green-border)':'transparent'};width:100%">
+          <span style="font-size:13px;color:var(--t2);font-weight:600">${x===S.today?'Today':shortDate(x)}</span>
+          <span style="font-size:13px;font-weight:800;color:${st?'var(--green)':'var(--t3)'}">${st?st.toLocaleString():'not logged'}</span>
+        </button>`;}).join('')}
+    </div>
   </div>`,'Log steps');
 }
 function saveSteps(){
+  const d=document.getElementById('sd')?.value||S.today;
   const v=parseInt(document.getElementById('si')?.value)||0;
-  S.log.steps=v;DB.saveLog(S.today,S.log);closeSheet();
-  toast('👟',`${v.toLocaleString()} steps logged`,'');
-  if(S.screen===0)renderScreen(0);
+  saveStepsFor(d,v);closeSheet();
+  toast('👟',`${v.toLocaleString()} steps logged`,d===S.today?'':`for ${shortDate(d)}`);
+  if(S.screen===0)renderScreen(0);if(S.screen===3)renderScreen(3);
 }
 function openWaterSheet(){
   const w=S.log.nutrition.water||0,wg=S.cfg.targets.water||4000;
@@ -1612,6 +1660,8 @@ function init(){
   ['carbs','fat','creatine'].forEach(k=>{if(S.cfg.targets[k]==null)S.cfg.targets[k]=DEF_SETTINGS.targets[k];});
   buildTabs();
   renderScreen(0);
+  ingestFromHash();
+  window.addEventListener('hashchange',ingestFromHash);
   initSwipe();
   scheduleNotifs();
   // Seed initial weight if empty
