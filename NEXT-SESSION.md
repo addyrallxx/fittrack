@@ -17,7 +17,7 @@
 | Lean mass | ~49.1 kg |
 | Fat mass | ~22.1 kg |
 | Goal | Lose fat (face, love handles, belly), build some muscle |
-| Gym | Crunch Fitness, NW Calgary. **3 sessions/week, 45-60 min** |
+| Gym | Crunch Fitness, NW Calgary. **3 sessions/week, any days, 45-60 min** |
 | Training age | **Detrained. Last gym session ~3 months ago.** Needs a ramp-in |
 | Diet | No pork. Not strictly halal otherwise. Orders DoorDash / Skip / UberEats more than he cooks |
 | Address | Sherwood NW, Calgary |
@@ -47,7 +47,11 @@ no appetite budget left later in the day.
 ### Retatrutide
 
 Started 2026-08-24. Weekly, Mondays, ~2am. Titration: Aug 24 = 1 mg,
-Aug 31 = 1 mg, Sep 7 = 1.5 mg, Sep 14 = 1.5 mg. Also takes creatine and
+Aug 31 = 1 mg, Sep 7 = 1.5 mg, Sep 14 = 1.5 mg, Sep 21 = 2 mg, Sep 28 = 2 mg.
+**The table stops there on purpose.** Past Sep 28 the reminder says it does
+not know his dose and asks him to confirm, rather than naming a number for a
+research-chemical drug. The every-two-weeks cadence is his stated intent, not
+a prescription, and only he can extend the table. Also takes creatine and
 protein powder. A friend is on the same protocol.
 
 **Status as of Aug 2026: not approved in any jurisdiction.** Lilly stated
@@ -91,8 +95,8 @@ localStorage, all keys prefixed `ft_`:
 | Key | Shape |
 |---|---|
 | `ft_schema` | int. **Bump to wipe on breaking change.** Currently `2` |
-| `ft_settings` | `{units, profile:{heightCm,birthday,sex}, programStart, targets:{...}, body:{...kg}, notifications, ramadanMode}` |
-| `ft_logs` | `{ "YYYY-MM-DD": {date, workout, nutrition:{meals,water}, checkins, steps, weight} }` |
+| `ft_settings` | `{units, profile:{heightCm,birthday,sex}, programStart, targets:{...,floor}, body:{...kg}, notifications, ramadanMode, gymTarget, glp1}` |
+| `ft_logs` | `{ "YYYY-MM-DD": {date, workout, nutrition:{meals,water}, checkins, steps, weight, creatine, rhr} }` |
 | `ft_weights` | `[{date:"YYYY-MM-DD", weight}]` |
 | `ft_workout` | day/exercise definitions |
 | `ft_custom_foods` | user-added foods |
@@ -101,41 +105,94 @@ localStorage, all keys prefixed `ft_`:
 layer converts, via `toDisp` / `fromDisp` / `fmtW` / `fmtWU` / `wUnit`.
 Because lb/kg is a pure scale factor those helpers are valid on deltas too.
 
+**New this session:** `settings.gymTarget` (sessions per week) replaced
+`settings.trainingDays` (named weekdays), because gym days are now flexible,
+any three a week rather than fixed. `log.creatine` (grams, 0 when not taken)
+and `log.rhr` (resting bpm) are new per-day fields. `settings.glp1` and
+`settings.targets.floor` back onboarding and the undereating warning.
+
+### Data files
+
+`data/foods.json` (244 entries) and `data/workout-program.json` are fetched
+at runtime, no build step, nothing inlined as a fallback. Deliberate: the
+page itself is served over the network, and the service worker is
+network-first for both, so anything that can load the app can load the data.
+Food entries carry `src` and `conf` (`published` / `derived` / `estimate`),
+rendered as three visibly different badges. Current split: 95 published, 61
+derived, 88 estimate. Independent restaurants are never marked published,
+because they publish nothing.
+
+### Testing
+
+Three entry points, no framework:
+
+- `node test/syntax-check.mjs` - extracts the inline `<script>`, `sw.js`, the
+  worker, and every JSON file, runs `node --check` / `JSON.parse` on each.
+  The exact guard that would have caught the April black screen.
+- `node test/schedule.test.mjs` - 23 checks on the worker's reminder logic
+  (DST, day matching, dedupe on replay, every skip rule, the real signing and
+  encryption path).
+- `node test/progress.test.mjs` - 17 checks. Extracts the inline script and
+  runs it in a node `vm`, which is the first app-level test coverage the
+  project has had.
+
+`node serve.mjs` serves the app at http://localhost:8899. It replaces the old
+`python -m http.server` advice, which cannot work on this machine because the
+python on PATH is the Microsoft Store stub.
+
 ---
 
 ## Done this session
 
-- `ca0fd85` **Home screen on first paint.** Every `.screen` was
-  `position:absolute; inset:0` with no initial transform, so all five stacked
-  at `translateX(0)` and `#s4` (Settings), last in the DOM, painted over Home.
-  The tab bar still highlighted Home, which is why it read as "loads from the
-  right side". Fixed by parking screens off-stage and pinning `#s0` on-stage.
-- `ca0fd85` **kg/lb units.** App had no unit concept and stored pounds with
-  stale 165.0 lb defaults. Storage is now canonically kg. Owner confirmed
-  on-device data is stale and unused, so `SCHEMA=2` wipes pre-v2 storage
-  instead of carrying a converter.
-- `e149866` **Steps on any date.** `DB.saveLog()` always took a date but every
-  caller passed `S.today`, which `init()` sets once and never advances. Added
-  `logFor` / `shiftDate` / `recentDates` / `saveStepsFor`, a date picker capped
-  at today, and a 7-day catch-up list. Plus `ingestFromHash()` accepting
-  `#steps=8432&date=2026-08-25` for one-tap automation, values kept in the
-  fragment so they never reach the Pages server.
-- Ramadan mode archived. Default flipped to `false` and the settings row
-  removed; flag, `MEAL_TYPES_R`, `getMealTypes()` branch and `toggleRamadan()`
-  all retained. Restore steps in `docs/archive/ramadan-mode.md`.
-- `9f80896` Rings and progress bars no longer overshoot. A spring easing
-  overshoots ~11%, so a ring at 60% rendered past 66% before settling. Fine on
-  a button, misleading on a number he is meant to read. New `--ease-data`
-  for anything driven by real data; the 20 other `--spring` uses are
-  interaction feel and were left alone.
-- `73ce4b0` **Real service worker and push subscription.** Replaced
-  `scheduleNotifs()`, which armed in-page `setTimeout` callbacks that die when
-  the PWA backgrounds, and there was no service worker at all after the April
-  revert. That is the whole reason nothing ever arrived.
-- `c904bf0` **Reminder server** on Cloudflare Workers. No dependencies: VAPID
-  and RFC 8291 encryption are raw Web Crypto.
-- `ad557c1` **State reporting**, so reminders can go quiet about things already
-  done. Without it every skip rule was dead code.
+Eight commits, `c83715e` through `39b3b7a`, all pushed and live. This is the
+batch that closed out the rebuild. (Earlier same-day commits `ca0fd85`
+through `ad557c1` covered the home-screen paint fix, kg/lb units, steps on
+any date, ring overshoot, and the service worker / push / reminder-server
+plumbing itself; all still live, see git log for detail.)
+
+- `c83715e` **Syntax-check test harness.** `test/syntax-check.mjs` extracts
+  the inline `<script>`, `sw.js`, the worker, and every JSON file and checks
+  each. The exact guard that would have caught the April black screen,
+  now automated instead of manual.
+- `e9c1cee` **Gym reminders count sessions left in the week, not weekdays.**
+  He trains on any three days, not fixed Mon/Wed/Fri, so the old schedule
+  nagged when the week's target was still easy and stayed silent on the day
+  he actually needed to go. Now arithmetic: sessions left against days left
+  in a Monday-to-Sunday week, silent while a spare day remains. Also adds the
+  confirmed 2 mg / 2026-09-21 titration step; table still stops dead at
+  2026-09-28 on purpose.
+- `9e53ff3` **Reminders are live.** `PUSH_API` now points at the deployed
+  worker (`https://fittrack-push.addyrallxx.workers.dev`). `wrangler.toml`
+  fixed to state `workers_dev` / `preview_urls` as top-level keys; appended
+  below the last table they had silently become two environment variables of
+  those names.
+- `4c5431e` **Food logger reads a real database** instead of 27 inline
+  guesses. Results ranked, not filtered, so a real order beats a generic
+  item that only matched the first word. Creatine is a one-tap yes/no, not a
+  meal, since it carries no calories.
+- `8439767` **Three interchangeable sessions for a detrained lifter**, any
+  days. Replaced four hardcoded dumbbell days with three full-body sessions
+  named for the actual Crunch NW machines. Fixes a real crash: the home
+  screen indexed the next workout with a hardcoded `% 4` against what became
+  a three-session array.
+- `250a184` **244 food entries**, each carrying `src` and `conf`
+  (`published` / `derived` / `estimate`), rendered as three visibly different
+  badges. Built from his own order screenshots plus researched data. An
+  adversarial audit caught and fixed two pizzas with undeclared pork sausage,
+  a Five Guys entry mislabeled published while sitting below the real
+  figure, and two salmon entries citing a species not sold in Canada.
+- `32f6e5a` **Progress screen predicts from his own data, and refuses to
+  guess.** Trend-weight smoothing, TDEE back-calculated from logged intake vs
+  actual weight change (refuses below ~60% of days logged), projections that
+  take the slower of the recent and whole-program rate. Resting heart rate
+  logging added. 17 tests, first app-level coverage the project has had.
+- `39b3b7a` **Onboarding**, so the app stops being one person's body
+  hardcoded. Four steps build BMR, calorie/macro targets, water, and floor
+  from the installer's own numbers. Caught a 10x water-target error (34,900
+  ml) and a `DB.settings()` reference bug (first write mutated the shared
+  defaults) by checking the produced output, not the code. iOS splash images
+  for 10 sizes added; `docs/get-started.html` is the page he sends friends;
+  `serve.mjs` replaces the broken `python -m http.server` advice.
 
 ---
 
@@ -158,99 +215,75 @@ It is large, so read one key at a time rather than the whole file:
 node -e "const d=require('./docs/research/2026-08-26-rebuild-research.json');console.log(JSON.stringify(d.result.food,null,1))"
 ```
 
-The `push` key is now spent: everything in it is implemented. `food`, `gym`,
-`ios` and `competitors` are still unused and are the inputs for the remaining
-work below.
+The `food`, `gym` and `push` keys are now spent: everything in them is
+implemented. `ios` and `competitors` are still unused, though `ios` already
+partly informed this session's splash-image and onboarding work.
+`competitors` remains fully open.
 
 ---
 
 ## Open work
 
-### 1. Notifications - BUILT, NOT YET DEPLOYED
+**The rebuild is functionally done.** Notifications, food logger, workouts,
+progress tab, and onboarding are all built, tested and pushed. What is left
+is one real-device test and some polish, not more features.
 
-Everything is written, tested and pushed. **The only thing left is a deploy,
-which needs his Cloudflare login.** Three commands, in `worker/`:
+### 1. iPhone end-to-end test - THE ONLY THING THAT MATTERS NOW
 
-```bash
-npx wrangler login
-npx wrangler secret put VAPID_PRIVATE_KEY   # value is in worker/.dev.vars
-npx wrangler deploy
-```
+Notifications are **deployed and live**, not just written. Worker at
+`https://fittrack-push.addyrallxx.workers.dev`, cron `*/30 * * * *`, KV
+namespace `fittrack-push` id `28caa8c97997496899b70f56889f18a7`. `/health`
+returns `{"ok":true,"vapid":true}`. Verified live: `/health`, `/state` (with
+the new `gymWeek` field), CORS, and a 400 on a bad id. `PUSH_API` in
+`fittrack.html` points at it. VAPID public key:
+`BB3_s3JhI7PA6q8YLZYmKepjaW394uuyxkzjWUz2Bm3HMguRlYv3v5rOeU_KaL_JCpz1uLqb0sQgIx-75a3RC_0`.
+The private key lives only in `worker/.dev.vars`, gitignored, and was set
+directly on the Worker with `wrangler secret put`. It is not, and must never
+be, committed. The repo is public.
 
-Deploy prints `https://fittrack-push.<subdomain>.workers.dev`. Put it in
-`fittrack.html` as `PUSH_API`, commit, push. Reminders are then live. Until
-then the app **says so honestly** rather than claiming reminders are scheduled.
-Full runbook in `worker/README.md`.
+**Nothing has been verified on an actual phone.** On Adnan's iPhone: open
+https://addyrallxx.github.io/fittrack/fittrack.html in Safari, **Add to Home
+Screen before enabling notifications** (a Safari tab has no Push API at all,
+so the toggle looks fine while nothing ever arrives), open the app from the
+new home-screen icon, enable notifications in Settings, then press the
+in-app test button. Nothing else can substitute for this. Needs iOS 16.4+.
 
-| Thing | Value |
-|---|---|
-| KV namespace | `fittrack-push`, id `28caa8c97997496899b70f56889f18a7` (already created) |
-| VAPID public | `BB3_s3JhI7PA6q8YLZYmKepjaW394uuyxkzjWUz2Bm3HMguRlYv3v5rOeU_KaL_JCpz1uLqb0sQgIx-75a3RC_0` |
-| VAPID private | `worker/.dev.vars` only. **Gitignored, and the repo is public. Never commit it.** |
-| Cron | `*/30 * * * *`, one of the 5 free per-account triggers |
+Schedule and skip rules (all in the user's own timezone; cron is UTC-only,
+the Worker resolves each user's wall clock itself) are unchanged from the
+original design and are documented in `worker/README.md`. Doses are never
+extrapolated: the titration table in `worker/src/index.js` now runs through
+2026-09-28 (2 mg), and stops dead there on purpose. **Extend it only when he
+gives you the next confirmed step, not from the every-two-weeks pattern.**
 
-Schedule, all in the user's own timezone (cron is UTC-only, the Worker resolves
-each user's wall clock itself):
+**Service worker caching stays network-first for every GET, deliberately.**
+There is no build step and no hashed filenames, so nothing can safely be
+cache-first. Bumping `SW_VERSION` purges every older cache. Do not
+"optimise" this.
 
-| When | What | Goes quiet if |
-|---|---|---|
-| 09:30, 12:30, 15:30, 18:30, 21:00 | Water, with how far behind he is | already past that checkpoint |
-| 11:00 training days | "When are you hitting the gym today?" | workout logged |
-| 19:30 training days | "Did you already hit it?" | workout logged |
-| Mon 08:00 | Weigh-in | weight logged today |
-| Sun 22:00 / Mon 10:00 | Dose tonight (with mg) / dose taken? | never |
+### 2. `DB.set()` still swallows storage errors silently
 
-**The skip rules matter as much as the times.** Being nagged about something
-already done is how an app gets muted, and a muted app sends nothing at all.
+Flagged in the previous handoff, still not fixed. iOS evicts localStorage,
+so this is a real data-loss path now that friends are actually using the
+app. Surface write failures and add a backup.
 
-**Doses are never extrapolated.** The titration table in `worker/src/index.js`
-runs to 2026-09-14. Past that the reminder says so and asks him to confirm
-rather than inventing a number for a drug. **Extend that table when he gives
-you the next steps up.**
+### 3. Unreviewed content
 
-Tests: `node test/schedule.test.mjs`, 18 checks covering DST, day matching,
-dedupe on replay, every skip rule, and the real signing and encryption path.
-Mutation-tested, so they are known to fail when they should. The RFC 8291
-encryption is separately verified byte for byte against the spec's own test
-vector.
+Adnan has not yet reviewed the 244 food entries or the workout program
+against his own judgment. Both were built from research plus his own order
+screenshots and adversarially audited once already (`250a184` fixed what
+that audit found), but he has not signed off on either himself.
 
-**Service worker caching is network-first for every GET, deliberately.** A
-previous service worker cached a black-screen build and he had to uninstall the
-PWA to recover. There is no build step and no hashed filenames here, so nothing
-can safely be cache-first. Bumping `SW_VERSION` purges every older cache and is
-the escape hatch if one ever goes bad. Do not "optimise" this.
+### 4. iOS splash images
 
-### 2. Food logger
+Ten sizes generated with ffmpeg, each verified to match its filename
+dimensions, never seen on a real device.
 
-Creatine quick-log. Calgary NW restaurant database (DoorDash/Skip/UberEats),
-Bangladeshi + high-protein Western home recipes, Canadian grocery staples.
-Screenshots folder for him to bulk-drop real past order screenshots.
-Every entry needs `source` and `confidence` fields - he explicitly asked for
-accuracy, so published numbers and estimates must be distinguishable.
-Move the database to `data/foods.json` rather than inlining it, to keep
-`fittrack.html` manageable.
+### 5. Unused research
 
-### 3. Workouts
-
-Rebuild for **3 days/week, 45-60 min, detrained** with a 2-week ramp-in.
-Exercises named for the actual machines on the Crunch NW floor so he is never
-confused. Two new logging shortcuts: **log the whole session at once**, and
-**log one exercise at once** instead of set by set.
-
-### 4. Progress tab
-
-Predictive and honest. Trend-weight smoothing, back-calculated TDEE from
-intake vs actual weight change, "at this rate, X by Y" projections.
-**Never optimistic** - his explicit instruction. Must degrade gracefully when
-he misses days rather than shaming or falsely encouraging.
-Add resting heart rate tracking (see retatrutide notes above).
-
-### 5. iOS + sharing
-
-Friends are all on iPhone. Needs iOS PWA polish (safe areas, splash, meta
-tags), Web Push working on iOS 16.4+ home-screen installs, an onboarding flow
-that generates a starting plan from a questionnaire (with retatrutide,
-creatine and protein as opt-in), and a motion onboarding doc he can hand out.
+`ios` and `competitors` in
+`docs/research/2026-08-26-rebuild-research.json` remain the only unspent
+keys. Competitor app research (positioning, feature gaps) is still fully
+open.
 
 ---
 
@@ -260,9 +293,10 @@ creatine and protein as opt-in), and a motion onboarding doc he can hand out.
   once, functions were called before they were defined, and the app went to a
   black screen. Three fix attempts failed and it was force-reset to `93764db`.
   Commit one feature at a time.
-- **Syntax-check before every commit.** Extract the largest `<script>` block
-  and run `node --check`. This is the exact guard that would have caught the
-  April black screen.
+- **Syntax-check before every commit.** `node test/syntax-check.mjs` now does
+  this automatically: extracts the inline `<script>`, `sw.js`, the worker,
+  and every JSON file, and checks each. This is the exact guard that would
+  have caught the April black screen. Run it before every commit.
 - **`DB.set()` swallows every storage error silently.** localStorage failures
   are invisible today. iOS evicts localStorage, so this is a real data-loss
   path once friends are using it. Surface write failures and add a backup.
@@ -280,7 +314,7 @@ creatine and protein as opt-in), and a motion onboarding doc he can hand out.
   now canonical.
 - Test on a real http origin, not `file://` or a `data:` URL. **Storage is
   disabled inside `data:` URLs**, which makes the app look broken when it is
-  not. `python -m http.server 8899` from the repo dir works.
+  not. `node serve.mjs` from the repo dir works, at http://localhost:8899.
 - **The in-app Browser pane cannot register service workers at all.** It fails
   with "An unknown error occurred when fetching the script" even for a
   one-line worker, while the script itself fetches fine at 200. That is an
