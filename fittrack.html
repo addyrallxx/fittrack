@@ -42,7 +42,11 @@
   --green:#30D158;--green-dim:rgba(48,209,88,0.18);--green-border:rgba(48,209,88,0.25);
   --purple:#BF5AF2;--purple-dim:rgba(191,90,242,0.18);--purple-border:rgba(191,90,242,0.25);
   --red:#FF453A;--yellow:#FFD60A;
-  --t1:#FFFFFF;--t2:#AEAEB2;--t3:#636366;--t4:#3A3A3C;
+  /* Measured against --black #000000: t2 9.7:1, t3 6.4:1, t4 3.4:1.
+     t3 was #636366 (3.5:1) and t4 #3A3A3C (1.7:1), which put every secondary
+     label and every input placeholder under the 4.5:1 floor. t4 is now only
+     used for decoration, never for text that has to be read. */
+  --t1:#FFFFFF;--t2:#AEAEB2;--t3:#8E8E93;--t4:#5A5A5E;
   --spring:cubic-bezier(0.34,1.56,0.64,1);
   /* Data-bearing fills use ease-out-quint, never --spring. A spring overshoots
      its target by ~11%, so a ring or bar driven by a real number would render
@@ -54,6 +58,12 @@
   --tab-h:64px;--safe-b:env(safe-area-inset-bottom,16px);--safe-t:env(safe-area-inset-top,0px);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;}
+/* One switch for the whole app. Confetti, ring fills and screen slides all run
+   off animation/transition, so cutting both to ~0 honours the OS setting
+   without hunting down every keyframe. */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important;}
+}
 html{height:100%;overflow:hidden;background:#000;}
 body{height:100%;overflow:hidden;background:var(--black);color:var(--t1);font-family:-apple-system,'SF Pro Display','SF Pro Text','Roboto',system-ui,sans-serif;font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;user-select:none;touch-action:manipulation;}
 input,button,select,textarea{font-family:inherit;-webkit-tap-highlight-color:transparent;}
@@ -75,7 +85,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;touch-action:manipulation;}
 .tab-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;transition:all 0.25s var(--spring);}
 .tab-icon svg{width:22px;height:22px;stroke:var(--t3);transition:stroke 0.2s;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-.tab-label{font-size:10px;font-weight:500;color:var(--t3);transition:color 0.2s;letter-spacing:0.2px;}
+.tab-label{font-size:10px;font-weight:500;color:var(--t2);transition:color 0.2s;letter-spacing:0.2px;}
 .tab-btn.active .tab-icon svg{stroke:var(--orange);}
 .tab-btn.active .tab-label{color:var(--orange);}
 .tab-btn.active .tab-icon{transform:scale(1.1) translateY(-1px);}
@@ -337,7 +347,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .inp-lbl{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:7px;}
 .inp-field{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px 14px;font-size:15px;color:var(--t1);transition:border-color 0.2s;}
 .inp-field:focus{border-color:var(--border2);}
-.inp-field::placeholder{color:var(--t4);}
+.inp-field::placeholder{color:var(--t3);}
 .inp-row{display:flex;gap:10px;}
 .inp-row .inp-grp{flex:1;}
 .sheet-btn{width:100%;padding:15px;border-radius:var(--r-md);font-size:16px;font-weight:700;text-align:center;margin-top:8px;margin-bottom:4px;transition:transform 0.15s var(--spring);}
@@ -530,9 +540,13 @@ function suggestSession(){
 /* What he lifted last time on this exact movement, so the set rows open on a
    real number instead of a default he has to correct every single session. */
 function lastWeightFor(exId){
+  /* One parse, not 28. DB.log() re-reads and re-parses the entire ft_logs blob
+     on every call, and this loop used to call it once per day scanned, on every
+     unfilled set of every workout render. */
+  const all=DB.allLogs();
   for(const d of recentDates(28)){
     if(d===S.today)continue;
-    const l=DB.log(d);
+    const l=all[d]||null;
     const sets=l&&l.workout&&l.workout.exercises&&l.workout.exercises[exId]&&l.workout.exercises[exId].sets;
     if(!sets)continue;
     for(let i=sets.length-1;i>=0;i--)if(sets[i]&&sets[i].weight)return sets[i].weight;
@@ -590,7 +604,22 @@ ramadanMode:false, /* archived 2026-08-26, see docs/archive/ramadan-mode.md */
 /* ── STORAGE ─────────────────────────────────── */
 const DB={
   get(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def;}catch(e){return def;}},
-  set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}},
+  /* Returns whether the write landed. A silent false here used to be a real
+     data-loss path: iOS evicts localStorage and Android can hit quota, and
+     either way the log simply did not save while the UI carried on as though
+     it had. Warned once per session, because a failing store fails on every
+     subsequent write and a toast per keystroke helps nobody. */
+  set(k,v){
+    try{localStorage.setItem(k,JSON.stringify(v));return true;}
+    catch(e){
+      if(!DB._warned){
+        DB._warned=true;
+        try{toast('⚠️','Could not save','Storage is full or blocked. Export your data.');}catch(_){}
+      }
+      return false;
+    }
+  },
+  _warned:false,
   /* A copy, never the shared constant. Handing out DEF_SETTINGS by reference
      means the first write to S.cfg silently edits the defaults for the rest of
      the session, so a half finished onboarding would leak into the fallback. */
@@ -812,7 +841,7 @@ function renderHome(){
       <div>
         <div style="font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px">Current</div>
         <div style="display:flex;align-items:flex-end;gap:4px">
-          <div class="wt-big">${curWt.toFixed(1)}</div>
+          <div class="wt-big">${fmtW(curWt)}</div>
           <div style="font-size:13px;color:var(--t2);margin-bottom:5px">${wUnit()}</div>
         </div>
         <div style="margin-top:3px">${deltaHtml}</div>
@@ -1122,7 +1151,7 @@ function renderNutrition(){
     <div class="food-search-wrap">
       <div class="search-ico">${svgIcon('search',18,'var(--t3)')}</div>
       <input class="food-search-input" id="fsearch" type="text" placeholder="Search food or browse presets..." oninput="handleSearch(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
-      <div class="search-clr" id="sclr" onclick="clearSearch()">${svgIcon('x',10,'var(--t2)')}</div>
+      <div class="search-clr" id="sclr" role="button" tabindex="0" aria-label="Clear search" onclick="clearSearch()">${svgIcon('x',10,'var(--t2)')}</div>
     </div>
     <div class="search-results" id="sresults"></div>
     ${mealSections||`<div class="empty-state"><div class="empty-icon">🍽️</div><div class="empty-txt">No meals logged yet.<br>Tap "+ Add meal" to get started.</div></div>`}
@@ -1166,7 +1195,7 @@ function renderMealSec(name,items){
         <div class="meal-macro">P: ${m.protein||0}g · C: ${m.carbs||0}g · F: ${m.fat||0}g</div>
       </div>
       <div class="meal-cal">${m.cal}</div>
-      <button class="meal-del" onclick="delMeal('${m.id}')">${svgIcon('trash',12,'var(--red)')}</button>
+      <button class="meal-del" aria-label="Delete ${esc(m.name||'item')}" onclick="delMeal('${m.id}')">${svgIcon('trash',12,'var(--red)')}</button>
     </div>`).join('')}
   </div>`;
 }
@@ -1241,9 +1270,17 @@ function searchFoods(m){
   }
   return hit.sort((a,b)=>a[0]-b[0]).slice(0,10).map(x=>x[1]);
 }
+/* Debounced so a burst of typing rebuilds the list once instead of once per
+   character. The clear button still toggles immediately, because that one is
+   pure feedback on the keystroke itself. */
 function handleSearch(q){
-  const clr=document.getElementById('sclr'),res=document.getElementById('sresults');
+  const clr=document.getElementById('sclr');
   if(clr)clr.classList.toggle('show',q.length>0);
+  clearTimeout(S.searchTimer);
+  S.searchTimer=setTimeout(()=>runSearch(q),120);
+}
+function runSearch(q){
+  const res=document.getElementById('sresults');
   if(!q||q.length<2){if(res)res.classList.remove('show');return;}
   const m=q.toLowerCase();
   const local=searchFoods(m);
@@ -1911,12 +1948,19 @@ function toggleRamadan(){
 /* ── BOTTOM SHEETS ──────────────────────────── */
 function openSheet(content,title=''){
   const sw=document.getElementById('sheet-wrap'),bd=document.getElementById('backdrop');
-  sw.innerHTML=`<div class="sheet">
+  sw.innerHTML=`<div class="sheet" role="dialog" aria-modal="true"${title?' aria-label="'+esc(title)+'"':''}>
     <div class="sheet-handle"></div>
-    ${title?`<div class="sheet-hdr"><div class="sheet-title">${title}</div><button class="sheet-close" onclick="closeSheet()">${svgIcon('x',13,'var(--t2)')}</button></div>`:''}
+    ${title?`<div class="sheet-hdr"><div class="sheet-title">${title}</div><button class="sheet-close" aria-label="Close" onclick="closeSheet()">${svgIcon('x',13,'var(--t2)')}</button></div>`:''}
     ${content}
   </div>`;
   requestAnimationFrame(()=>{bd.classList.add('show');sw.classList.add('show');});
+  /* Move focus into the sheet, or a keyboard and a screen reader are both left
+     behind on the element that opened it. A text input wins when there is one,
+     because every sheet that has one exists to have it typed into. */
+  requestAnimationFrame(()=>{
+    const first=sw.querySelector('input,textarea,select,button');
+    if(first)try{first.focus({preventScroll:true});}catch(e){}
+  });
   bd.onclick=closeSheet;
 }
 function closeSheet(){
@@ -2125,7 +2169,13 @@ function urlB64ToU8(s){
    the server to key one subscription and one set of preferences off. */
 function deviceId(){
   let id=DB.get('ft_uid','');
-  if(!id){id='u_'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);DB.set('ft_uid',id);}
+  if(!id){
+    /* A bearer token, so it comes from a CSPRNG. Math.random() is seeded
+       predictably enough that ids generated near each other are guessable. */
+    id='u_'+(self.crypto&&crypto.randomUUID?crypto.randomUUID().replace(/-/g,'').slice(0,20)
+      :Array.from(crypto.getRandomValues(new Uint8Array(10)),b=>b.toString(16).padStart(2,'0')).join(''));
+    DB.set('ft_uid',id);
+  }
   return id;
 }
 function tzName(){try{return Intl.DateTimeFormat().resolvedOptions().timeZone||'America/Edmonton';}catch(e){return 'America/Edmonton';}}
@@ -2133,6 +2183,20 @@ function isIOS(){return /iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.p
 /* iOS has no Push API in an ordinary Safari tab, at any version. Only an
    installed home-screen app gets one, so this decides which advice to show. */
 function isStandalone(){return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;}
+/* Chrome fires this instead of installing, and the event is the only handle on
+   the native install flow. Android has no equivalent of iOS's Share sheet
+   instructions, so without capturing it there is no way to offer an install
+   button at all. */
+let deferredInstall=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;});
+window.addEventListener('appinstalled',()=>{deferredInstall=null;});
+async function promptInstall(){
+  if(!deferredInstall){toast('ℹ️','Use the browser menu','Chrome menu, then Install app');return;}
+  closeSheet();
+  deferredInstall.prompt();
+  try{await deferredInstall.userChoice;}catch(e){}
+  deferredInstall=null;
+}
 
 async function sendSub(sub){
   if(!PUSH_API||!sub)return false;
@@ -2201,7 +2265,17 @@ async function syncPush(){
   if(!('serviceWorker' in navigator))return false;
   try{
     const reg=await navigator.serviceWorker.getRegistration();
-    const sub=reg&&await reg.pushManager.getSubscription();
+    if(!reg)return false;
+    let sub=await reg.pushManager.getSubscription();
+    /* No subscription but permission still granted is the normal iOS failure:
+       the OS drops the subscription after a stretch of not opening the app, and
+       nothing tells the page. Left alone the toggle keeps saying "on" and not
+       one reminder ever arrives again. Re-subscribing here is what makes a
+       lapsed install heal itself the next time it is opened. */
+    if(!sub&&('Notification' in window)&&Notification.permission==='granted'){
+      try{sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlB64ToU8(VAPID_PUBLIC)});}
+      catch(e){return false;}
+    }
     return sub?sendSub(sub.toJSON()):false;
   }catch(e){return false;}
 }
@@ -2234,11 +2308,16 @@ function handleAction(act){
   if(p[0]==='weight'){openWeightSheet();return;}
   if(p[0]==='steps'){openStepsSheet(S.today);return;}
   if(p[0]==='gym'){go(1);return;}
+  if(p[0]==='food'){go(2);return;}
 }
 
 function openNotifInfo(){
   const perm=('Notification' in window)?Notification.permission:'none';
   const install=isIOS()&&!isStandalone();
+  /* Android can receive push from a browser tab, so this is not the hard block
+     it is on iOS. Installing is still worth offering: an installed PWA survives
+     tab eviction and gets its own notification channel in One UI settings. */
+  const canInstall=!isIOS()&&!isStandalone()&&!!deferredInstall;
   let title,detail,cta=true;
   if(perm==='none'){title='Not supported here';detail='This browser cannot show notifications. Try Chrome on Android, or Safari on iPhone.';cta=false;}
   else if(install){title='Add to Home Screen first';detail='Tap Share, then Add to Home Screen, then open FitTrack from the new icon and come back here. An ordinary Safari tab cannot receive notifications at all, no matter what you allow.';cta=false;}
@@ -2249,6 +2328,7 @@ function openNotifInfo(){
     <div style="font-size:15px;font-weight:700;color:var(--t1);margin-bottom:6px">${title}</div>
     <div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:20px">${detail}</div>
     ${cta?'<button class="sheet-btn sheet-btn-primary" onclick="reqNotif()">Enable notifications</button>':''}
+    ${canInstall?'<button class="sheet-btn sheet-btn-secondary" onclick="promptInstall()">Install app first</button>':''}
     <button class="sheet-btn sheet-btn-secondary" onclick="closeSheet()">${cta?'Not now':'Close'}</button>
   </div>`,'Notifications');
 }

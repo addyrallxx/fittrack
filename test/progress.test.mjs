@@ -59,6 +59,12 @@ function loadApp() {
     setTimeout: noop, clearTimeout: noop, setInterval: noop, clearInterval: noop,
     requestAnimationFrame: noop, matchMedia: () => ({ matches: false, addListener: noop }),
     Notification: undefined, Chart: undefined, Intl, Date, Math, JSON,
+    // window is the sandbox itself, so these are what the app installs its
+    // beforeinstallprompt and hashchange listeners on. Without them the
+    // script throws on load and every test below fails for the wrong reason.
+    addEventListener: noop, removeEventListener: noop,
+    crypto: { randomUUID: () => "00000000-0000-4000-8000-000000000000",
+             getRandomValues: a => a },
   };
   sandbox.window = sandbox;
   sandbox.globalThis = sandbox;
