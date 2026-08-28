@@ -1,8 +1,19 @@
 # FitTrack handoff
 
-**Updated:** 2026-08-27
+**Updated:** 2026-08-28
 **Repo:** `C:\Users\adnan\projects\fittrack` -> `github.com/addyrallxx/fittrack` (public)
 **Live:** https://addyrallxx.github.io/fittrack/fittrack.html
+
+---
+
+## Device priority (set 2026-08-28)
+
+Adnan's PRIMARY phone is a **Samsung Galaxy S26 Ultra (Android, Chrome)**.
+Android is priority one. iPhone is priority two, because he will share the
+app with friends and family who are nearly all on iPhone. **Both platforms
+must work.** Earlier handoffs were written iPhone-first, on the assumption
+his own phone was an iPhone. That assumption was wrong and every doc that
+still says "the iPhone test is the only thing that matters" is stale.
 
 ---
 
@@ -86,7 +97,9 @@ Open Food Facts API for food search.
 `fittrack.html` (~1600 lines) - shell, CSS, all JS
 `manifest.json` - PWA manifest, `start_url: ./fittrack.html`
 `docs/archive/` - dormant features and restore instructions
-`icon-192.png` / `icon-512.png`
+`icon-192.png` / `icon-512.png` (any purpose) and `icon-192-maskable.png` /
+`icon-512-maskable.png` (maskable purpose, added 2026-08-28, artwork at 70%
+of canvas so Android's adaptive-icon mask does not crop it)
 
 ### Storage
 
@@ -105,11 +118,11 @@ localStorage, all keys prefixed `ft_`:
 layer converts, via `toDisp` / `fromDisp` / `fmtW` / `fmtWU` / `wUnit`.
 Because lb/kg is a pure scale factor those helpers are valid on deltas too.
 
-**New this session:** `settings.gymTarget` (sessions per week) replaced
-`settings.trainingDays` (named weekdays), because gym days are now flexible,
-any three a week rather than fixed. `log.creatine` (grams, 0 when not taken)
-and `log.rhr` (resting bpm) are new per-day fields. `settings.glp1` and
-`settings.targets.floor` back onboarding and the undereating warning.
+`settings.gymTarget` (sessions per week) replaced `settings.trainingDays`
+(named weekdays), because gym days are flexible, any three a week rather than
+fixed. `log.creatine` (grams, 0 when not taken) and `log.rhr` (resting bpm)
+are per-day fields. `settings.glp1` and `settings.targets.floor` back
+onboarding and the undereating warning.
 
 ### Data files
 
@@ -124,7 +137,7 @@ because they publish nothing.
 
 ### Testing
 
-Three entry points, no framework:
+Four entry points, no framework, 54 checks total:
 
 - `node test/syntax-check.mjs` - extracts the inline `<script>`, `sw.js`, the
   worker, and every JSON file, runs `node --check` / `JSON.parse` on each.
@@ -133,8 +146,16 @@ Three entry points, no framework:
   (DST, day matching, dedupe on replay, every skip rule, the real signing and
   encryption path).
 - `node test/progress.test.mjs` - 17 checks. Extracts the inline script and
-  runs it in a node `vm`, which is the first app-level test coverage the
-  project has had.
+  runs it in a node `vm`. The sandbox needs `window.addEventListener` and a
+  `crypto` stub (added 2026-08-28), because the app now registers a
+  `beforeinstallprompt` listener.
+- `node test/push.test.mjs` - 14 checks, new 2026-08-28. Covers base64url
+  VAPID key decoding against known vectors, that the key decodes to a 65-byte
+  uncompressed P-256 point, that `PUSH_API` matches between `sw.js` and
+  `fittrack.html`, that the VAPID public key matches between `fittrack.html`
+  and `wrangler.toml`, the subscription dedupe and lookup helpers, and the
+  `/resubscribe` route ordering. **This suite passed in full while the live
+  `/resubscribe` route was still unreachable** - see "Rules that bite" below.
 
 `node serve.mjs` serves the app at http://localhost:8899. It replaces the old
 `python -m http.server` advice, which cannot work on this machine because the
@@ -142,57 +163,106 @@ python on PATH is the Microsoft Store stub.
 
 ---
 
-## Done this session
+## Done this session (2026-08-28)
 
-Eight commits, `c83715e` through `39b3b7a`, all pushed and live. This is the
-batch that closed out the rebuild. (Earlier same-day commits `ca0fd85`
-through `ad557c1` covered the home-screen paint fix, kg/lb units, steps on
-any date, ring overshoot, and the service worker / push / reminder-server
-plumbing itself; all still live, see git log for detail.)
+Four commits, all pushed to `origin/main`, all green, oldest to newest:
 
-- `c83715e` **Syntax-check test harness.** `test/syntax-check.mjs` extracts
-  the inline `<script>`, `sw.js`, the worker, and every JSON file and checks
-  each. The exact guard that would have caught the April black screen,
-  now automated instead of manual.
-- `e9c1cee` **Gym reminders count sessions left in the week, not weekdays.**
-  He trains on any three days, not fixed Mon/Wed/Fri, so the old schedule
-  nagged when the week's target was still easy and stayed silent on the day
-  he actually needed to go. Now arithmetic: sessions left against days left
-  in a Monday-to-Sunday week, silent while a spare day remains. Also adds the
-  confirmed 2 mg / 2026-09-21 titration step; table still stops dead at
-  2026-09-28 on purpose.
-- `9e53ff3` **Reminders are live.** `PUSH_API` now points at the deployed
-  worker (`https://fittrack-push.addyrallxx.workers.dev`). `wrangler.toml`
-  fixed to state `workers_dev` / `preview_urls` as top-level keys; appended
-  below the last table they had silently become two environment variables of
-  those names.
-- `4c5431e` **Food logger reads a real database** instead of 27 inline
-  guesses. Results ranked, not filtered, so a real order beats a generic
-  item that only matched the first word. Creatine is a one-tap yes/no, not a
-  meal, since it carries no calories.
-- `8439767` **Three interchangeable sessions for a detrained lifter**, any
-  days. Replaced four hardcoded dumbbell days with three full-body sessions
-  named for the actual Crunch NW machines. Fixes a real crash: the home
-  screen indexed the next workout with a hardcoded `% 4` against what became
-  a three-session array.
-- `250a184` **244 food entries**, each carrying `src` and `conf`
-  (`published` / `derived` / `estimate`), rendered as three visibly different
-  badges. Built from his own order screenshots plus researched data. An
-  adversarial audit caught and fixed two pizzas with undeclared pork sausage,
-  a Five Guys entry mislabeled published while sitting below the real
-  figure, and two salmon entries citing a species not sold in Canada.
-- `32f6e5a` **Progress screen predicts from his own data, and refuses to
-  guess.** Trend-weight smoothing, TDEE back-calculated from logged intake vs
-  actual weight change (refuses below ~60% of days logged), projections that
-  take the slower of the recent and whole-program rate. Resting heart rate
-  logging added. 17 tests, first app-level coverage the project has had.
-- `39b3b7a` **Onboarding**, so the app stops being one person's body
-  hardcoded. Four steps build BMR, calorie/macro targets, water, and floor
-  from the installer's own numbers. Caught a 10x water-target error (34,900
-  ml) and a `DB.settings()` reference bug (first write mutated the shared
-  defaults) by checking the produced output, not the code. iOS splash images
-  for 10 sizes added; `docs/get-started.html` is the page he sends friends;
-  `serve.mjs` replaces the broken `python -m http.server` advice.
+- `3ac0039` feat: reminders survive a rotated subscription and a wiped device id
+- `a002e7f` feat: the S26 gets an install path and an icon that is not cropped
+- `0668418` fix: a lapsed install heals itself, and storage failures stop being silent
+- `015945f` fix: /resubscribe was unreachable behind the device id guard
+
+This session's work was hardening and platform-correction, not new features.
+It started from the discovery that the entire previous handoff was written
+for the wrong primary phone (see "Device priority" above), and went on to
+find and fix a run of real bugs in the push pipeline that had shipped but
+never actually been exercised end to end.
+
+**Bugs found and fixed:**
+
+1. `pushsubscriptionchange` only `postMessage`d open windows, but that event
+   fires almost always while the app is closed, so a rotated subscription
+   never reached the server. Fixed: `sw.js` now POSTs to a new worker
+   endpoint, `/resubscribe`, keyed on the OLD endpoint, because a service
+   worker cannot read localStorage and so has no device id to key on.
+2. A wiped localStorage produced a fresh device id while the browser kept the
+   same push subscription, leaving two live KV records for one phone, so
+   every reminder arrived twice. Fixed: `/subscribe` now calls
+   `dropDuplicateEndpoints()`.
+3. A throw while building notification options meant NO notification at all
+   on Android, and on iOS a push that shows nothing can cost the site its
+   permission. Fixed: `buildOpts()` split out, guarded, with a fallback
+   `showNotification`.
+4. The service worker's offline fallback answered ANY failed GET with the
+   HTML shell, including `data/foods.json`. Callers check `r.ok`, which a 200
+   of HTML passes, so the food database silently read as empty. Fixed: only
+   requests with `req.mode === 'navigate'` fall back to the shell.
+5. iOS drops push subscriptions while permission stays granted, leaving the
+   toggle saying "on" forever with nothing arriving. Fixed: `syncPush()` now
+   re-subscribes when permission is granted and `getSubscription()` returns
+   null.
+6. **`/resubscribe` shipped dead.** The "bad id" guard ran before the route
+   switch, and `/resubscribe` requests have no id, so the route never
+   executed. `test/push.test.mjs`'s unit tests all passed while the live
+   route did not work; this was only caught by curling the deployed worker.
+   Fixed by moving the route above the guard. This is the lesson of the
+   session, see "Rules that bite."
+7. Both icons declared purpose `"any maskable"` with artwork running to the
+   edge, so Android's One UI cropped the ring on the home screen. Fixed:
+   separate `any` and `maskable` manifest entries; `icon-192-maskable.png`
+   and `icon-512-maskable.png` generated with ffmpeg, artwork at 70% of
+   canvas on full-bleed black, clearing the 80% safe zone.
+8. `manifest.json`'s `theme_color` was `#FF9500` while the page's
+   `<meta theme-color>` was `#000000`, so the splash screen flashed orange
+   into a black app. Both are `#000000` now.
+9. No `beforeinstallprompt` handling, so Android had no install button at
+   all, and the only install copy in the app was gated behind `isIOS()`.
+   Fixed.
+10. The home screen printed the current weight straight from storage next to
+    the unit label, so with `units=lb` it showed the KILOGRAM number labelled
+    "lb". Fixed to use `fmtW()`.
+11. `DB.set()` swallowed every storage error silently. Now returns a boolean
+    and warns once per session.
+12. `deviceId` used `Math.random()` while the worker treats ids as bearer
+    tokens. Now a CSPRNG.
+13. Contrast: `--t3` was `#636366` (3.5:1 on black) and `--t4` `#3A3A3C`
+    (1.7:1), both under the 4.5:1 floor. Now `#8E8E93` (6.4:1) and `#5A5A5E`.
+    Placeholders moved off `--t4`. Tab labels moved to `--t2`.
+14. Sheets got `role="dialog"`, `aria-modal`, focus on open. Icon-only
+    buttons got `aria-label`s. `prefers-reduced-motion` is now honoured
+    globally.
+15. Perf: `lastWeightFor()` parsed the whole `ft_logs` blob 28 times per call
+    (once per candidate date) on every unfilled set of every workout render.
+    Now parses once. Food search debounced at 120ms instead of rebuilding
+    the list per keystroke.
+
+**Manifest also gained** `id`, `scope`, `display_override`, `lang`, `dir`,
+`categories`, and four home-screen shortcuts routed through the existing
+`#act=` handler (water, weight, workout, food). A `"food"` case was added to
+`handleAction` to serve the food shortcut.
+
+**Worker:** `sub:` records now expire after 180 days (15552000s), refreshed
+on every launch. Deliberately long: a shorter TTL would delete the reminders
+of exactly the lapsed user those reminders exist to bring back.
+
+**Deployment state, verified live on 2026-08-28, not assumed:**
+- App: https://addyrallxx.github.io/fittrack/fittrack.html returns HTTP 200.
+- Worker: https://fittrack-push.addyrallxx.workers.dev deployed twice today,
+  current version `64a26690-6c92-485e-941d-36fba629fef3`, cron `*/30 * * * *`.
+- `/health` returns `{"ok":true,"vapid":true}`.
+- `/resubscribe` verified live: 404 "unknown subscription" for an unknown
+  endpoint, 400 "bad subscription" for a missing sub, and `/subscribe` still
+  400s "bad id".
+
+### Prior session, 2026-08-27 (summary)
+
+Eight commits closed out the rebuild: a syntax-check test harness, the
+deployed worker wired into the app for the first time, a real 244-entry food
+database with source/confidence badges, a three-session detrained-lifter
+workout program that works on any three days, a predictive progress screen
+that refuses to project below ~60% of days logged, and onboarding so the app
+stops assuming every installer has Adnan's own body. Full detail in git log
+`9fb8063..536be8f` and in the prior version of this file (git history).
 
 ---
 
@@ -202,8 +272,6 @@ Full 8-agent research output (retatrutide, Calgary NW food data, Crunch
 equipment, iOS PWA + Web Push, competitor apps, Cloudflare push
 implementation), roughly 122k chars, with adversarial verification passes on
 the pharmacology and nutrition numbers:
-
-Already copied into the repo, so the temp path no longer matters:
 
 - `docs/research/2026-08-26-rebuild-research.json` (160 KB) - keyed
   `reta`, `food`, `gym`, `ios`, `competitors`, `push`, `verification`
@@ -215,91 +283,62 @@ It is large, so read one key at a time rather than the whole file:
 node -e "const d=require('./docs/research/2026-08-26-rebuild-research.json');console.log(JSON.stringify(d.result.food,null,1))"
 ```
 
-The `food`, `gym` and `push` keys are now spent: everything in them is
-implemented. `ios` and `competitors` are still unused, though `ios` already
-partly informed this session's splash-image and onboarding work.
-`competitors` remains fully open.
+The `food`, `gym` and `push` keys are spent: everything in them is
+implemented. `ios` and `competitors` remain the only unspent keys. `ios`
+partly informed the splash-image and onboarding work; `competitors` is fully
+open.
 
 ---
 
 ## Open work
 
-**The rebuild is functionally done.** Notifications, food logger, workouts,
-progress tab, and onboarding are all built, tested and pushed. What is left
-is one real-device test and some polish, not more features.
+**1. Nothing has been tested on a real phone yet.** Not the S26 Ultra, not
+an iPhone. This is still the single highest-value remaining action, on both
+platforms now, not just one.
 
-### 1. iPhone end-to-end test - THE ONLY THING THAT MATTERS NOW
+**2. Planned but not necessarily finished:** capture real app screenshots,
+add a manifest `"screenshots"` array (needed for Chrome's rich install
+dialog on Android), rewrite `README.md` to portfolio standard with graphics
+and motion, and sync everything.
 
-Notifications are **deployed and live**, not just written. Worker at
-`https://fittrack-push.addyrallxx.workers.dev`, cron `*/30 * * * *`, KV
-namespace `fittrack-push` id `28caa8c97997496899b70f56889f18a7`. `/health`
-returns `{"ok":true,"vapid":true}`. Verified live: `/health`, `/state` (with
-the new `gymWeek` field), CORS, and a 400 on a bad id. `PUSH_API` in
-`fittrack.html` points at it. VAPID public key:
-`BB3_s3JhI7PA6q8YLZYmKepjaW394uuyxkzjWUz2Bm3HMguRlYv3v5rOeU_KaL_JCpz1uLqb0sQgIx-75a3RC_0`.
-The private key lives only in `worker/.dev.vars`, gitignored, and was set
-directly on the Worker with `wrangler secret put`. It is not, and must never
-be, committed. The repo is public.
+**3. Settings notification toggles lie.** They render ON from local
+preference alone, with no check against `Notification.permission` or against
+whether a subscription actually exists. A user who never granted permission
+sees four blue toggles and concludes reminders are on. **Confirmed HIGH
+finding, not yet fixed. This is the next thing to fix.**
 
-**Nothing has been verified on an actual phone.** On Adnan's iPhone: open
-https://addyrallxx.github.io/fittrack/fittrack.html in Safari, **Add to Home
-Screen before enabling notifications** (a Safari tab has no Push API at all,
-so the toggle looks fine while nothing ever arrives), open the app from the
-new home-screen icon, enable notifications in Settings, then press the
-in-app test button. Nothing else can substitute for this. Needs iOS 16.4+.
+**4. `toggleNotif()` discards `syncPush()`'s return value**, so a failed sync
+is silent.
 
-Schedule and skip rules (all in the user's own timezone; cron is UTC-only,
-the Worker resolves each user's wall clock itself) are unchanged from the
-original design and are documented in `worker/README.md`. Doses are never
-extrapolated: the titration table in `worker/src/index.js` now runs through
-2026-09-28 (2 mg), and stops dead there on purpose. **Extend it only when he
-gives you the next confirmed step, not from the every-two-weeks pattern.**
+**5. `initPush()`'s service worker registration failure is `console.warn`
+only.**
 
-**Service worker caching stays network-first for every GET, deliberately.**
-There is no build step and no hashed filenames, so nothing can safely be
-cache-first. Bumping `SW_VERSION` purges every older cache. Do not
-"optimise" this.
+**6. Adnan has still not personally reviewed** the 244 food entries or the
+workout program.
 
-### 2. `DB.set()` still swallows storage errors silently
-
-Flagged in the previous handoff, still not fixed. iOS evicts localStorage,
-so this is a real data-loss path now that friends are actually using the
-app. Surface write failures and add a backup.
-
-### 3. Unreviewed content
-
-Adnan has not yet reviewed the 244 food entries or the workout program
-against his own judgment. Both were built from research plus his own order
-screenshots and adversarially audited once already (`250a184` fixed what
-that audit found), but he has not signed off on either himself.
-
-### 4. iOS splash images
-
-Ten sizes generated with ffmpeg, each verified to match its filename
-dimensions, never seen on a real device.
-
-### 5. Unused research
-
-`ios` and `competitors` in
-`docs/research/2026-08-26-rebuild-research.json` remain the only unspent
-keys. Competitor app research (positioning, feature gaps) is still fully
-open.
+**7. Unspent research keys** in
+`docs/research/2026-08-26-rebuild-research.json`: `"ios"` and
+`"competitors"`.
 
 ---
 
 ## Rules that bite
 
+- **A passing unit test does not prove a live route works.**
+  `test/push.test.mjs` passed all 14 checks on 2026-08-28 while the live
+  `/resubscribe` route was still unreachable in production, because a guard
+  ran before the route switch and the unit tests exercised the route logic
+  directly rather than the actual request path. Only curling the deployed
+  worker found it. When a route changes, curl the live deployment, do not
+  trust the suite alone.
 - **Never big-bang commit.** In April a single commit added five features at
   once, functions were called before they were defined, and the app went to a
   black screen. Three fix attempts failed and it was force-reset to `93764db`.
   Commit one feature at a time.
-- **Syntax-check before every commit.** `node test/syntax-check.mjs` now does
+- **Syntax-check before every commit.** `node test/syntax-check.mjs` does
   this automatically: extracts the inline `<script>`, `sw.js`, the worker,
   and every JSON file, and checks each. This is the exact guard that would
   have caught the April black screen. Run it before every commit.
-- **`DB.set()` swallows every storage error silently.** localStorage failures
-  are invisible today. iOS evicts localStorage, so this is a real data-loss
-  path once friends are using it. Surface write failures and add a backup.
 - The app must stay **free**: install by link plus Add to Home Screen, no app
   store, no paid services.
 - No em dashes in any copy.

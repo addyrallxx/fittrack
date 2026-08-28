@@ -10,7 +10,12 @@
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
-const T={'.html':'text/html','.js':'text/javascript','.json':'application/json','.png':'image/png'};
+/* A wrong content type is not a cosmetic problem here. An SVG served as
+   application/octet-stream is refused by the browser and reports
+   naturalWidth 0, which looks exactly like a broken file. */
+const T={'.html':'text/html','.js':'text/javascript','.json':'application/json',
+         '.png':'image/png','.svg':'image/svg+xml','.gif':'image/gif',
+         '.webmanifest':'application/manifest+json','.ico':'image/x-icon'};
 http.createServer((q,r)=>{
   const f=path.join(process.cwd(),decodeURIComponent(q.url.split('?')[0]).replace(/^\/+/,'')||'fittrack.html');
   fs.readFile(f,(e,d)=>{

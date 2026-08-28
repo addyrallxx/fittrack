@@ -6,13 +6,20 @@
   "start_url": "./fittrack.html",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "background_color": "#000000",
   "theme_color": "#000000",
   "orientation": "portrait-primary",
   "lang": "en-CA",
   "dir": "ltr",
-  "categories": ["health", "fitness", "lifestyle"],
+  "categories": [
+    "health",
+    "fitness",
+    "lifestyle"
+  ],
   "icons": [
     {
       "src": "icon-192.png",
@@ -45,28 +52,71 @@
       "short_name": "Water",
       "description": "Add 250 ml without opening a screen",
       "url": "./fittrack.html#act=water:250",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Log weight",
       "short_name": "Weight",
       "description": "Open the weigh-in sheet",
       "url": "./fittrack.html#act=weight",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Today's session",
       "short_name": "Workout",
       "description": "Jump straight to the workout plan",
       "url": "./fittrack.html#act=gym",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Log food",
       "short_name": "Food",
       "description": "Open the food logger",
       "url": "./fittrack.html#act=food",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "docs/screenshots/home.png",
+      "sizes": "960x2080",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Today at a glance: calories, protein, water and steps"
+    },
+    {
+      "src": "docs/screenshots/workout.png",
+      "sizes": "960x2080",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Three interchangeable full-body sessions"
+    },
+    {
+      "src": "docs/screenshots/progress.png",
+      "sizes": "960x2080",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Trend weight and a projection built from your own logs"
     }
   ]
 }
