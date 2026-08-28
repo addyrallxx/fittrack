@@ -165,12 +165,14 @@ python on PATH is the Microsoft Store stub.
 
 ## Done this session (2026-08-28)
 
-Four commits, all pushed to `origin/main`, all green, oldest to newest:
+Six commits, all pushed to `origin/main`, all green, oldest to newest:
 
 - `3ac0039` feat: reminders survive a rotated subscription and a wiped device id
 - `a002e7f` feat: the S26 gets an install path and an icon that is not cropped
 - `0668418` fix: a lapsed install heals itself, and storage failures stop being silent
 - `015945f` fix: /resubscribe was unreachable behind the device id guard
+- `9f5be54` fix: the reminder toggles stop claiming to be on when nothing is subscribed
+- `9126f6c` docs: a README that shows the app instead of describing it
 
 This session's work was hardening and platform-correction, not new features.
 It started from the discovery that the entire previous handoff was written
@@ -266,6 +268,40 @@ stops assuming every installer has Adnan's own body. Full detail in git log
 
 ---
 
+## Push pipeline: what is actually proven (2026-08-28)
+
+Tested against the LIVE deployed app in real Chrome, driven by puppeteer-core,
+not in the in-app Browser pane. Result, stated precisely because the distinction
+matters:
+
+**Proven working end to end, up to the push service:**
+- Service worker registers on the live origin.
+- `pushManager.subscribe` succeeds and returns a real `fcm.googleapis.com`
+  endpoint, which means the VAPID public key is being decoded correctly.
+- The app registers that subscription with the Worker: `/subscribe` returns ok.
+- `/test` returns `{"result":"ok"}`. That return value is only produced when
+  FCM ACCEPTS the request, so VAPID signing, the JWT, and the RFC 8291
+  aes128gcm payload encryption are all correct against a real push service.
+
+**Not proven, and not provable on this machine:**
+- The final hop, FCM delivering to the browser and the service worker showing
+  the notification. `registration.getNotifications()` stayed empty for 20
+  seconds in both headless and headed Chrome. An automation-driven Chrome
+  profile does not hold the GCM connection that receives pushes. Same family of
+  limitation as the Browser pane being unable to register a service worker at
+  all.
+
+So the remaining unknown is narrow. Everything the code in this repo controls is
+verified. What is untested is delivery to a physical device, which is exactly
+what the S26 test will settle. If reminders do not arrive on the phone, suspect
+the device (One UI battery optimisation, notification channel settings), not the
+signing or encryption path.
+
+Both synthetic test devices were cleaned up with `/unsubscribe` (HTTP 200), so
+no junk records are sitting in KV collecting reminders.
+
+---
+
 ## Research artefact
 
 Full 8-agent research output (retatrutide, Calgary NW food data, Crunch
@@ -292,33 +328,42 @@ open.
 
 ## Open work
 
-**1. Nothing has been tested on a real phone yet.** Not the S26 Ultra, not
-an iPhone. This is still the single highest-value remaining action, on both
-platforms now, not just one.
+**1. Nothing has been tested on a real phone yet.** Not the S26 Ultra, not an
+iPhone. This is the single highest-value remaining action, on both platforms.
+See "Push pipeline: what is actually proven" above for exactly how narrow the
+remaining unknown is: everything up to FCM accepting the encrypted payload is
+verified, only delivery to a device is not.
 
-**2. Planned but not necessarily finished:** capture real app screenshots,
-add a manifest `"screenshots"` array (needed for Chrome's rich install
-dialog on Android), rewrite `README.md` to portfolio standard with graphics
-and motion, and sync everything.
+**2. Adnan has still not personally reviewed** the 244 food entries or the
+workout program. Both were built from research plus his own order screenshots
+and adversarially audited once, but he has not signed either off himself.
 
-**3. Settings notification toggles lie.** They render ON from local
-preference alone, with no check against `Notification.permission` or against
-whether a subscription actually exists. A user who never granted permission
-sees four blue toggles and concludes reminders are on. **Confirmed HIGH
-finding, not yet fixed. This is the next thing to fix.**
+**3. The ten iOS splash images have never been seen on a real device.**
+Generated with ffmpeg and each verified to match its filename dimensions,
+nothing more.
 
-**4. `toggleNotif()` discards `syncPush()`'s return value**, so a failed sync
-is silent.
+**4. Unspent research keys** in `docs/research/2026-08-26-rebuild-research.json`:
+`"ios"` and `"competitors"`. The competitor research is fully unspent.
 
-**5. `initPush()`'s service worker registration failure is `console.warn`
-only.**
+**5. No rate limiting on the Worker's public endpoints.** Device ids act as
+bearer tokens and the endpoints are unauthenticated, so anyone who learns the
+Worker URL can write junk records. Mitigated, not solved: records now expire
+after 180 days and a duplicate endpoint is dropped at registration. If it ever
+becomes a real problem, a Cloudflare dashboard rate-limiting rule costs no code.
 
-**6. Adnan has still not personally reviewed** the 244 food entries or the
-workout program.
+**6. `data/foods.json` and `data/workout-program.json` have no integrity test.**
+A bad hand-edit to either would ship silently past `syntax-check`, which only
+proves they parse as JSON. A test asserting macro arithmetic against stated
+calories, required fields, allowed `conf` values and the session count would be
+cheap and was scoped this session but not written.
 
-**7. Unspent research keys** in
-`docs/research/2026-08-26-rebuild-research.json`: `"ios"` and
-`"competitors"`.
+### Closed this session, do not re-report
+
+Items that appeared as open work in the previous handoff and are now done:
+the manifest `screenshots` array, the README rewrite, real app screenshots,
+the notification toggles that rendered on regardless of real state,
+`toggleNotif()` discarding its sync result, and `initPush()` failing only to
+the console.
 
 ---
 
