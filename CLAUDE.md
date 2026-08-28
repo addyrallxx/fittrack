@@ -1,4 +1,4 @@
-# FitTrack — project rules
+# FitTrack project rules
 
 Applies to this repo only. Global rules live in `~\.claude\CLAUDE.md` and
 still apply; this file adds what is specific to FitTrack. For current state,
