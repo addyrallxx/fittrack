@@ -173,5 +173,20 @@ check('a lapsed install re-subscribes itself instead of claiming it is on', () =
     'syncPush must re-subscribe when permission is granted but the subscription is gone');
 });
 
+
+/* The live endpoint rejected every self-heal with "bad id" because the id
+   guard ran before the switch, and /resubscribe is the one caller that has no
+   id to give. Unit tests on the helpers all passed while the route was dead,
+   so this asserts the ORDER, which is the thing that was actually wrong. */
+check('/resubscribe is answered before the device id guard', () => {
+  const src = fs.readFileSync(path.join(root, 'worker', 'src', 'index.js'), 'utf8');
+  const resub = src.indexOf("pathname === '/resubscribe'");
+  const guard = src.indexOf("error: 'bad id'");
+  assert.ok(resub > -1, '/resubscribe must be handled outside the switch');
+  assert.ok(guard > -1, 'the id guard should still exist for every other route');
+  assert.ok(resub < guard,
+    'a service worker cannot read localStorage, so it has no id and the guard would reject it');
+});
+
 console.log('\nVERDICT: ' + (fail ? 'FAIL' : 'PASS') + ' (' + pass + '/' + (pass + fail) + ')');
 process.exit(fail ? 1 : 0);

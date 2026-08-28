@@ -389,6 +389,19 @@ export default {
     if (req.method !== 'POST') return json({ error: 'not found' }, 404);
     let b;
     try { b = await req.json(); } catch { return json({ error: 'bad json' }, 400); }
+    /* Answered before the id guard on purpose. The service worker sends this
+       one, and a service worker cannot read localStorage, so it has no device
+       id to present. The old endpoint is its only handle on which record to
+       update, and that is why this cannot live in the switch below. */
+    if (pathname === '/resubscribe') {
+      if (!b.sub || !b.sub.endpoint || !b.sub.keys) return json({ error: 'bad subscription' }, 400);
+      const hit = await findByEndpoint(env, b.old);
+      if (!hit) return json({ error: 'unknown subscription' }, 404);
+      hit.rec.sub = b.sub;
+      await env.KV.put(hit.key, JSON.stringify(hit.rec), { expirationTtl: 15552000 });
+      return json({ ok: true });
+    }
+
     if (!b.id || typeof b.id !== 'string' || b.id.length > 64) return json({ error: 'bad id' }, 400);
 
     switch (pathname) {
@@ -403,18 +416,6 @@ export default {
           sub: b.sub, tz: b.tz || DEFAULT_TZ, prefs: b.prefs || {}, cfg: b.cfg || {}, at: new Date().toISOString(),
         }), { expirationTtl: 15552000 });
         await dropDuplicateEndpoints(env, b.id, b.sub.endpoint);
-        return json({ ok: true });
-      }
-      case '/resubscribe': {
-        // Sent by the service worker when the browser rotates a subscription
-        // while the app is closed. It has no device id to offer (a worker
-        // cannot read localStorage), so the old endpoint is the only handle
-        // on which record to update.
-        if (!b.sub || !b.sub.endpoint || !b.sub.keys) return json({ error: 'bad subscription' }, 400);
-        const hit = await findByEndpoint(env, b.old);
-        if (!hit) return json({ error: 'unknown subscription' }, 404);
-        hit.rec.sub = b.sub;
-        await env.KV.put(hit.key, JSON.stringify(hit.rec), { expirationTtl: 15552000 });
         return json({ ok: true });
       }
       case '/unsubscribe':
