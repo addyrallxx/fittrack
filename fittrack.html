@@ -640,6 +640,11 @@ const S={
   screen:0,today:'',log:null,cfg:null,workout:null,foods:[],
   workoutDay:0,calMonth:null,chartRange:30,wtChart:null,
   restTimers:{},searchTimer:null,toastTimer:null,
+  /* Whether reminders can actually arrive, as opposed to whether their
+     preference is switched on. The two used to be conflated, so four blue
+     toggles were shown to someone who had never granted permission and had no
+     subscription anywhere. Resolved asynchronously, hence the fourth state. */
+  pushStatus:'unknown',
 };
 function todayStr(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 /* -- UNITS ------------------------------------------------------------------
@@ -1889,6 +1894,7 @@ function renderSettings(){
     </div>
     <div class="settings-sec">
       <div class="section-label">Notifications</div>
+      ${pushBanner()}
       <div class="settings-grp">
         ${notifRow('water','Water reminders','Five times through the day','var(--blue)')}
         ${notifRow('gym','Gym prompts','Twice on training days','var(--orange)')}
@@ -1925,10 +1931,33 @@ function renderSettings(){
 }
 function notifRow(key,label,time,color){
   const on=S.cfg.notifications?.[key]?.enabled!==false;
-  return `<div class="settings-row">
+  /* A preference switched on while nothing is subscribed is not a reminder
+     that will arrive. Showing it as on is how someone ends up believing the
+     app is nudging them for a week while it sends nothing at all. */
+  const live=S.pushStatus==='live';
+  return `<div class="settings-row"${live?'':' style="opacity:.55"'}>
     <div class="sr-icon" style="background:${color}22">${svgIcon('bell',18,color)}</div>
-    <div><div class="sr-lbl">${label}</div><div style="font-size:11px;color:var(--t3)">${time}</div></div>
-    <div class="toggle${on?' on':''}" onclick="toggleNotif('${key}')"><div class="toggle-knob"></div></div>
+    <div><div class="sr-lbl">${label}</div><div style="font-size:11px;color:var(--t3)">${live?time:'Not delivering yet'}</div></div>
+    <div class="toggle${on&&live?' on':''}" role="switch" aria-checked="${on&&live}" aria-label="${esc(label)}" onclick="toggleNotif('${key}')"><div class="toggle-knob"></div></div>
+  </div>`;
+}
+/* One honest line above the four toggles. Each state names the actual next
+   action rather than saying something vague went wrong. */
+function pushBanner(){
+  const st=S.pushStatus;
+  if(st==='live')return '';
+  const msg={
+    unknown:['Checking reminders...',''],
+    unsupported:['This browser cannot receive reminders','Open FitTrack in Chrome on Android, or Safari on iPhone.'],
+    blocked:['Reminders are blocked','Notifications were denied for this site. Re-allow them in your browser site settings.'],
+    off:['Reminders are not switched on yet','The toggles below do nothing until you enable notifications.'],
+  }[st]||['Reminders are not switched on yet',''];
+  return `<div class="settings-grp" style="margin-bottom:10px">
+    <div class="settings-row" onclick="openNotifInfo()">
+      <div class="sr-icon" style="background:var(--orange)22">${svgIcon('bell',18,'var(--orange)')}</div>
+      <div><div class="sr-lbl">${msg[0]}</div><div style="font-size:11px;color:var(--t2);line-height:1.45">${msg[1]}</div></div>
+      <div class="sr-arrow">${svgIcon('chevR',14,'var(--t3)')}</div>
+    </div>
   </div>`;
 }
 function toggleNotif(key){
@@ -1937,7 +1966,12 @@ function toggleNotif(key){
   S.cfg.notifications[key].enabled=!S.cfg.notifications[key].enabled;
   DB.saveSettings(S.cfg);
   renderScreen(4);
-  syncPush();
+  /* The server holds the preferences the cron reads, so a toggle that only
+     landed locally is a toggle that did not take effect. On a phone that
+     failure is routine, not exceptional: a lift, a tunnel, a dead zone. */
+  syncPush().then(ok=>{
+    if(!ok&&S.pushStatus==='live')toast('⚠️','Saved on this phone only','It will sync next time you open the app');
+  });
 }
 /* Retained deliberately: the settings row that called this is hidden, not
    deleted. Restoring Ramadan mode means un-hiding that row. */
@@ -2279,11 +2313,39 @@ async function syncPush(){
     return sub?sendSub(sub.toJSON()):false;
   }catch(e){return false;}
 }
+/* Asks the browser rather than the settings blob. 'live' means permission is
+   granted AND a subscription object exists, which together are the only
+   conditions under which the server can reach this device. */
+async function refreshPushStatus(){
+  let st;
+  if(!('Notification' in window)||!('serviceWorker' in navigator))st='unsupported';
+  else if(Notification.permission==='denied')st='blocked';
+  else if(Notification.permission!=='granted')st='off';
+  else{
+    try{
+      const reg=await navigator.serviceWorker.getRegistration();
+      const sub=reg&&await reg.pushManager.getSubscription();
+      st=sub?'live':'off';
+    }catch(e){st='off';}
+  }
+  if(st===S.pushStatus)return st;
+  S.pushStatus=st;
+  if(S.screen===4)renderScreen(4);
+  return st;
+}
 function initPush(){
   if(!('serviceWorker' in navigator))return;
-  navigator.serviceWorker.register('sw.js',{scope:'./'}).then(()=>{
-    if(('Notification' in window)&&Notification.permission==='granted'){syncPush();pushState();}
-  }).catch(e=>console.warn('SW registration failed',e));
+  navigator.serviceWorker.register('sw.js',{scope:'./'}).then(async()=>{
+    if(('Notification' in window)&&Notification.permission==='granted'){await syncPush();pushState();}
+    refreshPushStatus();
+  }).catch(e=>{
+    /* This is the path every ordinary launch takes. A console warning is
+       invisible on a phone, so the settings screen has to be able to say that
+       reminders are not running. */
+    console.warn('SW registration failed',e);
+    S.pushStatus='off';
+    if(S.screen===4)renderScreen(4);
+  });
   navigator.serviceWorker.addEventListener('message',e=>{
     const d=e.data||{};
     if(d.type==='action')handleAction(d.act);
@@ -2356,6 +2418,7 @@ async function reqNotif(){
        pipeline end to end, and it is the difference between "it says on" and
        "I have seen one arrive". */
     reg.showNotification('FitTrack is set up',{body:'Your reminders will look like this.',icon:'icon-192.png',badge:'icon-192.png',tag:'ft-setup'});
+    refreshPushStatus();
   }catch(e){
     closeSheet();toast('❌','Could not subscribe',String(e&&e.message||e).slice(0,64));
   }
