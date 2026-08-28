@@ -11,9 +11,14 @@
    Bump SW_VERSION on every change to this file. The activate handler deletes
    every cache that is not the current version, so a bump is also the escape
    hatch if a cache ever goes bad. */
-const SW_VERSION = '1';
+const SW_VERSION = '2';
 const CACHE = `fittrack-v${SW_VERSION}`;
 const SHELL = ['./fittrack.html', './manifest.json', './icon-192.png', './icon-512.png'];
+
+/* The reminder server, repeated here because a service worker cannot read the
+   page's constants. Public either way: the client posts to it on every launch.
+   test/push.test.mjs asserts this string matches PUSH_API in fittrack.html. */
+const PUSH_API = 'https://fittrack-push.addyrallxx.workers.dev';
 
 self.addEventListener('install', e => {
   // Activate immediately rather than waiting for every old tab to close.
@@ -44,7 +49,14 @@ self.addEventListener('fetch', e => {
         }
         return res;
       })
-      .catch(() => caches.match(req).then(hit => hit || caches.match('./fittrack.html')))
+      .catch(() => caches.match(req).then(hit => {
+        if (hit) return hit;
+        // Only a navigation may fall back to the shell. Answering a JSON GET
+        // with HTML gives the caller a 200 that r.ok accepts and .json() then
+        // throws on, which looks exactly like an empty food database.
+        if (req.mode === 'navigate') return caches.match('./fittrack.html');
+        return Response.error();
+      }))
   );
 });
 
@@ -59,9 +71,26 @@ self.addEventListener('fetch', e => {
 self.addEventListener('push', e => {
   let d = {};
   try { d = e.data ? e.data.json() : {}; }
-  catch (_) { d = { body: e.data ? e.data.text() : '' }; }
+  catch (_) {
+    try { d = { body: e.data ? e.data.text() : '' }; } catch (_2) { d = {}; }
+  }
 
-  e.waitUntil(self.registration.showNotification(d.title || 'FitTrack', {
+  // Anything thrown while building the options object would leave the push
+  // event resolving with no notification: silent on Android, and on iOS a
+  // repeat offender gets its permission revoked. So the whole build is
+  // guarded and falls back to a plain, always-valid notification.
+  e.waitUntil(
+    Promise.resolve()
+      .then(() => self.registration.showNotification(d.title || 'FitTrack', buildOpts(d)))
+      .catch(() => self.registration.showNotification('FitTrack', { body: 'Open the app to see this.', icon: './icon-192.png', tag: 'fittrack' }))
+  );
+});
+
+/* Split out so the push handler above has something to fall back to when this
+   throws. vibrate and the richer fields are Android-only and ignored on iOS,
+   so one options object serves both platforms. */
+function buildOpts(d) {
+  return {
     body: d.body || '',
     icon: './icon-192.png',
     badge: './icon-192.png',
@@ -72,9 +101,14 @@ self.addEventListener('push', e => {
     requireInteraction: !!d.sticky,
     // Safari caps action buttons at 2, so never send more than that.
     actions: (d.actions || []).slice(0, 2),
+    // Android only, ignored by iOS. A short double buzz is what makes a
+    // reminder register in a pocket; One UI silences a notification with no
+    // vibrate pattern when the phone is on vibrate-only.
+    vibrate: [80, 40, 80],
+    timestamp: Date.now(),
     data: { url: d.url || './fittrack.html' }
-  }));
-});
+  };
+}
 
 self.addEventListener('notificationclick', e => {
   e.notification.close();
@@ -110,10 +144,29 @@ self.addEventListener('pushsubscriptionchange', e => {
   const opts = e.oldSubscription
     ? { userVisibleOnly: true, applicationServerKey: e.oldSubscription.options.applicationServerKey }
     : { userVisibleOnly: true };
+  const oldEndpoint = e.oldSubscription && e.oldSubscription.endpoint;
   e.waitUntil(
     self.registration.pushManager.subscribe(opts)
-      .then(sub => self.clients.matchAll({ includeUncontrolled: true })
-        .then(list => list.forEach(c => c.postMessage({ type: 'resubscribed', sub: sub.toJSON() }))))
+      .then(sub => {
+        // Telling an open page is not enough. This event almost always fires
+        // while the app is closed, and a postMessage to nobody means the
+        // server keeps pushing to a dead endpoint until it 410s and is
+        // deleted, at which point reminders stop until the user happens to
+        // open the app. So the worker registers the new subscription itself,
+        // keyed on the old endpoint since it cannot read the device id out
+        // of localStorage.
+        const tell = self.clients.matchAll({ includeUncontrolled: true })
+          .then(list => list.forEach(c => c.postMessage({ type: 'resubscribed', sub: sub.toJSON() })))
+          .catch(() => {});
+        const heal = oldEndpoint
+          ? fetch(PUSH_API + '/resubscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ old: oldEndpoint, sub: sub.toJSON() }),
+            }).catch(() => {})
+          : Promise.resolve();
+        return Promise.all([tell, heal]);
+      })
       .catch(() => {})
   );
 });

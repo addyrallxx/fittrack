@@ -336,6 +336,37 @@ async function runTick(env, now) {
   return sent;
 }
 
+/* Find the record holding a given push endpoint. A reverse index would avoid
+ * the scan, but it would also mean a second KV write on every launch, and the
+ * cron already walks this same list every 30 minutes.
+ * ponytail: O(users) scan, fine to roughly 50 users; add an ep: index past that. */
+async function findByEndpoint(env, endpoint) {
+  if (!endpoint) return null;
+  const list = await env.KV.list({ prefix: 'sub:' });
+  for (const k of list.keys) {
+    const rec = await env.KV.get(k.name, 'json');
+    if (rec && rec.sub && rec.sub.endpoint === endpoint) return { key: k.name, rec };
+  }
+  return null;
+}
+
+/* One device must never hold two records. localStorage eviction gives the app
+ * a fresh device id while the browser keeps the SAME push subscription, so the
+ * old record stays valid and the cron then sends every reminder twice to one
+ * phone. Deleting the stale twin at registration is what keeps that from
+ * happening, and it is also the only pruning an abandoned id ever gets. */
+async function dropDuplicateEndpoints(env, keepId, endpoint) {
+  const list = await env.KV.list({ prefix: 'sub:' });
+  for (const k of list.keys) {
+    if (k.name === `sub:${keepId}`) continue;
+    const rec = await env.KV.get(k.name, 'json');
+    if (rec && rec.sub && rec.sub.endpoint === endpoint) {
+      await env.KV.delete(k.name);
+      await env.KV.delete(`state:${k.name.slice(4)}`);
+    }
+  }
+}
+
 /* ── HTTP ──────────────────────────────────────────────────────────────── */
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -363,9 +394,27 @@ export default {
     switch (pathname) {
       case '/subscribe': {
         if (!b.sub || !b.sub.endpoint || !b.sub.keys) return json({ error: 'bad subscription' }, 400);
+        // 180 days, refreshed on every launch because the client re-posts its
+        // subscription each time it starts. Long on purpose: a shorter window
+        // would delete the reminders of exactly the lapsed user those
+        // reminders exist to bring back. It only reaps genuine abandonment,
+        // and stops dead records accumulating against the cron's scan.
         await env.KV.put(`sub:${b.id}`, JSON.stringify({
           sub: b.sub, tz: b.tz || DEFAULT_TZ, prefs: b.prefs || {}, cfg: b.cfg || {}, at: new Date().toISOString(),
-        }));
+        }), { expirationTtl: 15552000 });
+        await dropDuplicateEndpoints(env, b.id, b.sub.endpoint);
+        return json({ ok: true });
+      }
+      case '/resubscribe': {
+        // Sent by the service worker when the browser rotates a subscription
+        // while the app is closed. It has no device id to offer (a worker
+        // cannot read localStorage), so the old endpoint is the only handle
+        // on which record to update.
+        if (!b.sub || !b.sub.endpoint || !b.sub.keys) return json({ error: 'bad subscription' }, 400);
+        const hit = await findByEndpoint(env, b.old);
+        if (!hit) return json({ error: 'unknown subscription' }, 404);
+        hit.rec.sub = b.sub;
+        await env.KV.put(hit.key, JSON.stringify(hit.rec), { expirationTtl: 15552000 });
         return json({ ok: true });
       }
       case '/unsubscribe':
@@ -406,4 +455,4 @@ export default {
 /* Exported for the local test harness, which drives runTick with a fixed clock
  * and a fake KV to prove the schedule fires at the right local times. Workers
  * only ever loads the default export, so these cost nothing at runtime. */
-export { runTick, localParts, inBucket, compose, gymGap, doseFor, nextMonday, WATER_CHECKS, SCHEDULE, TITRATION };
+export { runTick, localParts, inBucket, compose, gymGap, doseFor, nextMonday, findByEndpoint, dropDuplicateEndpoints, WATER_CHECKS, SCHEDULE, TITRATION };
