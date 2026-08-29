@@ -8,11 +8,10 @@
    purely as an offline fallback: if the network answers at all, the network wins.
    Do not "optimise" this into cache-first.
 
-   Bump SW_VERSION on every change to this file. The activate handler deletes
-   every cache that is not the current version, so a bump is also the escape
-   hatch if a cache ever goes bad. */
-const SW_VERSION = '3';
-const CACHE = `fittrack-v${SW_VERSION}`;
+   The cache name follows the app release. The activate handler deletes every
+   cache that is not the current version, so each release gets a clean fallback. */
+const APP_VERSION = '1.0.0';
+const CACHE = `fittrack-v${APP_VERSION}`;
 const SHELL = ['./fittrack.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 /* The reminder server, repeated here because a service worker cannot read the
