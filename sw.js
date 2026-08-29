@@ -11,7 +11,7 @@
    Bump SW_VERSION on every change to this file. The activate handler deletes
    every cache that is not the current version, so a bump is also the escape
    hatch if a cache ever goes bad. */
-const SW_VERSION = '2';
+const SW_VERSION = '3';
 const CACHE = `fittrack-v${SW_VERSION}`;
 const SHELL = ['./fittrack.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
@@ -81,8 +81,8 @@ self.addEventListener('push', e => {
   // guarded and falls back to a plain, always-valid notification.
   e.waitUntil(
     Promise.resolve()
-      .then(() => self.registration.showNotification(d.title || 'FitTrack', buildOpts(d)))
-      .catch(() => self.registration.showNotification('FitTrack', { body: 'Open the app to see this.', icon: './icon-192.png', tag: 'fittrack' }))
+      .then(() => self.registration.showNotification(d.title || 'FitTrack reminder', buildOpts(d)))
+      .catch(() => self.registration.showNotification('FitTrack reminder', { body: 'Open FitTrack to view the reminder.', icon: './icon-192.png', tag: 'fittrack' }))
   );
 });
 
@@ -93,7 +93,7 @@ function buildOpts(d) {
   return {
     body: d.body || '',
     icon: './icon-192.png',
-    badge: './icon-192.png',
+    badge: './badge-96.png',
     // A tag collapses repeats: the second water reminder replaces the first
     // rather than stacking four unread pings by evening.
     tag: d.tag || 'fittrack',
@@ -105,7 +105,7 @@ function buildOpts(d) {
     // reminder register in a pocket; One UI silences a notification with no
     // vibrate pattern when the phone is on vibrate-only.
     vibrate: [80, 40, 80],
-    timestamp: Date.now(),
+    timestamp: d.timestamp ?? Date.now(),
     data: { url: d.url || './fittrack.html' }
   };
 }
