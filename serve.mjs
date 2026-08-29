@@ -16,11 +16,19 @@ import path from 'path';
 const T={'.html':'text/html','.js':'text/javascript','.json':'application/json',
          '.png':'image/png','.svg':'image/svg+xml','.gif':'image/gif',
          '.webmanifest':'application/manifest+json','.ico':'image/x-icon'};
+const ROOT=path.resolve(process.cwd());
+const nope=r=>{r.writeHead(404);r.end('nope');};
 http.createServer((q,r)=>{
-  const f=path.join(process.cwd(),decodeURIComponent(q.url.split('?')[0]).replace(/^\/+/,'')||'fittrack.html');
+  let rel;
+  try{rel=decodeURIComponent(q.url.split('?')[0]).replace(/^[\\/]+/,'')||'fittrack.html';}
+  catch{return nope(r);}
+  const parts=rel.split(/[\\/]+/);
+  if(parts.some(p=>p.startsWith('.'))||parts[0].toLowerCase()==='worker')return nope(r);
+  const f=path.resolve(ROOT,rel);
+  if(f!==ROOT&&!f.startsWith(ROOT+path.sep))return nope(r);
   fs.readFile(f,(e,d)=>{
-    if(e){r.writeHead(404);return r.end('nope');}
+    if(e)return nope(r);
     r.writeHead(200,{'Content-Type':T[path.extname(f)]||'application/octet-stream','Service-Worker-Allowed':'/'});
     r.end(d);
   });
-}).listen(8899,()=>console.log('serving on 8899'));
+}).listen(8899,'127.0.0.1',()=>console.log('serving on http://127.0.0.1:8899'));
