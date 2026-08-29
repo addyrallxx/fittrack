@@ -3,3 +3,6 @@ data/order-screenshots/*
 
 # wrangler build and state cache
 .wrangler/
+
+# codex working briefs (local only)
+.codex-briefs/
