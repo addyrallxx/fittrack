@@ -1,6 +1,6 @@
 # FitTrack handoff
 
-**Updated:** 2026-08-28
+**Updated:** 2026-08-29
 **Repo:** `C:\Users\adnan\projects\fittrack` -> `github.com/addyrallxx/fittrack` (public)
 **Live:** https://addyrallxx.github.io/fittrack/fittrack.html
 
@@ -160,6 +160,178 @@ Four entry points, no framework, 54 checks total:
 `node serve.mjs` serves the app at http://localhost:8899. It replaces the old
 `python -m http.server` advice, which cannot work on this machine because the
 python on PATH is the Microsoft Store stub.
+
+---
+
+## Done this session (2026-08-29)
+
+**First Codex collaboration on this repo.** Adnan's instruction: Codex does the
+grunt work, Claude reads diffs and reports verified results. Codex bills the
+ChatGPT subscription, so it does not consume the Claude usage limit.
+
+- **`AGENTS.md` was broken and is now rewritten.** It existed untracked and was
+  a blind find-and-replace of `CLAUDE.md`, "Claude" swapped to "Codex"
+  everywhere. It told Codex to read `~\.Codex\AGENTS.md` (does not exist), to
+  verify push in "the Codex-in-chrome tools" (does not exist), and to work
+  around Claude Code's GateGuard hook and Write/Edit tools (not Codex's
+  harness). That file is what Codex loads as its rulebook, so it was actively
+  misleading. Rewritten: architecture constraints and commit rules kept, Claude
+  harness noise removed, all four test suites named, "do not push" and "do not
+  run git stash" added. Still untracked, commit it.
+- **Adversarial review run over the whole app build**, base `2aac9b9` to HEAD,
+  41 files and 9,761 insertions. That base is the commit before the current
+  build started, so the review covers the entire app rather than an empty
+  working tree.
+- **Green baseline recorded before any handoff**, so a regression from Codex's
+  edits is detectable: syntax-check PASS, progress 17/17, push 14/14,
+  schedule 23/23. 54 assertions total.
+
+### Confirmed bug, found by reading the code, not by trusting a summary
+
+`doseFor()` in `worker/src/index.js` falls back to the LAST titration row for
+any date it cannot match, and its `known` guard only covers dates AFTER the
+table:
+
+```
+2026-08-10 {"mg":2,"known":true}
+2026-08-17 {"mg":2,"known":true}
+2026-08-24 {"mg":1,"known":true}   <- first real row
+2026-10-05 {"mg":2,"known":false}  <- after the table, correctly flagged
+```
+
+A date before `TITRATION[0].date` reports **2 mg with `known: true`**, so the
+reminder would state "This week is 2 mg" during a 1 mg week. Real-world
+exposure is limited to past dates, but this is a confident wrong dose
+statement in the exact part of the app whose stated rule is to never guess a
+dose. Fix: `known` must also require `dateStr >= TITRATION[0].date`.
+
+### Codex adversarial review, 2026-08-29: verdict needs-attention
+
+11 findings over `2aac9b9...HEAD`. Full log kept at the task output path in
+the session temp dir. **Four were verified by Claude against the code before
+being written down here.** The rest are Codex's word and are marked as such.
+
+**VERIFIED. `serve.mjs` hands the VAPID private key to the local network.**
+`.listen(8899)` has no host argument, so it binds every interface, not
+loopback. The handler joins the decoded URL onto `process.cwd()` with no
+containment. `worker/.dev.vars` (279 bytes, holds `VAPID_PRIVATE_KEY`) sits
+under that root. Any machine on the same wifi can `GET /worker/.dev.vars`
+while the dev server runs. The file is correctly gitignored so it never
+reached GitHub, but rotate the VAPID pair if that server has ever run on
+untrusted wifi. Encoded `..` also escapes the repo root.
+
+**VERIFIED. The global dose table is sent to every user, not just Adnan.**
+This is the critical one. `fittrack.html:1520` offers "A GLP-1 medication,
+semaglutide, tirzepatide, retatrutide and the like" to anyone in onboarding
+and turns on the weekly dose reminder. The `/subscribe` payload carries no
+medication or schedule, so `compose()` uses the worker's single module-level
+`TITRATION`, which is Adnan's own. A friend or family member on a different
+drug receives an explicit "2 mg tonight" on Adnan's dates. The app is
+deliberately shared with friends and family, so this is reachable, not
+theoretical.
+
+**VERIFIED. `doseFor()` reports a confident wrong dose before the table.**
+It falls back to the LAST row for any unmatched date and the `known` guard
+only covers dates after the table, so 2026-08-10 returns 2 mg with
+`known: true`. Found by Claude reading the code, independently of Codex.
+
+**VERIFIED. Choosing zero gym sessions silently becomes three.**
+`fittrack.html:2240` (`||3`), `fittrack.html:2524` (`if(!...)`) and
+`worker/src/index.js:223` (`|| GYM_TARGET`) all coerce a deliberate 0 to 3.
+
+**Codex's word, NOT yet verified by Claude:** dedupe marks failed sends
+(429, 503, network errors) as fired and permanently suppresses that day's
+retry; read-send-write against KV is non-atomic so overlapping ticks can
+double-send (Codex claims it reproduced both); a 410 can delete a
+freshly rotated subscription because `runTick` reads the record before
+sending; VAPID rotation strands installs because `syncPush` never compares
+`applicationServerKey` to the current key while the UI still says live;
+`DB.set` returns false on quota failure and every wrapper discards it while
+`saveWeight` still shows a success toast; the v2 schema transition wipes
+settings, logs, weights, workouts and custom foods with no export; state
+stores `water` and `gymWeek` undated with a 48h TTL so yesterday can suppress
+today; `scheduled()` uses `new Date()` instead of `controller.scheduledTime`
+so a delayed cron lands in the wrong bucket.
+
+**Needs Adnan's decision, deliberately NOT actioned:**
+`data/orders-parsed.json` is tracked in the public repo and holds real order
+dates, times, items and totals. Screenshots and the README GIF carry real
+weight, body fat and heart rate, and `NEXT-SESSION.md` itself holds date of
+birth, location and medication history. Removing these means rewriting git
+history on a public repo, which is destructive and is his call, not an
+agent's.
+
+**Handed to Codex on 2026-08-29** (background write-run, brief at
+`scratchpad/fixbrief.md`): the four verified items only. Out of scope in that
+brief: the git history purge, any cache-first change, any build step.
+
+### State of the tree when the session ended, 2026-08-29
+
+**Nothing is committed and nothing is pushed.** All four fixes are in the
+working tree, verified by Claude re-running the suites, not by trusting
+Codex's summary. Test count went 54 to 64 assertions, all green:
+syntax PASS, progress 17/17, push 16/16, schedule 25/25, serve 6/6.
+
+Modified: `fittrack.html`, `serve.mjs`, `worker/src/index.js`,
+`test/push.test.mjs`, `test/schedule.test.mjs`, `NEXT-SESSION.md`.
+New and untracked: `AGENTS.md`, `test/serve.test.mjs`.
+
+**Fix 1, serve.mjs, verified live not just by test.** Binds `127.0.0.1`
+only, resolves and contains paths, refuses dotfiles and `worker/`. Proven by
+running the server and requesting the real payload: `/worker/.dev.vars` now
+404s, encoded `..` 404s, and the LAN address times out. Only `VAPID_PUBLIC`
+is in the client (line 2195); the 184-char private key is not, checked by
+substring match, so nothing leaked into the HTML.
+
+**Fix 2, doseFor bounds both ends.** `dateStr >= first.date && <= last.date`.
+
+**Fix 3, the worker no longer holds anyone's dose schedule.** The global
+`TITRATION` constant is deleted. `doseFor(dateStr, steps)` takes steps as an
+argument and `compose()` returns null for both dose reminders when
+`cfg.dose.steps` is missing or empty.
+
+> **DECISION WAITING FOR ADNAN.** The client has no titration table anywhere,
+> confirmed by grep, so it now sends `dose:null` and **dose reminders are
+> silent for everyone, including Adnan.** That was the deliberate fail-safe
+> choice: silence is always correct, a wrong dose never is. To get his own
+> reminders back, the confirmed schedule (still recorded in the Retatrutide
+> section above, Aug 24 through Sep 28) must be wired into the client as
+> `cfg.dose = { med, steps:[{date,mg}] }`. Do not extrapolate past Sep 28.
+
+**Fix 4, zero gym sessions survives.** `??` instead of `||` in the client at
+2240 and 2524 and in the worker's `gymGap`, which returns null on target 0.
+
+**Why there are no commits.** Fixes 2, 3 and 4 are interleaved hunks inside
+the same two files, so committing one at a time needs interactive staging,
+which is not available here. Bundling them into one commit is exactly the
+big-bang pattern that caused the April black screen, so it was not done.
+Split them by hand on return. Codex could not commit at all: `.git` is
+read-only inside its sandbox (`.git/index.lock: Permission denied`), though
+it is writable outside, so its "mounted read-only" note is true of its
+sandbox only.
+
+**Still open, needs Adnan's call:** the public-repo personal data
+(`data/orders-parsed.json`, screenshots, the README GIF, this handoff's own
+date of birth and medication history). Removing it means rewriting history on
+a public repo, which is destructive and was deliberately left alone. Also
+still unverified: the seven Codex findings listed above as "Codex's word",
+none of which were touched.
+
+**Rotate the VAPID pair** if `serve.mjs` was ever run on untrusted wifi
+before this fix.
+
+### How to actually invoke Codex here
+
+The `/codex:*` slash commands were NOT loaded in this session (plugin commands
+only appear after a reload). Call the companion script directly instead:
+
+```
+node "C:\Users\adnan\.claude\plugins\cache\openai-codex\codex\1.0.6\scripts\codex-companion.mjs" adversarial-review "--background --base <ref> --scope branch <focus text>"
+```
+
+Run it with Bash `run_in_background: true`. `codex login status` reads "Logged
+in using ChatGPT". Sub-commands: `review`, `adversarial-review`, `task`,
+`status`, `result`, `cancel`.
 
 ---
 
@@ -415,3 +587,162 @@ the console.
 - ECC is **enabled** in this session despite the global CLAUDE.md recording it
   as disabled by default. Its GateGuard hook demands a facts preamble before
   the first Bash call and before every first Write to a new file.
+
+---
+
+## Session 2026-08-29b: UI polish, icon rework, v1.0.0
+
+Adnan reported two visual bugs and asked for a broad polish pass, with Codex
+doing the labour because his Claude usage is nearly spent and Codex's ChatGPT
+limit had just reset.
+
+### Root causes found before any agent was dispatched
+
+**Workout tab, overlapping text.** `.ex-hdr` packs five children on one row:
+a 42px icon, `.ex-info`, the `.ex-muscle` pill, `.ex-done-badge`, `.ex-chevron`,
+plus four 12px gaps. That is about 144px of chrome before the exercise name gets
+any width, leaving roughly 150px on a 360px phone. `.ex-name` and `.ex-meta`
+carry no `overflow` or `text-overflow` rules, so long names run into the
+`nowrap; flex-shrink:0` muscle pill. `.ex-done-badge` also holds its 24px plus a
+12px gap while invisible at `opacity:0`.
+
+**Nutrition tab, misaligned supplements.** `.shake-btn` has `margin:0 16px 12px`.
+`.creat-row` has `width:100%` and no horizontal margin at all, so it runs
+full-bleed while the button directly above it is inset 16px. A real CSS bug, not
+taste. Both rows also carry hardcoded inline styles, a raw emoji where the app
+uses `svgIcon()`, and no section label.
+
+**Notification badge.** `sw.js` sets `badge: './icon-192.png'`. Android derives
+the status-bar badge from the alpha channel alone, and that icon is fully
+opaque, so the badge renders as a featureless grey blob.
+
+**App icon.** Three concentric arcs plus a small low-contrast "FT" collapse into
+a scribble at 48dp.
+
+### Design decisions made (do not re-litigate)
+
+- Workout card: move `.ex-muscle` out of the name's horizontal band, down onto
+  the meta line. Collapse badge and chevron into one trailing slot, `display:none`
+  on the inactive one so it stops eating width.
+- Supplements: one `.section-label` reading "Supplements" plus one card holding
+  both rows with a divider, so there is one inset instead of two. Both rows get
+  the same skeleton: 40px icon chip, title, status line, trailing control.
+- Icon: drop the "FT" and two of the three arcs. One 300 degree arc with an
+  orange to coral gradient, three ascending white bars inside it. Rendered from
+  `assets/icon.svg` by `tools/render-icons.mjs`, which shells out to the
+  installed Chrome in headless mode. No new dependency, and the icons become
+  reproducible.
+- `badge-96.png`: white artwork on a fully transparent background, 96x96.
+
+### Dispatch
+
+Briefs live in `.codex-briefs/` (gitignored). File ownership is partitioned
+because `fittrack.html` is a single file and two agents in it would collide.
+
+| Brief | Owns | Notes |
+|---|---|---|
+| A-workout | `fittrack.html` | parallel |
+| B-notifications | `sw.js`, `worker/src/index.js`, `test/push.test.mjs` | parallel |
+| C-icons | icon PNGs, `assets/icon.svg`, `tools/render-icons.mjs`, `manifest.json` | parallel |
+| D-nutrition | `fittrack.html` | **serial, only after A lands** |
+
+Interface pinned across the A/B/C boundary: the badge file is `badge-96.png` at
+the repo root. B references it, C produces it.
+
+
+### What actually shipped
+
+Eight commits, one feature each, `bcba887` through `f7bd2cc`. Every one was
+verified rather than accepted on the agent's own summary.
+
+| Commit | What |
+|---|---|
+| `bcba887` | AGENTS.md so Codex reads the same rules, plus a test for serve.mjs |
+| `5479ec7` | notification badge, timestamps, renotify/tag audit, full copy pass |
+| `7555774` | workout header restructure |
+| `2856902` | new icon set, badge-96.png, reproducible renderer |
+| `d54761b` | supplements card, plus a latent onboarding bug |
+| `95fcaaf` | competitive research and ranked backlog |
+| `22ecc15` | v1.0.0, credits, About card, six help topics |
+| `f7bd2cc` | favicon declaration |
+
+### Measured, in real Chrome over CDP at 360 wide
+
+Content width 328, which is 360 minus the 16px inset on each side.
+
+- Nutrition: macro card, supplements card, food search and water card all span
+  376 to 704. Identical edges. **The reported misalignment is fixed.**
+- Workout: exercise names went from roughly 150px of usable width to 204-210,
+  zero overflow violations, zero header overlaps.
+- `document.body` horizontal overflow is 0 on all five screens.
+- Console errors: **none**, once the favicon was declared. That 404 was the only
+  one the app produced.
+- All five test suites pass: syntax, progress 17/17, push 18/18, schedule 25/25.
+
+### The verification harness is worth keeping
+
+`Emulation.setDeviceMetricsOverride` plus `Runtime.evaluate` over the Chrome
+DevTools Protocol, driven from plain Node with the native `WebSocket` in Node 24.
+No puppeteer, no dependency. It measures `getBoundingClientRect()` and captures
+`Runtime.exceptionThrown`, so layout claims are numbers rather than screenshots.
+The script is in the session scratchpad. **Move it into `test/` next session**,
+it is the only thing here that can prove a layout claim.
+
+One trap it exposed: launching Chrome with `--window-size` and then navigating
+does **not** give you a phone-width layout. The first run silently measured at
+1500px and the numbers looked plausible. Set the device metrics over CDP after
+connecting, and sanity check that the measured content width is 328.
+
+### Not done, and why
+
+**Brief G, the global polish pass, did not run.** Codex hit its ChatGPT usage
+limit 100 seconds in, at 2026-08-29 23:34 UTC. The brief is complete and ready
+at `.codex-briefs/G-global-polish.md`. Run it first next session.
+
+It is scoped to: 48px touch targets everywhere, a real spacing scale, a real
+type scale, colour used as data rather than decoration, the motion direction
+from the research doc, and de-shaming every empty and missed state. Home screen
+restructuring is explicitly fenced out of it, because that is backlog items 1,
+2, 6 and 7 and folding them into a restyle is the big-bang commit that
+black-screened this app in April.
+
+**The measured case for G**, from the harness, elements under 44x44 by screen:
+
+| Screen | Under 44 |
+|---|---:|
+| Home | 3 |
+| Workout | 85 |
+| Nutrition | 5 |
+| Progress | 37 |
+| Settings | 4 |
+
+Workout and Progress are the real work. Note that some workout hits are false
+positives: `.set-adj` measures 32x44 but carries a `::before{inset:0 -6px}` that
+brings the real hit area to 44. The G brief should measure the pseudo-element,
+not just the box, or it will chase numbers that are already fine.
+
+### Rules that bite, learned this session
+
+- **Partition by file, and serialise anything sharing one.** `fittrack.html` is
+  a single file, so A, D, F and G had to run one at a time while B, C, E and H
+  ran in parallel on disjoint files. Nothing collided.
+- **Pin the interface across the boundary.** B referenced `badge-96.png` and C
+  produced it, agreed by name in both briefs before either started. B finished
+  first, referenced a file that did not exist yet, and was still correct.
+- **The Codex status timer goes stale.** A job sat at "17m 3s" for eight minutes
+  while it was actually finishing. Read the job log under
+  `~/.claude/plugins/data/codex-inline/state/<repo>/jobs/<id>.log` instead of
+  trusting elapsed time.
+- **Codex's usage limit is real and it will die mid-task.** Budget the expensive
+  research and review runs early, not last.
+
+### Next session, in order
+
+1. Run `.codex-briefs/G-global-polish.md`. It is the only unfinished ask.
+2. Move the CDP verification harness into `test/layout.test.mjs`.
+3. Regenerate `docs/screenshots/*` for the manifest. They still show the old
+   icon and the pre-fix workout and nutrition screens.
+4. Start on backlog item 1 from the research doc, making nutrition floor-first.
+   On a GLP-1 the risk is undereating and the app still leads with the ceiling.
+5. Tag `v1.0.0` in git once G lands, so the tag marks a finished baseline.
+
