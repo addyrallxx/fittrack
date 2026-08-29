@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-variant="any" role="img" aria-labelledby="title desc">
+  <title id="title">FitTrack app icon</title>
+  <desc id="desc">An orange-to-coral progress ring surrounding three ascending white bars.</desc>
+  <defs>
+    <linearGradient id="background-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1A1A1C"/>
+      <stop offset="1" stop-color="#000000"/>
+    </linearGradient>
+    <linearGradient id="ring-gradient" gradientUnits="userSpaceOnUse" x1="168.96" y1="105.235" x2="81.92" y2="256">
+      <stop offset="0" stop-color="#FF9500"/>
+      <stop offset="1" stop-color="#FF6B6B"/>
+    </linearGradient>
+    <path id="ring" d="M168.96 105.235 A174.08 174.08 0 1 1 81.92 256"/>
+    <g id="bars" transform="translate(-12 -12)">
+      <rect x="197" y="272" width="32" height="64" rx="16"/>
+      <rect x="240" y="232" width="32" height="104" rx="16"/>
+      <rect x="283" y="176" width="32" height="160" rx="16"/>
+    </g>
+  </defs>
+
+  <style>
+    .variant { display: none; }
+    [data-variant="any"] .variant-any,
+    [data-variant="maskable"] .variant-maskable,
+    [data-variant="badge"] .variant-badge { display: inline; }
+  </style>
+
+  <g class="variant variant-any">
+    <rect width="512" height="512" rx="115.2" fill="url(#background-gradient)"/>
+    <use href="#ring" fill="none" stroke="url(#ring-gradient)" stroke-width="56.32" stroke-linecap="round"/>
+    <use href="#bars" fill="#FFFFFF"/>
+  </g>
+
+  <g class="variant variant-maskable">
+    <rect width="512" height="512" fill="url(#background-gradient)"/>
+    <g transform="translate(76.8 76.8) scale(0.7)">
+      <use href="#ring" fill="none" stroke="url(#ring-gradient)" stroke-width="56.32" stroke-linecap="round"/>
+      <use href="#bars" fill="#FFFFFF"/>
+    </g>
+  </g>
+
+  <g class="variant variant-badge" transform="translate(-19.2 -19.2) scale(1.075)">
+    <use href="#ring" fill="none" stroke="#FFFFFF" stroke-width="56.32" stroke-linecap="round"/>
+    <use href="#bars" fill="#FFFFFF"/>
+  </g>
+</svg>
