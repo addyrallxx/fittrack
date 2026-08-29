@@ -160,10 +160,19 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .conf-der{background:rgba(255,159,10,0.16);color:var(--orange);}
 .conf-est{background:rgba(142,142,147,0.18);color:var(--t3);}
 .sri-brand{font-size:11px;color:var(--t3);}
-.creat-row{width:100%;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:11px;margin-bottom:10px;transition:transform 0.15s var(--spring);}
-.creat-row:active{transform:scale(0.985);}
-.creat-chk{width:22px;height:22px;border-radius:11px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex-shrink:0;}
-.creat-chk.on{background:#34c759;border-color:#34c759;}
+.supp-card{margin:0 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
+.supp-row{width:100%;min-height:64px;padding:11px 14px;display:flex;align-items:center;gap:12px;text-align:left;transition:transform 0.15s var(--spring),background 0.15s var(--smooth);}
+.supp-row+.supp-row{border-top:1px solid var(--border);}
+.supp-row:active{background:var(--s2);transform:scale(0.985);}
+.supp-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.supp-icon.protein{background:var(--coral-dim);color:var(--coral);}
+.supp-icon.creatine{background:var(--green-dim);color:var(--green);}
+.supp-copy{flex:1;min-width:0;}
+.supp-title{font-size:14px;font-weight:700;color:var(--t1);}
+.supp-status{font-size:11px;color:var(--t2);margin-top:2px;}
+.creat-chk{width:22px;height:22px;border-radius:11px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--t1);flex-shrink:0;}
+.creat-chk.on{background:var(--green);border-color:var(--green);color:var(--black);}
+.creat-chk svg{width:12px;height:12px;}
 .qa-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
 .qa-icon svg{width:17px;height:17px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;}
 .qa-lbl{font-size:10px;font-weight:500;color:var(--t2);text-align:center;}
@@ -271,8 +280,6 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .sri-add svg{width:14px;height:14px;stroke:var(--orange);fill:none;stroke-width:2.5;stroke-linecap:round;}
 .search-manual-btn{padding:12px 16px;display:flex;align-items:center;gap:10px;color:var(--blue);font-size:14px;font-weight:600;border-top:1px solid var(--border);width:100%;}
 .search-manual-btn svg{width:16px;height:16px;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.shake-btn{margin:0 16px 12px;background:var(--coral-dim);border:1px solid var(--coral-border);border-radius:var(--r-md);padding:13px 16px;display:flex;align-items:center;gap:12px;transition:transform 0.15s var(--spring);}
-.shake-btn:active{transform:scale(0.98);}
 .shake-add{background:var(--coral);color:#fff;border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;}
 .meal-sec{margin:0 16px 10px;}
 .meal-sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 2px;}
@@ -601,6 +608,7 @@ units:'kg',
 profile:{heightCm:171.5,birthday:'2002-11-23',sex:'male'},
 programStart:'2026-08-24',
 targets:{calories:1800,protein:150,carbs:165,fat:60,water:3500,steps:8000,creatine:5},
+proteinPowder:true,
 body:{currentWeight:71.2,startingWeight:71.2,targetWeight:65.0,bodyFat:31,startBodyFat:31,muscleMass:49.1},
 notifications:{water:{enabled:true},gym:{enabled:true},weight:{enabled:true},dose:{enabled:true}},
 gymTarget:3, /* Sessions per week, on whichever days he likes. There are no fixed
@@ -1113,6 +1121,19 @@ function renderNutrition(){
   const remain=Math.max(0,c.targets.calories-tCal);
   const water=l.nutrition.water||0;
   const waterGoal=c.targets.water||4000;
+  const hasProteinPowder=c.proteinPowder!==false;
+  const hasCreatine=(c.targets.creatine||0)>0;
+  const supplementRows=`
+    ${hasProteinPowder?`<button class="supp-row shake-btn" onclick="quickShake()">
+      <div class="supp-icon protein">${svgIcon('food',20,'var(--coral)')}</div>
+      <div class="supp-copy"><div class="supp-title">ON Whey Protein Shake</div><div class="supp-status">130 kcal, 24g protein, one-tap log</div></div>
+      <div class="shake-add">+ Log</div>
+    </button>`:''}
+    ${hasCreatine?`<button class="supp-row creat-row" onclick="toggleCreatine()">
+      <div class="supp-icon creatine">${svgIcon('dumbbell',20,'var(--green)')}</div>
+      <div class="supp-copy"><div class="supp-title">Creatine ${c.targets.creatine}g</div><div class="supp-status">${l.creatine?'Done today':'Not yet today'}</div></div>
+      <div class="creat-chk ${l.creatine?'on':''}">${l.creatine?svgIcon('check',12,'currentColor'):''}</div>
+    </button>`:''}`;
   const groups={};
   meals.forEach(m=>{const g=m.mealType||'Other';if(!groups[g])groups[g]=[];groups[g].push(m);});
   const mealOrder=c.ramadanMode!==false?['Suhoor','Iftar','Other','Snack']:['Breakfast','Lunch','Dinner','Snack','Other'];
@@ -1152,16 +1173,7 @@ function renderNutrition(){
         </div>
       </div>
     </div>
-    <button class="shake-btn" onclick="quickShake()">
-      <div style="font-size:24px">🥛</div>
-      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--coral)">ON Whey Protein Shake</div><div style="font-size:11px;color:var(--t2);margin-top:2px">130 kcal, 24g protein, one-tap log</div></div>
-      <div class="shake-add">+ Log</div>
-    </button>
-    <button class="creat-row" onclick="toggleCreatine()">
-      <div class="creat-chk ${S.log.creatine?'on':''}">${S.log.creatine?'\u2713':''}</div>
-      <div style="flex:1;text-align:left"><div style="font-size:14px;font-weight:600;color:var(--t1)">Creatine ${S.cfg.targets.creatine||5}g</div>
-      <div style="font-size:11px;color:var(--t2);margin-top:2px">${S.log.creatine?'Done today':'Not yet today'}</div></div>
-    </button>
+    ${supplementRows.trim()?`<div class="section-label">Supplements</div><div class="supp-card">${supplementRows}</div>`:''}
     <div class="food-search-wrap">
       <div class="search-ico">${svgIcon('search',18,'var(--t3)')}</div>
       <input class="food-search-input" id="fsearch" type="text" placeholder="Search food or browse presets..." oninput="handleSearch(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
@@ -1486,6 +1498,7 @@ function obFinish(){
   cfg.programStart=S.today;
   cfg.gymTarget=d.sessions;
   cfg.glp1=!!d.glp1;
+  cfg.proteinPowder=!!d.protein;
   cfg.targets={calories:t.calories,protein:t.protein,carbs:t.carbs,fat:t.fat,water:t.water,steps:t.steps,creatine:t.creatine,floor:t.floor};
   cfg.body={currentWeight:d.weightKg,startingWeight:d.weightKg,targetWeight:d.targetKg,bodyFat:null,startBodyFat:null,muscleMass:null};
   cfg.notifications={water:{enabled:true},gym:{enabled:true},weight:{enabled:true},dose:{enabled:!!d.glp1}};
@@ -2530,6 +2543,7 @@ function init(){
   if(!S.cfg.notifications)S.cfg.notifications=DEF_SETTINGS.notifications;
   if(!S.cfg.profile)S.cfg.profile=DEF_SETTINGS.profile;
   if(!S.cfg.units)S.cfg.units=DEF_SETTINGS.units;
+  if(S.cfg.proteinPowder==null)S.cfg.proteinPowder=DEF_SETTINGS.proteinPowder;
   if(!S.cfg.programStart)S.cfg.programStart=DEF_SETTINGS.programStart;
   if(S.cfg.gymTarget==null)S.cfg.gymTarget=DEF_SETTINGS.gymTarget;
   ['water','gym','weight','dose'].forEach(k=>{if(!S.cfg.notifications[k])S.cfg.notifications[k]={enabled:true};});
