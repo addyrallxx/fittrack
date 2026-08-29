@@ -180,7 +180,8 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 /* WORKOUT SCREEN */
 .day-tabs{padding:0 16px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:12px;}
 .day-tabs::-webkit-scrollbar{display:none;}
-.day-tab{flex-shrink:0;padding:8px 14px;border-radius:20px;border:1px solid var(--border);background:var(--s1);color:var(--t2);font-size:12px;font-weight:600;transition:all 0.2s var(--smooth);line-height:1.4;text-align:center;}
+.day-tab{flex-shrink:0;min-height:44px;padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:var(--s1);color:var(--t2);font-size:12px;font-weight:600;transition:all 0.2s var(--smooth);line-height:1.15;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+.day-tab-label{font-size:9px;opacity:.7;}
 .day-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
 .ex-list{padding:0 16px;display:flex;flex-direction:column;gap:10px;}
 .ex-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:border-color 0.3s;}
@@ -191,28 +192,34 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .ex-icon svg{width:20px;height:20px;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke 0.3s;}
 .ex-card.completed .ex-icon svg{stroke:var(--green);}
 .ex-info{flex:1;min-width:0;}
-.ex-name{font-size:15px;font-weight:600;color:var(--t1);}
-.ex-meta{font-size:12px;color:var(--t2);margin-top:2px;}
+.ex-name{font-size:15px;font-weight:600;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ex-name span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ex-subline{display:flex;align-items:center;gap:6px;min-width:0;margin-top:2px;}
+.ex-meta{font-size:12px;color:var(--t2);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .ex-muscle{font-size:9px;font-weight:700;background:var(--blue-dim);color:var(--blue-light);padding:3px 8px;border-radius:8px;white-space:nowrap;letter-spacing:0.3px;text-transform:uppercase;flex-shrink:0;}
-.ex-done-badge{width:24px;height:24px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0);transition:all 0.4s var(--spring);flex-shrink:0;}
-.ex-card.completed .ex-done-badge{opacity:1;transform:scale(1);}
+.ex-done-badge{width:24px;height:24px;background:var(--green);border-radius:50%;display:none;align-items:center;justify-content:center;opacity:0;transform:scale(0);flex-shrink:0;}
+.ex-card.completed .ex-done-badge{display:flex;opacity:1;transform:scale(1);animation:ex-done-in 0.4s var(--spring);}
+@keyframes ex-done-in{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
 .ex-done-badge svg{width:12px;height:12px;stroke:#000;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
 .ex-chevron{width:18px;height:18px;flex-shrink:0;transition:transform 0.3s var(--smooth);}
+.ex-card.completed .ex-chevron{display:none;}
 .ex-chevron svg{width:16px;height:16px;stroke:var(--t3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 .ex-card.open .ex-chevron{transform:rotate(180deg);}
 .ex-body{max-height:0;overflow:hidden;transition:max-height 0.45s var(--smooth);}
-.ex-card.open .ex-body{max-height:900px;}
+.ex-card.open .ex-body{max-height:1600px;}
 .ex-body-inner{padding:0 16px 16px;border-top:1px solid var(--border);padding-top:14px;}
-.set-hdr{display:grid;grid-template-columns:32px 1fr 1fr 36px;gap:8px;margin-bottom:8px;padding:0 2px;}
+.set-hdr,.set-row{display:grid;grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 36px;gap:8px;}
+.set-hdr{margin-bottom:8px;}
 .set-hdr-lbl{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.6px;text-align:center;}
-.set-row{display:grid;grid-template-columns:32px 1fr 1fr 36px;gap:8px;margin-bottom:8px;align-items:center;transition:opacity 0.3s;}
+.set-row{margin-bottom:8px;align-items:center;transition:opacity 0.3s;}
 .set-row.done{opacity:0.45;}
 .set-num{width:26px;height:26px;background:var(--s3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--t2);margin:auto;transition:all 0.3s var(--spring);}
 .set-row.done .set-num{background:var(--green);color:#000;}
-.set-inp-wrap{background:var(--s2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;overflow:hidden;}
-.set-adj{width:28px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:17px;font-weight:300;flex-shrink:0;}
+.set-inp-wrap{min-width:0;background:var(--s2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;overflow:visible;}
+.set-adj{width:32px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:17px;font-weight:300;flex-shrink:0;position:relative;z-index:1;}
+.set-adj::before{content:"";position:absolute;inset:0 -6px;}
 .set-adj:active{background:var(--s3);}
-.set-inp{flex:1;text-align:center;font-size:14px;font-weight:700;color:var(--t1);background:none;height:36px;min-width:0;}
+.set-inp{flex:1;text-align:center;font-size:14px;font-weight:700;color:var(--t1);background:none;height:44px;min-width:0;}
 .set-chk{width:34px;height:34px;background:var(--s3);border-radius:9px;display:flex;align-items:center;justify-content:center;transition:all 0.3s var(--spring);margin:auto;}
 .set-chk svg{width:15px;height:15px;stroke:var(--t3);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
 .set-chk.on{background:var(--green);}
@@ -902,7 +909,7 @@ function renderWorkout(){
   const exLogs=l.workout.exercises||{};
   const done=d.exercises.filter(e=>exLogs[e.id]?.completed).length;
   const total=d.exercises.length;
-  const tabs=days.map((x,i)=>`<button class="day-tab${i===S.workoutDay?' active':''}" onclick="switchDay(${i})">${x.name}<br><span style="font-size:9px;opacity:.7">${x.label}</span></button>`).join('');
+  const tabs=days.map((x,i)=>`<button class="day-tab${i===S.workoutDay?' active':''}" onclick="switchDay(${i})"><span>${x.name}</span><span class="day-tab-label">${x.label}</span></button>`).join('');
   const cards=d.exercises.map(e=>exCard(e,exLogs[e.id])).join('');
   const pct=total>0?(done/total*100):0;
   const dayDone=l.workout.completed&&l.workout.dayIndex===S.workoutDay;
@@ -955,8 +962,10 @@ function exCard(ex,exLog){
   return `<div class="ex-card${done?' completed':''}" id="ec-${ex.id}">
     <div class="ex-hdr" onclick="toggleEx('${ex.id}')">
       <div class="ex-icon">${svgIcon('dumbbell',20,'var(--blue)')}</div>
-      <div class="ex-info"><div class="ex-name">${ex.name}</div><div class="ex-meta">${ex.sets} sets × ${ex.reps} · ${ex.weight}</div></div>
-      <div class="ex-muscle">${ex.muscle}</div>
+      <div class="ex-info">
+        <div class="ex-name"><span>${ex.name}</span></div>
+        <div class="ex-subline"><div class="ex-meta">${ex.sets} sets × ${ex.reps} · ${ex.weight}</div><div class="ex-muscle">${ex.muscle}</div></div>
+      </div>
       <div class="ex-done-badge">${svgIcon('check',12,'#000')}</div>
       <div class="ex-chevron">${svgIcon('chevD',16,'var(--t3)')}</div>
     </div>
@@ -964,7 +973,7 @@ function exCard(ex,exLog){
       <div class="ex-body-inner">
         <div class="set-hdr">
           <div class="set-hdr-lbl">Set</div>
-          <div class="set-hdr-lbl">Weight (lb)</div>
+          <div class="set-hdr-lbl">Weight (${wUnit()})</div>
           <div class="set-hdr-lbl">Reps</div>
           <div class="set-hdr-lbl">✓</div>
         </div>
@@ -2237,7 +2246,8 @@ async function sendSub(sub){
   try{
     const r=await fetch(PUSH_API+'/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({id:deviceId(),tz:tzName(),sub,prefs:S.cfg.notifications||{},
-        cfg:{waterGoal:S.cfg.targets&&S.cfg.targets.water||3500,gymTarget:S.cfg.gymTarget||3}})});
+        cfg:{waterGoal:S.cfg.targets&&S.cfg.targets.water||3500,gymTarget:S.cfg.gymTarget??3,
+          dose:null}})});
     return r.ok;
   }catch(e){return false;}
 }
@@ -2521,7 +2531,7 @@ function init(){
   if(!S.cfg.profile)S.cfg.profile=DEF_SETTINGS.profile;
   if(!S.cfg.units)S.cfg.units=DEF_SETTINGS.units;
   if(!S.cfg.programStart)S.cfg.programStart=DEF_SETTINGS.programStart;
-  if(!S.cfg.gymTarget)S.cfg.gymTarget=DEF_SETTINGS.gymTarget;
+  if(S.cfg.gymTarget==null)S.cfg.gymTarget=DEF_SETTINGS.gymTarget;
   ['water','gym','weight','dose'].forEach(k=>{if(!S.cfg.notifications[k])S.cfg.notifications[k]={enabled:true};});
   ['carbs','fat','creatine'].forEach(k=>{if(S.cfg.targets[k]==null)S.cfg.targets[k]=DEF_SETTINGS.targets[k];});
   buildTabs();
