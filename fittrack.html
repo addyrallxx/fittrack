@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Adnan Shakib. All rights reserved. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icon-512.png">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <meta name="application-name" content="FitTrack">
+<meta name="author" content="Adnan Shakib">
 <!-- The apple- prefixed capability tag above is still what iOS reads. This is
      the standardised name, whose absence Chrome warns about. -->
 <meta name="mobile-web-app-capable" content="yes">
@@ -254,6 +256,10 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 /* NUTRITION SCREEN */
 .macro-card{margin:4px 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;}
 .macro-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;}
+.macro-target-head{position:relative;margin:2px 0 10px;padding-right:30px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;}
+.floor-warning{position:relative;margin-top:12px;padding:10px 34px 10px 11px;background:var(--orange-dim);border:1px solid var(--orange-border);border-radius:var(--r-sm);}
+.floor-warning-title{font-size:11px;font-weight:700;color:var(--orange);}
+.floor-warning-copy{font-size:11px;color:var(--t2);line-height:1.45;margin-top:2px;}
 .macro-cal-big{font-size:36px;font-weight:800;color:var(--orange);letter-spacing:-1px;line-height:1;}
 .macro-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .macro-bar-lbl{font-size:12px;font-weight:500;color:var(--t2);width:54px;}
@@ -369,6 +375,17 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .sheet-btn-primary{background:var(--orange);color:#fff;}
 .sheet-btn-secondary{background:var(--s3);color:var(--t1);}
 .sheet-btn-danger{background:rgba(255,69,58,0.15);color:var(--red);}
+.help-anchor{position:relative;}
+.help-btn{position:absolute;top:-10px;right:-10px;width:44px;height:44px;display:grid;place-items:center;color:var(--t2);z-index:2;}
+.help-btn::before{content:"";position:absolute;inset:10px;background:var(--s3);border:1px solid var(--border2);border-radius:50%;}
+.help-btn svg{position:relative;z-index:1;pointer-events:none;}
+.help-btn:active::before{background:var(--s4);}
+.help-btn:focus-visible{outline:2px solid var(--orange);outline-offset:-6px;border-radius:50%;}
+.floor-warning>.help-btn{top:50%;right:-6px;transform:translateY(-50%);}
+.metric-title{position:relative;min-height:24px;padding-right:30px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;}
+.metric-title>.help-btn{top:-13px;right:-10px;}
+.help-sheet-copy{font-size:14px;color:var(--t2);line-height:1.6;padding-bottom:8px;}
+.help-sheet-copy p+p{margin-top:10px;}
 .preset-item{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:7px;transition:background 0.1s;}
 .preset-item:active{background:var(--s3);}
 .preset-name{font-size:14px;font-weight:500;color:var(--t1);flex:1;}
@@ -435,6 +452,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
   </div>
 </div>
 <script>
+const APP_VERSION='1.0.0';
 /* ── ICONS ───────────────────────────────────────── */
 const I={
   home:`<svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
@@ -460,10 +478,48 @@ const I={
   activity:`<svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
   scale:`<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 2.72-9 7 0 2.12.8 4.06 2.14 5.51L3 21h18l-2.14-5.49A9 9 0 0 0 21 10c0-4.28-4.03-7-9-7z"/></svg>`,
   run:`<svg viewBox="0 0 24 24"><circle cx="13" cy="4" r="1"/><path d="m7 21 2-7-2-2 3-4 2 4h4"/><path d="m14 13 2 4 3 1"/><path d="M5 8s1.5 1 3 1 3-1 3-1"/></svg>`,
+  info:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="12" y1="7" x2="12.01" y2="7"/></svg>`,
 };
 function svgIcon(key,size=22,stroke='currentColor'){
   if(!I[key])return'';
   return I[key].replace('<svg','<svg width="'+size+'" height="'+size+'" stroke="'+stroke+'" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"');
+}
+const HELP_TOPICS={
+  calorieFloor:{title:'Calorie floor',body:[
+    'On a GLP-1, appetite can fall far enough that eating too little is the bigger risk.',
+    '1,600 kcal is the hard floor for this plan, based on your current body and energy needs.',
+    'Finishing below it repeatedly makes it harder to recover and protect muscle.',
+    'This is a tracking guardrail, not medical advice.'
+  ]},
+  macroTargets:{title:'Macro targets',body:[
+    '1,800 kcal is a moderate deficit from an estimated maintenance of about 2,100 kcal.',
+    'The 150 g protein target is a stretch goal based on an evidence range of 1.6 to 2.0 grams per kilogram of body weight, while about 130 g is the floor that matters.',
+    'Eat protein first in a meal, because appetite suppression can leave little room for it later.'
+  ]},
+  weightProjection:{title:'Weight projection',body:[
+    'The projected date is fitted to your own logged trend, not taken from a generic formula.',
+    'It becomes unreliable when weigh-ins are sparse, food logging is incomplete, or your recent pace changes.',
+    'Treat it as a moving estimate, not a promise.'
+  ]},
+  trendWeight:{title:'Trend weight',body:[
+    'Trend weight smooths about 10 days of weigh-ins so short-term noise does not control the story.',
+    'Most daily scale movement is water from salt, carbs, digestion, and training.',
+    'Read the trend for direction, and keep logging the daily number.'
+  ]},
+  retatrutideDose:{title:'Retatrutide dose',body:[
+    'This card uses only the doses and dates you have confirmed.',
+    'The table ends after September 28, 2026, and the app will not guess what comes next.',
+    'It records the plan; it does not recommend changing a dose.'
+  ]},
+  rampIn:{title:'Ramp-in training',body:[
+    'Ramp-in is the first two weeks back after time away from training.',
+    'Sets are deliberately reduced so soreness and fatigue do not derail the next session.',
+    'The goal is to rebuild the habit before adding more work.'
+  ]}
+};
+function helpBtn(topicKey){
+  const topic=HELP_TOPICS[topicKey];
+  return topic?`<button type="button" class="help-btn" aria-label="More about ${esc(topic.title)}" onclick="openHelp('${topicKey}')">${svgIcon('info',14,'var(--t2)')}</button>`:'';
 }
 /* ── WORKOUT DATA ──────────────────────────────── */
 /* The program lives in data/workout-program.json, fetched at startup. It used
@@ -935,7 +991,7 @@ function renderWorkout(){
       </div>
       <div class="prog-track"><div class="prog-fill" id="wk-prog" style="width:${pct}%;background:var(--blue);transition:width 0.6s var(--ease-data)"></div></div>
     </div>
-    ${S.workout.ramp?`<div class="warmup-banner" style="border-color:var(--orange)"><div class="warmup-title">Ramp-in week ${S.workout.rampWeek} of ${S.workout.rampWeeks}</div><div class="warmup-txt">${S.workout.rampRule}</div></div>`:''}
+    ${S.workout.ramp?`<div class="warmup-banner help-anchor" style="border-color:var(--orange)">${helpBtn('rampIn')}<div class="warmup-title">Ramp-in week ${S.workout.rampWeek} of ${S.workout.rampWeeks}</div><div class="warmup-txt">${S.workout.rampRule}</div></div>`:''}
     <div class="warmup-banner"><div class="warmup-title">\u{1F525} Warm-up first</div><div class="warmup-txt">${d.warmup}</div></div>
     ${dayDone?'':`<button class="finish-btn" style="background:var(--s2);color:var(--t2);border:1px solid var(--border)" onclick="confirmWholeSession()">Log the whole session at once</button>`}
     <div class="ex-list">${cards}</div>
@@ -1119,6 +1175,7 @@ function renderNutrition(){
   const tCarbs=meals.reduce((a,m)=>a+(m.carbs||0),0);
   const tFat=meals.reduce((a,m)=>a+(m.fat||0),0);
   const remain=Math.max(0,c.targets.calories-tCal);
+  const floor=Math.max(1600,c.targets.floor||c.targets.calories-200);
   const water=l.nutrition.water||0;
   const waterGoal=c.targets.water||4000;
   const hasProteinPowder=c.proteinPowder!==false;
@@ -1156,6 +1213,7 @@ function renderNutrition(){
         </div>
       </div>
       <div>
+        <div class="macro-target-head">Daily macro targets${helpBtn('macroTargets')}</div>
         <div class="macro-bar-row">
           <div class="macro-bar-lbl" style="color:var(--coral)">Protein</div>
           <div class="macro-bar-track"><div class="macro-bar-fill" id="pb" style="width:0%;background:var(--coral)"></div></div>
@@ -1171,6 +1229,11 @@ function renderNutrition(){
           <div class="macro-bar-track"><div class="macro-bar-fill" id="fb" style="width:0%;background:var(--blue-light)"></div></div>
           <div class="macro-bar-val">${Math.round(tFat)}g / 65g</div>
         </div>
+      </div>
+      <div class="floor-warning">
+        ${helpBtn('calorieFloor')}
+        <div class="floor-warning-title">Hard floor: ${floor.toLocaleString()} kcal</div>
+        <div class="floor-warning-copy">Do not finish the day below this intake.</div>
       </div>
     </div>
     ${supplementRows.trim()?`<div class="section-label">Supplements</div><div class="supp-card">${supplementRows}</div>`:''}
@@ -1679,6 +1742,27 @@ function rhrStatus(){
   else if(delta>=5){level='watch';msg='Up '+delta+' bpm on your baseline. Keep logging it, and hold the dose steady while it is climbing.';}
   return {ok:true,base,recent,delta,level,msg,n:s.length};
 }
+const RETATRUTIDE_DOSES=[
+  {date:'2026-08-24',mg:1},{date:'2026-08-31',mg:1},
+  {date:'2026-09-07',mg:1.5},{date:'2026-09-14',mg:1.5},
+  {date:'2026-09-21',mg:2},{date:'2026-09-28',mg:2}
+];
+function retatrutideDoseCard(){
+  const c=S.cfg;
+  if(c.name!=='Adnan'||c.profile?.birthday!=='2002-11-23')return'';
+  const next=RETATRUTIDE_DOSES.find(x=>x.date>=S.today);
+  const last=RETATRUTIDE_DOSES[RETATRUTIDE_DOSES.length-1];
+  const label=next?(next.date===S.today?'Today\'s confirmed dose':'Next confirmed dose'):'No dose confirmed';
+  const value=next?next.mg+' mg':'Not listed';
+  const detail=next?fmtDate(next.date):'Confirmed table ended '+fmtDate(last.date);
+  return `<div class="section-label">Retatrutide dose</div>
+    <div class="bstats-card"><div class="help-anchor">
+      ${helpBtn('retatrutideDose')}
+      <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px">${label}</div>
+      <div style="font-size:24px;font-weight:700;color:var(--green);margin-top:3px">${value}</div>
+      <div style="font-size:12px;color:var(--t2);margin-top:3px">${detail}</div>
+    </div></div>`;
+}
 function openRhrSheet(){
   const cur=S.log.rhr||'';
   openSheet('<div class="sheet-body">'+
@@ -1730,11 +1814,12 @@ function renderProgress(){
         const tw=t.length?t[t.length-1].trend:null;
         const rateTxt=pr.rate!=null?((pr.rate<0?'down ':'up ')+Math.abs(toDisp(Math.abs(pr.rate))).toFixed(2)+' '+wUnit()+' a week'):'rate not established yet';
         return '<div class="flex-bc" style="margin-bottom:10px">'+
-          '<div><div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px">Trend weight</div>'+
+          '<div><div class="metric-title">Trend weight'+helpBtn('trendWeight')+'</div>'+
           '<div style="font-size:24px;font-weight:700;color:var(--purple);margin-top:2px">'+(tw!=null?fmtW(tw)+' '+wUnit():'--')+'</div></div>'+
           '<div style="text-align:right;font-size:12px;color:var(--t2);max-width:52%">'+(tw!=null?'Smoothed over 10 days, so a salty meal does not read as a kilo gained.':'Log a few weigh-ins and this fills in.')+'</div>'+
         '</div>'+
-        '<div style="padding-top:11px;border-top:1px solid var(--border);font-size:13px;line-height:1.55;color:var(--t2)">'+
+        '<div class="help-anchor" style="padding-top:11px;border-top:1px solid var(--border);font-size:13px;line-height:1.55;color:var(--t2)">'+
+        '<div class="metric-title">Weight projection'+helpBtn('weightProjection')+'</div>'+
         (pr.done?('You are at or under '+fmtWU(S.cfg.body.targetWeight)+'. Target reached.')
           :pr.ok?('Currently '+rateTxt+'. At that rate you reach '+fmtWU(S.cfg.body.targetWeight)+' around <b style="color:var(--t1)">'+fmtDate(pr.date)+'</b>, about '+pr.weeks+' weeks out. This assumes nothing improves, and it moves every time you weigh in.')
           :pr.why)+
@@ -1768,6 +1853,7 @@ function renderProgress(){
         '<div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);line-height:1.5">'+(r.ok?r.msg:'Retatrutide can lift resting heart rate through its glucagon arm, more than the other drugs in this class do. Your dose is well below the trial doses, so a rise is not expected. Logging it anyway is the cheapest early warning you have.')+'</div>';
       })()}
     </div>
+    ${retatrutideDoseCard()}
     <div class="section-label">Streaks</div>
     <div class="streak-row">
       <div class="streak-card"><div style="font-size:22px">${gs>0?'🔥':'🏋️'}</div><div class="streak-num" style="color:${gs>0?'var(--orange)':'var(--t3)'}">${gs}</div><div class="streak-lbl">Gym days</div></div>
@@ -1947,7 +2033,20 @@ function renderSettings(){
         </div>
       </div>
     </div>
-    <div style="text-align:center;padding:8px 16px 8px;font-size:11px;color:var(--t3)">FitTrack v1.0 · Built for Adnan 💪</div>
+    <div class="settings-sec">
+      <div class="section-label">About</div>
+      <div class="settings-grp">
+        <div class="settings-row" style="cursor:default;align-items:flex-start">
+          <div class="sr-icon" style="background:var(--orange-dim)">${svgIcon('activity',18,'var(--orange)')}</div>
+          <div style="flex:1;min-width:0">
+            <div class="sr-lbl">FitTrack™</div>
+            <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-top:3px">Version ${APP_VERSION}<br>Built by Adnan Shakib<br>© 2026 Adnan Shakib. All rights reserved.</div>
+            <a href="https://github.com/addyrallxx/fittrack" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:var(--blue);text-decoration:underline;text-underline-offset:3px">View FitTrack on GitHub</a>
+            <div style="font-size:11px;color:var(--t3);line-height:1.6;margin-top:10px">Chart.js, MIT License<br>Open Food Facts API, ODbL</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div style="height:16px"></div>
   </div>`;
 }
@@ -2018,6 +2117,11 @@ function openSheet(content,title=''){
     if(first)try{first.focus({preventScroll:true});}catch(e){}
   });
   bd.onclick=closeSheet;
+}
+function openHelp(topicKey){
+  const topic=HELP_TOPICS[topicKey];
+  if(!topic)return;
+  openSheet(`<div class="sheet-body help-sheet-copy">${topic.body.map(x=>`<p>${x}</p>`).join('')}</div>`,topic.title);
 }
 function closeSheet(){
   document.getElementById('sheet-wrap')?.classList.remove('show');

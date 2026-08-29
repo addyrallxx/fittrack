@@ -1,6 +1,7 @@
 {
   "id": "/fittrack/",
   "name": "FitTrack",
+  "version": "1.0.0",
   "short_name": "FitTrack",
   "description": "Personal fitness tracker. Workouts, food, weight and reminders, built for one body and shared with friends.",
   "start_url": "./fittrack.html",

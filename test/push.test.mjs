@@ -235,5 +235,29 @@ check('/resubscribe is answered before the device id guard', () => {
     'a service worker cannot read localStorage, so it has no id and the guard would reject it');
 });
 
+/* The version string now lives in four files. Nothing stopped them drifting,
+   and a stale version in sw.js means the activate handler never evicts the old
+   cache, so a release ships behind a fallback the phone will not let go of.
+   Same class of bug as the PUSH_API drift above: silent everywhere except on a
+   real device. */
+check('the app version matches in all four files', () => {
+  const read = f => fs.readFileSync(path.join(root, f), 'utf8');
+  const pick = (src, what) => {
+    const m = src.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/);
+    assert.ok(m, 'no APP_VERSION in ' + what);
+    return m[1];
+  };
+  const versions = {
+    VERSION: read('VERSION').trim(),
+    'fittrack.html': pick(read('fittrack.html'), 'fittrack.html'),
+    'sw.js': pick(read('sw.js'), 'sw.js'),
+    'manifest.json': JSON.parse(read('manifest.json')).version,
+  };
+  assert.ok(/^\d+\.\d+\.\d+$/.test(versions.VERSION),
+    'VERSION is not semver: ' + versions.VERSION);
+  assert.equal(new Set(Object.values(versions)).size, 1,
+    'version drift: ' + JSON.stringify(versions));
+});
+
 console.log('\nVERDICT: ' + (fail ? 'FAIL' : 'PASS') + ' (' + pass + '/' + (pass + fail) + ')');
 process.exit(fail ? 1 : 0);
