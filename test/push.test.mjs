@@ -15,7 +15,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
-import { findByEndpoint, dropDuplicateEndpoints } from '../worker/src/index.js';
+import { compose, findByEndpoint, dropDuplicateEndpoints } from '../worker/src/index.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -53,6 +53,16 @@ const tomlVapid = (toml.match(/VAPID_PUBLIC_KEY\s*=\s*"([^"]+)"/) || [])[1];
 const appApi = (html.match(/PUSH_API\s*=\s*['"]([^'"]*)['"]/) || [])[1];
 const swApi = (sw.match(/PUSH_API\s*=\s*['"]([^'"]*)['"]/) || [])[1];
 
+function loadBuildOpts() {
+  const fn = sw.match(/function buildOpts\(d\) \{[\s\S]*?\n\}/);
+  assert.ok(fn, 'buildOpts not found in sw.js');
+  const ctx = {};
+  vm.createContext(ctx);
+  vm.runInContext(fn[0] + '\n;globalThis.__f=buildOpts;', ctx);
+  return ctx.__f;
+}
+const buildOpts = loadBuildOpts();
+
 check('the app and the worker agree on the VAPID public key', () => {
   assert.ok(appVapid, 'no VAPID_PUBLIC in fittrack.html');
   assert.equal(appVapid, tomlVapid,
@@ -63,6 +73,26 @@ check('the service worker and the app agree on the reminder server', () => {
   assert.ok(swApi, 'no PUSH_API in sw.js');
   assert.equal(swApi, appApi,
     'a drifted URL sends the self-heal to the wrong host and reminders stop for good');
+});
+
+check('notification presentation uses the Android badge and tags every renotify', () => {
+  const steps = [{ date: '2026-08-31', mg: 1 }];
+  const payloads = [
+    compose('weight', {}, {}, { date: '2026-08-31', dow: 1 }),
+    compose('gym-am', {}, {}, { date: '2026-09-04', dow: 5 }),
+    compose('gym-pm', {}, {}, { date: '2026-09-04', dow: 5 }),
+    compose('dose-eve', {}, { dose: { steps } }, { date: '2026-08-30', dow: 0 }),
+    compose('dose-am', {}, { dose: { steps } }, { date: '2026-08-31', dow: 1 }),
+    compose('water:0.4', { water: 400 }, {}, { date: '2026-08-31', dow: 1 }),
+    { title: 'FitTrack test', body: 'Test', tag: 'ft-test' },
+  ].filter(Boolean);
+  const stamped = buildOpts({ tag: 'timestamp-test', timestamp: 123 });
+  assert.equal(stamped.badge, './badge-96.png');
+  assert.equal(stamped.timestamp, 123, 'payload event time must survive presentation');
+  for (const payload of payloads) {
+    const opts = buildOpts(payload);
+    assert.ok(!opts.renotify || opts.tag, `${payload.title} renotifies without a tag`);
+  }
 });
 
 check('the VAPID public key decodes to an uncompressed P-256 point', () => {
@@ -93,6 +123,12 @@ check('the device id is drawn from a CSPRNG, not Math.random', () => {
   assert.ok(!/Math\.random/.test(body),
     'the id is a bearer token for that device state, so it must not be guessable');
   assert.ok(/crypto\.randomUUID|getRandomValues/.test(body), 'expected a crypto source');
+});
+
+check('the client sends no dose without a client-side schedule', () => {
+  const fn = html.match(/async function sendSub\(sub\)[\s\S]*?\n\}/)[0];
+  assert.match(fn, /dose:null/,
+    'the subscription must stay silent until the client has a per-user schedule');
 });
 
 function fakeKV(seed) {
@@ -171,6 +207,17 @@ check('a lapsed install re-subscribes itself instead of claiming it is on', () =
   const fn = html.match(/async function syncPush\(\)[\s\S]*?\n\}/)[0];
   assert.ok(/pushManager\.subscribe/.test(fn),
     'syncPush must re-subscribe when permission is granted but the subscription is gone');
+});
+
+check('a zero gym target survives onboarding, reload and subscription', () => {
+  const finish = html.match(/function obFinish\(\)[\s\S]*?\n\}/)[0];
+  const onboard = html.match(/function renderOnboard\(\)[\s\S]*?\n\}/)[0];
+  const send = html.match(/async function sendSub\(sub\)[\s\S]*?\n\}/)[0];
+  const init = html.match(/function init\(\)[\s\S]*?\n\}/)[0];
+  assert.match(onboard, /\[0,1,2,3,4,5\]/, 'onboarding must offer numeric zero');
+  assert.match(finish, /cfg\.gymTarget=d\.sessions/, 'onboarding must save the selected number unchanged');
+  assert.match(send, /gymTarget:S\.cfg\.gymTarget\?\?3/, 'subscription must preserve zero');
+  assert.match(init, /if\(S\.cfg\.gymTarget==null\)/, 'reload must default only a missing target');
 });
 
 

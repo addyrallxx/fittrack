@@ -14,6 +14,15 @@ import { runTick, localParts, inBucket, compose, gymGap, doseFor, nextMonday } f
 
 const TZ = 'America/Edmonton'; // Calgary
 const ID = 'u_test';
+const DOSE_STEPS = [
+  { date: '2026-08-24', mg: 1 },
+  { date: '2026-08-31', mg: 1 },
+  { date: '2026-09-07', mg: 1.5 },
+  { date: '2026-09-14', mg: 1.5 },
+  { date: '2026-09-21', mg: 2 },
+  { date: '2026-09-28', mg: 2 },
+];
+const DOSE_CFG = { dose: { med: 'retatrutide', steps: DOSE_STEPS } };
 // RFC 8291 Section 5 receiver key material. Public spec values.
 const SUB = {
   endpoint: 'https://push.example.net/push/TEST',
@@ -63,7 +72,7 @@ function ticksForLocalDay(dateStr, tz) {
   return out;
 }
 
-async function firedOn(dateStr, { state = {}, cfg = {}, prefs = {} } = {}) {
+async function firedOn(dateStr, { state = {}, cfg = DOSE_CFG, prefs = {} } = {}) {
   const kv = fakeKV({ [`sub:${ID}`]: { sub: SUB, tz: TZ, prefs, cfg }, [`state:${ID}`]: state });
   const sink = [];
   installFakeFetch(sink);
@@ -102,12 +111,13 @@ check('localParts survives the DST boundary', () => {
 });
 
 check('doseFor never invents a dose past the known titration', () => {
-  assert.deepEqual(doseFor('2026-08-31'), { mg: 1, known: true });
-  assert.deepEqual(doseFor('2026-09-07'), { mg: 1.5, known: true });
-  assert.deepEqual(doseFor('2026-09-21'), { mg: 2, known: true }, 'the confirmed step to 2 mg');
-  assert.deepEqual(doseFor('2026-09-28'), { mg: 2, known: true });
-  assert.equal(doseFor('2026-10-05').known, false, 'the week after the table ends must NOT be extrapolated to 2.5 mg');
-  assert.equal(doseFor('2026-10-12').known, false, 'beyond the schedule must be flagged unknown');
+  assert.equal(doseFor('2026-08-17', DOSE_STEPS).known, false, 'before the schedule starts must be flagged unknown');
+  assert.deepEqual(doseFor('2026-08-31', DOSE_STEPS), { mg: 1, known: true });
+  assert.deepEqual(doseFor('2026-09-07', DOSE_STEPS), { mg: 1.5, known: true });
+  assert.deepEqual(doseFor('2026-09-21', DOSE_STEPS), { mg: 2, known: true }, 'the confirmed step to 2 mg');
+  assert.deepEqual(doseFor('2026-09-28', DOSE_STEPS), { mg: 2, known: true });
+  assert.equal(doseFor('2026-10-05', DOSE_STEPS).known, false, 'the week after the table ends must NOT be extrapolated to 2.5 mg');
+  assert.equal(doseFor('2026-10-12', DOSE_STEPS).known, false, 'beyond the schedule must be flagged unknown');
 });
 
 check('nextMonday always moves forward, never returns today', () => {
@@ -167,11 +177,27 @@ check('gymGap honours a custom weekly target', () => {
   assert.ok(gymGap({ gymWeek: 2 }, { gymTarget: 5 }, { date: '2026-09-05', dow: 6 }));
 });
 
+check('a zero gym target never produces a gym nudge', () => {
+  const friday = { date: '2026-09-04', dow: 5 };
+  assert.equal(gymGap({ gymWeek: 0 }, { gymTarget: 0 }, friday), null);
+  assert.equal(compose('gym-am', {}, { gymTarget: 0 }, friday), null);
+  assert.equal(compose('gym-pm', {}, { gymTarget: 0 }, friday), null);
+});
+
 check('every action payload fits the 2-button Safari cap', () => {
   for (const rid of ['weight', 'gym-am', 'gym-pm', 'dose-eve', 'dose-am', 'water:0.4']) {
-    const m = compose(rid, {}, {}, { date: '2026-09-05', dow: 6 });
+    const m = compose(rid, {}, DOSE_CFG, { date: '2026-09-05', dow: 6 });
     if (m && m.actions) assert.ok(m.actions.length <= 2, `${rid} has ${m.actions.length} actions`);
   }
+});
+
+check('a subscription without its own dose schedule gets no dose push', async () => {
+  const sunday = await firedOn('2026-08-30', { cfg: {} });
+  const monday = await firedOn('2026-08-31', { cfg: {} });
+  assert.ok(!sunday.times.includes('22:00'), 'Sunday must stay silent without cfg.dose');
+  assert.ok(!monday.times.includes('10:00'), 'Monday must stay silent without cfg.dose');
+  assert.equal(compose('dose-eve', {}, { dose: {} }, { date: '2026-08-30', dow: 0 }), null);
+  assert.equal(compose('dose-am', {}, { dose: { steps: [] } }, { date: '2026-08-31', dow: 1 }), null);
 });
 
 /* ── full day ─────────────────────────────────────────────────────────── */
@@ -244,8 +270,8 @@ check('one unreachable host does not cost every other user their reminders', asy
   // propagated uncaught and took the whole tick down. Inside waitUntil that
   // fails silently, so everyone downstream would just stop getting reminders.
   const kv = fakeKV({
-    'sub:u_dead': { sub: { ...SUB, endpoint: 'https://dead.invalid/p' }, tz: TZ, prefs: {}, cfg: {} },
-    'sub:u_ok': { sub: SUB, tz: TZ, prefs: {}, cfg: {} },
+    'sub:u_dead': { sub: { ...SUB, endpoint: 'https://dead.invalid/p' }, tz: TZ, prefs: {}, cfg: DOSE_CFG },
+    'sub:u_ok': { sub: SUB, tz: TZ, prefs: {}, cfg: DOSE_CFG },
   });
   const sink = [];
   globalThis.fetch = async (url, opts) => {

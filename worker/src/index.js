@@ -56,24 +56,6 @@ const SCHEDULE = [
 /* Three sessions a week, on whichever days he likes. */
 const GYM_TARGET = 3;
 
-/* Known titration only. Doses are never extrapolated: guessing the next step
- * up for a drug is not something a reminder app gets to do. Past the last
- * known date the reminder says so and asks him to confirm.
- *
- * The pattern is two weeks per step, and he has confirmed the step to 2 mg on
- * 2026-09-21. It STOPS at 2026-09-28 on purpose. "Slowly titrating every two
- * weeks" describes an intent, not a prescription, and the dose after that is
- * his call to make and state. Extend this table only from something he has
- * actually said, never by continuing the pattern. */
-const TITRATION = [
-  { date: '2026-08-24', mg: 1 },
-  { date: '2026-08-31', mg: 1 },
-  { date: '2026-09-07', mg: 1.5 },
-  { date: '2026-09-14', mg: 1.5 },
-  { date: '2026-09-21', mg: 2 },
-  { date: '2026-09-28', mg: 2 },
-];
-
 const DEFAULT_TZ = 'America/Edmonton';   // Calgary, DST-aware
 
 /* ── SMALL HELPERS ─────────────────────────────────────────────────────── */
@@ -208,11 +190,12 @@ function nextMonday(dateStr) {
   return d.toISOString().slice(0, 10);
 }
 
-function doseFor(dateStr) {
-  const hit = TITRATION.find(t => t.date === dateStr);
+function doseFor(dateStr, steps) {
+  const hit = steps.find(t => t.date === dateStr);
   if (hit) return { mg: hit.mg, known: true };
-  const last = TITRATION[TITRATION.length - 1];
-  return { mg: last.mg, known: dateStr <= last.date };
+  const first = steps[0];
+  const last = steps[steps.length - 1];
+  return { mg: last.mg, known: dateStr >= first.date && dateStr <= last.date };
 }
 
 /* Sessions left against days left, for a week that runs Monday to Sunday.
@@ -220,7 +203,7 @@ function doseFor(dateStr) {
  * already met, or there is still comfortable room left in the week. */
 function gymGap(st, cfg, local) {
   if (st.gymDone === local.date) return null;
-  const target = cfg.gymTarget || GYM_TARGET;
+  const target = cfg.gymTarget ?? GYM_TARGET;
   const left = target - (st.gymWeek || 0);
   if (left <= 0) return null;
   const daysLeft = 7 - ((local.dow + 6) % 7);   // including today
@@ -235,43 +218,49 @@ function compose(rid, st, cfg, local) {
   switch (rid) {
     case 'weight':
       if (st.weightLogged === local.date) return null;
-      return { title: 'Monday weigh-in', body: 'Same time, before food, before your dose. One number is all it takes.',
+      return { title: 'Monday weigh-in', body: 'Weigh yourself before food or your dose, then log the number.',
                tag: 'weight', sticky: true, actions: [{ action: 'weight', title: 'Log it' }] };
     case 'gym-am': {
       const g = gymGap(st, cfg, local);
       if (!g) return null;
       return { title: g.left === 1 ? 'One session left this week' : `${g.left} sessions left this week`,
-               body: g.tight ? 'No spare days left. Pick a time today and it happens.'
-                             : 'Pick a time now and it is far more likely to happen.',
+               body: g.tight ? 'There are no spare days, so choose a time for today\'s session.'
+                             : 'Choose a time today for one session.',
                tag: 'gym', actions: [{ action: 'gym', title: 'Open plan' }] };
     }
     case 'gym-pm': {
       const g = gymGap(st, cfg, local);
       if (!g) return null;
-      return { title: 'Still time today',
-               body: g.tight ? 'Skipping today means missing the target this week.'
-                             : `${g.left} left and ${g.daysLeft} days to fit them in. If you went already, log it.`,
+      return { title: 'Gym session due today',
+               body: g.tight ? 'Today is the last available day to stay on your weekly target.'
+                             : `You have ${g.left} sessions and ${g.daysLeft} days left, or log today's session if it is done.`,
                tag: 'gym', actions: [{ action: 'gym', title: 'Log session' }] };
     }
     case 'dose-eve': {
-      const d = doseFor(nextMonday(local.date));
-      return { title: 'Dose tonight', body: d.known ? `${d.mg} mg tonight. Have it ready before bed.`
-                                                    : 'Dose tonight. Confirm your next step up before you draw it.',
+      const steps = cfg.dose && cfg.dose.steps;
+      if (!Array.isArray(steps) || !steps.length) return null;
+      const d = doseFor(nextMonday(local.date), steps);
+      return { title: d.known ? `${d.mg} mg dose tonight` : 'Confirm tonight\'s dose',
+               body: d.known ? 'Have it ready before bed.' : 'Check your confirmed schedule before drawing it.',
                tag: 'dose', sticky: true };
     }
     case 'dose-am': {
-      const d = doseFor(local.date);
-      return { title: 'Dose taken?', body: d.known ? `This week is ${d.mg} mg.` : 'Confirm this week’s dose.', tag: 'dose' };
+      const steps = cfg.dose && cfg.dose.steps;
+      if (!Array.isArray(steps) || !steps.length) return null;
+      const d = doseFor(local.date, steps);
+      return { title: d.known ? `${d.mg} mg dose today` : 'Confirm today\'s dose',
+               body: d.known ? 'Log it after you take it.' : 'Check your confirmed schedule before drawing it.', tag: 'dose' };
     }
     default: {
       if (!rid.startsWith('water:')) return null;
       const want = Math.round(goal * Number(rid.split(':')[1]) / 50) * 50;
       const have = st.water || 0;
       if (have >= want) return null;   // already ahead, so say nothing
-      return { title: 'Water check',
-               body: `${(have / 1000).toFixed(1)} L down, ${((want - have) / 1000).toFixed(1)} L behind where you want to be.`,
+      const short = ((want - have) / 1000).toFixed(1);
+      return { title: `${short} L water short`,
+               body: `${(have / 1000).toFixed(1)} L down, ${short} L behind the current checkpoint.`,
                tag: 'water',
-               actions: [{ action: 'water:500', title: '+500 ml' }, { action: 'water:250', title: '+250 ml' }] };
+               actions: [{ action: 'water:500', title: 'Log 500ml' }, { action: 'water:250', title: 'Log 250ml' }] };
     }
   }
 }
@@ -317,7 +306,7 @@ async function runTick(env, now) {
     for (const rid of fresh) {
       const msg = compose(rid, st, cfg, local);
       if (!msg) { fired.push(rid); continue; } // already satisfied: mark done, stay quiet
-      const r = await sendPush(rec.sub, { ...msg, url: './fittrack.html' }, env);
+      const r = await sendPush(rec.sub, { ...msg, timestamp: now.getTime(), url: './fittrack.html' }, env);
       if (r === 'gone') { await env.KV.delete(k.name); break; }
       fired.push(rid);
       if (r === 'ok') sent++;
@@ -436,8 +425,8 @@ export default {
         const rec = await env.KV.get(`sub:${b.id}`, 'json');
         if (!rec) return json({ error: 'not subscribed' }, 404);
         const r = await sendPush(rec.sub, {
-          title: 'FitTrack test', body: 'Reminders are working. This one came from the server.',
-          tag: 'ft-test', url: './fittrack.html',
+          title: 'FitTrack test', body: 'This server notification confirms reminders are working.',
+          tag: 'ft-test', timestamp: Date.now(), url: './fittrack.html',
         }, env);
         if (r === 'gone') await env.KV.delete(`sub:${b.id}`);
         return json({ result: r }, r === 'ok' ? 200 : 502);
@@ -456,4 +445,4 @@ export default {
 /* Exported for the local test harness, which drives runTick with a fixed clock
  * and a fake KV to prove the schedule fires at the right local times. Workers
  * only ever loads the default export, so these cost nothing at runtime. */
-export { runTick, localParts, inBucket, compose, gymGap, doseFor, nextMonday, findByEndpoint, dropDuplicateEndpoints, WATER_CHECKS, SCHEDULE, TITRATION };
+export { runTick, localParts, inBucket, compose, gymGap, doseFor, nextMonday, findByEndpoint, dropDuplicateEndpoints, WATER_CHECKS, SCHEDULE };
