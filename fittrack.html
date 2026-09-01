@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="FitTrack">
-<title>FitTrack</title>
+<title>FitTrack | Free Offline Fitness Tracker PWA</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-512.png">
@@ -19,6 +19,55 @@
      the standardised name, whose absence Chrome warns about. -->
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="color-scheme" content="dark">
+<script>
+/* Resolves and paints the theme before the first frame, straight from
+   localStorage, so there is no dark-to-light flash on launch. The full
+   applyTheme() below (in the app script) re-runs the same resolution once
+   S.cfg exists, this copy only has to get the attribute on <html> right
+   before anything paints. The two hex values here must stay equal to
+   --black in each [data-theme] block below: this paints the status bar
+   cutout and the home indicator before CSS is even parsed. */
+(function(){
+  try{
+    var cfg=JSON.parse(localStorage.getItem('ft_settings')||'null');
+    var pref=(cfg&&cfg.theme)||'system';
+    var light=pref==='light'||(pref==='system'&&matchMedia('(prefers-color-scheme: light)').matches);
+    var theme=light?'light':'dark';
+    document.documentElement.setAttribute('data-theme',theme);
+    var mc=document.querySelector('meta[name="theme-color"]');
+    if(mc)mc.setAttribute('content',light?'#F2F2F7':'#000000');
+    var cs=document.querySelector('meta[name="color-scheme"]');
+    if(cs)cs.setAttribute('content',theme);
+  }catch(e){}
+})();
+</script>
+<meta name="description" content="FitTrack is a free offline fitness tracker PWA for workouts, nutrition, weight and optional GLP-1 calorie-floor tracking. No account or subscription.">
+<link rel="canonical" href="https://addyrallxx.github.io/fittrack/fittrack.html">
+<meta property="og:title" content="FitTrack: Free Offline Fitness Tracker PWA">
+<meta property="og:description" content="Track workouts, nutrition, weight and an optional GLP-1 calorie floor with no account, no subscription and offline support.">
+<meta property="og:image" content="https://addyrallxx.github.io/fittrack/docs/screenshots/home.png">
+<meta property="og:url" content="https://addyrallxx.github.io/fittrack/fittrack.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FitTrack: Free Offline Fitness Tracker PWA">
+<meta name="twitter:description" content="Free offline fitness tracking with no account or subscription.">
+<meta name="twitter:image" content="https://addyrallxx.github.io/fittrack/docs/screenshots/home.png">
+<script type="application/ld+json">
+[{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "FitTrack",
+  "description": "A free offline fitness tracker PWA for workouts, nutrition, weight, reminders and optional GLP-1 calorie-floor tracking.",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Android, iOS and modern web browsers",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://addyrallxx.github.io/fittrack/fittrack.html"
+}]
+</script>
 <!-- iOS launch images. Without these an installed PWA flashes white on every
      open, which on a pure black app reads as a broken web page rather than an
      app. The media queries carry CSS POINT sizes, not the pixel sizes in the
@@ -39,17 +88,29 @@
 :root{
   --black:#000000;--s1:#111111;--s2:#1C1C1E;--s3:#2C2C2E;--s4:#3A3A3C;
   --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
-  --orange:#FF9500;--orange-dim:rgba(255,149,0,0.18);--orange-border:rgba(255,149,0,0.25);
+  --orange:#FF9500;--orange-dim:rgba(255,149,0,0.18);--orange-wash:rgba(255,149,0,0.08);--orange-border:rgba(255,149,0,0.25);
   --coral:#FF6B6B;--coral-dim:rgba(255,107,107,0.18);--coral-border:rgba(255,107,107,0.25);
-  --blue:#0A84FF;--blue-light:#4FC3F7;--blue-dim:rgba(79,195,247,0.18);--blue-border:rgba(79,195,247,0.25);
-  --green:#30D158;--green-dim:rgba(48,209,88,0.18);--green-border:rgba(48,209,88,0.25);
+  --blue:#0A84FF;--blue-light:#4FC3F7;--blue-dim:rgba(79,195,247,0.18);--blue-wash:rgba(10,132,255,0.07);--blue-border:rgba(79,195,247,0.25);
+  --green:#30D158;--green-dim:rgba(48,209,88,0.18);--green-wash:rgba(48,209,88,0.06);--green-faint:rgba(48,209,88,0.03);--green-border:rgba(48,209,88,0.25);
   --purple:#BF5AF2;--purple-dim:rgba(191,90,242,0.18);--purple-border:rgba(191,90,242,0.25);
-  --red:#FF453A;--yellow:#FFD60A;
+  --red:#FF453A;--red-dim:rgba(255,69,58,0.12);--yellow:#FFD60A;
   /* Measured against --black #000000: t2 9.7:1, t3 6.4:1, t4 3.4:1.
      t3 was #636366 (3.5:1) and t4 #3A3A3C (1.7:1), which put every secondary
      label and every input placeholder under the 4.5:1 floor. t4 is now only
      used for decoration, never for text that has to be read. */
   --t1:#FFFFFF;--t2:#AEAEB2;--t3:#8E8E93;--t4:#5A5A5E;
+  --tabbar-bg:rgba(15,15,15,0.94);
+  /* Every bright accent above is legible on black and fails 4.5:1 on white
+     (--orange measures ~2.2:1, --green ~2.0:1). These -text tokens are the
+     same accents wherever they carry running text or a border rather than a
+     solid fill: dark mode leaves them equal to the accent (zero visual
+     change), the [data-theme="light"] block below is where they actually
+     get darker. Chips, dots, ring tracks and filled buttons keep using the
+     plain accent, since a solid fill never needs to pass a text contrast
+     check. */
+  --orange-text:var(--orange);--green-text:var(--green);--purple-text:var(--purple);
+  --coral-text:var(--coral);--blue-text:var(--blue);--blue-light-text:var(--blue-light);
+  --red-text:var(--red);
   --spring:cubic-bezier(0.34,1.56,0.64,1);
   /* Data-bearing fills use ease-out-quint, never --spring. A spring overshoots
      its target by ~11%, so a ring or bar driven by a real number would render
@@ -60,6 +121,25 @@
   --r-sm:10px;--r-md:16px;--r-lg:20px;--r-xl:28px;
   --tab-h:64px;--safe-b:env(safe-area-inset-bottom,16px);--safe-t:env(safe-area-inset-top,0px);
 }
+/* Light appearance. Designed, not inverted: real surfaces (white cards on an
+   off-white page, the same elevation direction dark mode uses, just toward
+   grey instead of toward white), real borders, and every text token measured
+   on its own worst-case surface the same way the dark comment above does.
+   Measured live in Chrome (test/layout-probe.mjs) against --black #F2F2F7:
+   t1 18.82:1, t2 8.18:1, t3 5.97:1, t4 2.71:1 (t4 stays decoration-only,
+   same as dark). Accent -text overrides, same measurement: orange-text
+   5.42:1, green-text 4.85:1, purple-text 5.24:1, coral-text 4.98:1,
+   blue-text/blue-light-text 5.89:1, red-text 5.16:1. */
+[data-theme="light"]{
+  --black:#F2F2F7;--s1:#FFFFFF;--s2:#EDEDF2;--s3:#DFDFE6;--s4:#C7C7CC;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);
+  --t1:#000000;--t2:#48484A;--t3:#5C5C60;--t4:#949498;
+  --tabbar-bg:rgba(255,255,255,0.85);
+  --orange-text:#9C4D00;--green-text:#1C7A34;--purple-text:#8A3FC4;
+  --coral-text:#C23131;--blue-text:#0B5FA5;--blue-light-text:#0B5FA5;
+  --red-text:#C22A20;--orange-wash:rgba(156,77,0,0.08);--blue-wash:rgba(11,95,165,0.07);
+  --green-wash:rgba(28,122,52,0.06);--green-faint:rgba(28,122,52,0.03);--red-dim:rgba(194,42,32,0.12);
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;}
 /* One switch for the whole app. Confetti, ring fills and screen slides all run
    off animation/transition, so cutting both to ~0 honours the OS setting
@@ -67,7 +147,7 @@
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important;}
 }
-html{height:100%;overflow:hidden;background:#000;}
+html{height:100%;overflow:hidden;background:var(--black);}
 body{height:100%;overflow:hidden;background:var(--black);color:var(--t1);font-family:-apple-system,'SF Pro Display','SF Pro Text','Roboto',system-ui,sans-serif;font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;user-select:none;touch-action:manipulation;}
 input,button,select,textarea{font-family:inherit;-webkit-tap-highlight-color:transparent;}
 button{cursor:pointer;border:none;background:none;color:inherit;}
@@ -84,13 +164,14 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 #s0{transform:translateX(0);}
 .screen::-webkit-scrollbar{display:none;}
 /* TAB BAR */
-#tab-bar{position:fixed;bottom:0;left:0;right:0;height:calc(var(--tab-h) + var(--safe-b));padding-bottom:var(--safe-b);background:rgba(15,15,15,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:flex-start;padding-top:6px;z-index:100;}
+#statusbar-fill{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:var(--black);z-index:90;pointer-events:none;}
+#tab-bar{position:fixed;bottom:0;left:0;right:0;height:calc(var(--tab-h) + var(--safe-b));padding-bottom:var(--safe-b);background:var(--tabbar-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:flex-start;padding-top:6px;z-index:100;}
 .tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;touch-action:manipulation;}
 .tab-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;transition:all 0.25s var(--spring);}
 .tab-icon svg{width:22px;height:22px;stroke:var(--t3);transition:stroke 0.2s;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
 .tab-label{font-size:10px;font-weight:500;color:var(--t2);transition:color 0.2s;letter-spacing:0.2px;}
 .tab-btn.active .tab-icon svg{stroke:var(--orange);}
-.tab-btn.active .tab-label{color:var(--orange);}
+.tab-btn.active .tab-label{color:var(--orange-text);}
 .tab-btn.active .tab-icon{transform:scale(1.1) translateY(-1px);}
 /* SCREEN HEADERS */
 .screen-header{padding:18px 20px 10px;display:flex;align-items:flex-start;justify-content:space-between;}
@@ -115,17 +196,17 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 /* CHECK-IN CARDS */
 .checkin-row{margin:0 16px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 .ci-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);padding:13px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all 0.3s var(--spring);position:relative;overflow:hidden;}
-.ci-card.done{background:rgba(48,209,88,0.06);border-color:var(--green-border);}
+.ci-card.done{background:var(--green-wash);border-color:var(--green-border);}
 .ci-icon{font-size:20px;line-height:1;}
 .ci-lbl{font-size:10px;font-weight:600;color:var(--t2);text-align:center;letter-spacing:0.2px;}
 .ci-status{font-size:9px;font-weight:600;color:var(--t3);}
-.ci-card.done .ci-status{color:var(--green);}
+.ci-card.done .ci-status{color:var(--green-text);}
 .ci-check{position:absolute;top:6px;right:6px;width:16px;height:16px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0);transition:all 0.4s var(--spring);}
 .ci-card.done .ci-check{opacity:1;transform:scale(1);}
 .ci-check svg{width:9px;height:9px;stroke:#000;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
 /* STEPS CARD */
 .steps-card{margin:0 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;}
-.steps-num{font-size:32px;font-weight:800;color:var(--green);letter-spacing:-1px;line-height:1;}
+.steps-num{font-size:32px;font-weight:800;color:var(--green-text);letter-spacing:-1px;line-height:1;}
 .prog-track{height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
 .prog-fill{height:100%;border-radius:3px;transition:width 1s var(--ease-data);}
 /* QUICK ACTIONS */
@@ -134,70 +215,89 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .qa-btn:active{transform:scale(0.92);}
 /* First run only. A full cover rather than a screen, so it cannot be swiped
    away or tabbed past before there is a profile to render anything from. */
-#onboard{position:fixed;inset:0;z-index:400;background:var(--black);overflow-y:auto;display:none;padding:calc(var(--safe-t) + 28px) 22px calc(var(--safe-b) + 28px);}
+#onboard{position:fixed;inset:0;z-index:400;background:var(--black);overflow-y:auto;overflow-x:hidden;display:none;padding:calc(var(--safe-t) + 28px) 22px calc(var(--safe-b) + 28px);}
 #onboard.show{display:block;}
-.ob-step{font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.ob-progress{margin-bottom:24px;}
+.ob-progress-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--t3);}
+.ob-progress-name{color:var(--orange-text);}
+.ob-progress-track{height:5px;overflow:hidden;border-radius:3px;background:var(--s3);}
+.ob-progress-fill{height:100%;border-radius:inherit;background:var(--orange);transform:scaleX(var(--ob-progress-to));transform-origin:left center;animation:ob-progress-in .24s var(--ease-data) both;}
+.ob-stage.ob-forward{--ob-shift:18px;}
+.ob-stage.ob-back{--ob-shift:-18px;}
+.ob-enter-item{animation:ob-step-in .22s var(--smooth) both;animation-delay:var(--ob-delay,0ms);}
+@keyframes ob-progress-in{from{transform:scaleX(var(--ob-progress-from))}to{transform:scaleX(var(--ob-progress-to))}}
+@keyframes ob-step-in{from{opacity:0;transform:translateX(var(--ob-shift,0))}to{opacity:1;transform:translateX(0)}}
+@keyframes ob-error-in{0%{opacity:0;transform:translateX(8px)}65%{opacity:1;transform:translateX(-2px)}100%{opacity:1;transform:translateX(0)}}
 .ob-h{font-size:26px;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .ob-p{font-size:14px;color:var(--t2);line-height:1.55;margin-bottom:22px;}
 .ob-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
-.ob-opt{flex:1;min-width:78px;padding:14px 10px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);font-size:14px;font-weight:600;color:var(--t2);text-align:center;}
-.ob-opt.on{background:var(--orange-dim);border-color:var(--orange-border);color:var(--orange);}
-.ob-tog{width:100%;display:flex;align-items:flex-start;gap:12px;padding:14px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);margin-bottom:10px;text-align:left;}
-.ob-tog.on{border-color:var(--orange-border);}
-.ob-box{width:22px;height:22px;border-radius:6px;border:2px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#000;margin-top:1px;}
-.ob-tog.on .ob-box{background:var(--orange);border-color:var(--orange);}
+.ob-opt{flex:1;min-width:78px;min-height:48px;padding:12px 10px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);font-size:14px;font-weight:600;color:var(--t2);text-align:center;touch-action:manipulation;transition:transform .14s var(--spring),background-color .18s var(--smooth),border-color .18s var(--smooth),color .18s var(--smooth);}
+.ob-opt.on{background:var(--orange-dim);border-color:var(--orange-border);color:var(--orange-text);transform:scale(1.015);}
+.ob-tog{width:100%;min-height:56px;display:flex;align-items:flex-start;gap:12px;padding:14px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);margin-bottom:10px;text-align:left;touch-action:manipulation;transition:transform .14s var(--spring),background-color .18s var(--smooth),border-color .18s var(--smooth);}
+.ob-tog.on{background:var(--orange-dim);border-color:var(--orange-border);}
+.ob-opt:active,.ob-tog:active,.ob-btn:active{transform:scale(.97);}
+.ob-opt:focus-visible,.ob-tog:focus-visible,.ob-btn:focus-visible{outline:2px solid var(--orange-text);outline-offset:2px;}
+.ob-box{width:22px;height:22px;border-radius:6px;border:2px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#000;margin-top:1px;transition:transform .18s var(--spring),background-color .18s var(--smooth),border-color .18s var(--smooth);}
+.ob-tog.on .ob-box{background:var(--orange);border-color:var(--orange-text);transform:scale(1.08);}
 .ob-nav{display:flex;gap:10px;margin-top:26px;}
-.ob-btn{flex:1;padding:16px;border-radius:var(--r-md);font-size:15px;font-weight:700;}
+.ob-btn{flex:1;min-height:52px;padding:14px 16px;border-radius:var(--r-md);font-size:15px;font-weight:700;touch-action:manipulation;transition:transform .14s var(--spring);}
 .ob-btn-p{background:var(--orange);color:#000;}
 .ob-btn-s{background:var(--s2);color:var(--t2);border:1px solid var(--border);flex:0 0 88px;}
 .ob-plan{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;margin-bottom:14px;}
 .ob-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--border);}
 .ob-row:last-child{border-bottom:none;}
 .ob-k{font-size:13px;color:var(--t2);}
-.ob-v{font-size:15px;font-weight:700;color:var(--t1);}
-.ob-err{font-size:13px;color:var(--coral);margin-bottom:12px;min-height:18px;}
+.ob-v{font-size:15px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;}
+.ob-err{font-size:13px;color:var(--coral-text);margin-bottom:12px;min-height:18px;}
+.ob-err.show{animation:ob-error-in .22s var(--smooth) both;}
 /* Published numbers and guesses must be distinguishable at a glance. He asked
    for accuracy, so the app never renders an estimate as if it were fact. */
 .conf{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:1px 5px;border-radius:4px;margin-left:6px;vertical-align:1px;}
-.conf-pub{background:rgba(52,199,89,0.16);color:#34c759;}
-.conf-der{background:rgba(255,159,10,0.16);color:var(--orange);}
-.conf-est{background:rgba(142,142,147,0.18);color:var(--t3);}
+.conf-pub{background:var(--green-dim);color:var(--green-text);}
+.conf-der{background:var(--orange-dim);color:var(--orange-text);}
+.conf-est{background:var(--s3);color:var(--t3);}
 .sri-brand{font-size:11px;color:var(--t3);}
 .supp-card{margin:0 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
 .supp-row{width:100%;min-height:64px;padding:11px 14px;display:flex;align-items:center;gap:12px;text-align:left;transition:transform 0.15s var(--spring),background 0.15s var(--smooth);}
 .supp-row+.supp-row{border-top:1px solid var(--border);}
 .supp-row:active{background:var(--s2);transform:scale(0.985);}
 .supp-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.supp-icon.protein{background:var(--coral-dim);color:var(--coral);}
-.supp-icon.creatine{background:var(--green-dim);color:var(--green);}
+.supp-icon.protein{background:var(--coral-dim);color:var(--coral-text);}
+.supp-icon.creatine{background:var(--green-dim);color:var(--green-text);}
 .supp-copy{flex:1;min-width:0;}
 .supp-title{font-size:14px;font-weight:700;color:var(--t1);}
 .supp-status{font-size:11px;color:var(--t2);margin-top:2px;}
-.creat-chk{width:22px;height:22px;border-radius:11px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--t1);flex-shrink:0;}
-.creat-chk.on{background:var(--green);border-color:var(--green);color:var(--black);}
-.creat-chk svg{width:12px;height:12px;}
+.supp-action{width:72px;height:44px;border-radius:12px;border:1px solid var(--border2);background:var(--s2);color:var(--t2);display:flex;align-items:center;justify-content:center;gap:4px;font-size:12px;font-weight:700;flex-shrink:0;}
+.supp-action.on{background:var(--s3);color:var(--t1);}
+.supp-action svg{width:12px;height:12px;}
 .qa-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
 .qa-icon svg{width:17px;height:17px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;}
 .qa-lbl{font-size:10px;font-weight:500;color:var(--t2);text-align:center;}
 /* WEIGHT HOME CARD */
 .wt-card{margin:0 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;display:flex;align-items:center;justify-content:space-between;}
-.wt-big{font-size:30px;font-weight:800;color:var(--purple);letter-spacing:-0.8px;line-height:1;}
-.wt-delta-down{font-size:12px;font-weight:600;color:var(--green);}
-.wt-delta-up{font-size:12px;font-weight:600;color:var(--coral);}
+.wt-big{font-size:30px;font-weight:800;color:var(--purple-text);letter-spacing:-0.8px;line-height:1;}
+.wt-delta-down{font-size:12px;font-weight:600;color:var(--green-text);}
+.wt-delta-up{font-size:12px;font-weight:600;color:var(--coral-text);}
 .wt-delta-same{font-size:12px;font-weight:500;color:var(--t3);}
-.wt-log-btn{background:var(--purple-dim);color:var(--purple);border:1px solid var(--purple-border);border-radius:20px;padding:9px 16px;font-size:13px;font-weight:700;transition:transform 0.15s var(--spring);}
+.wt-log-btn{background:var(--purple-dim);color:var(--purple-text);border:1px solid var(--purple-border);border-radius:20px;padding:9px 16px;font-size:13px;font-weight:700;transition:transform 0.15s var(--spring);}
 .wt-log-btn:active{transform:scale(0.95);}
 /* TODAY BADGE */
-.today-badge{display:inline-flex;align-items:center;gap:5px;background:var(--orange-dim);border:1px solid var(--orange-border);border-radius:14px;padding:4px 12px 4px 8px;font-size:11px;font-weight:600;color:var(--orange);margin-top:7px;letter-spacing:0.2px;}
+.today-badge{display:inline-flex;align-items:center;gap:5px;background:var(--orange-dim);border:1px solid var(--orange-border);border-radius:14px;padding:4px 12px 4px 8px;font-size:11px;font-weight:600;color:var(--orange-text);margin-top:7px;letter-spacing:0.2px;}
 /* WORKOUT SCREEN */
 .day-tabs{padding:0 16px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:12px;}
 .day-tabs::-webkit-scrollbar{display:none;}
 .day-tab{flex-shrink:0;min-height:44px;padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:var(--s1);color:var(--t2);font-size:12px;font-weight:600;transition:all 0.2s var(--smooth);line-height:1.15;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
 .day-tab-label{font-size:9px;opacity:.7;}
-.day-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.day-tab.active{background:var(--blue);border-color:var(--blue-text);color:#fff;}
+.workout-progress{margin:0 16px 12px;}
+.workout-progress-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;}
+.workout-progress-count{font-size:12px;font-weight:600;color:var(--t2);}
+.workout-progress-pct{font-size:11px;color:var(--t3);margin-top:2px;}
+.whole-session-btn{min-height:44px;margin:0;padding:0 12px;flex-shrink:0;background:var(--s2);color:var(--t2);border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:700;line-height:1.2;text-align:center;transition:transform 0.15s var(--spring),border-color 0.2s var(--smooth);}
+.whole-session-btn:active{transform:scale(0.97);border-color:var(--border2);}
 .ex-list{padding:0 16px;display:flex;flex-direction:column;gap:10px;}
 .ex-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:border-color 0.3s;}
-.ex-card.completed{border-color:var(--green-border);background:rgba(48,209,88,0.03);}
+.ex-card.completed{border-color:var(--green-border);background:var(--green-faint);}
 .ex-hdr{padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;touch-action:manipulation;}
 .ex-icon{width:42px;height:42px;background:var(--blue-dim);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.3s;}
 .ex-card.completed .ex-icon{background:var(--green-dim);}
@@ -206,9 +306,9 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .ex-info{flex:1;min-width:0;}
 .ex-name{font-size:15px;font-weight:600;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .ex-name span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.ex-subline{display:flex;align-items:center;gap:6px;min-width:0;margin-top:2px;}
-.ex-meta{font-size:12px;color:var(--t2);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.ex-muscle{font-size:9px;font-weight:700;background:var(--blue-dim);color:var(--blue-light);padding:3px 8px;border-radius:8px;white-space:nowrap;letter-spacing:0.3px;text-transform:uppercase;flex-shrink:0;}
+.ex-subline{display:flex;align-items:flex-start;flex-direction:column;gap:4px;min-width:0;margin-top:2px;}
+.ex-meta{font-size:12px;color:var(--t2);max-width:100%;overflow-wrap:anywhere;}
+.ex-muscle{max-width:100%;overflow:hidden;text-overflow:ellipsis;font-size:9px;font-weight:700;background:var(--blue-dim);color:var(--blue-light-text);padding:3px 8px;border-radius:8px;white-space:nowrap;letter-spacing:0.3px;text-transform:uppercase;}
 .ex-done-badge{width:24px;height:24px;background:var(--green);border-radius:50%;display:none;align-items:center;justify-content:center;opacity:0;transform:scale(0);flex-shrink:0;}
 .ex-card.completed .ex-done-badge{display:flex;opacity:1;transform:scale(1);animation:ex-done-in 0.4s var(--spring);}
 @keyframes ex-done-in{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
@@ -239,17 +339,19 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .rest-bar{margin-top:12px;background:var(--s2);border-radius:12px;padding:11px 14px;display:none;align-items:center;justify-content:space-between;}
 .rest-bar.show{display:flex;}
 .rest-lbl{font-size:12px;color:var(--t2);font-weight:500;}
-.rest-cd{font-size:20px;font-weight:800;color:var(--orange);letter-spacing:-0.5px;}
-.rest-skip{font-size:12px;font-weight:700;color:var(--blue);background:var(--blue-dim);padding:6px 12px;border-radius:8px;}
-.form-cues{margin-top:12px;background:rgba(10,132,255,0.07);border-radius:12px;padding:12px;}
-.cue-title{font-size:9px;font-weight:700;color:var(--blue-light);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
+.rest-cd{font-size:20px;font-weight:800;color:var(--orange-text);letter-spacing:-0.5px;}
+.rest-skip{font-size:12px;font-weight:700;color:var(--blue-text);background:var(--blue-dim);padding:6px 12px;border-radius:8px;}
+.form-cues{margin-top:12px;background:var(--blue-wash);border-radius:12px;padding:12px;}
+.cue-title{font-size:9px;font-weight:700;color:var(--blue-light-text);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
 .cue-item{display:flex;gap:7px;margin-bottom:6px;font-size:12px;color:var(--t2);line-height:1.45;align-items:flex-start;}
 .cue-dot{width:5px;height:5px;border-radius:50%;background:var(--blue-light);flex-shrink:0;margin-top:5px;}
+.ex-where{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--blue-border);font-size:12px;color:var(--t2);line-height:1.45;overflow-wrap:anywhere;}
+.ex-where .cue-title{margin-bottom:4px;}
 .ex-complete-btn{width:100%;margin-top:14px;padding:13px;background:var(--blue);border-radius:var(--r-md);font-size:15px;font-weight:700;color:#fff;text-align:center;transition:all 0.2s var(--spring);}
 .ex-complete-btn:active{transform:scale(0.97);}
 .ex-complete-btn.done{background:var(--green);color:#000;}
-.warmup-banner{margin:0 16px 12px;background:rgba(255,149,0,0.08);border:1px solid rgba(255,149,0,0.2);border-radius:var(--r-md);padding:12px 14px;}
-.warmup-title{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:5px;}
+.warmup-banner{margin:0 16px 12px;background:var(--orange-wash);border:1px solid var(--orange-border);border-radius:var(--r-md);padding:12px 14px;}
+.warmup-title{font-size:10px;font-weight:700;color:var(--orange-text);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:5px;}
 .warmup-txt{font-size:12px;color:var(--t2);line-height:1.55;}
 .finish-btn{margin:14px 16px 0;padding:16px;background:linear-gradient(135deg,#FF9500,#FF6B35);border-radius:var(--r-lg);font-size:16px;font-weight:800;color:#fff;text-align:center;transition:transform 0.15s var(--spring);letter-spacing:0.2px;}
 .finish-btn:active{transform:scale(0.97);}
@@ -259,9 +361,9 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .macro-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;}
 .macro-target-head{position:relative;margin:2px 0 10px;padding-right:30px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;}
 .floor-warning{position:relative;margin-top:12px;padding:10px 34px 10px 11px;background:var(--orange-dim);border:1px solid var(--orange-border);border-radius:var(--r-sm);}
-.floor-warning-title{font-size:11px;font-weight:700;color:var(--orange);}
+.floor-warning-title{font-size:11px;font-weight:700;color:var(--orange-text);}
 .floor-warning-copy{font-size:11px;color:var(--t2);line-height:1.45;margin-top:2px;}
-.macro-cal-big{font-size:36px;font-weight:800;color:var(--orange);letter-spacing:-1px;line-height:1;}
+.macro-cal-big{font-size:36px;font-weight:800;color:var(--orange-text);letter-spacing:-1px;line-height:1;}
 .macro-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .macro-bar-lbl{font-size:12px;font-weight:500;color:var(--t2);width:54px;}
 .macro-bar-track{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
@@ -283,11 +385,11 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .sri:active{background:var(--s2);}
 .sri-name{font-size:14px;font-weight:500;color:var(--t1);flex:1;}
 .sri-macro{font-size:11px;color:var(--t2);margin-top:2px;}
+.sri-history{color:var(--green-text);font-weight:600;}
 .sri-add{width:28px;height:28px;background:var(--orange-dim);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.sri-add svg{width:14px;height:14px;stroke:var(--orange);fill:none;stroke-width:2.5;stroke-linecap:round;}
-.search-manual-btn{padding:12px 16px;display:flex;align-items:center;gap:10px;color:var(--blue);font-size:14px;font-weight:600;border-top:1px solid var(--border);width:100%;}
-.search-manual-btn svg{width:16px;height:16px;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.shake-add{background:var(--coral);color:#fff;border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;}
+.sri-add svg{width:14px;height:14px;stroke:var(--orange-text);fill:none;stroke-width:2.5;stroke-linecap:round;}
+.search-manual-btn{padding:12px 16px;display:flex;align-items:center;gap:10px;color:var(--blue-text);font-size:14px;font-weight:600;border-top:1px solid var(--border);width:100%;}
+.search-manual-btn svg{width:16px;height:16px;stroke:var(--blue-text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 .meal-sec{margin:0 16px 10px;}
 .meal-sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 2px;}
 .meal-sec-name{font-size:13px;font-weight:600;color:var(--t2);}
@@ -295,22 +397,22 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .meal-item{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:6px;}
 .meal-name{font-size:14px;font-weight:500;color:var(--t1);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .meal-macro{font-size:10px;color:var(--t2);margin-top:2px;}
-.meal-cal{font-size:14px;font-weight:700;color:var(--orange);}
-.meal-del{width:28px;height:28px;background:rgba(255,69,58,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.meal-del svg{width:12px;height:12px;stroke:var(--red);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+.meal-cal{font-size:14px;font-weight:700;color:var(--orange-text);}
+.meal-del{width:28px;height:28px;background:var(--red-dim);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.meal-del svg{width:12px;height:12px;stroke:var(--red-text);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
 .water-card{margin:0 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;}
 .water-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;}
-.water-val{font-size:28px;font-weight:800;color:var(--blue-light);letter-spacing:-0.5px;line-height:1;}
+.water-val{font-size:28px;font-weight:800;color:var(--blue-light-text);letter-spacing:-0.5px;line-height:1;}
 .water-btns{display:flex;gap:7px;margin-top:12px;}
-.water-btn{flex:1;background:var(--blue-dim);color:var(--blue-light);border:1px solid var(--blue-border);border-radius:10px;padding:10px 4px;font-size:11px;font-weight:700;text-align:center;transition:transform 0.15s var(--spring);}
+.water-btn{flex:1;background:var(--blue-dim);color:var(--blue-light-text);border:1px solid var(--blue-border);border-radius:10px;padding:10px 4px;font-size:11px;font-weight:700;text-align:center;transition:transform 0.15s var(--spring);}
 .water-btn:active{transform:scale(0.94);}
 /* PROGRESS SCREEN */
 .wt-chart-card{margin:4px 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;}
 .chart-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
-.chart-current{font-size:30px;font-weight:800;color:var(--purple);letter-spacing:-0.8px;}
+.chart-current{font-size:30px;font-weight:800;color:var(--purple-text);letter-spacing:-0.8px;}
 .range-tabs{display:flex;gap:6px;}
 .range-tab{padding:5px 12px;border-radius:14px;border:1px solid var(--border);background:none;color:var(--t3);font-size:11px;font-weight:600;transition:all 0.2s var(--smooth);}
-.range-tab.active{background:var(--purple);border-color:var(--purple);color:#fff;}
+.range-tab.active{background:var(--purple);border-color:var(--purple-text);color:#fff;}
 .chart-wrap{height:160px;position:relative;}
 .streak-row{margin:0 16px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 .streak-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);padding:14px 10px;text-align:center;}
@@ -335,7 +437,29 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .stat-box-lbl{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;}
 .stat-box-val{font-size:20px;font-weight:800;letter-spacing:-0.3px;line-height:1;}
 .stat-box-unit{font-size:10px;color:var(--t2);font-weight:500;margin-top:1px;}
-.stat-box-sub{font-size:9px;color:var(--t3);margin-top:3px;}
+.dose-card-head{padding-right:34px;}
+.dose-med{font-size:18px;font-weight:700;color:var(--t1);}
+.dose-state{margin-top:12px;padding:12px;background:var(--s2);border-radius:var(--r-md);}
+.dose-state-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;}
+.dose-state-value{font-size:22px;font-weight:700;color:var(--green-text);margin-top:3px;}
+.dose-state-copy{font-size:12px;color:var(--t2);line-height:1.45;margin-top:3px;}
+.dose-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.dose-stat{background:var(--s2);border-radius:var(--r-sm);padding:10px;}
+.dose-stat-label{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.45px;}
+.dose-stat-value{font-size:16px;font-weight:700;color:var(--t1);margin-top:3px;}
+.dose-history{margin-top:12px;border-top:1px solid var(--border);}
+.dose-history-row{min-height:44px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);font-size:12px;}
+.dose-history-row:last-child{border-bottom:none;}
+.dose-history-date{flex:1;color:var(--t2);}
+.dose-history-mg{font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;}
+.dose-status{min-width:64px;text-align:center;border-radius:8px;padding:4px 7px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.35px;}
+.dose-status.taken{background:var(--green-dim);color:var(--green-text);}
+.dose-status.scheduled{background:var(--blue-dim);color:var(--blue-light-text);}
+.dose-edit-btn{width:100%;min-height:44px;margin-top:12px;border-radius:var(--r-md);background:var(--s2);border:1px solid var(--border);color:var(--t2);font-size:13px;font-weight:700;}
+.dose-edit-row{display:grid;grid-template-columns:minmax(0,1fr) 88px 44px;gap:8px;align-items:end;margin-bottom:8px;}
+.dose-edit-row .inp-grp{margin-bottom:0;}
+.dose-remove{width:44px;height:44px;border-radius:var(--r-md);background:var(--red-dim);color:var(--red-text);display:flex;align-items:center;justify-content:center;}
+.dose-error{margin:0 0 12px;padding:10px 12px;border-radius:var(--r-md);background:var(--red-dim);color:var(--red-text);font-size:12px;line-height:1.4;}
 /* SETTINGS */
 .settings-sec{margin:0 16px 16px;}
 .settings-grp{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
@@ -375,13 +499,13 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .sheet-btn:active{transform:scale(0.97);}
 .sheet-btn-primary{background:var(--orange);color:#fff;}
 .sheet-btn-secondary{background:var(--s3);color:var(--t1);}
-.sheet-btn-danger{background:rgba(255,69,58,0.15);color:var(--red);}
+.sheet-btn-danger{background:var(--red-dim);color:var(--red-text);}
 .help-anchor{position:relative;}
 .help-btn{position:absolute;top:-10px;right:-10px;width:44px;height:44px;display:grid;place-items:center;color:var(--t2);z-index:2;}
 .help-btn::before{content:"";position:absolute;inset:10px;background:var(--s3);border:1px solid var(--border2);border-radius:50%;}
 .help-btn svg{position:relative;z-index:1;pointer-events:none;}
 .help-btn:active::before{background:var(--s4);}
-.help-btn:focus-visible{outline:2px solid var(--orange);outline-offset:-6px;border-radius:50%;}
+.help-btn:focus-visible{outline:2px solid var(--orange-text);outline-offset:-6px;border-radius:50%;}
 .floor-warning>.help-btn{top:50%;right:-6px;transform:translateY(-50%);}
 .metric-title{position:relative;min-height:24px;padding-right:30px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;}
 .metric-title>.help-btn{top:-13px;right:-10px;}
@@ -391,14 +515,14 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .preset-item:active{background:var(--s3);}
 .preset-name{font-size:14px;font-weight:500;color:var(--t1);flex:1;}
 .preset-macro{font-size:10px;color:var(--t2);margin-top:2px;}
-.preset-cal{font-size:14px;font-weight:700;color:var(--orange);}
+.preset-cal{font-size:14px;font-weight:700;color:var(--orange-text);}
 /* CELEBRATION */
 #celebration{position:fixed;inset:0;z-index:300;pointer-events:none;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.35s var(--smooth);}
 #celebration.show{opacity:1;pointer-events:all;}
 .cel-card{background:var(--s2);border:1px solid var(--green-border);border-radius:var(--r-xl);padding:32px 28px;text-align:center;width:82%;max-width:310px;transform:scale(0.8);transition:transform 0.5s var(--spring);}
 #celebration.show .cel-card{transform:scale(1);}
 .cel-icon{font-size:52px;margin-bottom:12px;}
-.cel-title{font-size:22px;font-weight:800;color:var(--green);margin-bottom:8px;}
+.cel-title{font-size:22px;font-weight:800;color:var(--green-text);margin-bottom:8px;}
 .cel-sub{font-size:14px;color:var(--t2);line-height:1.55;margin-bottom:20px;}
 .confetti-wrap{position:fixed;inset:0;pointer-events:none;overflow:hidden;}
 .cp{position:absolute;width:8px;height:8px;border-radius:2px;animation:cf-fall 2.5s ease-in forwards;}
@@ -414,15 +538,12 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .empty-icon{font-size:36px;margin-bottom:10px;}
 .empty-txt{font-size:14px;color:var(--t3);line-height:1.5;}
 /* ANIMATIONS */
-@keyframes slide-up{from{transform:translateY(18px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-@keyframes scale-in{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
-.ani-in{animation:slide-up 0.38s var(--spring) both;}
 /* FLEX UTILS */
 .flex{display:flex;}.flex-bc{display:flex;align-items:center;justify-content:space-between;}
-.flex-c{display:flex;align-items:center;}
 </style>
 </head>
 <body>
+<div id="statusbar-fill"></div>
 <div id="app">
   <div id="screen-container">
     <div class="screen" id="s0"></div>
@@ -453,7 +574,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
   </div>
 </div>
 <script>
-const APP_VERSION='1.0.0';
+const APP_VERSION='1.1.0';
 /* ── ICONS ───────────────────────────────────────── */
 const I={
   home:`<svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
@@ -477,6 +598,7 @@ const I={
   download:`<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
   user:`<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
   activity:`<svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+  sun:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
   scale:`<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 2.72-9 7 0 2.12.8 4.06 2.14 5.51L3 21h18l-2.14-5.49A9 9 0 0 0 21 10c0-4.28-4.03-7-9-7z"/></svg>`,
   run:`<svg viewBox="0 0 24 24"><circle cx="13" cy="4" r="1"/><path d="m7 21 2-7-2-2 3-4 2 4h4"/><path d="m14 13 2 4 3 1"/><path d="M5 8s1.5 1 3 1 3-1 3-1"/></svg>`,
   info:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="12" y1="7" x2="12.01" y2="7"/></svg>`,
@@ -507,10 +629,10 @@ const HELP_TOPICS={
     'Most daily scale movement is water from salt, carbs, digestion, and training.',
     'Read the trend for direction, and keep logging the daily number.'
   ]},
-  retatrutideDose:{title:'Retatrutide dose',body:[
-    'This card uses only the doses and dates you have confirmed.',
-    'The table ends after September 28, 2026, and the app will not guess what comes next.',
-    'It records the plan; it does not recommend changing a dose.'
+  doseSchedule:{title:'Dose schedule',body:[
+    'This card uses only the medication, doses and dates you have confirmed.',
+    'The schedule stops at its last confirmed row, and the app will not guess what comes next.',
+    'It records your plan; it does not recommend changing a dose.'
   ]},
   rampIn:{title:'Ramp-in training',body:[
     'Ramp-in is the first two weeks back after time away from training.',
@@ -540,16 +662,18 @@ const WARMUP='5 min incline walk, then one easy set of 10 on the first machine b
    end this program is not a bad session, it is being too sore on day two to go
    back. Ramp state is resolved at load rather than at render, so it settles
    once per app open instead of on every repaint. */
-function inRampIn(weeks){
+function programDay(){
   const start=S.cfg&&S.cfg.programStart;
-  if(!start||!weeks)return false;
-  const days=Math.floor((new Date(S.today+'T12:00:00')-new Date(start+'T12:00:00'))/86400000);
+  return start?Math.floor((new Date(S.today+'T12:00:00')-new Date(start+'T12:00:00'))/86400000):null;
+}
+function inRampIn(weeks){
+  const days=programDay();
+  if(days==null||!weeks)return false;
   return days>=0&&days<weeks*7;
 }
 function rampWeek(weeks){
-  const start=S.cfg&&S.cfg.programStart;
-  if(!start)return 1;
-  const days=Math.floor((new Date(S.today+'T12:00:00')-new Date(start+'T12:00:00'))/86400000);
+  const days=programDay();
+  if(days==null)return 1;
   return Math.min(weeks,Math.floor(days/7)+1);
 }
 /* The json speaks in the program vocabulary (machine, cue, swap, rpe). The
@@ -567,7 +691,7 @@ function mapProgram(prog){
       exercises:(sn.exercises||[]).map(e=>({
         id:e.id,name:e.name,muscle:e.machine||sn.focus||'',
         sets:ramp?(e.rampSets||e.sets):e.sets,reps:e.reps,
-        weight:'',restSec:e.rest_s||90,
+        weight:'',where:e.where||'',restSec:e.rest_s||90,
         cues:[e.cue,ramp?'Ramp-in weeks: stop with 4 or 5 reps left, not 2.':('Target RPE '+e.rpe+'. Stop with 2 or 3 reps left in the tank.'),
               e.swap?('If the machine is taken: '+e.swap):null].filter(Boolean),
       })),
@@ -662,12 +786,17 @@ const PRESETS=[
 const DEF_SETTINGS={
 name:'Adnan',
 units:'kg',
+unitHeight:'cm',
+unitVol:'ml',
+theme:'system',
 profile:{heightCm:171.5,birthday:'2002-11-23',sex:'male'},
 programStart:'2026-08-24',
 targets:{calories:1800,protein:150,carbs:165,fat:60,water:3500,steps:8000,creatine:5},
 proteinPowder:true,
 body:{currentWeight:71.2,startingWeight:71.2,targetWeight:65.0,bodyFat:31,startBodyFat:31,muscleMass:49.1},
 notifications:{water:{enabled:true},gym:{enabled:true},weight:{enabled:true},dose:{enabled:true}},
+glp1:false,
+dose:{med:'GLP-1 medication',steps:[]},
 gymTarget:3, /* Sessions per week, on whichever days he likes. There are no fixed
    training days: the plan is three interchangeable sessions and the reminder
    counts what is left in the week rather than naming a weekday. */
@@ -711,7 +840,7 @@ const DB={
 const S={
   screen:0,today:'',log:null,cfg:null,workout:null,foods:[],
   workoutDay:0,calMonth:null,chartRange:30,wtChart:null,
-  restTimers:{},searchTimer:null,toastTimer:null,
+  restTimers:{},searchTimer:null,toastTimer:null,doseDraft:null,
   /* Whether reminders can actually arrive, as opposed to whether their
      preference is switched on. The two used to be conflated, so four blue
      toggles were shown to someone who had never granted permission and had no
@@ -729,7 +858,67 @@ function toDisp(kg){return wUnit()==='lb'?Number(kg)/KG_PER_LB:Number(kg);}
 function fromDisp(v){return wUnit()==='lb'?Number(v)*KG_PER_LB:Number(v);}
 function fmtW(kg,dp){return toDisp(Number(kg)||0).toFixed(dp==null?1:dp);}
 function fmtWU(kg,dp){return fmtW(kg,dp)+' '+wUnit();}
-function setUnits(u){S.cfg.units=(u==='lb')?'lb':'kg';DB.saveSettings(S.cfg);}
+function setUnits(u){S.cfg.units=(u==='lb')?'lb':'kg';DB.saveSettings(S.cfg);if(S.screen===4)renderScreen(4);}
+/* -- HEIGHT -------------------------------------------------------------
+   Storage is always centimetres; only the display layer converts, same
+   pattern as weight above. */
+const CM_PER_IN=2.54;
+function htUnit(){return S.cfg&&S.cfg.unitHeight==='in'?'in':'cm';}
+function htDisp(cm){return htUnit()==='in'?Number(cm)/CM_PER_IN:Number(cm);}
+function htFrom(v){return htUnit()==='in'?Number(v)*CM_PER_IN:Number(v);}
+function setHtUnit(u){S.cfg.unitHeight=(u==='in')?'in':'cm';DB.saveSettings(S.cfg);if(S.screen===4)renderScreen(4);}
+/* -- VOLUME ---------------------------------------------------------------
+   Storage is always millilitres; only the display layer converts. The
+   running water total is shown as one "big" number (litres or fl oz), not
+   raw millilitres, the same way weight shows kg/lb rather than grams. */
+const ML_PER_FLOZ=29.5735295625;
+function volUnit(){return S.cfg&&S.cfg.unitVol==='floz'?'floz':'ml';}
+function volDisp(ml){return volUnit()==='floz'?Number(ml)/ML_PER_FLOZ:Number(ml);}
+function volFrom(v){return volUnit()==='floz'?Number(v)*ML_PER_FLOZ:Number(v);}
+function volBigUnit(){return volUnit()==='floz'?'fl oz':'L';}
+function fmtVolNum(ml){return volUnit()==='floz'?Math.round(volDisp(ml)).toString():(Number(ml)/1000).toFixed(1);}
+function fmtVolBig(ml){return fmtVolNum(ml)+(volUnit()==='floz'?' ':'')+volBigUnit();}
+/* Quick-add button labels. The amount actually added when tapped is always
+   the same literal millilitres (see addWater callers), only this label
+   changes, so switching units never changes what a tap logs. */
+function fmtVolInc(ml){return volUnit()==='floz'?Math.round(volDisp(ml))+' fl oz':(ml>=1000?(ml/1000)+'L':ml+'ml');}
+function setVolUnit(u){S.cfg.unitVol=(u==='floz')?'floz':'ml';DB.saveSettings(S.cfg);if(S.screen===4)renderScreen(4);}
+/* -- UNIT SYSTEM MASTER CONTROL --------------------------------------------
+   Sets all three at once. The individual toggles above remain reachable
+   for a mixed setup (e.g. kg with fl oz), this just picks a sane default
+   for all three in one tap. */
+function setUnitSystem(sys){
+  if(sys==='imperial'){S.cfg.units='lb';S.cfg.unitHeight='in';S.cfg.unitVol='floz';}
+  else{S.cfg.units='kg';S.cfg.unitHeight='cm';S.cfg.unitVol='ml';}
+  DB.saveSettings(S.cfg);
+  if(S.screen===4)renderScreen(4);
+}
+/* -- THEME ------------------------------------------------------------------
+   Dark, Light or System. The inline script at the top of <head> does this
+   same resolution straight from localStorage before first paint, this copy
+   is what runs once S.cfg exists: every later theme change, and the live
+   prefers-color-scheme listener for "system", both go through here. */
+function resolveTheme(){
+  const pref=(S.cfg&&S.cfg.theme)||'system';
+  if(pref==='light'||pref==='dark')return pref;
+  return matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+}
+function applyTheme(){
+  const t=resolveTheme();
+  document.documentElement.setAttribute('data-theme',t);
+  const mc=document.querySelector('meta[name="theme-color"]');
+  const bg=getComputedStyle(document.documentElement).getPropertyValue('--black').trim();
+  if(mc&&bg)mc.setAttribute('content',bg);
+  const cs=document.querySelector('meta[name="color-scheme"]');
+  if(cs)cs.setAttribute('content',t);
+  if(S.wtChart)buildChart(); /* chart colours are read from CSS vars at build time */
+}
+function setTheme(v){
+  S.cfg.theme=(v==='light'||v==='dark')?v:'system';
+  DB.saveSettings(S.cfg);
+  applyTheme();
+  if(S.screen===4)renderScreen(4);
+}
 /* -- ARBITRARY-DATE LOGGING -------------------------------------------------
    DB.saveLog() always took a date, but every caller passed S.today, which is
    set once in init() and never advances. That is why a day could not be
@@ -798,8 +987,11 @@ function go(idx){
 }
 function updateTabs(){document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===S.screen));}
 /* ── RING BUILDER ───────────────────────────── */
-function ring(id,color,val,max,display,unit){
-  const r=35,c=2*Math.PI*r;
+function ring(id,color,val,max,display,unit,textColor){
+  const r=35,c=2*Math.PI*r,tc=textColor||color;
+  /* The ring track keeps the bright accent, it is a fill, not text. The
+     centred number and the label under it get the -text variant instead,
+     since in light mode the plain accent fails 4.5:1 on a white card. */
   return `<div class="ring-item">
     <div class="ring-svg-wrap">
       <svg viewBox="0 0 86 86">
@@ -808,11 +1000,11 @@ function ring(id,color,val,max,display,unit){
           stroke-dasharray="${c}" stroke-dashoffset="${c}"/>
       </svg>
       <div class="ring-center">
-        <div class="ring-val" style="color:${color}" id="rv-${id}">${display}</div>
+        <div class="ring-val" style="color:${tc}" id="rv-${id}">${display}</div>
         <div class="ring-unit">${unit}</div>
       </div>
     </div>
-    <div class="ring-name" style="color:${color};opacity:.8;">${id.toUpperCase()}</div>
+    <div class="ring-name" style="color:${tc};opacity:.8;">${id.toUpperCase()}</div>
   </div>`;
 }
 function animRing(id,val,max){
@@ -837,9 +1029,9 @@ function renderHome(){
   const meals=l.nutrition.meals||[];
   const totalCal=meals.reduce((a,m)=>a+(m.cal||0),0);
   const totalProt=meals.reduce((a,m)=>a+(m.protein||0),0);
-  const waterL=(( l.nutrition.water||0)/1000);
+  const water=l.nutrition.water||0;
   const steps=l.steps||0;
-  const calGoal=c.targets.calories,protGoal=c.targets.protein,waterGoal=c.targets.water/1000;
+  const calGoal=c.targets.calories,protGoal=c.targets.protein,waterGoal=c.targets.water||4000;
   const allLogs=DB.allLogs();
   const recent=Object.values(allLogs).filter(x=>x.workout?.completed&&x.date!==S.today).sort((a,b)=>b.date.localeCompare(a.date));
   const lastDayIdx=recent.length>0?recent[0].workout.dayIndex:-1;
@@ -851,7 +1043,7 @@ function renderHome(){
   const curWt=l.weight||(wh.length>0?wh[wh.length-1].weight:c.body.currentWeight);
   let deltaHtml='<span class="wt-delta-same">Not logged today</span>';
   if(l.weight&&wh.length>1){const prev=wh.length>1?wh[wh.length-2].weight:c.body.currentWeight;const d=(toDisp(l.weight)-toDisp(prev)).toFixed(1);if(d<0)deltaHtml=`<span class="wt-delta-down">↓ ${Math.abs(d)} ${wUnit()} from yesterday</span>`;else if(d>0)deltaHtml=`<span class="wt-delta-up">↑ ${d} ${wUnit()} from yesterday</span>`;else deltaHtml=`<span class="wt-delta-same">Same as yesterday</span>`;}
-  else if(l.weight)deltaHtml=`<span class="wt-delta-down" style="color:var(--green)">Logged ✓</span>`;
+  else if(l.weight)deltaHtml=`<span class="wt-delta-down" style="color:var(--green-text)">Logged ✓</span>`;
   document.getElementById('s0').innerHTML=`
   <div>
     <div class="screen-header">
@@ -864,14 +1056,14 @@ function renderHome(){
     </div>
     <div class="section-label">Today's activity</div>
     <div class="rings-wrap">
-      ${ring('cal','var(--orange)',totalCal,calGoal,Math.round(totalCal).toLocaleString(),'kcal')}
-      ${ring('pro','var(--coral)',totalProt,protGoal,Math.round(totalProt)+'g','protein')}
-      ${ring('h2o','var(--blue-light)',waterL,waterGoal,waterL.toFixed(1)+'L','water')}
+      ${ring('cal','var(--orange)',totalCal,calGoal,Math.round(totalCal).toLocaleString(),'kcal','var(--orange-text)')}
+      ${ring('pro','var(--coral)',totalProt,protGoal,Math.round(totalProt)+'g','protein','var(--coral-text)')}
+      ${ring('h2o','var(--blue-light)',water,waterGoal,fmtVolBig(water),'water','var(--blue-light-text)')}
     </div>
     <div style="display:flex;justify-content:space-around;padding:0 20px;margin-bottom:14px;">
       <div style="text-align:center;font-size:10px;color:var(--t3)">${Math.round(totalCal)} / ${calGoal} kcal</div>
       <div style="text-align:center;font-size:10px;color:var(--t3)">${Math.round(totalProt)}g / ${protGoal}g</div>
-      <div style="text-align:center;font-size:10px;color:var(--t3)">${waterL.toFixed(1)}L / ${waterGoal}L</div>
+      <div style="text-align:center;font-size:10px;color:var(--t3)">${fmtVolBig(water)} / ${fmtVolBig(waterGoal)}</div>
     </div>
     <div class="section-label">Daily check-ins</div>
     <div class="checkin-row">
@@ -888,11 +1080,11 @@ function renderHome(){
         </div>
         <div style="text-align:right">
           <div style="font-size:12px;color:var(--t3)">Goal: ${(c.targets.steps||10000).toLocaleString()}</div>
-          <div style="font-size:14px;font-weight:700;color:var(--green);margin-top:3px">${Math.round((steps/(c.targets.steps||10000))*100)}%</div>
+          <div style="font-size:14px;font-weight:700;color:var(--green-text);margin-top:3px">${Math.round((steps/(c.targets.steps||10000))*100)}%</div>
         </div>
       </div>
       <div class="prog-track"><div class="prog-fill" id="steps-bar" style="width:0%;background:var(--green)"></div></div>
-      <button onclick="openStepsSheet()" style="margin-top:10px;font-size:12px;color:var(--green);font-weight:700;background:var(--green-dim);border:1px solid var(--green-border);border-radius:8px;padding:7px 14px">Log steps</button>
+      <button onclick="openStepsSheet()" style="margin-top:10px;font-size:12px;color:var(--green-text);font-weight:700;background:var(--green-dim);border:1px solid var(--green-border);border-radius:8px;padding:7px 14px">Log steps</button>
     </div>
     <div class="section-label">Quick log</div>
     <div class="qa-grid">
@@ -930,7 +1122,7 @@ function renderHome(){
   setTimeout(()=>{
     animRing('cal',totalCal,calGoal);countUp('cal',totalCal);
     animRing('pro',totalProt,protGoal);countUp('pro',totalProt);
-    animRing('h2o',waterL,waterGoal);
+    animRing('h2o',water,waterGoal);
     const sb=document.getElementById('steps-bar');
     if(sb)setTimeout(()=>{sb.style.width=Math.min((steps/(S.cfg.targets.steps||10000))*100,100)+'%';},80);
   },80);
@@ -985,16 +1177,15 @@ function renderWorkout(){
       <button class="hdr-btn" onclick="openAddExSheet()">${svgIcon('plus',18,'var(--t2)')}</button>
     </div>
     <div class="day-tabs">${tabs}</div>
-    <div style="margin:0 16px 12px">
-      <div class="flex-bc" style="margin-bottom:7px">
-        <div style="font-size:12px;font-weight:600;color:var(--t2)">${done}/${total} exercises done</div>
-        <div style="font-size:11px;color:var(--t3)">${Math.round(pct)}%</div>
+    <div class="workout-progress">
+      <div class="workout-progress-row">
+        <div><div class="workout-progress-count">${done}/${total} exercises done</div><div class="workout-progress-pct">${Math.round(pct)}%</div></div>
+        ${dayDone?'':`<button class="whole-session-btn" onclick="confirmWholeSession()">Log whole session</button>`}
       </div>
       <div class="prog-track"><div class="prog-fill" id="wk-prog" style="width:${pct}%;background:var(--blue);transition:width 0.6s var(--ease-data)"></div></div>
     </div>
-    ${S.workout.ramp?`<div class="warmup-banner help-anchor" style="border-color:var(--orange)">${helpBtn('rampIn')}<div class="warmup-title">Ramp-in week ${S.workout.rampWeek} of ${S.workout.rampWeeks}</div><div class="warmup-txt">${S.workout.rampRule}</div></div>`:''}
+    ${S.workout.ramp?`<div class="warmup-banner help-anchor" style="border-color:var(--orange-text)">${helpBtn('rampIn')}<div class="warmup-title">Ramp-in week ${S.workout.rampWeek} of ${S.workout.rampWeeks}</div><div class="warmup-txt">${S.workout.rampRule}</div></div>`:''}
     <div class="warmup-banner"><div class="warmup-title">\u{1F525} Warm-up first</div><div class="warmup-txt">${d.warmup}</div></div>
-    ${dayDone?'':`<button class="finish-btn" style="background:var(--s2);color:var(--t2);border:1px solid var(--border)" onclick="confirmWholeSession()">Log the whole session at once</button>`}
     <div class="ex-list">${cards}</div>
     ${done>0?`<button class="finish-btn${dayDone?' done':''}" onclick="${dayDone?'':'finishWorkout()'}">${dayDone?'✓ Workout saved!':'Finish workout ('+done+'/'+total+' done)'}</button>`:''}
     <div style="height:16px"></div>
@@ -1005,7 +1196,8 @@ function exCard(ex,exLog){
   const setRows=Array.from({length:ex.sets},(_,i)=>{
     const s=exLog?.sets?.[i];
     const isDone=s?.done||false;
-    const w=s?.weight??lastWeightFor(ex.id)??ex.weight?.match(/\d+/)?.[0]??'20';
+    const storedWeight=s?.weight??lastWeightFor(ex.id)??ex.weight?.match(/\d+/)?.[0]??20;
+    const w=fmtW(storedWeight);
     const r=s?.reps??ex.reps?.match(/^\d+/)?.[0]??'10';
     return `<div class="set-row${isDone?' done':''}" id="sr-${ex.id}-${i}">
       <div class="set-num">${i+1}</div>
@@ -1023,13 +1215,15 @@ function exCard(ex,exLog){
     </div>`;
   }).join('');
   const cues=ex.cues.map(c=>`<div class="cue-item"><div class="cue-dot"></div>${c}</div>`).join('');
+  const meta=[`${ex.sets} sets × ${ex.reps}`,ex.weight].filter(Boolean).join(' · ');
+  const where=ex.where?`<div class="ex-where"><div class="cue-title">Where to find it</div>${ex.where}</div>`:'';
   const sdone=(exLog?.sets||[]).filter(s=>s?.done).length;
   return `<div class="ex-card${done?' completed':''}" id="ec-${ex.id}">
     <div class="ex-hdr" onclick="toggleEx('${ex.id}')">
       <div class="ex-icon">${svgIcon('dumbbell',20,'var(--blue)')}</div>
       <div class="ex-info">
         <div class="ex-name"><span>${ex.name}</span></div>
-        <div class="ex-subline"><div class="ex-meta">${ex.sets} sets × ${ex.reps} · ${ex.weight}</div><div class="ex-muscle">${ex.muscle}</div></div>
+        <div class="ex-subline"><div class="ex-meta">${meta}</div>${ex.muscle?`<div class="ex-muscle">${ex.muscle}</div>`:''}</div>
       </div>
       <div class="ex-done-badge">${svgIcon('check',12,'#000')}</div>
       <div class="ex-chevron">${svgIcon('chevD',16,'var(--t3)')}</div>
@@ -1048,7 +1242,7 @@ function exCard(ex,exLog){
           <div class="rest-cd" id="rc-${ex.id}">--:--</div>
           <button class="rest-skip" onclick="stopRest('${ex.id}')">Skip</button>
         </div>
-        <div class="form-cues"><div class="cue-title">Form cues</div>${cues}</div>
+        <div class="form-cues">${where}<div class="cue-title">Form cues</div>${cues}</div>
         <button class="ex-complete-btn${done?' done':''}" id="ecb-${ex.id}" onclick="completeEx('${ex.id}')">
           ${done?'\u2713 Complete':`Done, skip the set details (${sdone}/${ex.sets} logged)`}
         </button>
@@ -1070,7 +1264,7 @@ function updSet(exId,i,field,val){
   if(!S.log.workout.exercises[exId])S.log.workout.exercises[exId]={sets:[],completed:false};
   if(!S.log.workout.exercises[exId].sets)S.log.workout.exercises[exId].sets=[];
   if(!S.log.workout.exercises[exId].sets[i])S.log.workout.exercises[exId].sets[i]={};
-  S.log.workout.exercises[exId].sets[i][field==='w'?'weight':'reps']=field==='w'?parseFloat(val):parseInt(val);
+  S.log.workout.exercises[exId].sets[i][field==='w'?'weight':'reps']=field==='w'?fromDisp(parseFloat(val)):parseInt(val);
   DB.saveLog(S.today,S.log);
 }
 function toggleSet(exId,i){
@@ -1080,7 +1274,7 @@ function toggleSet(exId,i){
   if(!exLog.sets[i])exLog.sets[i]={};
   const w=document.getElementById(`sw-${exId}-${i}`)?.value;
   const r=document.getElementById(`sr-inp-${exId}-${i}`)?.value;
-  if(w)exLog.sets[i].weight=parseFloat(w);
+  if(w)exLog.sets[i].weight=fromDisp(parseFloat(w));
   if(r)exLog.sets[i].reps=parseInt(r);
   exLog.sets[i].done=!exLog.sets[i].done;
   DB.saveLog(S.today,S.log);
@@ -1132,7 +1326,7 @@ function completeEx(exId){
   const done=d.exercises.filter(e=>S.log.workout.exercises[e.id]?.completed).length;
   const prog=document.getElementById('wk-prog');
   if(prog)prog.style.width=(done/d.exercises.length*100)+'%';
-  const label=document.querySelector('#s1 .prog-track')?.previousElementSibling?.querySelector('.flex-bc div');
+  const label=document.querySelector('#s1 .workout-progress-count');
   if(label)label.textContent=`${done}/${d.exercises.length} exercises done`;
   if(done>0&&!document.querySelector('.finish-btn'))renderScreen(1);
 }
@@ -1181,16 +1375,17 @@ function renderNutrition(){
   const waterGoal=c.targets.water||4000;
   const hasProteinPowder=c.proteinPowder!==false;
   const hasCreatine=(c.targets.creatine||0)>0;
+  const shakeCount=meals.filter(m=>m.foodId==='p12'||m.name==='ON Gold Standard Whey Shake').length;
   const supplementRows=`
     ${hasProteinPowder?`<button class="supp-row shake-btn" onclick="quickShake()">
       <div class="supp-icon protein">${svgIcon('food',20,'var(--coral)')}</div>
-      <div class="supp-copy"><div class="supp-title">ON Whey Protein Shake</div><div class="supp-status">130 kcal, 24g protein, one-tap log</div></div>
-      <div class="shake-add">+ Log</div>
+      <div class="supp-copy"><div class="supp-title">ON Whey Protein Shake</div><div class="supp-status">${shakeCount?shakeCount+' logged today':'130 kcal, 24g protein'}</div></div>
+      <div class="supp-action${shakeCount?' on':''}">${shakeCount?svgIcon('check',12,'currentColor')+' '+shakeCount:'Log'}</div>
     </button>`:''}
     ${hasCreatine?`<button class="supp-row creat-row" onclick="toggleCreatine()">
       <div class="supp-icon creatine">${svgIcon('dumbbell',20,'var(--green)')}</div>
       <div class="supp-copy"><div class="supp-title">Creatine ${c.targets.creatine}g</div><div class="supp-status">${l.creatine?'Done today':'Not yet today'}</div></div>
-      <div class="creat-chk ${l.creatine?'on':''}">${l.creatine?svgIcon('check',12,'currentColor'):''}</div>
+      <div class="supp-action${l.creatine?' on':''}">${l.creatine?svgIcon('check',12,'currentColor')+' Done':'Log'}</div>
     </button>`:''}`;
   const groups={};
   meals.forEach(m=>{const g=m.mealType||'Other';if(!groups[g])groups[g]=[];groups[g].push(m);});
@@ -1200,7 +1395,7 @@ function renderNutrition(){
   <div>
     <div class="screen-header">
       <div><div class="header-title">Nutrition</div><div class="header-sub">${fmtDate(S.today)}</div></div>
-      <button onclick="openMealSheet()" style="background:var(--orange-dim);border:1px solid var(--orange-border);border-radius:20px;padding:8px 16px;font-size:13px;font-weight:700;color:var(--orange)">+ Add meal</button>
+      <button onclick="openMealSheet()" style="background:var(--orange-dim);border:1px solid var(--orange-border);border-radius:20px;padding:8px 16px;font-size:13px;font-weight:700;color:var(--orange-text)">+ Add meal</button>
     </div>
     <div class="macro-card">
       <div class="macro-top">
@@ -1216,17 +1411,17 @@ function renderNutrition(){
       <div>
         <div class="macro-target-head">Daily macro targets${helpBtn('macroTargets')}</div>
         <div class="macro-bar-row">
-          <div class="macro-bar-lbl" style="color:var(--coral)">Protein</div>
+          <div class="macro-bar-lbl" style="color:var(--coral-text)">Protein</div>
           <div class="macro-bar-track"><div class="macro-bar-fill" id="pb" style="width:0%;background:var(--coral)"></div></div>
           <div class="macro-bar-val">${Math.round(tProt)}g / ${c.targets.protein}g</div>
         </div>
         <div class="macro-bar-row">
-          <div class="macro-bar-lbl" style="color:var(--orange)">Carbs</div>
+          <div class="macro-bar-lbl" style="color:var(--orange-text)">Carbs</div>
           <div class="macro-bar-track"><div class="macro-bar-fill" id="cb" style="width:0%;background:var(--orange)"></div></div>
           <div class="macro-bar-val">${Math.round(tCarbs)}g / 210g</div>
         </div>
         <div class="macro-bar-row">
-          <div class="macro-bar-lbl" style="color:var(--blue-light)">Fat</div>
+          <div class="macro-bar-lbl" style="color:var(--blue-light-text)">Fat</div>
           <div class="macro-bar-track"><div class="macro-bar-fill" id="fb" style="width:0%;background:var(--blue-light)"></div></div>
           <div class="macro-bar-val">${Math.round(tFat)}g / 65g</div>
         </div>
@@ -1249,19 +1444,19 @@ function renderNutrition(){
     <div class="water-card">
       <div class="water-top">
         <div>
-          <div class="water-val" id="water-disp">${(water/1000).toFixed(1)}<span style="font-size:14px;color:var(--t2);margin-left:3px">L</span></div>
-          <div style="font-size:12px;color:var(--t3);margin-top:3px">Goal: ${(waterGoal/1000).toFixed(1)}L</div>
+          <div class="water-val" id="water-disp">${fmtVolNum(water)}<span style="font-size:14px;color:var(--t2);margin-left:3px">${volBigUnit()}</span></div>
+          <div style="font-size:12px;color:var(--t3);margin-top:3px">Goal: ${fmtVolBig(waterGoal)}</div>
         </div>
-        <div style="font-size:20px;font-weight:800;color:${water>=waterGoal?'var(--green)':'var(--blue-light)'}">
+        <div style="font-size:20px;font-weight:800;color:${water>=waterGoal?'var(--green-text)':'var(--blue-light-text)'}">
           ${water>=waterGoal?'🎯 Goal hit!':Math.round((water/waterGoal)*100)+'%'}
         </div>
       </div>
       <div class="prog-track"><div class="prog-fill" id="wbar" style="width:0%;background:linear-gradient(90deg,var(--blue-light),var(--blue))"></div></div>
       <div class="water-btns">
-        <button class="water-btn" onclick="addWater(250)">+250ml</button>
-        <button class="water-btn" onclick="addWater(500)">+500ml</button>
-        <button class="water-btn" onclick="addWater(750)">+750ml</button>
-        <button class="water-btn" onclick="addWater(1000)">+1L</button>
+        <button class="water-btn" onclick="addWater(250)">+${fmtVolInc(250)}</button>
+        <button class="water-btn" onclick="addWater(500)">+${fmtVolInc(500)}</button>
+        <button class="water-btn" onclick="addWater(750)">+${fmtVolInc(750)}</button>
+        <button class="water-btn" onclick="addWater(1000)">+${fmtVolInc(1000)}</button>
       </div>
     </div>
     <div style="height:16px"></div>
@@ -1297,10 +1492,10 @@ function addWater(ml){
   const bar=document.getElementById('wbar');
   const w=S.log.nutrition.water;
   const wg=S.cfg.targets.water||4000;
-  if(disp)disp.innerHTML=`${(w/1000).toFixed(1)}<span style="font-size:14px;color:var(--t2);margin-left:3px">L</span>`;
+  if(disp)disp.innerHTML=`${fmtVolNum(w)}<span style="font-size:14px;color:var(--t2);margin-left:3px">${volBigUnit()}</span>`;
   if(bar)bar.style.width=Math.min((w/wg)*100,100)+'%';
-  toast('💧',`+${ml}ml added`,`Total: ${(w/1000).toFixed(1)}L / ${(wg/1000).toFixed(1)}L`);
-  if(w>=wg&&!S.log.checkins.water){S.log.checkins.water=true;DB.saveLog(S.today,S.log);setTimeout(()=>toast('🎯','Water goal reached!',`${(wg/1000).toFixed(1)}L complete 🎉`),1200);}
+  toast('💧',`+${fmtVolInc(ml)} added`,`Total: ${fmtVolBig(w)} / ${fmtVolBig(wg)}`);
+  if(w>=wg&&!S.log.checkins.water){S.log.checkins.water=true;DB.saveLog(S.today,S.log);setTimeout(()=>toast('🎯','Water goal reached!',`${fmtVolBig(wg)} complete 🎉`),1200);}
 }
 function quickShake(){const s=PRESETS.find(p=>p.id==='p12');if(s)addMealItem(s,'Other');}
 /* Creatine carries no calories, so putting it in the meal list would only add
@@ -1344,21 +1539,42 @@ function confBadge(f){
   if(!c)return '';
   return '<span class="conf '+c[0]+'" title="'+esc(f.src||'')+'">'+c[1]+'</span>';
 }
-/* Ranked, not just filtered. A prefix match beats one buried mid-name, and
-   something he actually orders beats something he has never heard of. */
-function searchFoods(m){
-  const hit=[];
-  for(const f of allFoods()){
-    const n=(f.name||'').toLowerCase(), b=(f.brand||'').toLowerCase();
-    let r;
-    if(n.startsWith(m))r=0; else if(b.startsWith(m))r=1; else if(n.includes(m))r=2; else if(b.includes(m))r=3; else continue;
-    /* Big enough that something he genuinely orders outranks a generic preset
-       matched on its first word, and still small enough that a buried match
-       never jumps ahead of a clean prefix hit. */
-    if((f.tags||[]).includes("his-usual"))r-=1.25;
-    hit.push([r,f]);
+function foodHistoryIndex(logs,foods){
+  const out=Object.create(null),byName=Object.create(null);
+  for(const f of foods||[])if(f&&f.id)byName[String(f.name||'').toLowerCase().trim()]=f.id;
+  for(const [date,log] of Object.entries(logs||{})){
+    for(const meal of log?.nutrition?.meals||[]){
+      const name=String(meal.name||'').toLowerCase().trim();
+      const base=name.replace(/ \(\d+(?:\.\d+)?g\)$/,'');
+      const id=meal.foodId||byName[name]||byName[base];
+      if(!id)continue;
+      const h=out[id]||(out[id]={count:0,last:''});
+      h.count++;
+      if(date>h.last)h.last=date;
+    }
   }
-  return hit.sort((a,b)=>a[0]-b[0]).slice(0,10).map(x=>x[1]);
+  return out;
+}
+/* Match quality beats personal history, history beats popularity, and the
+   existing usual-item tag breaks only the remaining ties. */
+function searchFoods(m,foods,history){
+  const hit=[];
+  for(const f of foods||[]){
+    const n=(f.name||'').toLowerCase(), b=(f.brand||'').toLowerCase();
+    let quality;
+    if(n.startsWith(m))quality=0; else if(b.startsWith(m))quality=1; else if(n.includes(m))quality=2; else if(b.includes(m))quality=3; else continue;
+    hit.push({quality,f,h:history?.[f.id]||null});
+  }
+  return hit.sort((a,b)=>{
+    if(a.quality!==b.quality)return a.quality-b.quality;
+    const ah=a.h?.count||0,bh=b.h?.count||0;
+    if(!!ah!==!!bh)return ah?-1:1;
+    if(ah&&bh){if(ah!==bh)return bh-ah;if(a.h.last!==b.h.last)return b.h.last.localeCompare(a.h.last);}
+    else if((a.f.pop||0)!==(b.f.pop||0))return (b.f.pop||0)-(a.f.pop||0);
+    const au=(a.f.tags||[]).includes('his-usual'),bu=(b.f.tags||[]).includes('his-usual');
+    if(au!==bu)return au?-1:1;
+    return String(a.f.name||'').localeCompare(String(b.f.name||''));
+  }).slice(0,10).map(x=>x.f);
 }
 /* Debounced so a burst of typing rebuilds the list once instead of once per
    character. The clear button still toggles immediately, because that one is
@@ -1373,15 +1589,17 @@ function runSearch(q){
   const res=document.getElementById('sresults');
   if(!q||q.length<2){if(res)res.classList.remove('show');return;}
   const m=q.toLowerCase();
-  const local=searchFoods(m);
+  const foods=allFoods();
+  const history=foodHistoryIndex(DB.allLogs(),foods);
+  const local=searchFoods(m,foods,history);
   if(res){
     res.classList.add('show');
     res.innerHTML=(local.length?local.map(f=>`<div class="sri" onclick="pickMealType('${f.id}','local')">
       <div style="flex:1"><div class="sri-name">${esc(f.name)}${confBadge(f)}</div>
-      <div class="sri-macro">${f.brand?'<span class="sri-brand">'+esc(f.brand)+'</span> · ':''}${f.cal} kcal · P:${f.protein}g · C:${f.carbs}g · F:${f.fat}g</div></div>
-      <div class="sri-add">${svgIcon('plus',14,'var(--orange)')}</div>
+      <div class="sri-macro">${f.brand?'<span class="sri-brand">'+esc(f.brand)+'</span> · ':''}${f.cal} kcal · P:${f.protein}g · C:${f.carbs}g · F:${f.fat}g${(history[f.id]?.count||0)>1?' · <span class="sri-history">logged '+history[f.id].count+' times</span>':''}</div></div>
+      <div class="sri-add">${svgIcon('plus',14,'var(--orange-text)')}</div>
     </div>`).join(''):'<div style="padding:14px 16px;font-size:13px;color:var(--t3)">Nothing matches. Enter it manually below.</div>')+
-    `<button class="search-manual-btn" onclick="openManualSheet()">${svgIcon('edit',16,'var(--blue)')} Enter manually</button>`;
+    `<button class="search-manual-btn" onclick="openManualSheet()">${svgIcon('edit',16,'var(--blue-text)')} Enter manually</button>`;
   }
   if(S.searchTimer)clearTimeout(S.searchTimer);
   S.searchTimer=setTimeout(()=>fetchFoodAPI(q),700);
@@ -1433,7 +1651,7 @@ function pickMealType(foodId,src){
     ${weighed?'<div class="inp-grp"><div class="inp-lbl">Portion (grams)</div><input class="inp-field" id="loc-portion" type="number" value="'+food.grams+'" inputmode="numeric"></div>':''}
     ${food.note?'<div style="font-size:12px;color:var(--t2);line-height:1.45;margin:12px 0 4px">'+esc(food.note)+'</div>':''}
     <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 10px">Add to which meal?</div>
-    ${types.map(t=>`<button onclick="logFood('${foodId}','${t}')" style="width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px;font-size:15px;font-weight:500;color:var(--t1);text-align:left;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center">${t}<span style="color:var(--orange)">→</span></button>`).join('')}
+    ${types.map(t=>`<button onclick="logFood('${foodId}','${t}')" style="width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px;font-size:15px;font-weight:500;color:var(--t1);text-align:left;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center">${t}<span style="color:var(--orange-text)">→</span></button>`).join('')}
   </div>`,'Add to meal');
 }
 function pickMealTypeAPI(tempId){
@@ -1444,7 +1662,7 @@ function pickMealTypeAPI(tempId){
     <div style="font-size:12px;color:var(--t2);margin-bottom:12px">${food.cal} kcal per 100g</div>
     <div class="inp-grp"><div class="inp-lbl">Portion (grams)</div><input class="inp-field" id="api-portion" type="number" value="100" inputmode="numeric"></div>
     <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin:12px 0 10px">Add to which meal?</div>
-    ${types.map(t=>`<button onclick="logFoodAPI('${tempId}','${t}')" style="width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px;font-size:15px;font-weight:500;color:var(--t1);text-align:left;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center">${t}<span style="color:var(--orange)">→</span></button>`).join('')}
+    ${types.map(t=>`<button onclick="logFoodAPI('${tempId}','${t}')" style="width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px;font-size:15px;font-weight:500;color:var(--t1);text-align:left;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center">${t}<span style="color:var(--orange-text)">→</span></button>`).join('')}
   </div>`,'Add to meal');
 }
 function logFood(foodId,mealType){
@@ -1464,7 +1682,7 @@ function logFoodAPI(tempId,mealType){
   addMealItem({...food,name:`${food.name} (${p}g)`,cal:Math.round(food.cal*scale),protein:Math.round(food.protein*scale),carbs:Math.round(food.carbs*scale),fat:Math.round(food.fat*scale)},mealType);
 }
 function addMealItem(food,mealType){
-  const meal={id:'m_'+Date.now(),name:food.name,cal:food.cal,protein:food.protein||0,carbs:food.carbs||0,fat:food.fat||0,mealType:mealType||'Other',time:new Date().toISOString()};
+  const meal={id:'m_'+Date.now(),foodId:food.id||null,name:food.name,cal:food.cal,protein:food.protein||0,carbs:food.carbs||0,fat:food.fat||0,mealType:mealType||'Other',time:new Date().toISOString()};
   if(!S.log.nutrition.meals)S.log.nutrition.meals=[];
   S.log.nutrition.meals.push(meal);
   DB.saveLog(S.today,S.log);
@@ -1507,12 +1725,43 @@ function computeTargets(d){
 }
 function needsOnboard(){try{return !localStorage.getItem('ft_settings');}catch(e){return false;}}
 function openOnboard(){
-  S.ob={step:0,err:'',d:{sex:'male',units:'kg',sessions:3,glp1:false,creatine:false,protein:false}};
+  S.ob={step:0,err:'',motionId:0,d:{sex:'male',units:'kg',sessions:3,glp1:false,creatine:false,protein:false}};
   document.getElementById('onboard').classList.add('show');
   renderOnboard();
 }
-function obSet(k,v){S.ob.d[k]=v;S.ob.err='';renderOnboard();}
-function obTog(k){S.ob.d[k]=!S.ob.d[k];renderOnboard();}
+function obClearError(){
+  S.ob.err='';
+  const err=document.querySelector('#onboard .ob-err');
+  if(err){err.textContent='';err.classList.remove('show');}
+  document.querySelectorAll('#onboard [aria-invalid="true"]').forEach(el=>el.removeAttribute('aria-invalid'));
+}
+/* Choices update their own DOM instead of rebuilding the step. That keeps
+   typed values, focus and the one-time entrance motion intact under a thumb. */
+function obSet(k,v){
+  const d=S.ob.d;
+  if(k==='units'&&d.units!==v){
+    for(const field of ['weightRaw','targetRaw']){
+      const n=parseFloat(d[field]);
+      if(!Number.isFinite(n))continue;
+      const kg=d.units==='lb'?n*KG_PER_LB:n;
+      d[field]=(v==='lb'?kg/KG_PER_LB:kg).toFixed(1);
+      const input=document.getElementById(field==='weightRaw'?'ob-w':'ob-t');
+      if(input)input.value=d[field];
+    }
+  }
+  S.ob.d[k]=v;obClearError();
+  document.querySelectorAll('#onboard [data-ob-key="'+k+'"]').forEach(el=>{
+    const on=el.dataset.obValue===String(v);el.classList.toggle('on',on);el.setAttribute('aria-pressed',String(on));
+  });
+  if(k==='units')document.querySelectorAll('#onboard [data-ob-weight-unit]').forEach(el=>{el.textContent=v==='lb'?'lb':'kg';});
+}
+function obTog(k){
+  const on=S.ob.d[k]=!S.ob.d[k];obClearError();
+  const el=document.querySelector('#onboard [data-ob-toggle="'+k+'"]');
+  if(!el)return;
+  el.classList.toggle('on',on);el.setAttribute('aria-pressed',String(on));
+  const box=el.querySelector('.ob-box');if(box)box.textContent=on?'\u2713':'';
+}
 /* Reads whatever is on screen before moving, so a half typed number is not lost
    to a re-render the moment any other control on the step is touched. */
 function obCapture(){
@@ -1527,15 +1776,15 @@ function obCapture(){
 function obValidate(){
   const d=S.ob.d;
   if(S.ob.step===1){
-    const h=parseFloat(d.heightRaw);
-    if(!h||h<120||h>230)return 'Height should be between 120 and 230 cm.';
+    const raw=parseFloat(d.heightRaw),h=htFrom(raw);
+    if(!raw||h<120||h>230)return htUnit()==='in'?'Height should be between 47 and 91 in.':'Height should be between 120 and 230 cm.';
     if(!d.birthday)return 'Pick your date of birth, the calorie maths needs an age.';
     const age=Math.floor((new Date(S.today+'T12:00:00')-new Date(d.birthday+'T12:00:00'))/31557600000);
     if(!(age>=13&&age<=100))return 'That date of birth does not look right.';
     d.heightCm=h;d.age=age;
   }
   if(S.ob.step===2){
-    const kg=x=>d.units==='lb'?x/2.20462:x;
+    const kg=x=>d.units==='lb'?x*KG_PER_LB:x;
     const w=parseFloat(d.weightRaw),t=parseFloat(d.targetRaw);
     if(!w)return 'Enter your current weight.';
     if(!t)return 'Enter the weight you are aiming for.';
@@ -1545,14 +1794,23 @@ function obValidate(){
   }
   return '';
 }
+function obShowError(message){
+  S.ob.err=message;
+  const err=document.querySelector('#onboard .ob-err');
+  if(err){err.textContent=message;err.classList.remove('show');void err.offsetWidth;err.classList.add('show');}
+  const id=S.ob.step===1?(message.startsWith('Height')?'ob-h':'ob-bd'):
+    (message.startsWith('Enter your current')||message.startsWith('That weight')?'ob-w':'ob-t');
+  const field=document.getElementById(id);
+  if(field){field.setAttribute('aria-invalid','true');field.focus();}
+}
 function obNext(){
   obCapture();
   const err=obValidate();
-  if(err){S.ob.err=err;return renderOnboard();}
-  S.ob.err='';S.ob.step++;renderOnboard();
+  if(err)return obShowError(err);
+  S.ob.err='';S.ob.step++;S.ob.direction=1;renderOnboard();
   document.getElementById('onboard').scrollTop=0;
 }
-function obBack(){obCapture();S.ob.err='';S.ob.step--;renderOnboard();}
+function obBack(){obCapture();S.ob.err='';S.ob.step--;S.ob.direction=-1;renderOnboard();document.getElementById('onboard').scrollTop=0;}
 function obFinish(){
   const d=S.ob.d,t=computeTargets(d);
   const cfg=JSON.parse(JSON.stringify(DEF_SETTINGS));
@@ -1574,58 +1832,108 @@ function obFinish(){
   renderScreen(S.screen);
   toast('\u{1F44B}','Plan ready',t.calories+' kcal and '+t.protein+'g protein a day. All of it editable in Settings.');
 }
+/* Inverts the x component of --ease-data (cubic-bezier(.22,1,.36,1)) so the
+   count-up carries the same exact-number motion as the app's rings and bars. */
+function obEaseData(x){
+  if(x<=0)return 0;if(x>=1)return 1;
+  let lo=0,hi=1,t=.5;
+  for(let i=0;i<12;i++){
+    t=(lo+hi)/2;
+    const inv=1-t,bx=3*inv*inv*t*.22+3*inv*t*t*.36+t*t*t;
+    if(bx<x)lo=t;else hi=t;
+  }
+  return 1-Math.pow(1-t,3);
+}
+function obFormatSummary(el,value){
+  const decimals=Number(el.dataset.obDecimals||0);
+  const number=decimals?Number(value).toFixed(decimals):
+    (el.dataset.obGrouped==='true'?Math.round(value).toLocaleString():String(Math.round(value)));
+  el.textContent=number+(el.dataset.obSuffix||'');
+}
+function animateObSummary(run){
+  const values=[...document.querySelectorAll('#onboard [data-ob-summary]')];
+  if(!values.length)return;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced||document.hidden){values.forEach(el=>obFormatSummary(el,Number(el.dataset.obTarget)));return;}
+  values.forEach(el=>obFormatSummary(el,0));
+  const start=performance.now(),duration=460,stagger=42;
+  const frame=now=>{
+    if(!S.ob||S.ob.motionId!==run)return;
+    let active=false;
+    values.forEach((el,i)=>{
+      const p=Math.max(0,Math.min(1,(now-start-i*stagger)/duration));
+      obFormatSummary(el,Number(el.dataset.obTarget)*obEaseData(p));
+      if(p<1)active=true;
+    });
+    if(active)requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+}
 function renderOnboard(){
-  const d=S.ob.d,st=S.ob.step;
+  const d=S.ob.d,st=S.ob.step,direction=S.ob.direction||0;
+  S.ob.direction=0;
   const u=d.units==='lb'?'lb':'kg';
-  const opt=(k,v,label)=>'<button class="ob-opt'+(d[k]===v?' on':'')+'" onclick="obCapture();obSet(\''+k+'\','+(typeof v==='string'?'\''+v+'\'':v)+')">'+label+'</button>';
-  const tog=(k,title,body)=>'<button class="ob-tog'+(d[k]?' on':'')+'" onclick="obTog(\''+k+'\')"><div class="ob-box">'+(d[k]?'\u2713':'')+'</div><div><div style="font-size:14px;font-weight:600;color:var(--t1)">'+title+'</div><div style="font-size:12px;color:var(--t2);line-height:1.45;margin-top:3px">'+body+'</div></div></button>';
+  const hu=htUnit(),run=++S.ob.motionId;
+  const opt=(k,v,label)=>'<button type="button" class="ob-opt'+(d[k]===v?' on':'')+'" data-ob-key="'+k+'" data-ob-value="'+v+'" aria-pressed="'+(d[k]===v)+'" onclick="obCapture();obSet(\''+k+'\','+(typeof v==='string'?'\''+v+'\'':v)+')">'+label+'</button>';
+  const tog=(k,title,body)=>'<button type="button" class="ob-tog'+(d[k]?' on':'')+'" data-ob-toggle="'+k+'" aria-pressed="'+!!d[k]+'" onclick="obTog(\''+k+'\')"><div class="ob-box">'+(d[k]?'\u2713':'')+'</div><div><div style="font-size:14px;font-weight:600;color:var(--t1)">'+title+'</div><div style="font-size:12px;color:var(--t2);line-height:1.45;margin-top:3px">'+body+'</div></div></button>';
+  const val=(key,target,decimals,suffix,grouped=false)=>{
+    const number=decimals?Number(target).toFixed(decimals):(grouped?Math.round(target).toLocaleString():String(Math.round(target)));
+    return '<div class="ob-v" data-ob-summary="'+key+'" data-ob-target="'+target+'" data-ob-decimals="'+decimals+'" data-ob-grouped="'+grouped+'" data-ob-suffix="'+suffix+'">'+number+suffix+'</div>';
+  };
   const body=[];
   if(st===0){
-    body.push('<div class="ob-step">FitTrack</div>',
-      '<div class="ob-h">A few questions, then it is yours.</div>',
+    body.push('<div class="ob-h">A few questions, then it is yours.</div>',
       '<div class="ob-p">This builds a starting plan from your own numbers. Everything stays on this phone: there is no account and nothing to sign up for. Every target it sets is editable afterwards, and the app replaces its own estimates with measured ones as soon as you have logged enough for it to know better.</div>',
       '<div class="inp-grp"><div class="inp-lbl">What should it call you? (optional)</div><input class="inp-field" id="ob-n" type="text" value="'+(d.name||'')+'" placeholder="Your name" autocorrect="off"></div>');
   } else if(st===1){
-    body.push('<div class="ob-step">Step 1 of 4</div><div class="ob-h">About you</div>',
+    body.push('<div class="ob-h">About you</div>',
       '<div class="ob-p">Used for the calorie maths and nothing else.</div>',
       '<div class="ob-opts">'+opt('sex','male','Male')+opt('sex','female','Female')+'</div>',
-      '<div class="inp-grp"><div class="inp-lbl">Height (cm)</div><input class="inp-field" id="ob-h" type="number" inputmode="decimal" value="'+(d.heightRaw||'')+'" placeholder="171.5"></div>',
+      '<div class="inp-grp"><div class="inp-lbl">Height ('+hu+')</div><input class="inp-field" id="ob-h" type="number" inputmode="decimal" value="'+(d.heightRaw||'')+'" placeholder="'+(hu==='in'?'67.5':'171.5')+'"></div>',
       '<div class="inp-grp"><div class="inp-lbl">Date of birth</div><input class="inp-field" id="ob-bd" type="date" value="'+(d.birthday||'')+'" max="'+S.today+'"></div>');
   } else if(st===2){
-    body.push('<div class="ob-step">Step 2 of 4</div><div class="ob-h">Where you are, where you want to be</div>',
+    body.push('<div class="ob-h">Where you are, where you want to be</div>',
       '<div class="ob-p">A nearer target beats an ambitious one. You can move it whenever you like.</div>',
       '<div class="ob-opts">'+opt('units','kg','Kilograms')+opt('units','lb','Pounds')+'</div>',
-      '<div class="inp-grp"><div class="inp-lbl">Current weight ('+u+')</div><input class="inp-field" id="ob-w" type="number" inputmode="decimal" value="'+(d.weightRaw||'')+'"></div>',
-      '<div class="inp-grp"><div class="inp-lbl">Target weight ('+u+')</div><input class="inp-field" id="ob-t" type="number" inputmode="decimal" value="'+(d.targetRaw||'')+'"></div>');
+      '<div class="inp-grp"><div class="inp-lbl">Current weight (<span data-ob-weight-unit>'+u+'</span>)</div><input class="inp-field" id="ob-w" type="number" inputmode="decimal" value="'+(d.weightRaw||'')+'"></div>',
+      '<div class="inp-grp"><div class="inp-lbl">Target weight (<span data-ob-weight-unit>'+u+'</span>)</div><input class="inp-field" id="ob-t" type="number" inputmode="decimal" value="'+(d.targetRaw||'')+'"></div>');
   } else if(st===3){
-    body.push('<div class="ob-step">Step 3 of 4</div><div class="ob-h">Training</div>',
+    body.push('<div class="ob-h">Training</div>',
       '<div class="ob-p">Realistically, how many sessions a week? Not the best week you have ever had, the ordinary one. The program is three interchangeable full body sessions you can do on any days, so this only sets the weekly target the reminders count against.</div>',
       '<div class="ob-opts">'+[0,1,2,3,4,5].map(n=>opt('sessions',n,n===0?'None':String(n))).join('')+'</div>',
-      '<div class="ob-step" style="margin-top:20px">Step 4 of 4</div><div class="ob-h">Anything you are taking</div>',
+      '<div class="ob-h" style="font-size:20px;margin-top:24px">Anything you are taking</div>',
       '<div class="ob-p">All optional, and each one changes what the app says to you.</div>',
       tog('glp1','A GLP-1 medication','Semaglutide, tirzepatide, retatrutide and the like. Sets a smaller deficit, because on these the real risk is eating too little and losing muscle, and turns on the weekly dose reminder.'),
       tog('creatine','Creatine','Adds a one tap daily log.'),
       tog('protein','Protein powder','Adds a one tap shake to the food screen.'));
   } else {
     const t=computeTargets(d);
-    const w=x=>d.units==='lb'?(x*2.20462).toFixed(1)+' lb':x.toFixed(1)+' kg';
-    body.push('<div class="ob-step">Your starting plan</div><div class="ob-h">Here is what that works out to</div>',
+    const w=x=>d.units==='lb'?(x/KG_PER_LB).toFixed(1)+' lb':x.toFixed(1)+' kg';
+    const weeklyKg=(t.tdee-t.calories)*7/7700;
+    const weekly=d.units==='lb'?(weeklyKg/KG_PER_LB).toFixed(2)+' lb':weeklyKg.toFixed(2)+' kg';
+    const water=volUnit()==='floz'?Math.round(volDisp(t.water)):t.water/1000,waterDec=volUnit()==='floz'?0:1;
+    body.push('<div class="ob-h">Here is what that works out to</div>',
       '<div class="ob-p">An estimate, and it says so. Once you have logged a couple of weeks the app works out what you actually burn from your own data and stops guessing.</div>',
       '<div class="ob-plan">',
-      '<div class="ob-row"><div class="ob-k">Daily calories</div><div class="ob-v">'+t.calories+' kcal</div></div>',
-      '<div class="ob-row"><div class="ob-k">Protein</div><div class="ob-v">'+t.protein+' g</div></div>',
-      '<div class="ob-row"><div class="ob-k">Carbs</div><div class="ob-v">'+t.carbs+' g</div></div>',
-      '<div class="ob-row"><div class="ob-k">Fat</div><div class="ob-v">'+t.fat+' g</div></div>',
-      '<div class="ob-row"><div class="ob-k">Water</div><div class="ob-v">'+(t.water/1000).toFixed(1)+' L</div></div>',
-      '<div class="ob-row"><div class="ob-k">Steps</div><div class="ob-v">'+t.steps.toLocaleString()+'</div></div>',
-      '<div class="ob-row"><div class="ob-k">Gym</div><div class="ob-v">'+d.sessions+' a week</div></div>',
+      '<div class="ob-row"><div class="ob-k">Daily calories</div>'+val('calories',t.calories,0,' kcal')+'</div>',
+      '<div class="ob-row"><div class="ob-k">Protein</div>'+val('protein',t.protein,0,' g')+'</div>',
+      '<div class="ob-row"><div class="ob-k">Carbs</div>'+val('carbs',t.carbs,0,' g')+'</div>',
+      '<div class="ob-row"><div class="ob-k">Fat</div>'+val('fat',t.fat,0,' g')+'</div>',
+      '<div class="ob-row"><div class="ob-k">Water</div>'+val('water',water,waterDec,volUnit()==='floz'?' fl oz':'L')+'</div>',
+      '<div class="ob-row"><div class="ob-k">Steps</div>'+val('steps',t.steps,0,'',true)+'</div>',
+      '<div class="ob-row"><div class="ob-k">Gym</div>'+val('sessions',d.sessions,0,' a week')+'</div>',
       '</div>',
-      '<div style="font-size:12px;color:var(--t3);line-height:1.55">Estimated maintenance is '+t.tdee+' kcal, so this runs a '+Math.max(0,t.tdee-t.calories)+' kcal daily deficit, roughly '+((t.tdee-t.calories)*7/7700).toFixed(2)+' kg a week. Never eat below '+t.floor+' kcal: past that you are spending muscle, not fat. Target '+w(d.targetKg)+' from '+w(d.weightKg)+'.</div>');
+      '<div style="font-size:12px;color:var(--t3);line-height:1.55">Estimated maintenance is '+t.tdee+' kcal, so this runs a '+Math.max(0,t.tdee-t.calories)+' kcal daily deficit, roughly '+weekly+' a week. Never eat below '+t.floor+' kcal: past that you are spending muscle, not fat. Target '+w(d.targetKg)+' from '+w(d.weightKg)+'.</div>');
   }
   const last=st===4;
   const nav='<div class="ob-nav">'+(st>0?'<button class="ob-btn ob-btn-s" onclick="obBack()">Back</button>':'')+
     '<button class="ob-btn ob-btn-p" onclick="'+(last?'obFinish()':'obNext()')+'">'+(last?'Start':st===0?'Get started':'Continue')+'</button></div>';
-  document.getElementById('onboard').innerHTML=body.join('')+'<div class="ob-err">'+(S.ob.err||'')+'</div>'+nav;
+  const to=(st+1)/5,from=Math.max(.2,Math.min(1,(st+1-direction)/5));
+  const progress='<div class="ob-progress"><div class="ob-progress-meta"><span class="ob-progress-name">FitTrack</span><span>Step '+(st+1)+' of 5</span></div><div class="ob-progress-track" role="progressbar" aria-label="Onboarding progress" aria-valuemin="1" aria-valuemax="5" aria-valuenow="'+(st+1)+'"><div class="ob-progress-fill" style="--ob-progress-from:'+from+';--ob-progress-to:'+to+'"></div></div></div>';
+  const host=document.getElementById('onboard');
+  host.innerHTML=progress+'<div class="ob-stage '+(direction<0?'ob-back':'ob-forward')+'">'+body.join('')+'<div class="ob-err" role="alert" aria-live="assertive">'+(S.ob.err||'')+'</div>'+nav+'</div>';
+  [...host.querySelector('.ob-stage').children].forEach((el,i)=>{el.classList.add('ob-enter-item');el.style.setProperty('--ob-delay',Math.min(i,4)*32+'ms');});
+  if(last)animateObSummary(run);
 }
 /* ── PREDICTION ─────────────────────────────────────────────────────────
    Everything below is deliberately pessimistic. He asked for that in those
@@ -1743,26 +2051,111 @@ function rhrStatus(){
   else if(delta>=5){level='watch';msg='Up '+delta+' bpm on your baseline. Keep logging it, and hold the dose steady while it is climbing.';}
   return {ok:true,base,recent,delta,level,msg,n:s.length};
 }
-const RETATRUTIDE_DOSES=[
-  {date:'2026-08-24',mg:1},{date:'2026-08-31',mg:1},
-  {date:'2026-09-07',mg:1.5},{date:'2026-09-14',mg:1.5},
-  {date:'2026-09-21',mg:2},{date:'2026-09-28',mg:2}
-];
-function retatrutideDoseCard(){
+function migrateDoseSettings(cfg,freshInstall){
+  if(cfg.dose&&Array.isArray(cfg.dose.steps))return false;
+  const legacy=!freshInstall&&cfg.name==='Adnan'&&cfg.profile?.birthday==='2002-11-23';
+  cfg.dose={med:legacy?'Retatrutide':'GLP-1 medication',steps:legacy?[
+    {date:'2026-08-24',mg:1},{date:'2026-08-31',mg:1},
+    {date:'2026-09-07',mg:1.5},{date:'2026-09-14',mg:1.5},
+    {date:'2026-09-21',mg:2},{date:'2026-09-28',mg:2}
+  ]:[]};
+  if(legacy)cfg.glp1=true;
+  return true;
+}
+function sortedDoseSteps(steps){
+  return (Array.isArray(steps)?steps:[]).map(x=>({date:String(x.date||''),mg:Number(x.mg)})).sort((a,b)=>a.date.localeCompare(b.date));
+}
+/* Exact rows only. A missing date has no dose, even if it falls between or
+   after confirmed steps. */
+function doseForDate(date,steps){return sortedDoseSteps(steps).find(x=>x.date===date)||null;}
+function fmtMg(v){return Number(v).toLocaleString('en-CA',{maximumFractionDigits:3});}
+function doseSummary(today,steps){
+  const rows=sortedDoseSteps(steps);
+  const taken=rows.filter(x=>x.date<today);
+  const started=rows.filter(x=>x.date<=today);
+  const current=started.length?started[started.length-1]:null;
+  const first=started[0];
+  const weeks=first?Math.floor((new Date(today+'T12:00:00Z')-new Date(first.date+'T12:00:00Z'))/604800000)+1:0;
+  return {steps:rows,taken,current,weeks,totalMg:taken.reduce((n,x)=>n+x.mg,0)};
+}
+function doseScheduleCard(){
   const c=S.cfg;
-  if(c.name!=='Adnan'||c.profile?.birthday!=='2002-11-23')return'';
-  const next=RETATRUTIDE_DOSES.find(x=>x.date>=S.today);
-  const last=RETATRUTIDE_DOSES[RETATRUTIDE_DOSES.length-1];
-  const label=next?(next.date===S.today?'Today\'s confirmed dose':'Next confirmed dose'):'No dose confirmed';
-  const value=next?next.mg+' mg':'Not listed';
-  const detail=next?fmtDate(next.date):'Confirmed table ended '+fmtDate(last.date);
-  return `<div class="section-label">Retatrutide dose</div>
+  if(!c.glp1)return'';
+  const med=(c.dose?.med||'GLP-1 medication').trim()||'GLP-1 medication';
+  const sum=doseSummary(S.today,c.dose?.steps);
+  const next=sum.steps.find(x=>x.date>=S.today),last=sum.steps[sum.steps.length-1];
+  let label,value,detail;
+  if(!sum.steps.length){label='Confirmed schedule';value='None yet';detail='Add the first date and dose when you know it.';}
+  else if(next){label=next.date===S.today?'Today\'s confirmed dose':'Next confirmed dose';value=fmtMg(next.mg)+' mg';detail=fmtDate(next.date);}
+  else{label='Confirmed schedule ended';value='Add next step';detail='The last confirmed date was '+fmtDate(last.date)+'. No later dose is assumed.';}
+  const history=sum.steps.slice().reverse().map(x=>{
+    const taken=x.date<S.today;
+    return `<div class="dose-history-row"><div class="dose-history-date">${shortDate(x.date)}</div><div class="dose-history-mg">${fmtMg(x.mg)} mg</div><div class="dose-status ${taken?'taken':'scheduled'}">${taken?'Taken':'Scheduled'}</div></div>`;
+  }).join('');
+  return `<div class="section-label">Dose schedule</div>
     <div class="bstats-card"><div class="help-anchor">
-      ${helpBtn('retatrutideDose')}
-      <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px">${label}</div>
-      <div style="font-size:24px;font-weight:700;color:var(--green);margin-top:3px">${value}</div>
-      <div style="font-size:12px;color:var(--t2);margin-top:3px">${detail}</div>
+      ${helpBtn('doseSchedule')}
+      <div class="dose-card-head"><div class="dose-med">${esc(med)}</div><div style="font-size:12px;color:var(--t2);margin-top:3px">Your confirmed dates only</div></div>
+      <div class="dose-state"><div class="dose-state-label">${label}</div><div class="dose-state-value">${value}</div><div class="dose-state-copy">${detail}</div></div>
+      <div class="dose-stats">
+        <div class="dose-stat"><div class="dose-stat-label">Doses taken</div><div class="dose-stat-value">${sum.taken.length}</div></div>
+        <div class="dose-stat"><div class="dose-stat-label">Total taken</div><div class="dose-stat-value">${fmtMg(sum.totalMg)} mg</div></div>
+        <div class="dose-stat"><div class="dose-stat-label">Weeks on drug</div><div class="dose-stat-value">${sum.weeks}</div></div>
+        <div class="dose-stat"><div class="dose-stat-label">Current weekly dose</div><div class="dose-stat-value">${sum.current?fmtMg(sum.current.mg)+' mg':'Not set'}</div></div>
+      </div>
+      <div class="dose-history">${history||'<div style="padding:12px 0;font-size:12px;color:var(--t3)">No dose history yet.</div>'}</div>
+      <button class="dose-edit-btn" onclick="openDoseSheet()">Edit schedule</button>
     </div></div>`;
+}
+function isRealDate(v){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(v))return false;
+  const d=new Date(v+'T12:00:00Z');
+  return !isNaN(d)&&d.toISOString().slice(0,10)===v;
+}
+function openDoseSheet(){
+  const dose=S.cfg.dose||{med:'GLP-1 medication',steps:[]};
+  S.doseDraft={med:dose.med||'GLP-1 medication',steps:sortedDoseSteps(dose.steps).map(x=>({date:x.date,mg:String(x.mg)}))};
+  if(!S.doseDraft.steps.length)S.doseDraft.steps.push({date:'',mg:''});
+  renderDoseEditor();
+}
+function renderDoseEditor(error){
+  const d=S.doseDraft;
+  const rows=d.steps.map((x,i)=>`<div class="dose-edit-row">
+    <div class="inp-grp"><div class="inp-lbl">Date</div><input class="inp-field" type="date" value="${esc(x.date)}" aria-label="Dose ${i+1} date" oninput="doseDraftChange(${i},'date',this.value)"></div>
+    <div class="inp-grp"><div class="inp-lbl">mg</div><input class="inp-field" type="number" value="${esc(x.mg)}" min="0.001" max="50" step="0.1" inputmode="decimal" aria-label="Dose ${i+1} milligrams" oninput="doseDraftChange(${i},'mg',this.value)"></div>
+    <button class="dose-remove" aria-label="Delete dose row ${i+1}" onclick="doseDraftRemove(${i})">${svgIcon('trash',14,'currentColor')}</button>
+  </div>`).join('');
+  openSheet(`<div class="sheet-body">
+    ${error?`<div class="dose-error" role="alert">${esc(error)}</div>`:''}
+    <div class="inp-grp"><div class="inp-lbl">Medication name</div><input class="inp-field" type="text" value="${esc(d.med)}" autocorrect="off" oninput="S.doseDraft.med=this.value"></div>
+    <div class="inp-lbl" style="margin-top:18px">Confirmed dates and doses</div>
+    ${rows||'<div style="font-size:12px;color:var(--t3);margin-bottom:10px">No rows. Add one when the next dose is confirmed.</div>'}
+    <button class="sheet-btn sheet-btn-secondary" onclick="doseDraftAdd()">Add dose row</button>
+    <button class="sheet-btn sheet-btn-primary" onclick="saveDoseSchedule()">Save schedule</button>
+  </div>`,'Dose schedule');
+}
+function doseDraftChange(i,key,value){if(S.doseDraft?.steps[i])S.doseDraft.steps[i][key]=value;}
+function doseDraftAdd(){S.doseDraft.steps.push({date:'',mg:''});renderDoseEditor();}
+function doseDraftRemove(i){S.doseDraft.steps.splice(i,1);renderDoseEditor();}
+function saveDoseSchedule(){
+  const med=String(S.doseDraft?.med||'').trim();
+  if(!med)return renderDoseEditor('Enter the medication name.');
+  const steps=[],seen=new Set();
+  for(const row of S.doseDraft.steps){
+    const date=String(row.date||'').trim(),raw=String(row.mg||'').trim();
+    if(!date&&!raw)continue;
+    if(!isRealDate(date))return renderDoseEditor('Every dose needs a real date.');
+    const mg=Number(raw);
+    if(!Number.isFinite(mg)||mg<=0||mg>50)return renderDoseEditor('Each dose must be more than 0 mg and no more than 50 mg.');
+    if(seen.has(date))return renderDoseEditor('Two doses cannot use the same date.');
+    seen.add(date);steps.push({date,mg});
+  }
+  steps.sort((a,b)=>a.date.localeCompare(b.date));
+  S.cfg.dose={med,steps};
+  DB.saveSettings(S.cfg);
+  S.doseDraft=null;
+  closeSheet();renderScreen(3);syncPush();
+  toast('\u2705','Dose schedule saved',steps.length?steps.length+' confirmed dose'+(steps.length===1?'':'s'):'No dose dates are confirmed yet');
 }
 function openRhrSheet(){
   const cur=S.log.rhr||'';
@@ -1784,7 +2177,7 @@ function renderProgress(){
   const wh=DB.weights(),all=DB.allLogs(),c=S.cfg;
   const curW=wh.length>0?wh[wh.length-1].weight:c.body.currentWeight;
   const diff=(curW-c.body.startingWeight).toFixed(1);
-  const diffColor=diff<0?'var(--green)':diff>0?'var(--coral)':'var(--t3)';
+  const diffColor=diff<0?'var(--green-text)':diff>0?'var(--coral-text)':'var(--t3)';
   const dDisp=(toDisp(curW)-toDisp(c.body.startingWeight)).toFixed(1);const diffStr=dDisp<0?`↓ ${Math.abs(dDisp)} ${wUnit()}`:dDisp>0?`↑ ${dDisp} ${wUnit()}`:'No change';
   const gs=calcStreak(all,'gym'),ps=calcStreak(all,'protein'),ws=calcStreak(all,'water');
   document.getElementById('s3').innerHTML=`
@@ -1816,7 +2209,7 @@ function renderProgress(){
         const rateTxt=pr.rate!=null?((pr.rate<0?'down ':'up ')+Math.abs(toDisp(Math.abs(pr.rate))).toFixed(2)+' '+wUnit()+' a week'):'rate not established yet';
         return '<div class="flex-bc" style="margin-bottom:10px">'+
           '<div><div class="metric-title">Trend weight'+helpBtn('trendWeight')+'</div>'+
-          '<div style="font-size:24px;font-weight:700;color:var(--purple);margin-top:2px">'+(tw!=null?fmtW(tw)+' '+wUnit():'--')+'</div></div>'+
+          '<div style="font-size:24px;font-weight:700;color:var(--purple-text);margin-top:2px">'+(tw!=null?fmtW(tw)+' '+wUnit():'--')+'</div></div>'+
           '<div style="text-align:right;font-size:12px;color:var(--t2);max-width:52%">'+(tw!=null?'Smoothed over 10 days, so a salty meal does not read as a kilo gained.':'Log a few weigh-ins and this fills in.')+'</div>'+
         '</div>'+
         '<div class="help-anchor" style="padding-top:11px;border-top:1px solid var(--border);font-size:13px;line-height:1.55;color:var(--t2)">'+
@@ -1834,9 +2227,9 @@ function renderProgress(){
         if(!e.ok)return '<div style="font-size:13px;color:var(--t2);line-height:1.55">'+e.why+'<br><br>This works out what you actually burn from what you ate and what the scale did, which beats any formula. It needs the food log to be reasonably complete to mean anything.</div>';
         const gap=e.tdee-e.meanIntake;
         return '<div class="stats-grid">'+
-          '<div class="stat-box"><div class="stat-box-lbl">You burn</div><div class="stat-box-val" style="color:var(--orange)">'+e.tdee+'</div><div class="stat-box-unit">kcal/day</div></div>'+
-          '<div class="stat-box"><div class="stat-box-lbl">You ate</div><div class="stat-box-val" style="color:var(--blue-light)">'+e.meanIntake+'</div><div class="stat-box-unit">kcal/day</div></div>'+
-          '<div class="stat-box"><div class="stat-box-lbl">'+(gap>0?'Deficit':'Surplus')+'</div><div class="stat-box-val" style="color:'+(gap>0?'var(--green)':'var(--coral)')+'">'+Math.abs(gap)+'</div><div class="stat-box-unit">kcal/day</div></div>'+
+          '<div class="stat-box"><div class="stat-box-lbl">You burn</div><div class="stat-box-val" style="color:var(--orange-text)">'+e.tdee+'</div><div class="stat-box-unit">kcal/day</div></div>'+
+          '<div class="stat-box"><div class="stat-box-lbl">You ate</div><div class="stat-box-val" style="color:var(--blue-light-text)">'+e.meanIntake+'</div><div class="stat-box-unit">kcal/day</div></div>'+
+          '<div class="stat-box"><div class="stat-box-lbl">'+(gap>0?'Deficit':'Surplus')+'</div><div class="stat-box-val" style="color:'+(gap>0?'var(--green-text)':'var(--coral-text)')+'">'+Math.abs(gap)+'</div><div class="stat-box-unit">kcal/day</div></div>'+
         '</div>'+
         '<div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--border);font-size:12px;color:var(--t3);line-height:1.5">From '+e.logged+' logged days out of the last '+e.span+'. On this drug the risk is eating too little, not too much: below '+(S.cfg.targets.floor||S.cfg.targets.calories-200)+' kcal you start paying for it in muscle.</div>';
       })()}
@@ -1845,7 +2238,7 @@ function renderProgress(){
     <div class="bstats-card">
       ${(()=>{
         const r=rhrStatus();
-        const col=r.ok?(r.level==='high'?'var(--coral)':r.level==='watch'?'var(--orange)':'var(--green)'):'var(--t3)';
+        const col=r.ok?(r.level==='high'?'var(--coral-text)':r.level==='watch'?'var(--orange-text)':'var(--green-text)'):'var(--t3)';
         return '<div class="flex-bc">'+
           '<div><div style="font-size:24px;font-weight:700;color:'+col+'">'+(r.ok?r.recent+' bpm':(S.log.rhr?S.log.rhr+' bpm':'--'))+'</div>'+
           '<div style="font-size:12px;color:var(--t2);margin-top:3px">'+(r.ok?'Baseline '+r.base+' bpm':(r.n||0)+' of 3 readings needed')+'</div></div>'+
@@ -1854,21 +2247,21 @@ function renderProgress(){
         '<div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);line-height:1.5">'+(r.ok?r.msg:'Retatrutide can lift resting heart rate through its glucagon arm, more than the other drugs in this class do. Your dose is well below the trial doses, so a rise is not expected. Logging it anyway is the cheapest early warning you have.')+'</div>';
       })()}
     </div>
-    ${retatrutideDoseCard()}
+    ${doseScheduleCard()}
     <div class="section-label">Streaks</div>
     <div class="streak-row">
-      <div class="streak-card"><div style="font-size:22px">${gs>0?'🔥':'🏋️'}</div><div class="streak-num" style="color:${gs>0?'var(--orange)':'var(--t3)'}">${gs}</div><div class="streak-lbl">Gym days</div></div>
-      <div class="streak-card"><div style="font-size:22px">${ps>0?'🔥':'🥩'}</div><div class="streak-num" style="color:${ps>0?'var(--coral)':'var(--t3)'}">${ps}</div><div class="streak-lbl">Protein</div></div>
-      <div class="streak-card"><div style="font-size:22px">${ws>0?'🔥':'💧'}</div><div class="streak-num" style="color:${ws>0?'var(--blue-light)':'var(--t3)'}">${ws}</div><div class="streak-lbl">Hydration</div></div>
+      <div class="streak-card"><div style="font-size:22px">${gs>0?'🔥':'🏋️'}</div><div class="streak-num" style="color:${gs>0?'var(--orange-text)':'var(--t3)'}">${gs}</div><div class="streak-lbl">Gym days</div></div>
+      <div class="streak-card"><div style="font-size:22px">${ps>0?'🔥':'🥩'}</div><div class="streak-num" style="color:${ps>0?'var(--coral-text)':'var(--t3)'}">${ps}</div><div class="streak-lbl">Protein</div></div>
+      <div class="streak-card"><div style="font-size:22px">${ws>0?'🔥':'💧'}</div><div class="streak-num" style="color:${ws>0?'var(--blue-light-text)':'var(--t3)'}">${ws}</div><div class="streak-lbl">Hydration</div></div>
     </div>
     <div class="section-label">Activity calendar</div>
     <div class="cal-card" id="cal-card">${buildCal()}</div>
     <div class="section-label">Body composition</div>
     <div class="bstats-card">
       <div class="stats-grid">
-        <div class="stat-box"><div class="stat-box-lbl">Weight now</div><div class="stat-box-val" style="color:var(--purple)">${fmtW(curW)}</div><div class="stat-box-unit">${wUnit()}</div></div>
-        <div class="stat-box"><div class="stat-box-lbl">Body fat</div><div class="stat-box-val" style="color:var(--coral)">${c.body.bodyFat}</div><div class="stat-box-unit">%</div></div>
-        <div class="stat-box"><div class="stat-box-lbl">To go</div><div class="stat-box-val" style="color:var(--green)">${Math.abs(toDisp(curW)-toDisp(c.body.targetWeight)).toFixed(1)}</div><div class="stat-box-unit">${wUnit()}</div></div>
+        <div class="stat-box"><div class="stat-box-lbl">Weight now</div><div class="stat-box-val" style="color:var(--purple-text)">${fmtW(curW)}</div><div class="stat-box-unit">${wUnit()}</div></div>
+        <div class="stat-box"><div class="stat-box-lbl">Body fat</div><div class="stat-box-val" style="color:var(--coral-text)">${c.body.bodyFat}</div><div class="stat-box-unit">%</div></div>
+        <div class="stat-box"><div class="stat-box-lbl">To go</div><div class="stat-box-val" style="color:var(--green-text)">${Math.abs(toDisp(curW)-toDisp(c.body.targetWeight)).toFixed(1)}</div><div class="stat-box-unit">${wUnit()}</div></div>
       </div>
       <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
         ${[['Starting weight',fmtWU(c.body.startingWeight)],['Target weight',fmtWU(c.body.targetWeight)],['Starting body fat',c.body.startBodyFat+'%'],['Lean mass',fmtWU(c.body.muscleMass)]].map(([k,v])=>`<div class="flex-bc" style="margin-bottom:8px"><div style="font-size:13px;color:var(--t2)">${k}</div><div style="font-size:13px;font-weight:600;color:var(--t2)">${v}</div></div>`).join('')}
@@ -1880,10 +2273,9 @@ function renderProgress(){
   setTimeout(()=>buildChart(),100);
 }
 function calcStreak(all,field){
-  let s=0;const t=new Date();
+  let s=0;
   for(let i=0;i<90;i++){
-    const d=new Date(t);d.setDate(d.getDate()-i);
-    const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const k=shiftDate(S.today,-i);
     if(all[k]?.checkins?.[field])s++;else break;
   }
   return s;
@@ -1919,19 +2311,19 @@ function showDay(ds){
   const tCal=meals.reduce((a,m)=>a+(m.cal||0),0),tProt=meals.reduce((a,m)=>a+(m.protein||0),0);
   openSheet(`<div style="padding:0 20px 20px">
     <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px">
-      ${log.checkins?.gym?'<div style="background:var(--orange-dim);color:var(--orange);border-radius:10px;padding:5px 12px;font-size:12px;font-weight:600;border:1px solid var(--orange-border)">🏋️ Trained</div>':''}
-      ${log.checkins?.protein?'<div style="background:var(--coral-dim);color:var(--coral);border-radius:10px;padding:5px 12px;font-size:12px;font-weight:600;border:1px solid var(--coral-border)">🥩 Protein ✓</div>':''}
-      ${log.checkins?.water?'<div style="background:var(--blue-dim);color:var(--blue-light);border-radius:10px;padding:5px 12px;font-size:12px;font-weight:600;border:1px solid var(--blue-border)">💧 Water ✓</div>':''}
+      ${log.checkins?.gym?'<div style="background:var(--orange-dim);color:var(--orange-text);border-radius:10px;padding:5px 12px;font-size:12px;font-weight:600;border:1px solid var(--orange-border)">🏋️ Trained</div>':''}
+      ${log.checkins?.protein?'<div style="background:var(--coral-dim);color:var(--coral-text);border-radius:10px;padding:5px 12px;font-size:12px;font-weight:600;border:1px solid var(--coral-border)">🥩 Protein ✓</div>':''}
+      ${log.checkins?.water?'<div style="background:var(--blue-dim);color:var(--blue-light-text);border-radius:10px;padding:5px 12px;font-size:12px;font-weight:600;border:1px solid var(--blue-border)">💧 Water ✓</div>':''}
     </div>
     ${log.workout?.completed?`<div style="background:var(--s2);border-radius:var(--r-md);padding:12px;margin-bottom:10px"><div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Workout</div><div style="font-size:15px;font-weight:600">${S.workout.days[log.workout.dayIndex]?.name||'Workout'}, ${S.workout.days[log.workout.dayIndex]?.label||''}</div></div>`:''}
     ${tCal>0?`<div style="background:var(--s2);border-radius:var(--r-md);padding:12px;margin-bottom:10px">
       <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Nutrition</div>
-      <div class="flex-bc" style="margin-bottom:6px"><span style="font-size:13px;color:var(--t2)">Calories</span><span style="font-size:14px;font-weight:700;color:var(--orange)">${Math.round(tCal)} kcal</span></div>
-      <div class="flex-bc" style="margin-bottom:6px"><span style="font-size:13px;color:var(--t2)">Protein</span><span style="font-size:14px;font-weight:700;color:var(--coral)">${Math.round(tProt)}g</span></div>
-      <div class="flex-bc"><span style="font-size:13px;color:var(--t2)">Water</span><span style="font-size:14px;font-weight:700;color:var(--blue-light)">${((log.nutrition?.water||0)/1000).toFixed(1)}L</span></div>
+      <div class="flex-bc" style="margin-bottom:6px"><span style="font-size:13px;color:var(--t2)">Calories</span><span style="font-size:14px;font-weight:700;color:var(--orange-text)">${Math.round(tCal)} kcal</span></div>
+      <div class="flex-bc" style="margin-bottom:6px"><span style="font-size:13px;color:var(--t2)">Protein</span><span style="font-size:14px;font-weight:700;color:var(--coral-text)">${Math.round(tProt)}g</span></div>
+      <div class="flex-bc"><span style="font-size:13px;color:var(--t2)">Water</span><span style="font-size:14px;font-weight:700;color:var(--blue-light-text)">${fmtVolBig(log.nutrition?.water||0)}</span></div>
     </div>`:''}
-    ${log.weight?`<div class="flex-bc" style="background:var(--s2);border-radius:var(--r-md);padding:12px;margin-bottom:10px"><span style="font-size:13px;color:var(--t2)">Weight</span><span style="font-size:16px;font-weight:800;color:var(--purple)">${fmtWU(log.weight)}</span></div>`:''}
-    ${log.steps>0?`<div class="flex-bc" style="background:var(--s2);border-radius:var(--r-md);padding:12px"><span style="font-size:13px;color:var(--t2)">Steps</span><span style="font-size:16px;font-weight:800;color:var(--green)">${log.steps.toLocaleString()}</span></div>`:''}
+    ${log.weight?`<div class="flex-bc" style="background:var(--s2);border-radius:var(--r-md);padding:12px;margin-bottom:10px"><span style="font-size:13px;color:var(--t2)">Weight</span><span style="font-size:16px;font-weight:800;color:var(--purple-text)">${fmtWU(log.weight)}</span></div>`:''}
+    ${log.steps>0?`<div class="flex-bc" style="background:var(--s2);border-radius:var(--r-md);padding:12px"><span style="font-size:13px;color:var(--t2)">Steps</span><span style="font-size:16px;font-weight:800;color:var(--green-text)">${log.steps.toLocaleString()}</span></div>`:''}
   </div>`,dl);
 }
 function setRange(r){
@@ -1949,11 +2341,20 @@ function buildChart(){
   const filtered=wh.filter(w=>new Date(w.date+'T12:00:00')>=cut);
   if(filtered.length===0)filtered.push({date:S.today,weight:S.cfg.body.currentWeight});
   const labels=filtered.map(w=>{const d=new Date(w.date+'T12:00:00');return `${d.getMonth()+1}/${d.getDate()}`;});
-  const data=filtered.map(w=>w.weight);
+  /* toDisp(), not the raw stored kilograms: the chart used to plot kg no
+     matter what unit was selected, the one screen the lb toggle never
+     reached. */
+  const data=filtered.map(w=>toDisp(w.weight));
+  /* Read from the live CSS custom properties rather than hardcoded hex, so
+     the chart follows the active theme instead of staying dark-on-dark
+     colours when the page around it has gone light. */
+  const cs=getComputedStyle(document.documentElement),v=n=>cs.getPropertyValue(n).trim();
+  const purple=v('--purple-text'),green=v('--green-text'),surface=v('--s2'),
+        text=v('--t1'),tipBorder=v('--border2'),tick=v('--t3'),grid=v('--border');
   S.wtChart=new Chart(canvas,{type:'line',data:{labels,datasets:[
-    {label:'Weight',data,borderColor:'#BF5AF2',backgroundColor:'rgba(191,90,242,0.07)',borderWidth:2.5,pointBackgroundColor:'#BF5AF2',pointRadius:4,pointHoverRadius:6,fill:true,tension:0.4},
-    {label:'Target',data:Array(labels.length).fill(S.cfg.body.targetWeight),borderColor:'rgba(48,209,88,0.45)',borderWidth:1.5,borderDash:[5,5],pointRadius:0,fill:false},
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1C1C1E',titleColor:'#BF5AF2',bodyColor:'#fff',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,padding:10}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#636366',font:{size:10},maxTicksLimit:6}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#636366',font:{size:10}}}},animation:{duration:800,easing:'easeOutQuart'}}});
+    {label:'Weight',data,borderColor:purple,backgroundColor:purple+'12',borderWidth:2.5,pointBackgroundColor:purple,pointRadius:4,pointHoverRadius:6,fill:true,tension:0.4},
+    {label:'Target',data:Array(labels.length).fill(toDisp(S.cfg.body.targetWeight)),borderColor:green+'73',borderWidth:1.5,borderDash:[5,5],pointRadius:0,fill:false},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:surface,titleColor:purple,bodyColor:text,borderColor:tipBorder,borderWidth:1,padding:10}},scales:{x:{grid:{color:grid},ticks:{color:tick,font:{size:10},maxTicksLimit:6}},y:{grid:{color:grid},ticks:{color:tick,font:{size:10}}}},animation:{duration:800,easing:'easeOutQuart'}}});
 }
 /* ── SETTINGS SCREEN ────────────────────────── */
 function renderSettings(){
@@ -1989,9 +2390,9 @@ function renderSettings(){
           <div class="sr-lbl">Protein</div><div class="sr-val">${c.targets.protein}g</div>
           <div class="sr-arrow">${svgIcon('chevR',14,'var(--t4)')}</div>
         </div>
-        <div class="settings-row" onclick="openTargetSheet('water','Water goal (L)',${c.targets.water/1000})">
+        <div class="settings-row" onclick="openTargetSheet('water','Water goal (${volBigUnit()})',${volUnit()==='floz'?Math.round(volDisp(c.targets.water)):c.targets.water/1000})">
           <div class="sr-icon" style="background:var(--blue-dim)">${svgIcon('drop',18,'var(--blue-light)')}</div>
-          <div class="sr-lbl">Water</div><div class="sr-val">${c.targets.water/1000}L</div>
+          <div class="sr-lbl">Water</div><div class="sr-val">${fmtVolBig(c.targets.water)}</div>
           <div class="sr-arrow">${svgIcon('chevR',14,'var(--t4)')}</div>
         </div>
         <div class="settings-row" onclick="openTargetSheet('steps','Step goal',(${c.targets.steps||10000}))">
@@ -2005,10 +2406,10 @@ function renderSettings(){
       <div class="section-label">Notifications</div>
       ${pushBanner()}
       <div class="settings-grp">
-        ${notifRow('water','Water reminders','Five times through the day','var(--blue)')}
-        ${notifRow('gym','Gym prompts','Twice on training days','var(--orange)')}
-        ${notifRow('weight','Monday weigh-in','Monday 8:00 AM','var(--purple)')}
-        ${notifRow('dose','Dose reminders','Sunday night and Monday morning','var(--green)')}
+        ${notifRow('water','Water reminders','Five times through the day')}
+        ${notifRow('gym','Gym prompts','Twice on training days')}
+        ${notifRow('weight','Monday weigh-in','Monday 8:00 AM')}
+        ${notifRow('dose','Dose reminders','Sunday night and Monday morning')}
       </div>
       <div class="settings-grp" style="margin-top:10px">
         <div class="settings-row" onclick="testPush()">
@@ -2018,6 +2419,56 @@ function renderSettings(){
       </div>
     </div>
     <div class="settings-sec">
+      <div class="section-label">Appearance</div>
+      <div class="settings-grp">
+        <div class="settings-row" style="cursor:default;border-bottom:none">
+          <div class="sr-icon" style="background:var(--orange-dim)">${svgIcon('sun',18,'var(--orange)')}</div>
+          <div style="flex:1">
+            <div class="sr-lbl" style="margin-bottom:8px">Theme</div>
+            <div style="display:flex;gap:6px">
+              ${[['dark','Dark'],['light','Light'],['system','System']].map(([v,l])=>{const on=(c.theme||'system')===v;return `<button onclick="setTheme('${v}')" style="flex:1;padding:8px 0;border-radius:9px;font-size:12px;font-weight:700;background:${on?'var(--orange)':'var(--s2)'};color:${on?'#000':'var(--t2)'}">${l}</button>`;}).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="settings-sec">
+      <div class="section-label">Units</div>
+      <div class="settings-grp">
+        <div class="settings-row">
+          <div class="sr-icon" style="background:var(--orange-dim)">${svgIcon('activity',18,'var(--orange)')}</div>
+          <div class="sr-lbl">Metric / Imperial</div>
+          <div style="display:flex;gap:6px">
+            ${(()=>{const metric=wUnit()==='kg'&&htUnit()==='cm'&&volUnit()==='ml',imperial=wUnit()==='lb'&&htUnit()==='in'&&volUnit()==='floz';
+              return `<button onclick="setUnitSystem('metric')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${metric?'var(--orange)':'var(--s2)'};color:${metric?'#000':'var(--t2)'}">Metric</button>`+
+              `<button onclick="setUnitSystem('imperial')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${imperial?'var(--orange)':'var(--s2)'};color:${imperial?'#000':'var(--t2)'}">Imperial</button>`;})()}
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="sr-icon" style="background:var(--purple-dim)">${svgIcon('scale',18,'var(--purple)')}</div>
+          <div class="sr-lbl">Weight</div>
+          <div style="display:flex;gap:6px">
+            <button onclick="setUnits('kg')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${wUnit()==='kg'?'var(--purple)':'var(--s2)'};color:${wUnit()==='kg'?'#fff':'var(--t2)'}">kg</button>
+            <button onclick="setUnits('lb')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${wUnit()==='lb'?'var(--purple)':'var(--s2)'};color:${wUnit()==='lb'?'#fff':'var(--t2)'}">lb</button>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="sr-icon" style="background:var(--coral-dim)">${svgIcon('activity',18,'var(--coral)')}</div>
+          <div class="sr-lbl">Height</div>
+          <div style="display:flex;gap:6px">
+            <button onclick="setHtUnit('cm')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${htUnit()==='cm'?'var(--coral)':'var(--s2)'};color:${htUnit()==='cm'?'#000':'var(--t2)'}">cm</button>
+            <button onclick="setHtUnit('in')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${htUnit()==='in'?'var(--coral)':'var(--s2)'};color:${htUnit()==='in'?'#000':'var(--t2)'}">in</button>
+          </div>
+        </div>
+        <div class="settings-row" style="border-bottom:none">
+          <div class="sr-icon" style="background:var(--blue-dim)">${svgIcon('drop',18,'var(--blue-light)')}</div>
+          <div class="sr-lbl">Volume</div>
+          <div style="display:flex;gap:6px">
+            <button onclick="setVolUnit('ml')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${volUnit()==='ml'?'var(--blue)':'var(--s2)'};color:${volUnit()==='ml'?'#fff':'var(--t2)'}">ml</button>
+            <button onclick="setVolUnit('floz')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${volUnit()==='floz'?'var(--blue)':'var(--s2)'};color:${volUnit()==='floz'?'#fff':'var(--t2)'}">fl oz</button>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="settings-sec">
       <div class="section-label">Data</div>
@@ -2028,8 +2479,8 @@ function renderSettings(){
           <div class="sr-arrow">${svgIcon('chevR',14,'var(--t4)')}</div>
         </div>
         <div class="settings-row" onclick="confirmClear()">
-          <div class="sr-icon" style="background:rgba(255,69,58,0.12)">${svgIcon('trash',18,'var(--red)')}</div>
-          <div class="sr-lbl" style="color:var(--red)">Clear all data</div>
+          <div class="sr-icon" style="background:var(--red-dim)">${svgIcon('trash',18,'var(--red-text)')}</div>
+          <div class="sr-lbl" style="color:var(--red-text)">Clear all data</div>
           <div class="sr-arrow">${svgIcon('chevR',14,'var(--t4)')}</div>
         </div>
       </div>
@@ -2040,9 +2491,9 @@ function renderSettings(){
         <div class="settings-row" style="cursor:default;align-items:flex-start">
           <div class="sr-icon" style="background:var(--orange-dim)">${svgIcon('activity',18,'var(--orange)')}</div>
           <div style="flex:1;min-width:0">
-            <div class="sr-lbl">FitTrack™</div>
+            <div class="sr-lbl">FitTrack</div>
             <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-top:3px">Version ${APP_VERSION}<br>Built by Adnan Shakib<br>© 2026 Adnan Shakib. All rights reserved.</div>
-            <a href="https://github.com/addyrallxx/fittrack" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:var(--blue);text-decoration:underline;text-underline-offset:3px">View FitTrack on GitHub</a>
+            <a href="https://github.com/addyrallxx/fittrack" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:var(--blue-text);text-decoration:underline;text-underline-offset:3px">View FitTrack on GitHub</a>
             <div style="font-size:11px;color:var(--t3);line-height:1.6;margin-top:10px">Chart.js, MIT License<br>Open Food Facts API, ODbL</div>
           </div>
         </div>
@@ -2051,14 +2502,15 @@ function renderSettings(){
     <div style="height:16px"></div>
   </div>`;
 }
-function notifRow(key,label,time,color){
+function notifRow(key,label,time){
   const on=S.cfg.notifications?.[key]?.enabled!==false;
   /* A preference switched on while nothing is subscribed is not a reminder
      that will arrive. Showing it as on is how someone ends up believing the
      app is nudging them for a week while it sends nothing at all. */
   const live=S.pushStatus==='live';
+  const [color,dim]={water:['var(--blue-text)','var(--blue-dim)'],gym:['var(--orange-text)','var(--orange-dim)'],weight:['var(--purple-text)','var(--purple-dim)'],dose:['var(--green-text)','var(--green-dim)']}[key]||['var(--t2)','var(--s2)'];
   return `<div class="settings-row"${live?'':' style="opacity:.55"'}>
-    <div class="sr-icon" style="background:${color}22">${svgIcon('bell',18,color)}</div>
+    <div class="sr-icon" style="background:${dim}">${svgIcon('bell',18,color)}</div>
     <div><div class="sr-lbl">${label}</div><div style="font-size:11px;color:var(--t3)">${live?time:'Not delivering yet'}</div></div>
     <div class="toggle${on&&live?' on':''}" role="switch" aria-checked="${on&&live}" aria-label="${esc(label)}" onclick="toggleNotif('${key}')"><div class="toggle-knob"></div></div>
   </div>`;
@@ -2076,7 +2528,7 @@ function pushBanner(){
   }[st]||['Reminders are not switched on yet',''];
   return `<div class="settings-grp" style="margin-bottom:10px">
     <div class="settings-row" onclick="openNotifInfo()">
-      <div class="sr-icon" style="background:var(--orange)22">${svgIcon('bell',18,'var(--orange)')}</div>
+      <div class="sr-icon" style="background:var(--orange-dim)">${svgIcon('bell',18,'var(--orange-text)')}</div>
       <div><div class="sr-lbl">${msg[0]}</div><div style="font-size:11px;color:var(--t2);line-height:1.45">${msg[1]}</div></div>
       <div class="sr-arrow">${svgIcon('chevR',14,'var(--t3)')}</div>
     </div>
@@ -2133,7 +2585,7 @@ function openWeightSheet(){
   openSheet(`<div class="sheet-body">
     <div class="inp-grp">
       <div class="inp-lbl">Weight (${wUnit()})</div>
-      <input class="inp-field" id="wi" type="number" value="${fmtW(cur)}" inputmode="decimal" step="0.1" style="font-size:28px;font-weight:800;text-align:center;padding:20px;color:var(--purple)">
+      <input class="inp-field" id="wi" type="number" value="${fmtW(cur)}" inputmode="decimal" step="0.1" style="font-size:28px;font-weight:800;text-align:center;padding:20px;color:var(--purple-text)">
     </div>
     <div style="display:flex;justify-content:center;gap:12px;margin-bottom:16px">
       <button onclick="adjWt(-0.5)" style="width:46px;height:46px;background:var(--s2);border-radius:50%;font-size:20px;color:var(--t2);display:flex;align-items:center;justify-content:center">−</button>
@@ -2166,7 +2618,7 @@ function openStepsSheet(date){
     </div>
     <div class="inp-grp">
       <div class="inp-lbl">Steps on ${d===S.today?'today':shortDate(d)}</div>
-      <input class="inp-field" id="si" type="number" value="${cur}" inputmode="numeric" style="font-size:28px;font-weight:800;text-align:center;padding:20px;color:var(--green)">
+      <input class="inp-field" id="si" type="number" value="${cur}" inputmode="numeric" style="font-size:28px;font-weight:800;text-align:center;padding:20px;color:var(--green-text)">
     </div>
     <button class="sheet-btn" style="background:var(--green);color:#fff" onclick="saveSteps()">Save steps</button>
     <div class="inp-lbl" style="margin-top:20px;margin-bottom:8px">Catch up on the last 7 days</div>
@@ -2176,7 +2628,7 @@ function openStepsSheet(date){
         const on=x===d;
         return `<button onclick="openStepsSheet('${x}')" style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-radius:10px;background:${on?'var(--green-dim)':'var(--s2)'};border:1px solid ${on?'var(--green-border)':'transparent'};width:100%">
           <span style="font-size:13px;color:var(--t2);font-weight:600">${x===S.today?'Today':shortDate(x)}</span>
-          <span style="font-size:13px;font-weight:800;color:${st?'var(--green)':'var(--t3)'}">${st?st.toLocaleString():'not logged'}</span>
+          <span style="font-size:13px;font-weight:800;color:${st?'var(--green-text)':'var(--t3)'}">${st?st.toLocaleString():'not logged'}</span>
         </button>`;}).join('')}
     </div>
   </div>`,'Log steps');
@@ -2189,17 +2641,17 @@ function saveSteps(){
   if(S.screen===0)renderScreen(0);if(S.screen===3)renderScreen(3);
 }
 function openWaterSheet(){
-  const w=S.log.nutrition.water||0,wg=S.cfg.targets.water||4000;
+  const w=S.log.nutrition.water||0,wg=S.cfg.targets.water||4000,vu=volUnit()==='floz'?'fl oz':'ml';
   openSheet(`<div class="sheet-body">
-    <div style="font-size:22px;font-weight:800;color:var(--blue-light);text-align:center;margin-bottom:16px">${(w/1000).toFixed(1)}L / ${(wg/1000).toFixed(1)}L</div>
+    <div style="font-size:22px;font-weight:800;color:var(--blue-light-text);text-align:center;margin-bottom:16px">${fmtVolBig(w)} / ${fmtVolBig(wg)}</div>
     <div class="water-btns" style="margin-bottom:16px">
-      <button class="water-btn" onclick="addWater(250);closeSheet()">+250ml</button>
-      <button class="water-btn" onclick="addWater(500);closeSheet()">+500ml</button>
-      <button class="water-btn" onclick="addWater(750);closeSheet()">+750ml</button>
-      <button class="water-btn" onclick="addWater(1000);closeSheet()">+1L</button>
+      <button class="water-btn" onclick="addWater(250);closeSheet()">+${fmtVolInc(250)}</button>
+      <button class="water-btn" onclick="addWater(500);closeSheet()">+${fmtVolInc(500)}</button>
+      <button class="water-btn" onclick="addWater(750);closeSheet()">+${fmtVolInc(750)}</button>
+      <button class="water-btn" onclick="addWater(1000);closeSheet()">+${fmtVolInc(1000)}</button>
     </div>
-    <div class="inp-grp"><div class="inp-lbl">Custom amount (ml)</div><input class="inp-field" id="cwi" type="number" placeholder="e.g. 350" inputmode="numeric"></div>
-    <button class="sheet-btn" style="background:var(--blue);color:#fff" onclick="addWater(parseInt(document.getElementById('cwi').value)||0);closeSheet()">Add water</button>
+    <div class="inp-grp"><div class="inp-lbl">Custom amount (${vu})</div><input class="inp-field" id="cwi" type="number" placeholder="e.g. ${volUnit()==='floz'?'12':'350'}" inputmode="numeric"></div>
+    <button class="sheet-btn" style="background:var(--blue);color:#fff" onclick="addWater(Math.round(volFrom(parseFloat(document.getElementById('cwi').value)||0)));closeSheet()">Add water</button>
   </div>`,'Add water');
 }
 function openMealSheet(){
@@ -2251,7 +2703,7 @@ function openTargetSheet(field,label,current){
 }
 function saveTarget(field){
   const v=parseFloat(document.getElementById('ti')?.value);if(isNaN(v))return;
-  if(field==='water')S.cfg.targets.water=Math.round(v*1000);
+  if(field==='water')S.cfg.targets.water=volUnit()==='floz'?Math.round(volFrom(v)):Math.round(v*1000);
   else S.cfg.targets[field]=field==='steps'?Math.round(v):v;
   DB.saveSettings(S.cfg);closeSheet();renderScreen(4);
   toast('✅',`${field} target updated`,'');
@@ -2267,6 +2719,12 @@ function openBodySheet(){
       <div class="inp-grp"><div class="inp-lbl">Body fat %</div><input class="inp-field" id="bbf" type="number" value="${b.bodyFat}" inputmode="decimal" step="0.1"></div>
       <div class="inp-grp"><div class="inp-lbl">Lean mass (${wUnit()})</div><input class="inp-field" id="bmm" type="number" value="${fmtW(b.muscleMass)}" inputmode="decimal" step="0.5"></div>
     </div>
+    <div class="inp-row">
+      ${htUnit()==='cm'?
+        `<div class="inp-grp"><div class="inp-lbl">Height (cm)</div><input class="inp-field" id="bh" type="number" value="${htDisp(S.cfg.profile.heightCm||0).toFixed(1)}" inputmode="decimal" step="0.5"></div>`
+        :`<div class="inp-grp"><div class="inp-lbl">Height (ft)</div><input class="inp-field" id="bhf" type="number" value="${Math.floor(htDisp(S.cfg.profile.heightCm||0)/12)}" inputmode="numeric" step="1"></div>
+        <div class="inp-grp"><div class="inp-lbl">Height (in)</div><input class="inp-field" id="bhi" type="number" value="${(htDisp(S.cfg.profile.heightCm||0)%12).toFixed(1)}" inputmode="decimal" step="0.5"></div>`}
+    </div>
     <button class="sheet-btn sheet-btn-primary" onclick="saveBody()">Save stats</button>
   </div>`,'Body stats');
 }
@@ -2278,6 +2736,13 @@ function saveBody(){
   S.cfg.body.bodyFat=parseFloat(document.getElementById('bbf')?.value)||S.cfg.body.bodyFat;
   const _mm=parseFloat(document.getElementById('bmm')?.value);
   S.cfg.body.muscleMass=isNaN(_mm)?S.cfg.body.muscleMass:fromDisp(_mm);
+  if(htUnit()==='cm'){
+    const _h=parseFloat(document.getElementById('bh')?.value);
+    if(!isNaN(_h))S.cfg.profile.heightCm=htFrom(_h);
+  }else{
+    const _ft=parseFloat(document.getElementById('bhf')?.value),_in=parseFloat(document.getElementById('bhi')?.value);
+    if(!isNaN(_ft)||!isNaN(_in))S.cfg.profile.heightCm=htFrom((isNaN(_ft)?0:_ft)*12+(isNaN(_in)?0:_in));
+  }
   DB.saveSettings(S.cfg);DB.addWeight(S.today,S.cfg.body.currentWeight);
   closeSheet();toast('✅','Body stats updated','');
   if(S.screen===3)renderScreen(3);if(S.screen===0)renderScreen(0);
@@ -2362,10 +2827,13 @@ async function promptInstall(){
 async function sendSub(sub){
   if(!PUSH_API||!sub)return false;
   try{
+    const cfg={waterGoal:S.cfg.targets&&S.cfg.targets.water||3500,gymTarget:S.cfg.gymTarget??3,dose:null};
+    if(S.cfg.dose&&Array.isArray(S.cfg.dose.steps)&&S.cfg.dose.steps.length){
+      cfg.dose={med:S.cfg.dose.med||'GLP-1 medication',steps:S.cfg.dose.steps};
+    }
     const r=await fetch(PUSH_API+'/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({id:deviceId(),tz:tzName(),sub,prefs:S.cfg.notifications||{},
-        cfg:{waterGoal:S.cfg.targets&&S.cfg.targets.water||3500,gymTarget:S.cfg.gymTarget??3,
-          dose:null}})});
+        cfg})});
     return r.ok;
   }catch(e){return false;}
 }
@@ -2545,7 +3013,7 @@ async function reqNotif(){
     /* Fire one immediately through the service worker. It proves the whole
        pipeline end to end, and it is the difference between "it says on" and
        "I have seen one arrive". */
-    reg.showNotification('FitTrack is set up',{body:'Your reminders will look like this.',icon:'icon-192.png',badge:'icon-192.png',tag:'ft-setup'});
+    reg.showNotification('FitTrack is set up',{body:'Your reminders will look like this.',badge:'badge-96.png',tag:'ft-setup'});
     refreshPushStatus();
   }catch(e){
     closeSheet();toast('❌','Could not subscribe',String(e&&e.message||e).slice(0,64));
@@ -2648,11 +3116,21 @@ function init(){
   if(!S.cfg.notifications)S.cfg.notifications=DEF_SETTINGS.notifications;
   if(!S.cfg.profile)S.cfg.profile=DEF_SETTINGS.profile;
   if(!S.cfg.units)S.cfg.units=DEF_SETTINGS.units;
+  if(!S.cfg.unitHeight)S.cfg.unitHeight=DEF_SETTINGS.unitHeight;
+  if(!S.cfg.unitVol)S.cfg.unitVol=DEF_SETTINGS.unitVol;
+  if(!S.cfg.theme)S.cfg.theme=DEF_SETTINGS.theme;
   if(S.cfg.proteinPowder==null)S.cfg.proteinPowder=DEF_SETTINGS.proteinPowder;
   if(!S.cfg.programStart)S.cfg.programStart=DEF_SETTINGS.programStart;
   if(S.cfg.gymTarget==null)S.cfg.gymTarget=DEF_SETTINGS.gymTarget;
   ['water','gym','weight','dose'].forEach(k=>{if(!S.cfg.notifications[k])S.cfg.notifications[k]={enabled:true};});
   ['carbs','fat','creatine'].forEach(k=>{if(S.cfg.targets[k]==null)S.cfg.targets[k]=DEF_SETTINGS.targets[k];});
+  if(migrateDoseSettings(S.cfg,firstRun))DB.saveSettings(S.cfg);
+  applyTheme();
+  /* "system" tracks the OS live: this only re-resolves when the pref is
+     actually "system", an explicit dark/light choice ignores the OS. */
+  matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{
+    if((S.cfg.theme||'system')==='system')applyTheme();
+  });
   buildTabs();
   renderScreen(0);
   ingestFromHash();

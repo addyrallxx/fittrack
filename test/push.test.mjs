@@ -89,6 +89,10 @@ check('notification presentation uses the Android badge and tags every renotify'
   const stamped = buildOpts({ tag: 'timestamp-test', timestamp: 123 });
   assert.equal(stamped.badge, './badge-96.png');
   assert.equal(stamped.timestamp, 123, 'payload event time must survive presentation');
+  const setup = html.match(/reg\.showNotification\('FitTrack is set up',[\s\S]*?\);/);
+  assert.ok(setup, 'the setup notification must exist');
+  assert.ok(!/\bicon\s*:/.test(setup[0]), 'the setup notification must not show a second icon');
+  assert.match(setup[0], /badge:\s*'badge-96\.png'/, 'the setup notification must use the Android badge');
   for (const payload of payloads) {
     const opts = buildOpts(payload);
     assert.ok(!opts.renotify || opts.tag, `${payload.title} renotifies without a tag`);

@@ -116,6 +116,8 @@ check('doseFor never invents a dose past the known titration', () => {
   assert.deepEqual(doseFor('2026-09-07', DOSE_STEPS), { mg: 1.5, known: true });
   assert.deepEqual(doseFor('2026-09-21', DOSE_STEPS), { mg: 2, known: true }, 'the confirmed step to 2 mg');
   assert.deepEqual(doseFor('2026-09-28', DOSE_STEPS), { mg: 2, known: true });
+  assert.equal(doseFor('2026-09-07', [{ date: '2026-08-31', mg: 1 }, { date: '2026-09-14', mg: 1.5 }]).known, false,
+    'a missing row between confirmed dates must stay unknown');
   assert.equal(doseFor('2026-10-05', DOSE_STEPS).known, false, 'the week after the table ends must NOT be extrapolated to 2.5 mg');
   assert.equal(doseFor('2026-10-12', DOSE_STEPS).known, false, 'beyond the schedule must be flagged unknown');
 });
