@@ -116,6 +116,8 @@ check('doseFor never invents a dose past the known titration', () => {
   /* private owner data removed */
   /* private owner data removed */
   /* private owner data removed */
+  assert.equal(doseFor('2026-09-07', [/* private owner data removed */ /* private owner data removed */]).known, false,
+    'a missing row between confirmed dates must stay unknown');
   assert.equal(doseFor('2099-01-01', DOSE_STEPS).known, false, 'the week after the table ends must NOT be extrapolated to 2.5 mg');
   assert.equal(doseFor('2026-10-12', DOSE_STEPS).known, false, 'beyond the schedule must be flagged unknown');
 });

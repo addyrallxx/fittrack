@@ -10,7 +10,7 @@
 
    The cache name follows the app release. The activate handler deletes every
    cache that is not the current version, so each release gets a clean fallback. */
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.1.0';
 const CACHE = `fittrack-v${APP_VERSION}`;
 const SHELL = ['./fittrack.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
@@ -81,7 +81,7 @@ self.addEventListener('push', e => {
   e.waitUntil(
     Promise.resolve()
       .then(() => self.registration.showNotification(d.title || 'FitTrack reminder', buildOpts(d)))
-      .catch(() => self.registration.showNotification('FitTrack reminder', { body: 'Open FitTrack to view the reminder.', icon: './icon-192.png', tag: 'fittrack' }))
+      .catch(() => self.registration.showNotification('FitTrack reminder', { body: 'Open FitTrack to view the reminder.', badge: './badge-96.png', tag: 'fittrack' }))
   );
 });
 
@@ -91,7 +91,13 @@ self.addEventListener('push', e => {
 function buildOpts(d) {
   return {
     body: d.body || '',
-    icon: './icon-192.png',
+    // Android draws two marks when both are set: the badge as the small icon
+    // on the left, the icon as a large icon on the right. Two logos in one
+    // notification reads as a bug. Only the badge is sent, so the app shows
+    // one mark, in the slot next to the app name where a small icon belongs.
+    // The badge is forced monochrome by Android regardless of what is in the
+    // PNG, which is why badge-96.png is the ring-and-bars silhouette in flat
+    // white rather than the gradient home screen icon.
     badge: './badge-96.png',
     // A tag collapses repeats: the second water reminder replaces the first
     // rather than stacking four unread pings by evening.

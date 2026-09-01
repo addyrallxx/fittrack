@@ -5,7 +5,7 @@
  * broken. python -m http.server does not work on this machine either: the
  * python on PATH is the Microsoft Store stub and exits with an error.
  *
- *   node serve.mjs        then open http://localhost:8899/fittrack.html
+ *   node serve.mjs        then open http://localhost:8899/
  */
 import http from 'http';
 import fs from 'fs';
@@ -20,7 +20,7 @@ const ROOT=path.resolve(process.cwd());
 const nope=r=>{r.writeHead(404);r.end('nope');};
 http.createServer((q,r)=>{
   let rel;
-  try{rel=decodeURIComponent(q.url.split('?')[0]).replace(/^[\\/]+/,'')||'fittrack.html';}
+  try{rel=decodeURIComponent(q.url.split('?')[0]).replace(/^[\\/]+/,'')||'index.html';}
   catch{return nope(r);}
   const parts=rel.split(/[\\/]+/);
   if(parts.some(p=>p.startsWith('.'))||parts[0].toLowerCase()==='worker')return nope(r);

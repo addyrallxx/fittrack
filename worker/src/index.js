@@ -192,10 +192,7 @@ function nextMonday(dateStr) {
 
 function doseFor(dateStr, steps) {
   const hit = steps.find(t => t.date === dateStr);
-  if (hit) return { mg: hit.mg, known: true };
-  const first = steps[0];
-  const last = steps[steps.length - 1];
-  return { mg: last.mg, known: dateStr >= first.date && dateStr <= last.date };
+  return hit ? { mg: hit.mg, known: true } : { mg: null, known: false };
 }
 
 /* Sessions left against days left, for a week that runs Monday to Sunday.
