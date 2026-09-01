@@ -6,6 +6,30 @@ FitTrack uses semantic versioning from this baseline. Patches fix defects, minor
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-01
+
+### Added
+
+- User-editable GLP-1 medication, dose, and date schedules with a history summary and per-user dose reminders, replacing the fixed read-only table.
+- A light theme, system appearance support, metric and imperial controls, and a status bar that follows the active app background.
+- An onboarding motion pass with reduced-motion support.
+- Root-page discoverability through a landing redirect, sitemap, robots file, canonical metadata, and structured data.
+
+### Changed
+
+- Moved the whole-session workout action into an evenly spaced progress row, stopped machine tags from squeezing set and rep details, removed dangling separators, and added where-to-find guidance in expanded exercise cards.
+- Rewrote exercise and machine names in the workout program for readability.
+- Combined whey and creatine logging into one shared supplement control.
+- Expanded the food library from 244 to 1,502 entries while retaining per-entry source and confidence labels.
+- Ranked food search results using the user's own logging history before popularity tie-breakers.
+
+### Fixed
+
+- Presented notification setup with one Android badge instead of competing icon and badge artwork.
+- Preserved canonical kilogram storage when workout weights are displayed and edited in pounds.
+- Stopped dose reminders from filling gaps between explicitly confirmed schedule dates.
+- Routed new workout, nutrition, dose, onboarding, and reminder accents through light-safe theme tokens.
+
 ## [1.0.0] - 2026-08-29
 
 ### Added
@@ -18,5 +42,6 @@ FitTrack uses semantic versioning from this baseline. Patches fix defects, minor
 - Push reminders for water, workouts, and weigh-ins.
 - Activity streaks, calendar history, body-composition summaries, and a settings screen.
 
-[Unreleased]: https://github.com/addyrallxx/fittrack/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/addyrallxx/fittrack/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/addyrallxx/fittrack/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/addyrallxx/fittrack/releases/tag/v1.0.0
