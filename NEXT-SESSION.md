@@ -1,8 +1,14 @@
 # FitTrack handoff
 
-**Updated:** 2026-08-29
+**Updated:** 2026-09-01
 **Repo:** `C:\Users\adnan\projects\fittrack` -> `github.com/addyrallxx/fittrack` (public)
 **Live:** https://addyrallxx.github.io/fittrack/fittrack.html
+
+**v1.1.0 is shipped: committed and pushed to `origin/main`.** Five commits,
+`a00ec79` through `ae3b0aa`. Final green state on the committed tree: syntax
+PASS, progress 28/28, push 18/18, schedule 25/25, serve 6/6. Read "Done this
+session (2026-09-01)" below for what shipped and "What is still open" for
+what did not.
 
 ---
 
@@ -57,13 +63,19 @@ no appetite budget left later in the day.
 
 ### Retatrutide
 
-Started 2026-08-24. Weekly, Mondays, ~2am. Titration: Aug 24 = 1 mg,
+Started 2026-08-24. Weekly, Mondays, ~2am. Confirmed schedule: Aug 24 = 1 mg,
 Aug 31 = 1 mg, Sep 7 = 1.5 mg, Sep 14 = 1.5 mg, Sep 21 = 2 mg, Sep 28 = 2 mg.
-**The table stops there on purpose.** Past Sep 28 the reminder says it does
-not know his dose and asks him to confirm, rather than naming a number for a
-research-chemical drug. The every-two-weeks cadence is his stated intent, not
-a prescription, and only he can extend the table. Also takes creatine and
-protein powder. A friend is on the same protocol.
+**As of 1.1.0 this is no longer a hardcoded table.** It is user-entered data
+in `S.cfg.dose` (`{med, steps:[{date,mg}]}`), with an editor, validation, and
+a taken-doses history; the six confirmed rows above were seeded once for the
+existing install by a migration. The no-extrapolation rule still binds and is
+now enforced in two places: the client yields no number past the last
+confirmed row, and the worker's `doseFor` requires an exact date match
+instead of falling back to the last row. Past Sep 28 the reminder asks him to
+confirm rather than naming a number for a research-chemical drug. The
+every-two-weeks cadence is his stated intent, not a prescription, and only he
+can extend the schedule. Also takes creatine and protein powder. A friend is
+on the same protocol.
 
 **Status as of Aug 2026: not approved in any jurisdiction.** Lilly stated
 2026-07-23 it will submit a BLA to FDA in Q1 2027; Health Canada has no
@@ -94,7 +106,7 @@ Single-file vanilla-JS PWA. **No build step, no dependencies, classic script
 scope so inline `onclick=` handlers keep working.** Chart.js from CDN,
 Open Food Facts API for food search.
 
-`fittrack.html` (~1600 lines) - shell, CSS, all JS
+`fittrack.html` (~3150 lines, measured) - shell, CSS, all JS
 `manifest.json` - PWA manifest, `start_url: ./fittrack.html`
 `docs/archive/` - dormant features and restore instructions
 `icon-192.png` / `icon-512.png` (any purpose) and `icon-192-maskable.png` /
@@ -107,8 +119,8 @@ localStorage, all keys prefixed `ft_`:
 
 | Key | Shape |
 |---|---|
-| `ft_schema` | int. **Bump to wipe on breaking change.** Currently `2` |
-| `ft_settings` | `{units, profile:{heightCm,birthday,sex}, programStart, targets:{...,floor}, body:{...kg}, notifications, ramadanMode, gymTarget, glp1}` |
+| `ft_schema` | int. **Bump to wipe on breaking change.** Currently `2`, deliberately **not** bumped for `theme` or `dose` below since both are additive |
+| `ft_settings` | `{units, theme:'dark'\|'light'\|'system', dose:{med, steps:[{date,mg}]}, profile:{heightCm,birthday,sex}, programStart, targets:{...,floor}, body:{...kg}, notifications, ramadanMode, gymTarget, glp1}` |
 | `ft_logs` | `{ "YYYY-MM-DD": {date, workout, nutrition:{meals,water}, checkins, steps, weight, creatine, rhr} }` |
 | `ft_weights` | `[{date:"YYYY-MM-DD", weight}]` |
 | `ft_workout` | day/exercise definitions |
@@ -126,40 +138,188 @@ onboarding and the undereating warning.
 
 ### Data files
 
-`data/foods.json` (244 entries) and `data/workout-program.json` are fetched
-at runtime, no build step, nothing inlined as a fallback. Deliberate: the
-page itself is served over the network, and the service worker is
+`data/foods.json` (1,502 entries) and `data/workout-program.json` are
+fetched at runtime, no build step, nothing inlined as a fallback. Deliberate:
+the page itself is served over the network, and the service worker is
 network-first for both, so anything that can load the app can load the data.
 Food entries carry `src` and `conf` (`published` / `derived` / `estimate`),
-rendered as three visibly different badges. Current split: 95 published, 61
-derived, 88 estimate. Independent restaurants are never marked published,
-because they publish nothing.
+rendered as three visibly different badges. Current split: 228 published, 187
+derived, 1,087 estimate. Independent restaurants are never marked published,
+because they publish nothing. Every entry also carries an integer `pop`
+field, 0 to 100, the search-ranking tie-break for foods with no personal
+history behind them. `tools/check-foods.mjs` enforces unique kebab-case ids,
+required fields, a valid `conf`, `pop` in range, and macro arithmetic within
+25% of stated calories.
 
 ### Testing
 
-Four entry points, no framework, 54 checks total:
+Five entry points, no framework:
 
 - `node test/syntax-check.mjs` - extracts the inline `<script>`, `sw.js`, the
   worker, and every JSON file, runs `node --check` / `JSON.parse` on each.
   The exact guard that would have caught the April black screen.
-- `node test/schedule.test.mjs` - 23 checks on the worker's reminder logic
+- `node test/schedule.test.mjs` - 25 checks on the worker's reminder logic
   (DST, day matching, dedupe on replay, every skip rule, the real signing and
   encryption path).
-- `node test/progress.test.mjs` - 17 checks. Extracts the inline script and
-  runs it in a node `vm`. The sandbox needs `window.addEventListener` and a
-  `crypto` stub (added 2026-08-28), because the app now registers a
-  `beforeinstallprompt` listener.
-- `node test/push.test.mjs` - 14 checks, new 2026-08-28. Covers base64url
-  VAPID key decoding against known vectors, that the key decodes to a 65-byte
-  uncompressed P-256 point, that `PUSH_API` matches between `sw.js` and
-  `fittrack.html`, that the VAPID public key matches between `fittrack.html`
-  and `wrangler.toml`, the subscription dedupe and lookup helpers, and the
-  `/resubscribe` route ordering. **This suite passed in full while the live
-  `/resubscribe` route was still unreachable** - see "Rules that bite" below.
+- `node test/progress.test.mjs` - 28 checks. Extracts the inline script and
+  runs it in a node `vm`. Covers the theme resolver (dark/light/system), the
+  onboarding motion pass, and the dose-schedule editor added in 1.1.0.
+- `node test/push.test.mjs` - 18 checks. Covers base64url VAPID key decoding
+  against known vectors, that the key decodes to a 65-byte uncompressed P-256
+  point, that `PUSH_API` and the VAPID public key match across `sw.js`,
+  `fittrack.html` and `wrangler.toml`, subscription dedupe and lookup, the
+  `/resubscribe` route ordering, and that the app version matches in all four
+  version-bearing files. **This suite once passed in full while the live
+  `/resubscribe` route was still unreachable** - see "Rules that bite" below,
+  still the reason a route change gets curled live, not just unit-tested.
+- `node test/serve.test.mjs` - 6 checks on `serve.mjs`'s path containment
+  (encoded traversal, Windows separators, dotfiles, the `worker/` directory,
+  malformed URL encoding).
 
 `node serve.mjs` serves the app at http://localhost:8899. It replaces the old
 `python -m http.server` advice, which cannot work on this machine because the
 python on PATH is the Microsoft Store stub.
+
+---
+
+## Done this session (2026-09-01): v1.1.0 shipped
+
+**Committed and pushed to `origin/main`.** Five commits, oldest to newest:
+
+- `a00ec79` feat: exercise names you can actually read on a phone
+- `7a148ef` feat: 1,502 foods, 415 of them properly sourced
+- `ba88f60` feat: v1.1.0, a light theme, unit toggles, and an editable dose schedule
+- `6a6fa3a` docs: a front page that does not disclose a medication, and screenshots that do not leak a body
+- `ae3b0aa` docs: changelog for 1.1.0
+
+Final green state on the committed tree: syntax PASS, progress 28/28, push
+18/18, schedule 25/25, serve 6/6. Baseline recorded at session start was
+progress 17/17, 54 assertions total, so the suites themselves grew alongside
+the app. The five commit messages carry the detailed rationale for each
+change (`git log -5`); this section summarises rather than repeats them.
+
+**`a00ec79`, exercise names.** Names were full retail product strings that
+ellipsised into uselessness at 360px. `name` is now the movement only
+("Leg Press"), `machine` is a short equipment tag capped at 18 characters,
+and the gym-floor detail moved to a new optional `where` field. Every
+exercise id is unchanged, so logged sets are not orphaned.
+
+**`7a148ef`, food library.** Grew from 244 to 1,502 entries, weighted toward
+what actually gets eaten here (Canadian chains, South Asian and halal
+dishes, grocery staples, packaged Canadian brands, no pork). Every entry
+now carries an integer `pop` field, 0 to 100, the search-ranking tie-break
+for foods with no personal history behind them. The first pass over-marked
+1,346 of 1,502 as `estimate`, including USDA-published staples like raw
+chicken breast; a second pass pulled USDA FoodData Central and Open Food
+Facts for real, taking `published` plus `derived` from 156 to 415 entries,
+each citing a dataset or FDC id in `src`. `tools/check-foods.mjs` enforces
+unique kebab-case ids, required fields, a valid `conf`, `pop` in range, and
+macro arithmetic within 25% of stated calories.
+
+**`ba88f60`, the big one: light theme, unit toggles, editable dose
+schedule.** One commit rather than several because five agents each edited
+a region of one 2,700-line file with interleaving hunks; splitting
+non-interactively would mean hand-authoring intermediate states that might
+not run, the exact failure mode that black-screened this app in April.
+Verified green as a unit plus live route checks. Contents: the
+whole-session workout button moved into the progress row with even
+spacing; whey and creatine logging unified onto one `.supp-action`
+control; `RETATRUTIDE_DOSES` (a hardcoded const gated on one person's name
+and birthday) replaced by user-entered `S.cfg.dose`, with an editor,
+validation, a taken-doses history, and a one-time migration for existing
+installs; the worker's `doseFor` now requires an exact date match instead
+of falling back to the last row; `sendSub` sends the schedule, so dose
+reminders work per user instead of being silent for everyone; a
+`[data-theme="light"]` block applied before first paint (Dark, Light,
+System), with `-text` accent variants added because all seven accents
+failed 4.5:1 on a light background, not just the two obvious ones (measured
+t1 18.82:1, t2 8.18:1, t3 5.97:1, every `-text` accent above 4.8:1); kg/lb,
+cm/in, ml/floz unit toggles plus a metric/imperial master, storage staying
+canonically kg/cm/ml; the weight chart fixed to read the unit setting
+instead of always plotting raw kilograms; the app now paints its own
+safe-area inset and `theme-color` follows the active theme.
+
+**`6a6fa3a`, the public-facing cleanup.** The README no longer opens by
+stating the author's weight, body fat, detrained status, or that he
+personally takes a GLP-1 drug; the capability stays visible as a product
+feature for anyone on semaglutide, tirzepatide, or retatrutide. Every
+screenshot and the tour GIF are regenerated from a seeded demo profile, and
+`tools/capture-media.mjs` asserts on the captured DOM that no real value
+appears before writing a file. Two capture bugs fixed along the way:
+`renderScreen` only filled HTML while visibility was owned by `go()`, so
+every shot after the first was silently the home screen; and `waitSettled`
+compared DOM text, which does not change while a CSS transform animates, so
+the first real run caught a chevron mid-rotation. Motion is now frozen for
+the whole capture. `robots.txt`, `sitemap.xml`, and a real
+`docs/get-started.html` landing page shipped for long-tail SEO. The (TM)
+mark was dropped from the app's own copy; the (c) line stays.
+
+**`ae3b0aa`, changelog.** `CHANGELOG.md` and `VERSION` both carry 1.1.0.
+
+### Decisions made this session
+
+- A rename to "Sinew" was proposed and **rejected by Adnan**. The app stays
+  FitTrack. Do not revive it.
+- FitTrack LLC (tryfittrack.com) is a real commercial smart-scale brand
+  trading since 2019 with an app called FitTrack MyHealth. Ranking for the
+  head term "fittrack" is therefore unwinnable, so SEO is long-tail only.
+  The trademark symbol was dropped from the app's copy on Adnan's approval;
+  the copyright line stays.
+- Codex did the bulk of the work until it hit its usage limit, then Sonnet
+  subagents took over. Both were used with explicit model and effort
+  settings, never the bare default.
+
+### Rules that bite, learned this session
+
+- **Android draws two marks on a notification if you send both `icon` and
+  `badge`.** Badge is the small icon on the left, icon is the large one on
+  the right. Send badge only. Android forces the badge to a flat
+  monochrome silhouette regardless of the PNG.
+- **A PWA's `manifest.json` `start_url` must not be changed once people
+  have installed the app.** An installed PWA resolves it against its
+  installed scope, so changing it makes the platform treat the result as a
+  different app and strands every existing install. This is why a root
+  `index.html` redirect was added instead of renaming the entry file.
+- **Android caches the manifest inside the installed WebAPK** and
+  refreshes it lazily, so a `theme_color` change does not reach an existing
+  install for up to a day. Remove and re-add the home screen icon to see
+  the black status bar and new app icon immediately.
+- **DOM-text polling does not detect a running CSS transition**, because a
+  transform animating does not change a single character of text. A
+  screenshot run caught a chevron mid-rotation and published a
+  broken-looking icon. Freeze all transition and animation durations before
+  capturing.
+- **Several agents each spawning headless Chrome over CDP will collide on
+  a hardcoded debug port**, and the loser silently drives the winner's tab
+  instead of failing. Scan for a free port.
+
+---
+
+## What is still open
+
+**1. 1,087 food entries remain `conf: "estimate"`.** The sourcing job died
+partway through fixing an idempotency bug in its USDA importer (Codex hit
+its usage limit). Resuming it would upgrade more. Its script is
+`tools/source-foods.mjs`.
+
+**2. GitHub repo topics still have to be set by hand in the GitHub UI**,
+they cannot be set from here. Suggested: fitness-tracker, pwa,
+progressive-web-app, offline-first, vanilla-javascript, workout-tracker,
+nutrition-tracker, weight-tracker, calorie-tracker, glp-1, health-tracker,
+github-pages.
+
+**3. `claude-seo` is still disabled.** The right moment to enable it is a
+post-deploy audit of the live URL, and it needs a session restart.
+
+**4. Personal health data still exists in GIT HISTORY from earlier
+commits** (old screenshots and the old tour GIF showed real weight, target
+and resting heart rate). The current tree is clean, but purging history
+means a force rewrite of a public repo, which is destructive and remains
+Adnan's decision, not an agent's.
+
+**5. Nothing has been tested on the actual S26 Ultra yet.** The light
+theme, the status bar fix, the notification icon, and the per-user dose
+reminders are all unverified on real hardware.
 
 ---
 
