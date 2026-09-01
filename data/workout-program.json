@@ -19,87 +19,94 @@
    "exercises": [
     {
      "id": "chest-press-machine",
-     "name": "Life Fitness Insignia Series Chest Press",
-     "machine": "Pin-loaded machine line, mid floor",
+     "name": "Chest Press",
+     "machine": "Machine",
+     "where": "Pin-loaded machine line, mid floor",
      "sets": 3,
      "reps": "8-12",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 90,
      "cue": "Set the seat so the handles line up mid-chest before picking a weight, not after.",
-     "swap": "Hammer Strength Iso-Lateral Bench Press in the plate-loaded zone."
+     "swap": "Plate-loaded chest press"
     },
     {
      "id": "leg-press-machine",
-     "name": "Life Fitness Insignia Series Seated Leg Press (Arc Leg Press)",
-     "machine": "Leg section of the pin-loaded machine line",
+     "name": "Leg Press",
+     "machine": "Machine",
+     "where": "Leg section of the pin-loaded machine line",
      "sets": 3,
      "reps": "10-15",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 90,
      "cue": "Feet shoulder-width on the plate, stop the knees short of locking out at the top.",
-     "swap": "Hammer Strength Iso-Lateral Leg Press, plate-loaded leg zone."
+     "swap": "Plate-loaded leg press"
     },
     {
      "id": "seated-row-machine",
-     "name": "Life Fitness Insignia Series Seated Row",
-     "machine": "Next to the pulldown machine in the selectorized section",
+     "name": "Seated Row",
+     "machine": "Machine",
+     "where": "Next to the pulldown machine in the selectorized section",
      "sets": 3,
      "reps": "8-12",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 90,
      "cue": "Chest stays pinned to the pad the whole set, pull with the shoulder blades not the arms.",
-     "swap": "Hammer Strength Iso-Lateral Row, chest-supported plate-loaded unit."
+     "swap": "Plate-loaded row"
     },
     {
      "id": "shoulder-press-machine",
-     "name": "Life Fitness Insignia Series Shoulder Press",
-     "machine": "Upper body end of the pin-loaded machine line",
+     "name": "Shoulder Press",
+     "machine": "Machine",
+     "where": "Upper body end of the pin-loaded machine line",
      "sets": 3,
      "reps": "8-12",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 75,
      "cue": "Handles start at shoulder height, press straight up without banging the elbows into lockout.",
-     "swap": "Smith Machine standing press, safety pins set below rack height."
+     "swap": "Smith shoulder press"
     },
     {
      "id": "leg-curl-machine",
-     "name": "Life Fitness Insignia Series Leg Curl (seated or prone)",
-     "machine": "Leg section, usually beside leg extension",
+     "name": "Leg Curl",
+     "machine": "Machine",
+     "where": "Leg section, usually beside leg extension",
      "sets": 3,
      "reps": "10-15",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 60,
      "cue": "Pad sits just above the heel, don't let the lower back arch off the seat to cheat the rep.",
-     "swap": "Cable crossover with an ankle strap, single-leg curl."
+     "swap": "Cable leg curl"
     },
     {
      "id": "triceps-press-machine",
-     "name": "Life Fitness Insignia Series Triceps Press",
-     "machine": "Upper body end of the pin-loaded machine line",
+     "name": "Triceps Press",
+     "machine": "Machine",
+     "where": "Upper body end of the pin-loaded machine line",
      "sets": 2,
      "reps": "10-15",
      "rpe": "7",
      "rampSets": 1,
      "rest_s": 60,
      "cue": "Keep the elbows tucked to the sides, only the forearm should move.",
-     "swap": "Cable crossover tricep pressdown, rope or straight bar attachment."
+     "swap": "Rope pushdown"
     },
     {
      "id": "cable-crunch",
-     "name": "Adjustable Cable Crossover core / rope crunch",
-     "machine": "Dual-tower cable station, central strength zone",
+     "name": "Cable Crunch",
+     "machine": "Cable",
+     "where": "Dual-tower cable station, central strength zone",
      "sets": 2,
      "reps": "12-15",
      "rpe": "6",
      "rampSets": 1,
      "rest_s": 45,
      "cue": "Kneel below the pulley, curl the ribs toward the hips, don't just pull with the arms.",
-     "swap": "Plank hold, 3 x 30 seconds, on the free-weight mats."
+     "swap": "Plank, 3 x 30 seconds"
     }
    ]
   },
@@ -111,87 +118,94 @@
    "exercises": [
     {
      "id": "lat-pulldown-machine",
-     "name": "Life Fitness Insignia Series Pulldown",
-     "machine": "Pin-loaded machine line, beside the seated row",
+     "name": "Lat Pulldown",
+     "machine": "Machine",
+     "where": "Pin-loaded machine line, beside the seated row",
      "sets": 3,
      "reps": "8-12",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 90,
      "cue": "Lock the thigh pads down first, pull the bar to the upper chest, don't lean back to finish the rep.",
-     "swap": "Adjustable Cable Crossover with a wide bar attachment, kneeling pulldown."
+     "swap": "Cable pulldown"
     },
     {
      "id": "leg-press-machine-b",
-     "name": "Hammer Strength Iso-Lateral Leg Press",
-     "machine": "Plate-loaded leg zone",
+     "name": "Leg Press",
+     "machine": "Plate Loaded",
+     "where": "Plate-loaded leg zone",
      "sets": 3,
      "reps": "10-15",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 90,
      "cue": "Load both sides evenly and control the negative, this one moves independently per leg.",
-     "swap": "Life Fitness Insignia Series Seated Leg Press, selectorized leg section."
+     "swap": "Machine leg press"
     },
     {
      "id": "chest-press-cable",
-     "name": "Life Fitness Signature Series Chest Press (cable/functional trainer)",
-     "machine": "Cable/functional-trainer wall, dual-adjustable-pulley station",
+     "name": "Cable Chest Press",
+     "machine": "Cable",
+     "where": "Cable/functional-trainer wall, dual-adjustable-pulley station",
      "sets": 3,
      "reps": "8-12",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 90,
      "cue": "Set both pulleys at chest height and press forward without letting the shoulders round.",
-     "swap": "Life Fitness Insignia Series Chest Press, selectorized row."
+     "swap": "Machine chest press"
     },
     {
      "id": "leg-extension-machine",
-     "name": "Life Fitness Insignia Series Leg Extension",
-     "machine": "Leg section, next to leg curl",
+     "name": "Leg Extension",
+     "machine": "Machine",
+     "where": "Leg section, next to leg curl",
      "sets": 3,
      "reps": "10-15",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 60,
      "cue": "Pad rests on the shins above the ankle, back stays flat against the pad, no jerking the weight up.",
-     "swap": "Smith Machine goblet-style split squat, light load."
+     "swap": "Smith split squat"
     },
     {
      "id": "cable-face-pull",
-     "name": "Adjustable Cable Crossover face pull / rear delt row",
-     "machine": "Dual-tower cable station, central strength zone",
+     "name": "Cable Face Pull",
+     "machine": "Cable",
+     "where": "Dual-tower cable station, central strength zone",
      "sets": 3,
      "reps": "12-15",
      "rpe": "6",
      "rampSets": 2,
      "rest_s": 60,
      "cue": "Set the pulley at face height, pull the rope apart toward the ears, elbows stay high.",
-     "swap": "Life Fitness Insignia Series Seated Row, selectorized section."
+     "swap": "Machine seated row"
     },
     {
      "id": "dumbbell-curl",
-     "name": "Dumbbell curl, rubber hex rack",
-     "machine": "Free-weight floor, mirrored wall section",
+     "name": "Dumbbell Curl",
+     "machine": "Dumbbell",
+     "where": "Free-weight floor, mirrored wall section",
      "sets": 2,
      "reps": "10-15",
      "rpe": "6",
      "rampSets": 1,
      "rest_s": 60,
      "cue": "Pick a weight you can control for all reps without swinging the torso.",
-     "swap": "Adjustable Cable Crossover, low-pulley bicep curl."
+     "swap": "Cable curl"
     },
     {
      "id": "triceps-press-machine-b",
-     "name": "Life Fitness Insignia Series Triceps Press",
-     "machine": "Upper body end of the pin-loaded machine line",
+     "name": "Triceps Press",
+     "machine": "Machine",
+     "where": "Upper body end of the pin-loaded machine line",
      "sets": 2,
      "reps": "10-15",
      "rpe": "6",
      "rampSets": 1,
      "rest_s": 60,
      "cue": "Elbows tucked, full extension at the bottom without locking hard.",
-     "swap": "Cable crossover tricep pressdown, rope attachment."
+     "swap": "Rope pushdown"
     }
    ]
   },
@@ -203,87 +217,94 @@
    "exercises": [
     {
      "id": "hammer-bench-press",
-     "name": "Hammer Strength Plate-Loaded Iso-Lateral Bench Press",
-     "machine": "Plate-loaded strength zone, near the free weights",
+     "name": "Chest Press",
+     "machine": "Plate Loaded",
+     "where": "Plate-loaded strength zone, near the free weights",
      "sets": 3,
      "reps": "8-12",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 90,
      "cue": "Load plates evenly on both sides and press each arm together, don't let one side lead.",
-     "swap": "Life Fitness Insignia Series Chest Press, selectorized row."
+     "swap": "Machine chest press"
     },
     {
      "id": "hammer-row",
-     "name": "Hammer Strength Iso-Lateral Row",
-     "machine": "Plate-loaded zone, chest-supported row unit",
+     "name": "Seated Row",
+     "machine": "Plate Loaded",
+     "where": "Plate-loaded zone, chest-supported row unit",
      "sets": 3,
      "reps": "8-12",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 90,
      "cue": "Chest stays against the pad, pull each handle back independently and squeeze at the top.",
-     "swap": "Life Fitness Insignia Series Seated Row, selectorized section."
+     "swap": "Machine seated row"
     },
     {
      "id": "leg-press-machine-c",
-     "name": "Life Fitness Insignia Series Seated Leg Press (Arc Leg Press)",
-     "machine": "Leg section of the pin-loaded machine line",
+     "name": "Leg Press",
+     "machine": "Machine",
+     "where": "Leg section of the pin-loaded machine line",
      "sets": 3,
      "reps": "10-15",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 90,
      "cue": "Feet shoulder-width on the plate, knees track over the toes, don't lock out.",
-     "swap": "Hammer Strength Iso-Lateral Leg Press, plate-loaded leg zone."
+     "swap": "Plate-loaded leg press"
     },
     {
      "id": "smith-shoulder-press",
-     "name": "Smith Machine shoulder press",
-     "machine": "Fixed vertical bar track along the free-weight wall",
+     "name": "Smith Shoulder Press",
+     "machine": "Smith Machine",
+     "where": "Fixed vertical bar track along the free-weight wall",
      "sets": 3,
      "reps": "8-12",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 75,
      "cue": "Set the safety hooks below your lowest rep depth before loading the bar.",
-     "swap": "Life Fitness Insignia Series Shoulder Press, selectorized row."
+     "swap": "Machine shoulder press"
     },
     {
      "id": "leg-curl-machine-c",
-     "name": "Life Fitness Insignia Series Leg Curl (seated or prone)",
-     "machine": "Leg section, usually beside leg extension",
+     "name": "Leg Curl",
+     "machine": "Machine",
+     "where": "Leg section, usually beside leg extension",
      "sets": 3,
      "reps": "10-15",
      "rpe": "7",
      "rampSets": 2,
      "rest_s": 60,
      "cue": "Pad just above the heel, keep the lower back flat instead of arching to move the weight.",
-     "swap": "Life Fitness Insignia Series Leg Extension as a quad-only substitute."
+     "swap": "Leg extension"
     },
     {
      "id": "cable-lat-pulldown-b",
-     "name": "Adjustable Cable Crossover pulldown",
-     "machine": "Dual-tower cable station, central strength zone",
+     "name": "Cable Pulldown",
+     "machine": "Cable",
+     "where": "Dual-tower cable station, central strength zone",
      "sets": 2,
      "reps": "10-15",
      "rpe": "6",
      "rampSets": 1,
      "rest_s": 60,
      "cue": "Set the pulley overhead, kneel or sit, pull to the upper chest without leaning back.",
-     "swap": "Life Fitness Insignia Series Pulldown, selectorized row."
+     "swap": "Machine pulldown"
     },
     {
      "id": "cable-woodchop",
-     "name": "Adjustable Cable Crossover woodchop (core)",
-     "machine": "Dual-tower cable station, central strength zone",
+     "name": "Cable Woodchop",
+     "machine": "Cable",
+     "where": "Dual-tower cable station, central strength zone",
      "sets": 2,
      "reps": "12-15 per side",
      "rpe": "6",
      "rampSets": 1,
      "rest_s": 45,
-     "cue": "Rotate from the hips and ribs together, keep the arms relatively straight, don't just yank with the shoulders.",
-     "swap": "Plank hold, 3 x 30 seconds, on the free-weight mats."
+     "cue": "Rotate hips and ribs together, keep the arms fairly straight, and don't yank with the shoulders.",
+     "swap": "Plank, 3 x 30 seconds"
     }
    ]
   }
