@@ -1,10 +1,14 @@
+# FitTrack: Free Offline Fitness Tracker PWA
+
+Track workouts, nutrition, weight and a GLP-1 calorie floor with no account, no subscription, and full offline support.
+
 <div align="center">
 
 <img src="docs/media/banner.svg" alt="FitTrack" width="100%">
 
 <br>
 
-**A fitness tracker I built for my own body, then gave to my friends.**
+**Your data stays on your device. The app stays free.**
 
 One HTML file. No build step, no dependencies, no account, no subscription.
 It runs offline, installs to your home screen, and sends you reminders when it is closed.
@@ -26,17 +30,14 @@ It runs offline, installs to your home screen, and sends you reminders when it i
 
 ## Why I built this
 
-I started a fat loss phase in August 2026, weighing 71.2 kg at roughly 31% body
-fat, detrained after three months out of the gym, and on a GLP-1 drug that kills
-your appetite so thoroughly that the real risk stops being overeating and starts
-being the opposite.
+Most fitness apps are built around rigid schedules, calorie ceilings, accounts,
+and subscriptions. FitTrack is built around a simpler idea: useful tracking
+should adapt to real life and keep your data under your control.
 
-Every app I tried got at least one of those things wrong.
-
-Most of them nag you to eat less. When your appetite is chemically suppressed,
-the number you need shouting at you is the **floor**, not the ceiling. Eating 900
-calories on a drug that makes food unappealing is not discipline, it is how you
-lose muscle instead of fat.
+Appetite-suppressing medication can make the calorie **floor** the number that
+matters. Most trackers only warn when users approach a ceiling. FitTrack can
+warn when intake falls below a chosen floor and provides an optional weekly
+GLP-1 dose reminder. It never recommends or calculates a dose.
 
 Most of them want fixed training days. I train three times a week on whichever
 three days I can face it. An app that says "it is Wednesday, go to the gym" gets
@@ -50,8 +51,8 @@ this one shows its work: every food entry carries where its number came from and
 how confident that number is, marked `published`, `derived` or `estimate`. If it
 was a guess, it says it was a guess.
 
-So I wrote my own. It is honest about what it does not know, it survives the days
-I skip, and it cost nothing to run.
+So I wrote the tracker I wanted: honest about what it does not know, flexible
+when plans change, private by default, and free to run.
 
 <br>
 
@@ -60,9 +61,10 @@ I skip, and it cost nothing to run.
 |  |  |
 |---|---|
 | **Logs a day in a few taps** | Calories, protein, water, steps, weight, creatine, resting heart rate. Quick-log buttons on the home screen, and home-screen shortcuts so you can add water without opening a screen. |
-| **Knows 244 foods, and cites them** | Built from real delivery orders and researched data, each entry tagged `published`, `derived` or `estimate`. Falls back to Open Food Facts for anything it does not have. |
+| **Knows 1,502 foods, and cites them** | Built from real delivery orders and researched data, each entry tagged `published`, `derived` or `estimate`. Falls back to Open Food Facts for anything it does not have. |
 | **Three interchangeable sessions** | Full-body workouts named for the actual machines at my gym, with a ramp-in for a detrained body. Any three days a week. Miss one and the plan still works. |
 | **Predicts from your own data** | Trend-weight smoothing, TDEE back-calculated from what you logged against what the scale actually did, and a projected date for your target. It refuses to answer when it does not have enough data instead of inventing a number. |
+| **Supports GLP-1 routines** | Optional calorie-floor warnings and a weekly dose reminder for people using retatrutide, semaglutide, tirzepatide or another GLP-1. It tracks what you enter without recommending a dose. |
 | **Reminds you when it is closed** | Server-scheduled web push, so it works with the app shut. Water checkpoints that skip when you are already ahead, and a gym nudge that stays quiet while you still have a spare day in the week. |
 | **Works offline** | Service worker, local-first storage. On a plane, in a basement gym, it still logs. |
 
@@ -151,10 +153,10 @@ not your situation, that part is simply switched off during onboarding.
 fittrack.html          the entire app: shell, CSS, and all the JavaScript
 sw.js                  service worker: push delivery and offline caching
 manifest.json          PWA manifest, icons, home-screen shortcuts
-data/foods.json        244 foods, each with a source and a confidence
+data/foods.json        1,502 foods, each with a source and a confidence
 data/workout-program.json
 worker/src/index.js    Cloudflare Worker: schedules and sends the reminders
-test/                  four suites, 54 checks, no framework
+test/                  five suites, 71 counted checks plus syntax and serving smoke checks
 ```
 
 There is no build step and there are no dependencies. The whole app is one file
@@ -170,7 +172,7 @@ fills gaps in the food database. That is the entire supply chain.
 
 Because the alternative buys nothing here. A build step means a toolchain to keep
 alive, a `node_modules` to audit, and a compile between me and a fix at 11pm. The
-app is under 2,500 lines. Classic script scope keeps `onclick=` handlers working,
+app stays in one readable HTML file. Classic script scope keeps `onclick=` handlers working,
 which keeps the markup readable and the debugging obvious.
 
 The cost is real and I will name it: no module boundaries, and testing means
@@ -275,13 +277,14 @@ the difference between an app that works and an app that lies to you for a week.
 
 ## Testing
 
-No framework, no dependencies, four entry points, 54 checks.
+No framework, no dependencies, five entry points, 71 counted behavior checks plus syntax and serving smoke checks.
 
 ```bash
 node test/syntax-check.mjs     # parses the inline script, sw.js, worker, every JSON file
-node test/schedule.test.mjs    # 23 checks on when a reminder fires, and when it stays quiet
-node test/progress.test.mjs    # 17 checks on the prediction maths
-node test/push.test.mjs        # 14 checks on the push pipeline's contracts
+node test/progress.test.mjs    # 28 checks on predictions, dose data, search, theme, and units
+node test/push.test.mjs        # 18 checks on the push pipeline's contracts
+node test/schedule.test.mjs    # 25 checks on when a reminder fires, and when it stays quiet
+node test/serve.test.mjs       # serves the repository and checks every route used by the PWA
 ```
 
 `syntax-check` exists because a single commit once called functions before they
@@ -328,6 +331,10 @@ Total running cost: nothing.
 ---
 
 <div align="center">
-<sub>Built by <a href="https://github.com/addyrallxx">Adnan</a> in Calgary, because the app I wanted did not exist.<br>
-If you fork it, change the numbers in onboarding. They are calibrated to one specific body.</sub>
+<sub>Built by <a href="https://github.com/addyrallxx">Adnan</a> because the app he wanted did not exist.<br>
+If you fork it, set your own targets during onboarding.</sub>
+
+<br><br>
+
+<sub>A personal open source project, not affiliated with or endorsed by any other product or company of a similar name.</sub>
 </div>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FitTrack</title>
+<!-- The app itself lives at fittrack.html. This file exists so the directory
+     root is a valid, shareable link, because GitHub Pages serves index.html
+     at a directory URL and there was nothing here before.
+
+     manifest.json's start_url deliberately still points at ./fittrack.html.
+     An installed PWA resolves start_url against its installed scope, and
+     changing it makes the platform treat the result as a different app, which
+     would strand every phone the app is already installed on. -->
+<link rel="canonical" href="https://addyrallxx.github.io/fittrack/fittrack.html">
+<meta http-equiv="refresh" content="0;url=./fittrack.html">
+<meta name="robots" content="noindex,follow">
+<meta name="theme-color" content="#000000">
+<style>
+  html,body{height:100%;margin:0;background:#000;color:#AEAEB2;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+  main{height:100%;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;gap:14px;text-align:center;padding:24px;}
+  h1{margin:0;font-size:20px;font-weight:700;color:#fff;letter-spacing:-0.3px;}
+  a{color:#FF9500;font-weight:700;font-size:16px;text-decoration:underline;
+    text-underline-offset:4px;}
+</style>
+</head>
+<body>
+<main>
+  <h1>FitTrack</h1>
+  <p>Taking you to the app.</p>
+  <a href="./fittrack.html">Open FitTrack</a>
+</main>
+<script>location.replace('./fittrack.html');</script>
+</body>
+</html>

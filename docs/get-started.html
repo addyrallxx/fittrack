@@ -4,18 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<meta name="description" content="How to install FitTrack on your phone and turn on reminders.">
-<title>FitTrack: Get Started</title>
+<meta name="theme-color" content="#000000">
+<title>Free Offline Fitness Tracker PWA | FitTrack</title>
+<meta name="description" content="Install FitTrack, a free offline fitness tracker PWA with no account or subscription. Track workouts, nutrition, weight and an optional GLP-1 calorie floor.">
+<link rel="canonical" href="https://addyrallxx.github.io/fittrack/docs/get-started.html">
+<meta property="og:title" content="FitTrack: Free Offline Fitness Tracker PWA">
+<meta property="og:description" content="Install a private fitness tracker with no account or subscription. Log workouts, nutrition and weight, even offline.">
+<meta property="og:image" content="https://addyrallxx.github.io/fittrack/docs/screenshots/home.png">
+<meta property="og:image:alt" content="FitTrack home screen showing daily nutrition, water, steps and weight check-ins">
+<meta property="og:url" content="https://addyrallxx.github.io/fittrack/docs/get-started.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FitTrack: Free Offline Fitness Tracker PWA">
+<meta name="twitter:description" content="No account, no subscription, and offline fitness tracking from your home screen.">
+<meta name="twitter:image" content="https://addyrallxx.github.io/fittrack/docs/screenshots/home.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "FitTrack",
+  "description": "A free offline fitness tracker PWA for workouts, nutrition, weight, reminders and optional GLP-1 calorie-floor tracking.",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Android, iOS and modern web browsers",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://addyrallxx.github.io/fittrack/fittrack.html"
+}
+</script>
 <style>
   :root{
     --black:#000000;
     --card:#111111;
     --border:rgba(255,255,255,0.07);
+    --border-strong:rgba(255,255,255,0.14);
     --orange:#FF9500;
     --orange-dim:rgba(255,149,0,0.12);
     --orange-border:rgba(255,149,0,0.3);
     --t1:#F5F5F7;
-    --t2:#8E8E93;
+    --t2:#A6A6AB;
     --r-md:14px;
     --r-lg:18px;
   }
@@ -28,46 +57,67 @@
     font-size:16px;
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
-    padding:28px 20px 48px;
+    padding:32px 20px 56px;
   }
-  main{max-width:640px;margin:0 auto;}
+  main{max-width:700px;margin:0 auto;}
+  .hero{
+    padding:20px 0 32px;
+    border-bottom:1px solid var(--border);
+  }
   h1{
-    font-size:1.7rem;
-    font-weight:700;
-    letter-spacing:-0.01em;
-    margin-bottom:8px;
+    max-width:15ch;
+    font-size:clamp(2.35rem, 9vw, 4.25rem);
+    font-weight:800;
+    line-height:0.98;
+    letter-spacing:-0.04em;
+    text-wrap:balance;
+    margin-bottom:18px;
   }
   h2{
-    font-size:1.1rem;
+    font-size:1.3rem;
     font-weight:700;
-    letter-spacing:-0.01em;
-    margin:36px 0 14px;
+    letter-spacing:-0.02em;
+    margin:44px 0 14px;
   }
   p{color:var(--t1);}
-  .lede{color:var(--t2);font-size:0.98rem;margin-bottom:24px;}
+  .lede{max-width:62ch;color:var(--t2);font-size:1.05rem;margin-bottom:24px;}
+  .lede strong{color:var(--t1);}
   .cta{
-    display:block;
-    width:100%;
-    text-align:center;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
     background:var(--orange);
     color:#000000;
     font-weight:700;
     font-size:1.05rem;
     text-decoration:none;
-    padding:16px 20px;
+    padding:16px 24px;
     border-radius:var(--r-lg);
     min-height:52px;
     line-height:1.2;
   }
-  .cta:active{opacity:0.85;}
+  .cta:hover{background:#FFAA24;}
+  .cta:active{transform:scale(0.98);}
   .url-echo{
-    display:block;
-    text-align:center;
+    display:inline-block;
     color:var(--t2);
     font-size:0.82rem;
-    margin-top:8px;
+    margin:12px 0 0 10px;
     word-break:break-all;
   }
+  .benefits{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:1px;
+    overflow:hidden;
+    background:var(--border-strong);
+    border:1px solid var(--border-strong);
+    border-radius:var(--r-lg);
+  }
+  .benefit{background:var(--card);padding:18px;}
+  .benefit strong{display:block;font-size:0.98rem;margin-bottom:5px;}
+  .benefit p{color:var(--t2);font-size:0.9rem;}
+  .section-intro{color:var(--t2);font-size:0.95rem;margin:-6px 0 16px;}
   .platform{
     background:var(--card);
     border:1px solid var(--border);
@@ -150,42 +200,105 @@
     margin-top:9px;
   }
   section + section{margin-top:8px;}
-  .bottom-cta{margin-top:44px;}
+  .bottom-cta{display:flex;margin-top:44px;}
   a{color:var(--orange);}
-  a:focus-visible,button:focus-visible{
+  a:not(.cta){text-underline-offset:3px;}
+  a:focus-visible{
     outline:2px solid var(--orange);
     outline-offset:3px;
     border-radius:6px;
+  }
+  ::selection{background:var(--orange);color:#000000;}
+  footer{color:var(--t2);font-size:0.85rem;text-align:center;margin-top:22px;}
+  @media (max-width:560px){
+    body{padding:20px 16px 44px;}
+    .hero{padding-top:12px;}
+    .benefits{grid-template-columns:1fr;}
+    .cta{display:flex;width:100%;}
+    .url-echo{display:block;text-align:center;margin:9px 0 0;}
   }
 </style>
 </head>
 <body>
 <main>
 
-  <h1>Get FitTrack on your phone</h1>
-  <p class="lede">Free, no account, and everything stays on your phone. This page walks you through it once.</p>
+  <header class="hero">
+    <h1>Free offline fitness tracking, on your phone</h1>
+    <p class="lede"><strong>FitTrack is a fitness tracker PWA with no subscription and no account.</strong> Log workouts, food, weight, water and reminders. Your history stays in your browser, and the app keeps working offline after your first visit.</p>
 
-  <a class="cta" href="https://addyrallxx.github.io/fittrack/fittrack.html">Open FitTrack</a>
-  <span class="url-echo">https://addyrallxx.github.io/fittrack/fittrack.html</span>
+    <a class="cta" href="https://addyrallxx.github.io/fittrack/fittrack.html">Open FitTrack free</a>
+    <span class="url-echo">No signup. No app store.</span>
+  </header>
 
   <section>
-    <h2>iPhone</h2>
+    <h2>What makes FitTrack different</h2>
+    <div class="benefits">
+      <div class="benefit">
+        <strong>Private by default</strong>
+        <p>Your food, workout and weight history stays in your browser. There is no profile to create.</p>
+      </div>
+      <div class="benefit">
+        <strong>Useful offline</strong>
+        <p>Install it once, then keep logging in a basement gym, on a plane or anywhere with a weak connection.</p>
+      </div>
+      <div class="benefit">
+        <strong>Flexible training days</strong>
+        <p>Complete three interchangeable full-body sessions on the days that work for you.</p>
+      </div>
+      <div class="benefit">
+        <strong>GLP-1 calorie-floor support</strong>
+        <p>People tracking retatrutide, semaglutide, tirzepatide or another GLP-1 can use an optional calorie-floor warning and weekly dose reminder. FitTrack never recommends a dose.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>How to add FitTrack to your Android home screen</h2>
+    <p class="section-intro">Use Chrome for the smoothest install on Android.</p>
+    <div class="platform">
+      <ol>
+        <li class="step">
+          <div class="step-body"><p>Open FitTrack using the button above in Chrome.</p></div>
+        </li>
+        <li class="step">
+          <div class="step-body"><p>Tap Chrome's three-dot menu.</p></div>
+        </li>
+        <li class="step">
+          <div class="step-body">
+            <p>Tap "Install app."</p>
+            <p class="sub">Some phones show "Add to Home screen" instead. Either option creates a FitTrack icon.</p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-body">
+            <p>Open FitTrack from the new icon.</p>
+            <p class="sub">Go to Settings inside FitTrack if you want to enable notification reminders.</p>
+          </div>
+        </li>
+      </ol>
+      <p class="req">Notifications also work in a regular Chrome tab. Installing gives FitTrack its own icon and a full-screen app window.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>How to add FitTrack to an iPhone or iPad</h2>
+    <p class="section-intro">Use Safari and complete the steps in order. Home Screen installation is required for notifications on iPhone and iPad.</p>
     <div class="platform">
       <div class="warn">
-        <strong>Do these steps in order.</strong> On iPhone, notifications only work once FitTrack is added to your Home Screen. If you skip that and just keep using the link in a Safari tab, the notification toggle inside the app will still look like it turned on, but reminders will never arrive.
+        <strong>Open the installed app before enabling notifications.</strong> A regular Safari tab cannot receive web push notifications on iPhone or iPad.
       </div>
       <ol>
         <li class="step">
           <div class="step-body">
-            <p>Open the link above in Safari.</p>
-            <p class="sub">Not Chrome, and not the browser built into Instagram, WhatsApp, or Messages. If this page opened inside one of those apps, look for a menu with three dots or a compass icon and choose "Open in Safari," or copy the link and paste it into Safari yourself.</p>
+            <p>Open the FitTrack link above in Safari.</p>
+            <p class="sub">If it opened inside Instagram, WhatsApp or Messages, use that app's menu to open the page in Safari.</p>
           </div>
         </li>
         <li class="step">
           <div class="step-body">
             <p>Tap the Share icon
               <span class="icon-row" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false" role="img" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">
                   <path d="M12 15V4"></path>
                   <path d="M7.5 8.5 12 4l4.5 4.5"></path>
                   <path d="M5 12v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path>
@@ -194,48 +307,21 @@
               </span>
               in Safari's toolbar.
             </p>
-            <p class="sub">A square with an arrow pointing up out of it. It's usually at the bottom of the screen, or in the top bar on iPad.</p>
           </div>
         </li>
         <li class="step">
           <div class="step-body">
-            <p>Scroll down the sheet that opens and tap "Add to Home Screen."</p>
+            <p>Tap "Add to Home Screen," then tap "Add."</p>
+            <p class="sub">A FitTrack icon appears on your Home Screen.</p>
           </div>
         </li>
         <li class="step">
           <div class="step-body">
-            <p>Tap "Add" in the top corner.</p>
-            <p class="sub">A FitTrack icon appears on your Home Screen, like any other app.</p>
-          </div>
-        </li>
-        <li class="step">
-          <div class="step-body">
-            <p>Open FitTrack from that new icon, not from Safari.</p>
-            <p class="sub">Only now go to Settings inside the app and turn on notifications. This is the step that actually works, because the app is no longer just a Safari tab.</p>
+            <p>Open FitTrack from the new icon, then enable notifications in Settings if you want reminders.</p>
           </div>
         </li>
       </ol>
-      <p class="req">Requires iOS 16.4 or newer. Most iPhones updated in the last couple of years already have it.</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>Android</h2>
-    <div class="platform">
-      <ol>
-        <li class="step">
-          <div class="step-body"><p>Open the link above in Chrome.</p></div>
-        </li>
-        <li class="step">
-          <div class="step-body"><p>Tap the three dots in the top right corner.</p></div>
-        </li>
-        <li class="step">
-          <div class="step-body">
-            <p>Tap "Install app" (some phones show "Add to Home screen" instead).</p>
-          </div>
-        </li>
-      </ol>
-      <p class="req">Notifications work on Android either way, in a regular Chrome tab or installed. Installing still gives you a proper icon and a full screen app instead of a browser tab, so it's worth doing.</p>
+      <p class="req">Requires iOS 16.4 or newer for web push notifications.</p>
     </div>
   </section>
 
@@ -261,6 +347,7 @@
   </section>
 
   <a class="cta bottom-cta" href="https://addyrallxx.github.io/fittrack/fittrack.html">Open FitTrack</a>
+  <footer>FitTrack is free and open source. <a href="https://github.com/addyrallxx/fittrack">View the code on GitHub</a>.</footer>
 
 </main>
 </body>
