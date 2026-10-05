@@ -1,0 +1,19 @@
+# P2: navigation continuity
+
+You work in the git worktree `C:/Users/adnan/projects/ft-wt/p2` (branch `wave2/p2`, cut from main after P1 and F20a merged). All edits happen there. The main checkout is read-only for you, except your log `C:/Users/adnan/projects/fittrack/docs/audit-2026-10-05/logs/P2.log.md`.
+
+Read first: `docs/audit-2026-10-05/RULES.md`, `GOAL.md`, then `docs/audit-2026-10-05/codex-feel-audit.md` defects F01, F10 (the inert part only), F13 (the zoom line is NOT yours), F14, and package P2 (your scope and acceptance list). Line numbers in the audit predate the P1 and F20a merges; anchor on function and selector names. P1 added motion tokens (`--dur-nav`, `--ease-out`, `prefersReducedMotion()`); use them.
+
+## Scope
+`go`, `updateTabs`, `initSwipe`, `renderScreen`, `buildTabs`, the `.screen` shell CSS, and the history wiring in `init`. Nothing else. You are alone on the file this round.
+
+## Decisions already made (do not re-litigate)
+- **Tab tap:** a 160 ms opacity fade-through (outgoing fades out over the first 40 percent, incoming fades in), no lateral movement, no scale. Apple and Samsung switch tabs in place; lateral motion means drill-down. Instant under reduced motion.
+- **Swipe between tabs:** keep the existing horizontal swipe, but it may only start from a horizontal gesture that does not begin in an input, a textarea, a select, a horizontally scrollable strip (the day tabs) or an open sheet, and `touchcancel` aborts it. Swipe keeps a lateral slide (240 ms, `--ease-out`). Listeners stay passive.
+- **Scroll memory, fixed at the root:** `renderScreen` must preserve the screen's `scrollTop` across a re-render (save before replacing content, restore after, clamped to the new height). This single change fixes every caller that currently jumps to the top after a small action (`delMeal`, `toggleCreatine`, `completeEx`, settings setters). Do not patch callers one by one. Each screen also keeps its own scroll position across tab switches.
+- **Android Back:** leaving Home for another tab pushes ONE history entry; tab-to-tab changes use `replaceState`; `popstate` returns to Home. Back on Home leaves the app. This matches Samsung and Material behaviour and never builds a long history stack. Expose a small hook (`navBackHandlers`, an array checked first on `popstate`) so the sheet package can later make Back close an open sheet first; do not implement sheets yourself. Do not reopen consumed action hashes or replay notification actions (read how `init` handles the URL hash today and keep it intact).
+- **Stale work:** rapid taps cancel pending navigation frames and timers, so exactly one screen is visible and interactive at the end. Inactive screens get `inert` (and `aria-hidden`) so they contribute zero tabbable controls.
+- Remove the permanent `will-change: transform` on all five screens; apply it only during a transition.
+
+## Acceptance (evidence in your log, measured in headless Chrome at 384 x 832, then 393 x 852; one instance, free port, close it after)
+Every item in the audit's P2 acceptance list, with these numbers: tab-tap transition 140 to 200 ms (computed from the animation or transition actually applied); scroll preserved within 2 px after 5 round trips on Workout, Progress and Settings with a synthetic tall log; deleting a meal and toggling creatine leave Nutrition's scroll within 2 px of where it was (clamped only by removed height); ten rapid tab taps end with one visible, non-inert screen matching `S.screen`; zero tabbable controls inside inactive screens; a swipe starting inside an input or the day-tab strip changes nothing; the history stack never grows beyond 2 entries over 20 tab changes. `node test/syntax-check.mjs` and the five suites pass; `git diff --stat` touches only `fittrack.html`. Do not commit. Measure nothing about frame timing. End the log with `Final report`.
