@@ -416,8 +416,20 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .meal-name{font-size:14px;font-weight:500;color:var(--t1);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .meal-macro{font-size:10px;color:var(--t2);margin-top:2px;}
 .meal-cal{font-size:14px;font-weight:700;color:var(--orange-text);}
-.meal-del{width:28px;height:28px;background:var(--red-dim);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.meal-del{width:44px;height:44px;background:var(--red-dim);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .meal-del svg{width:12px;height:12px;stroke:var(--red-text);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+.nutrition-context{margin:0 16px 8px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;color:var(--t2);}
+.nutrition-context select{min-width:120px;min-height:44px;background:var(--s1);color:var(--t1);border:1px solid var(--border);border-radius:var(--r-md);padding:0 12px;}
+.meal-repeat{min-height:44px;min-width:44px;padding:8px;color:var(--orange-text);font-size:12px;font-weight:500;text-align:right;}
+.recent-food{width:100%;min-height:44px;text-align:left;animation:recent-food-in var(--dur-nav) var(--ease-out) both;}
+@keyframes recent-food-in{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+@media(prefers-reduced-motion:reduce){@keyframes recent-food-in{from{opacity:0;}to{opacity:1;}}}
+.recent-heading{padding:12px 16px 4px;font-size:12px;color:var(--t2);font-weight:600;}
+#toast.nutrition-undo{top:auto;bottom:calc(var(--tab-h) + var(--safe-b) + 12px);transform:none;opacity:0;visibility:hidden;pointer-events:none;transition:opacity var(--dur-nav) var(--ease-out);}
+#toast.nutrition-undo.show{transform:none;opacity:1;visibility:visible;pointer-events:auto;}
+#toast.nutrition-undo>div:nth-child(2){flex:1;min-width:0;}
+#t-undo{min-width:60px;min-height:44px;color:var(--orange-text);font-size:14px;font-weight:600;flex-shrink:0;}
+@media(prefers-reduced-motion:reduce){#toast.nutrition-undo,#toast.nutrition-undo.show{transform:none;}}
 .water-card{margin:0 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;}
 .water-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;}
 .water-val{font-size:28px;font-weight:800;color:var(--blue-light-text);letter-spacing:-0.5px;line-height:1;}
@@ -595,12 +607,13 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
     <button class="sheet-btn sheet-btn-primary" onclick="hideCel()" style="margin:0">Keep going 💪</button>
   </div>
 </dialog>
-<div id="toast">
+<div id="toast" role="status" aria-live="polite" aria-atomic="true">
   <div class="toast-icon" id="t-icon">✅</div>
   <div>
     <div class="toast-txt" id="t-txt"></div>
     <div class="toast-sub" id="t-sub"></div>
   </div>
+  <button id="t-undo" hidden onclick="undoNutrition()">Undo</button>
 </div>
 <script>
 /* One cached OS query, initialized before startup and shared by motion helpers. */
@@ -1105,17 +1118,25 @@ function countUp(id,target,dec=0){
 function patchDataScreen(id,html){
   const root=document.getElementById(id);
   if(!root.firstElementChild){root.innerHTML=html;return;}
+  root.querySelectorAll('[data-meal-retiring]').forEach(n=>n.remove());
   const template=document.createElement('template');template.innerHTML=html;
   const key=n=>n.nodeType===1?(n.id||n.getAttribute('data-data-key')||n.tagName+':'+(n.getAttribute('class')||'').split(' ')[0]+(n.classList.contains('section-label')?':'+n.textContent:'')):'#text';
   function patch(parent,desired){
     const wanted=new Map();
     for(const n of desired.childNodes){const k=n.nodeType+':'+key(n);wanted.set(k,(wanted.get(k)||0)+1);}
-    for(const n of [...parent.childNodes]){const k=n.nodeType+':'+key(n),count=wanted.get(k)||0;if(count)wanted.set(k,count-1);else n.remove();}
-    const remaining=[...parent.childNodes];let cursor=parent.firstChild;
+    for(const n of [...parent.childNodes]){const k=n.nodeType+':'+key(n),count=wanted.get(k)||0;if(count)wanted.set(k,count-1);else if(n.nodeType===1&&(n.classList.contains('meal-item')||n.matches('.meal-sec:has(.meal-item)'))){
+      n.setAttribute('data-meal-retiring','');n.inert=true;
+      n.animate([{opacity:1},{opacity:0}],{duration:prefersReducedMotion()?0:(parseFloat(getComputedStyle(root).getPropertyValue('--dur-nav'))||200)}).finished.then(()=>n.remove()).catch(()=>n.remove());
+    }else n.remove();}
+    const remaining=[...parent.childNodes].filter(n=>!n.hasAttribute?.('data-meal-retiring'));let cursor=parent.firstChild;
     for(const next of [...desired.childNodes]){
       const pos=remaining.findIndex(n=>n.nodeType===next.nodeType&&key(n)===key(next));
       const node=pos<0?next.cloneNode(true):remaining.splice(pos,1)[0];
       if(node!==cursor)parent.insertBefore(node,cursor);
+      if(pos<0&&node.nodeType===1){
+        const rows=node.matches('.meal-item')?[node]:[...node.querySelectorAll('.meal-item')];
+        for(const row of rows)row.animate([{opacity:0,transform:prefersReducedMotion()?'none':'translateY(8px)'},{opacity:1,transform:'none'}],{duration:parseFloat(getComputedStyle(root).getPropertyValue('--dur-nav'))||200,easing:'ease-out'});
+      }
       if(pos>=0){
         if(node.nodeType===3){if(node.nodeValue!==next.nodeValue)node.nodeValue=next.nodeValue;}
         else if(!node.matches('.food-search-wrap,#sresults')){
@@ -1515,6 +1536,7 @@ function finishWorkout(){
 }
 /* ── NUTRITION SCREEN ───────────────────────── */
 function renderNutrition(){
+  nutritionHistory=deriveNutritionHistory();
   const l=S.log,c=S.cfg;
   const meals=l.nutrition.meals||[];
   const tCal=meals.reduce((a,m)=>a+(m.cal||0),0);
@@ -1544,7 +1566,7 @@ function renderNutrition(){
   const groups={};
   meals.forEach(m=>{const g=m.mealType||'Other';if(!groups[g])groups[g]=[];groups[g].push(m);});
   const mealOrder=c.ramadanMode!==false?['Suhoor','Iftar','Other','Snack']:['Breakfast','Lunch','Dinner','Snack','Other'];
-  const mealSections=mealOrder.filter(g=>groups[g]?.length>0).map(g=>renderMealSec(g,groups[g])).join('');
+  const mealSections=mealOrder.filter(g=>groups[g]?.length>0||nutritionHistory.repeats[g]).map(g=>renderMealSec(g,groups[g]||[])).join('');
   patchDataScreen('s2',`
   <div>
     <div class="screen-header">
@@ -1587,9 +1609,10 @@ function renderNutrition(){
       </div>
     </div>
     ${supplementRows.trim()?`<div class="section-label">Supplements</div><div class="supp-card">${supplementRows}</div>`:''}
+    <div class="nutrition-context" data-data-key="search-context"><label for="search-meal">Log to</label><select id="search-meal" onchange="nutritionMeal=this.value">${mealOrder.map(t=>'<option'+(t===nutritionMeal?' selected':'')+'>'+t+'</option>').join('')}</select></div>
     <div class="food-search-wrap">
       <div class="search-ico">${svgIcon('search',18,'var(--t3)')}</div>
-      <input class="food-search-input" id="fsearch" type="text" placeholder="Search food or browse presets..." oninput="handleSearch(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
+      <input class="food-search-input" id="fsearch" type="text" placeholder="Search food or browse presets..." onfocus="if(!this.value.trim())showRecentFoods()" oninput="handleSearch(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
       <div class="search-clr" id="sclr" role="button" tabindex="0" aria-label="Clear search" onclick="clearSearch()">${svgIcon('x',10,'var(--t2)')}</div>
     </div>
     <div class="search-results" id="sresults"></div>
@@ -1615,14 +1638,16 @@ function renderNutrition(){
     </div>
     <div style="height:16px"></div>
   </div>`);
+  if(document.activeElement?.id==='fsearch'&&!document.activeElement.value.trim())showRecentFoods();
 }
 function renderMealSec(name,items){
   const secCal=items.reduce((a,m)=>a+(m.cal||0),0);
+  const repeat=!items.length&&nutritionHistory.repeats[name];
   return `<div class="meal-sec" data-data-key="group-${esc(name)}">
-    <div class="meal-sec-hdr"><div class="meal-sec-name">${name}</div><div class="meal-sec-cals">${Math.round(secCal)} kcal</div></div>
+    <div class="meal-sec-hdr"><div class="meal-sec-name">${name}</div><div class="meal-sec-cals">${repeat?`<button class="meal-repeat" onclick="repeatMeal('${name}')">Repeat ${new Date(repeat.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short'})} · ${Math.round(repeat.items.reduce((a,m)=>a+(m.cal||0),0))} kcal</button>`:Math.round(secCal)+' kcal'}</div></div>
     ${items.map(m=>`<div class="meal-item" data-data-key="meal-${esc(m.id)}">
       <div style="flex:1;min-width:0">
-        <div class="meal-name">${m.name}</div>
+        <div class="meal-name">${esc(m.name)}</div>
         <div class="meal-macro">P: ${m.protein||0}g · C: ${m.carbs||0}g · F: ${m.fat||0}g</div>
       </div>
       <div class="meal-cal">${m.cal}</div>
@@ -1630,7 +1655,12 @@ function renderMealSec(name,items){
     </div>`).join('')}
   </div>`;
 }
-function delMeal(id){S.log.nutrition.meals=S.log.nutrition.meals.filter(m=>m.id!==id);DB.saveLog(S.today,S.log);refreshDataScreens();}
+function delMeal(id){
+  if(!S.log.nutrition.meals?.some(m=>m.id===id))return;
+  const before=nutritionSnapshot();
+  S.log.nutrition.meals=S.log.nutrition.meals.filter(m=>m.id!==id);
+  finishNutritionAction(before,'Food deleted');
+}
 function addWater(ml){
   S.log.nutrition.water=(S.log.nutrition.water||0)+ml;
   DB.saveLog(S.today,S.log);
@@ -1729,10 +1759,11 @@ function handleSearch(q){
 }
 function runSearch(q){
   const res=document.getElementById('sresults');
-  if(!q||q.length<2){if(res)res.classList.remove('show');return;}
+  if(!q.trim()){showRecentFoods();return;}
+  if(q.length<2){if(res)res.classList.remove('show');return;}
   const m=q.toLowerCase();
   const foods=allFoods();
-  const history=foodHistoryIndex(DB.allLogs(),foods);
+  const history=nutritionHistory?.rank||{};
   const local=searchFoods(m,foods,history);
   if(res){
     res.classList.add('show');
@@ -1752,7 +1783,7 @@ async function fetchFoodAPI(q){
     if(!r.ok)return;
     const d=await r.json();
     const res=document.getElementById('sresults');
-    if(!res||!res.classList.contains('show'))return;
+    if(!res||!res.classList.contains('show')||document.getElementById('fsearch')?.value!==q)return;
     const prods=(d.products||[]).filter(p=>p.product_name&&p.nutriments?.['energy-kcal_100g']).slice(0,4);
     if(!prods.length)return;
     const apiItems=prods.map(p=>{
@@ -1773,7 +1804,7 @@ async function fetchFoodAPI(q){
 }
 function clearSearch(){
   const i=document.getElementById('fsearch'),c=document.getElementById('sclr'),r=document.getElementById('sresults');
-  if(i)i.value='';if(c)c.classList.remove('show');if(r)r.classList.remove('show');
+  clearTimeout(S.searchTimer);if(i){i.value='';i.focus();}if(c)c.classList.remove('show');showRecentFoods();
 }
 const MEAL_TYPES_R=['Suhoor','Iftar','Other','Snack'];
 const MEAL_TYPES_N=['Breakfast','Lunch','Dinner','Snack','Other'];
@@ -1815,24 +1846,81 @@ function logFood(foodId,mealType){
   if(!g||!food.grams||g===food.grams)return addMealItem(food,mealType);
   const k=g/food.grams;
   addMealItem({...food,name:food.name+' ('+Math.round(g)+'g)',cal:Math.round(food.cal*k),
-    protein:Math.round(food.protein*k),carbs:Math.round(food.carbs*k),fat:Math.round(food.fat*k)},mealType);
+    protein:Math.round(food.protein*k),carbs:Math.round(food.carbs*k),fat:Math.round(food.fat*k),grams:g,serving:Math.round(g)+'g'},mealType);
 }
 function logFoodAPI(tempId,mealType){
   const food=window['_ft_'+tempId];if(!food)return;
   const p=parseFloat(document.getElementById('api-portion')?.value)||100;
   const scale=p/100;
-  addMealItem({...food,name:`${food.name} (${p}g)`,cal:Math.round(food.cal*scale),protein:Math.round(food.protein*scale),carbs:Math.round(food.carbs*scale),fat:Math.round(food.fat*scale)},mealType);
+  addMealItem({...food,name:`${food.name} (${p}g)`,cal:Math.round(food.cal*scale),protein:Math.round(food.protein*scale),carbs:Math.round(food.carbs*scale),fat:Math.round(food.fat*scale),grams:p,serving:p+'g'},mealType);
+}
+let nutritionHistory=null,nutritionMeal='Other',nutritionUndo=null;
+function cloneMeals(meals){return JSON.parse(JSON.stringify(meals||[]));}
+function mealId(){return 'm_'+Date.now()+'_'+Math.random().toString(36).slice(2,9);}
+function deriveNutritionHistory(){
+  const logs=DB.allLogs(),foods=allFoods(),seen=new Set(),recent=[],repeats={};
+  const dates=Object.keys(logs).filter(d=>d<=S.today).sort().reverse();
+  const min=shiftDate(S.today,-14);
+  for(const date of dates){
+    const meals=logs[date]?.nutrition?.meals||[];
+    const ordered=meals.map((meal,index)=>({meal,index})).sort((a,b)=>String(b.meal.time||'').localeCompare(String(a.meal.time||''))||b.index-a.index);
+    for(const {meal} of ordered){
+      const key=meal.foodId||String(meal.name||'').toLowerCase().trim().replace(/ \(\d+(?:\.\d+)?g\)$/,'');
+      if(!seen.has(key)&&recent.length<12){seen.add(key);recent.push({...meal});}
+    }
+    if(date<S.today&&date>=min){
+      const groups={};for(const m of meals)(groups[m.mealType||'Other']||=[]).push(m);
+      for(const [type,items] of Object.entries(groups))if(!repeats[type])repeats[type]={date,items:cloneMeals(items)};
+    }
+  }
+  return {recent,repeats,rank:foodHistoryIndex(logs,foods),foods};
+}
+function showRecentFoods(){
+  const res=document.getElementById('sresults');if(!res)return;
+  const recent=nutritionHistory?.recent||[];
+  res.classList.add('show');
+  res.innerHTML='<div class="recent-heading">Recent</div>'+recent.map((m,i)=>{
+    const serving=m.serving||(/\(([^)]+)\)$/.exec(m.name||'')?.[1])||nutritionHistory.foods.find(f=>f.id===m.foodId)?.serving||'1 serving';
+    return '<button class="sri recent-food" onpointerdown="event.preventDefault()" onclick="logRecentFood('+i+')"><div style="flex:1;min-width:0"><div class="sri-name">'+esc(m.name)+'</div><div class="sri-macro">'+esc(serving)+' · '+m.cal+' kcal</div></div><div class="sri-add">'+svgIcon('plus',14,'var(--orange-text)')+'</div></button>';
+  }).join('')+(recent.length?'':'<div style="padding:12px 16px;color:var(--t2);font-size:13px">Logged foods appear here.</div>');
+}
+function nutritionSnapshot(){return {date:S.today,meals:cloneMeals(S.log.nutrition.meals),protein:S.log.checkins.protein};}
+function finishNutritionAction(before,message){
+  const protein=S.log.nutrition.meals.reduce((a,m)=>a+(m.protein||0),0);
+  if(protein>=S.cfg.targets.protein)S.log.checkins.protein=true;
+  DB.saveLog(S.today,S.log);refreshDataScreens();
+  toast('🍽️',message,'',before);
+  if(navigator.vibrate)navigator.vibrate(10);
+}
+function undoNutrition(){
+  const before=nutritionUndo;if(!before)return;nutritionUndo=null;
+  const log=before.date===S.today?S.log:DB.log(before.date);if(!log)return;
+  log.nutrition.meals=cloneMeals(before.meals);
+  if(before.protein===undefined)delete log.checkins.protein;else log.checkins.protein=before.protein;
+  DB.saveLog(before.date,log);if(before.date===S.today)refreshDataScreens();
+  toast('↩️','Undone','');
+}
+function logRecentFood(index){
+  const food=nutritionHistory?.recent[index];if(!food)return;
+  const before=nutritionSnapshot(),type=document.getElementById('search-meal')?.value||nutritionMeal;
+  S.log.nutrition.meals.push({...food,id:mealId(),mealType:type,time:new Date().toISOString()});
+  finishNutritionAction(before,food.name.slice(0,26)+' logged');
+  document.getElementById('fsearch')?.focus({preventScroll:true});
+}
+function repeatMeal(type){
+  const repeat=nutritionHistory?.repeats[type];
+  if(!repeat||S.log.nutrition.meals.some(m=>(m.mealType||'Other')===type))return;
+  const before=nutritionSnapshot();
+  S.log.nutrition.meals.push(...repeat.items.map(m=>({...m,id:mealId(),mealType:type,time:new Date().toISOString()})));
+  finishNutritionAction(before,type+' repeated');
 }
 function addMealItem(food,mealType){
-  const meal={id:'m_'+Date.now(),foodId:food.id||null,name:food.name,cal:food.cal,protein:food.protein||0,carbs:food.carbs||0,fat:food.fat||0,mealType:mealType||'Other',time:new Date().toISOString()};
+  const before=nutritionSnapshot();
+  const meal={id:mealId(),foodId:food.id||null,name:food.name,cal:food.cal,protein:food.protein||0,carbs:food.carbs||0,fat:food.fat||0,mealType:mealType||'Other',time:new Date().toISOString()};
+  if(food.serving)meal.serving=food.serving;if(food.grams)meal.grams=food.grams;
   if(!S.log.nutrition.meals)S.log.nutrition.meals=[];
-  S.log.nutrition.meals.push(meal);
-  DB.saveLog(S.today,S.log);
-  closeSheet();
-  toast('🍽️',`${food.name.slice(0,26)} logged`,`${food.cal} kcal · ${food.protein||0}g protein`);
-  const tProt=S.log.nutrition.meals.reduce((a,m)=>a+(m.protein||0),0);
-  if(tProt>=S.cfg.targets.protein&&!S.log.checkins.protein){S.log.checkins.protein=true;DB.saveLog(S.today,S.log);setTimeout(()=>toast('🥩','Protein goal reached!',`${Math.round(tProt)}g / ${S.cfg.targets.protein}g 💪`),1000);}
-  refreshDataScreens();
+  S.log.nutrition.meals.push(meal);nutritionMeal=meal.mealType;
+  closeSheet();finishNutritionAction(before,food.name.slice(0,26)+' logged');
 }
 /* ── ONBOARDING ─────────────────────────────────────────────────────────
    The app shipped with one person's body hardcoded into DEF_SETTINGS. That is
@@ -3381,13 +3469,16 @@ function launchConfetti(){
   }
   w.appendChild(fragment);
 }
-function toast(icon,txt,sub){
+function toast(icon,txt,sub,undo=null){
+  nutritionUndo=undo;
+  document.getElementById('t-undo').hidden=!undo;
+  document.getElementById('toast').classList.toggle('nutrition-undo',!!undo);
   document.getElementById('t-icon').textContent=icon;
   document.getElementById('t-txt').textContent=txt;
   document.getElementById('t-sub').textContent=sub||'';
   const el=document.getElementById('toast');el.classList.add('show');
   if(S.toastTimer)clearTimeout(S.toastTimer);
-  S.toastTimer=setTimeout(()=>el.classList.remove('show'),3000);
+  S.toastTimer=setTimeout(()=>{el.classList.remove('show');document.getElementById('t-undo').hidden=true;nutritionUndo=null;},undo?5000:3000);
 }
 /* ── SWIPE NAVIGATION ───────────────────────── */
 function initSwipe(){
