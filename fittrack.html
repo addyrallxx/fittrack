@@ -111,15 +111,21 @@
   --orange-text:var(--orange);--green-text:var(--green);--purple-text:var(--purple);
   --coral-text:var(--coral);--blue-text:var(--blue);--blue-light-text:var(--blue-light);
   --red-text:var(--red);
-  --spring:cubic-bezier(0.34,1.56,0.64,1);
-  /* Data-bearing fills use ease-out-quint, never --spring. A spring overshoots
-     its target by ~11%, so a ring or bar driven by a real number would render
-     past that number before settling back. Fine on a button press, misleading
-     on a value the user is meant to read. */
-  --ease-data:cubic-bezier(0.22,1,0.36,1);
-  --smooth:cubic-bezier(0.25,0.46,0.45,0.94);
+  --dur-press:120ms;--dur-nav:200ms;--dur-sheet:350ms;--dur-data:550ms;
+  --ease-out:cubic-bezier(0.22,1,0.36,1);
+  --ease-sheet:cubic-bezier(0.32,0.72,0,1);
+  --ease-press:cubic-bezier(0.25,0.46,0.45,0.94);
+  /* Data-bearing fills stay monotonic. Springs belong to spatial feedback. */
+  --ease-data:var(--ease-out);
+  --smooth:var(--ease-press);
+  --spring:cubic-bezier(0.22,1,0.36,1);
   --r-sm:10px;--r-md:16px;--r-lg:20px;--r-xl:28px;
   --tab-h:64px;--safe-b:env(safe-area-inset-bottom,16px);--safe-t:env(safe-area-inset-top,0px);
+}
+/* Piecewise spring peaks at 1.03 (3 percent), then settles. Older browsers
+   retain the monotonic cubic-bezier fallback above. */
+@supports (animation-timing-function:linear(0,1)){
+  :root{--spring:linear(0,0.2 10%,0.55 22%,0.82 36%,0.97 50%,1.03 64%,1.015 78%,1 100%);}
 }
 /* Light appearance. Designed, not inverted: real surfaces (white cards on an
    off-white page, the same elevation direction dark mode uses, just toward
@@ -141,11 +147,10 @@
   --green-wash:rgba(28,122,52,0.06);--green-faint:rgba(28,122,52,0.03);--red-dim:rgba(194,42,32,0.12);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;}
-/* One switch for the whole app. Confetti, ring fills and screen slides all run
-   off animation/transition, so cutting both to ~0 honours the OS setting
-   without hunting down every keyframe. */
+/* CSS movement completes immediately, including delayed animations.
+   JS allocation and motion use prefersReducedMotion() below. */
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important;}
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;animation-delay:0ms!important;transition-duration:0.01ms!important;transition-delay:0ms!important;scroll-behavior:auto!important;}
 }
 html{height:100%;overflow:hidden;background:var(--black);}
 body{height:100%;overflow:hidden;background:var(--black);color:var(--t1);font-family:-apple-system,'SF Pro Display','SF Pro Text','Roboto',system-ui,sans-serif;font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;user-select:none;touch-action:manipulation;}
@@ -575,6 +580,13 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
   </div>
 </div>
 <script>
+/* One cached OS query, initialized before startup and shared by motion helpers. */
+const reducedMotionQuery=matchMedia('(prefers-reduced-motion: reduce)');
+let reducedMotion=reducedMotionQuery.matches;
+function prefersReducedMotion(){return reducedMotion;}
+function updateReducedMotion(event){reducedMotion=event.matches;}
+if(reducedMotionQuery.addEventListener)reducedMotionQuery.addEventListener('change',updateReducedMotion);
+else reducedMotionQuery.addListener(updateReducedMotion);
 const APP_VERSION='1.1.0';
 /* ── ICONS ───────────────────────────────────────── */
 const I={
@@ -1800,7 +1812,18 @@ function obValidate(){
 function obShowError(message){
   S.ob.err=message;
   const err=document.querySelector('#onboard .ob-err');
-  if(err){err.textContent=message;err.classList.remove('show');void err.offsetWidth;err.classList.add('show');}
+  if(err){
+    err.textContent=message;
+    // Cancel the previous feedback without forcing a geometric layout read.
+    if(err.getAnimations)err.getAnimations().forEach(animation=>animation.cancel());
+    err.style.animation='none';
+    err.classList.add('show');
+    if(!prefersReducedMotion()&&err.animate)err.animate([
+      {opacity:0,transform:'translateX(8px)',offset:0},
+      {opacity:1,transform:'translateX(-2px)',offset:0.65},
+      {opacity:1,transform:'translateX(0)',offset:1}
+    ],{duration:200,easing:'cubic-bezier(0.25,0.46,0.45,0.94)'});
+  }
   const id=S.ob.step===1?(message.startsWith('Height')?'ob-h':'ob-bd'):
     (message.startsWith('Enter your current')||message.startsWith('That weight')?'ob-w':'ob-t');
   const field=document.getElementById(id);
@@ -3050,12 +3073,15 @@ function celebrate(icon,title,sub){
 function hideCel(){document.getElementById('celebration').classList.remove('show');}
 function launchConfetti(){
   const w=document.getElementById('confetti-wrap');if(!w)return;w.innerHTML='';
+  if(prefersReducedMotion())return;
+  const fragment=document.createDocumentFragment();
   const colors=['#FF9500','#30D158','#0A84FF','#BF5AF2','#FF6B6B','#FFD60A','#4FC3F7'];
   for(let i=0;i<52;i++){
     const p=document.createElement('div');p.className='cp';
     p.style.cssText=`left:${Math.random()*100}%;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*1.5}s;animation-duration:${1.5+Math.random()}s;transform:rotate(${Math.random()*360}deg);width:${6+Math.random()*6}px;height:${6+Math.random()*6}px`;
-    w.appendChild(p);
+    fragment.appendChild(p);
   }
+  w.appendChild(fragment);
 }
 function toast(icon,txt,sub){
   document.getElementById('t-icon').textContent=icon;
