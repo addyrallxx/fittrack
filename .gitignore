@@ -6,3 +6,10 @@ data/order-screenshots/*
 
 # codex working briefs (local only)
 .codex-briefs/
+gemini-scratch/
+
+# wave run transcripts (large, local only)
+docs/audit-*/**/*.log
+docs/audit-*/**/*.jsonl
+docs/audit-*/**/*.in.txt
+docs/audit-*/**/*.log.err
