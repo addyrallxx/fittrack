@@ -12,100 +12,171 @@ what did not.
 
 ---
 
-## Session 2026-10-05: wave 2, Apple-grade feel (IN PROGRESS)
+## Session 2026-10-05: wave 2, Apple-grade feel (shipped, F1 pending verification)
 
 **Read first**
 
-- `GOAL.md` (new standing objective): Apple-grade smoothness and feel, mobile
-  first (S26 Ultra Chrome, then iPhone Safari). Desktop is deferred until
-  Adnan says the phone app is done. Publishing is not a goal, polish is.
-- Wave plan and every brief, audit and log live in `docs/audit-2026-10-05/`:
-  `RULES.md`, `codex-feel-audit.md` (20 defects F01 to F20, 9 packages P1 to
-  P9, plus merge order), `design-critique.md` (Gemini), `competitor-review.md`
-  (Gemini, ranked top 15), `pwa-platform-matrix.md` (Gemini), `briefs/`,
-  `logs/`.
+- `GOAL.md` (the standing objective): Apple-grade smoothness and feel, mobile
+  first (S26 Ultra Chrome, then iPhone Safari). Desktop is deferred until Adnan
+  says the phone app is done. Publishing is not a goal, polish is.
+- Wave plan, every brief, audit and log live in `docs/audit-2026-10-05/`:
+  `RULES.md`, `codex-feel-audit.md` (20 defects F01 to F20, packages P1 to P9,
+  merge order), `design-critique.md` and `competitor-review.md` and
+  `pwa-platform-matrix.md` (Gemini), `briefs/`, `logs/`.
+- The vault holds the full record: `C:/Users/adnan/second-brain/wiki/concepts/`
+  notes `FitTrack Program` (hub), `FitTrack Design System`, `FitTrack Wave
+  Method`, `FitTrack Decisions Log` (every decision with its reason) and
+  `FitTrack Motion Studio and Reel`.
 
-**Shipped and live on main (all pushed, GitHub Pages verified for c9fca71)**
+**Shipped and live on main (all pushed, GitHub Pages verified)**
 
-- `5d76a13` docs: goal and wave plan.
-- `7ee4da0` docs: competitor review and briefs.
-- `6904ba5` fix: true macro targets (no more hardcoded 210 g / 65 g) and a
-  neutral "This week" card replacing the streak row.
-- `c9fca71` feat: motion contract. `--dur-press` 120, `--dur-nav` 200,
+- `5d76a13`, `7ee4da0` docs: goal, wave plan, competitor review and briefs.
+- `6904ba5` fix: true macro targets (no more hardcoded 210 g and 65 g) and a
+  neutral "This week" card of plain counts replacing the streak row (F20a).
+- `c9fca71` feat: motion contract (P1). `--dur-press` 120, `--dur-nav` 200,
   `--dur-sheet` 350, `--dur-data` 550 ms, `--ease-sheet` iOS curve, a 3 percent
   `linear()` spring, `prefersReducedMotion()`.
-- `c9357ee` feat: navigation. 160 ms tab fade-through, 240 ms swipe slide with
-  guards, scroll kept at the `renderScreen` root, inert inactive screens,
-  Android Back goes to Home then exits, `navBackHandlers` hook and
-  `markScreenDirty(idx)` contract for later packages.
+- `c9357ee` feat: navigation (P2). 160 ms tab fade-through, 240 ms guarded swipe
+  slide, scroll kept at the `renderScreen` root, inert inactive screens, Android
+  Back goes Home then exits, `navBackHandlers` hook and `markScreenDirty(idx)`.
+- `f57f28e` feat: one Chart.js instance, a scrubbable weight chart with hairline,
+  pill and an 8 ms Android tick (P8).
+- `103ca4d` feat: Home and Nutrition update in place with the keyed
+  `patchDataScreen`, no replay from zero, no count-ups (P4).
+- `9d1d71e` feat: workout continuity (P3). Open cards, typed weights, focus and
+  the deadline-based rest timer survive every update.
+- `447dc86` fix: the workout progress bar honours reduced motion (caught by the
+  gate).
+- `ebb60f5` test: the feel gate `node test/feel.test.mjs` (T1) with a `KNOWN`
+  list, plus shared helpers in `test/cdp.mjs`.
+- `4f4993e` feat: sheets are native dialogs, drag to dismiss, Back closes the
+  sheet first (P6).
+- `5248128` fix: `prefersReducedMotion()` reads the live `MediaQueryList`; the gate
+  waits for an animated dialog to finish closing.
+- `c4848ec` feat: recent foods, repeat meal and Undo (F2).
+- `233888f` docs: wave 2 briefs, run logs, the PWA platform matrix, partial food
+  sourcing.
+- Gates run on every merge: `node test/syntax-check.mjs`, progress 28/28, push
+  18/18, schedule 25/25, serve 6/6 and the feel gate. Re-run all of them at the
+  start of the next session to confirm the baseline.
 
-**Method**
+**Pending, not merged: F1 (the gym flow)**
 
-- Each package runs as a Codex `gpt-6.1-sol` run in its own git worktree under
-  `C:/Users/adnan/projects/ft-wt/<pkg>` on branch `wave2/<pkg>`.
+- Implemented in worktree `C:/Users/adnan/projects/ft-wt/f1` (branch `wave2/f1`):
+  previous-set recall (ghost values, a quiet "Last 60 kg x 8" label, one-tap
+  completion with empty inputs), ONE docked rest bar with minus and plus 15 s and
+  Skip, and Screen Wake Lock while a session is active.
+- Codex's 5-hour window ran out at 03:20 right after the implementation, before
+  any verification. Its log `docs/audit-2026-10-05/logs/F1.log.md` has only Part 1.
+- Finish with the low-effort verify-only brief
+  `docs/audit-2026-10-05/briefs/F1b-verify.md` (untracked in the main tree; commit
+  it with the docs). Run it after the 04:28 reset:
+  `codex exec -m gpt-6.1-sol -c model_reasoning_effort=low --skip-git-repo-check --dangerously-bypass-approvals-and-sandbox < docs/audit-2026-10-05/briefs/F1b-verify.md`
+  Then read the log's `Final report` and `git -C ../ft-wt/f1 diff`, re-run the
+  acceptance list yourself, commit on the branch, cherry-pick, run the gates, push.
+- `git worktree list` first: remove any leftover `ft-wt/*` worktrees whose branch
+  is already merged.
+
+**Queue for the next session, in order**
+
+1. Verify and merge F1 (above).
+2. F3: floor-first Home for GLP-1 users (lead with the protein and energy floors,
+   "kcal to floor" when under 1,600 kcal after 16:00, remove the duplicate metric
+   row under the rings; see `design-critique.md` section 8 and competitor adoption
+   rank 5).
+3. P7 input ergonomics: labels, `enterkeyhint`, autocomplete policy, keyboard
+   never covers the field (`interactive-widget=resizes-content` plus a
+   `visualViewport` fallback), remove the zoom lock.
+4. P5 touch contract: 48 px targets (the calendar needs real reflow, no
+   overlapping pseudo targets), `tabular-nums` everywhere, one press-state policy
+   (no more than 2 percent scale), and iOS haptics through the Safari 18 native
+   `<input type="checkbox" switch>` control. This empties the feel gate's `KNOWN`
+   list.
+5. P9 storage and startup: operation-scoped snapshots, lazy Chart.js, stale search
+   guards, `navigator.storage.persist()` on boot.
+6. Food sourcing: 142 of the 150 entries in
+   `docs/audit-2026-10-05/food-sourcing-batch1.json` are still `unresolved` (8
+   sourced). Gemini sources them in 40-entry batches, then fold the sourced
+   values into `data/foods.json` with per-entry source and confidence.
+7. Reel v2. v1 rejected as not tasteful (same motion every screen, no camera
+   language, weak back third, thin score). v2 is a rebuild per
+   `C:/Users/adnan/second-brain/wiki/resources/motion-prompts/feedback-adnan.md`:
+   Apple product-launch register, a real 3D iPhone 18 Pro Max via
+   `@remotion/three`, a different camera move per scene, parallax and an
+   exploded-UI set piece, match cuts, a melodic score with synced foley. Recapture
+   the app first (`node scripts/capture-fittrack.mjs` in the studio), then the
+   `brag` skill makes the 9:16 social cut and caption.
+8. A real S26 Ultra device pass (and an iPhone if possible): nothing device-facing
+   is called done on emulation alone. Wake Lock, haptics, Back, keyboard and
+   scrubbing feel are all unproven on hardware.
+
+**Method (full detail in the vault note `FitTrack Wave Method`)**
+
+- Each package is a Codex `gpt-6.1-sol` run in its own worktree under
+  `C:/Users/adnan/projects/ft-wt/<pkg>` on branch `wave2/<pkg>`, one concern per
+  run, reading `RULES.md` first and ending its log with `Final report`.
 - Claude reviews the diff, commits on the branch, cherry-picks to main, runs
-  `node test/syntax-check.mjs` plus the five suites, smoke-boots, pushes with
-  the GitKraken MCP `git_push`, then removes the worktree.
-
-**Running at checkpoint time** (results land in
-`docs/audit-2026-10-05/logs/<pkg>.log.md`)
-
-- P3 workout DOM continuity.
-- P4 home and nutrition incremental rendering.
-- P8 chart lifecycle plus scrubbing with Android haptic ticks.
-- T1 automated feel gate `test/feel.test.mjs` (main checkout, test files only).
-- C3b reel visuals in the motion studio.
-
-**Queue after those**
-
-- P6 sheet lifecycle: native dialog, drag to dismiss, Back closes the sheet
-  via `navBackHandlers`.
-- Feature packages from the competitor review: previous-set recall with
-  one-tap completion, rest timer sheet with plus/minus 15 s, Screen Wake Lock
-  during workouts, recent meals and repeat last meal, floor-first Home
-  hierarchy for GLP-1 users.
-- Then P7 input ergonomics, P5 touch contract (48 px targets, `tabular-nums`,
-  press states, iOS haptics through the Safari 18 native switch control), and
-  P9 storage and startup.
-- Food sourcing: Gemini sourced 8 of 150 estimated foods before its quota ran
-  out (`docs/audit-2026-10-05/food-sourcing-batch1.json`). A check-in requeues
-  40-entry batches.
+  `node test/syntax-check.mjs`, the five suites and `node test/feel.test.mjs`,
+  smoke-boots, pushes with the GitKraken MCP `git_push`, verifies the live URL,
+  then removes the worktree.
+- About 13 Codex runs today at 60k to 150k tokens for single-concern runs. Never
+  report a run as done on its own summary: re-run the claim.
 
 **Showcase reel**
 
-- Shared Remotion studio at `C:/Users/adnan/projects/motion-studio` (Remotion
-  4, free under its individual licence, 12 official remotion-* skills
-  installed).
-- FitTrack reel lives in `src/projects/fittrack/`: 30 s, 1920x1080, 60 fps. A
-  pinned `timeline.json` drives both the visuals and the code-synthesized
-  score (`scripts/synth-fittrack.mjs`, verified -13.9 LUFS, -1.2 dBTP, 52
-  sample-exact cues).
-- Re-capture the app after each UI wave with
-  `node scripts/capture-fittrack.mjs`.
-- Known nits for a polish pass: an orphan word in "It warns you when you eat
-  too little." and the small "1,502 foods built in." caption is unreadable.
-- The `brag` skill still has to produce the vertical social cut and share
-  caption after the UI wave.
+- Shared Remotion studio `C:/Users/adnan/projects/motion-studio` (Remotion 4.0.533,
+  free under its individual licence). The v1 reel is in `src/projects/fittrack/`
+  with a pinned `timeline.json` driving both visuals and the code-synthesized
+  score (`scripts/synth-fittrack.mjs`, -13.9 LUFS, -1.2 dBTP, SHA-256 stable across
+  runs).
+- Outputs: `out/fittrack-reel-16x9.mp4` (master, CRF 16, full-range JPEG frames)
+  and `out/fittrack-reel-preview.mp4` (limited-range BT.709, faststart, 20 MB,
+  the shareable one).
+- Lesson: Remotion's default JPEG frames produce full-range `yuvj420p`; pass
+  `--color-space=bt709` (or transcode with `scale=in_range=full:out_range=limited`)
+  for correct colour on phones.
 
 **Rules that bite, learned this session**
 
-- Mobbin MCP is connected but every call returns "Mobbin MCP requires a paid
-  plan". Paid gate: ask Adnan before any upgrade.
-- Gemini quota is spent by turns times context, not effort: 253 turns in an
-  hour drained it. `gem.ps1` now defaults to `gemini-3.8-flash-medium` with a
-  hard `-MaxTurns 40` cap and prints a usage line. Briefs must not ask for
-  subagent fan-out or whole-file reads.
-- Port 8899 collisions: `test/serve.test.mjs` hardcodes 8899, so any running
-  `node serve.mjs` (including one started for smoke checks) makes it fail with
-  EADDRINUSE. Stop the dev server before running the serve suite.
-- Adnan plays Warzone on this laptop while partners run:
-  `C:/Users/adnan/.claude/tools/idle-guard.ps1` keeps codex, node, agy, ffmpeg
-  and automation Chrome at Idle priority (run it in the background, 115 minute
-  cycles).
-- Open question for Adnan, not yet asked: `data/foods.json` in the public repo
-  still carries personal notes (tags like "featured", notes mentioning his
-  medication and DoorDash orders), the same kind of disclosure the 1.1.0
-  README cleanup removed.
+- **Port 8899:** `test/serve.test.mjs` hardcodes 8899, so any running
+  `node serve.mjs` makes it fail with EADDRINUSE. Stop the dev server first, or run
+  the suite on a free port with an in-memory port substitution as the package runs
+  did. Never kill a server you did not start. The feel gate reuses a server
+  already on 8899.
+- **Never add a KNOWN entry to the feel gate.** Fix the cause. It caught two real
+  regressions today (an `!important` progress-bar transition defeating reduced
+  motion, and a cached `prefersReducedMotion()`).
+- **An open native dialog makes the page behind it inert by design.** Any check
+  that interacts with the page must wait for an animated dialog to finish closing.
+- **Merge conflict risk:** F2 and P6 both edited the toast and dialog markup (resolved
+  by hand, keeping P6's `</dialog>` and F2's `role="status"` toast). Name shared
+  markup neighbourhoods in both briefs.
+- **Gemini writes strays.** A food-sourcing job wrote seven downloaded nutrition
+  files (PDF, CSV, HTML, JSON) into the repo root despite its write-scope primer.
+  Run `git status` after every Gemini job and delete strays. Gemini quota burns by
+  turns times context: `gem.ps1` now defaults to flash-medium with `-MaxTurns 40`
+  and prints a usage line (see the vault `ai-team-playbook`).
+- **Mobbin MCP is connected but needs a paid plan.** Every call returns "requires a
+  paid plan". Paid gate: ask Adnan before any upgrade.
+- **The installed app updates itself.** The service worker is network-first for
+  every GET, so the installed S26 app picks up a new version on the next open while
+  online. Manifest-driven changes (icon, `theme_color`) lag up to a day on Android
+  because the WebAPK caches the manifest; remove and re-add the icon to force it.
+- **Adnan plays Warzone on this laptop while partners run:**
+  `C:/Users/adnan/.claude/tools/idle-guard.ps1` keeps codex, node, agy, ffmpeg and
+  automation Chrome at Idle priority. At most one headless Chrome per run, close it
+  after; measure performance last and once.
+- **Adnan, end of day:** "stop for today. we will resume when the other two are back
+  and we can full force 3 man team again. save your weekly usage." Resume with the
+  three-way team (Claude, Codex, Gemini) and put Codex back to work first.
+
+**Open question for Adnan (not yet asked)**
+
+- `data/foods.json` in the public repo still carries personal notes (tags like
+  "his-usual", notes mentioning his medication and DoorDash orders), the same kind
+  of disclosure the 1.1.0 README cleanup removed. Scrub them from the public repo?
+  A crude keyword scan matched 58 of 1,502 entries, with false positives, so a
+  proper pass is needed before any rewrite.
 
 ---
 

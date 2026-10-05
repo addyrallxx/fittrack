@@ -6,6 +6,32 @@ FitTrack uses semantic versioning from this baseline. Patches fix defects, minor
 
 ## [Unreleased]
 
+### Added
+
+- Drag across the weight chart to see the date and weight of the nearest weigh-in, with a thin marker line and a small readout. Android gives a light tick on each new point. Arrow keys work too, and a tap shows the value briefly.
+- Tap the food search to see your 12 most recent foods with their last serving, and log one in a single tap.
+- An empty meal that you logged in the last two weeks offers a one-tap repeat, such as "Repeat Tue · 640 kcal".
+- Every food add, repeat and delete shows an Undo button for 5 seconds, so deleting needs no confirmation.
+- A "This week" card on Progress with plain counts: gym sessions against your weekly target, and the days you met your protein and water goals.
+- Sheets can be dragged down to dismiss. Android Back closes an open sheet first, and focus goes back to what you tapped.
+
+### Changed
+
+- Tapping a tab now fades in place instead of sliding sideways. A deliberate swipe still slides, but it no longer starts from a text field, the day tabs or an open sheet.
+- Every screen keeps its place when you leave and come back, and after small actions such as deleting a meal or toggling creatine.
+- Android Back goes to Home first, then leaves the app.
+- Rings, bars and numbers show the real value straight away. Logging water, creatine or a meal now animates only the change, and keeps your search, focus and scroll.
+- Water stays in step between Home and Nutrition, including when you log it from a notification.
+- The workout screen keeps open exercise cards, typed weights, focus and the rest timer when you check a set, finish an exercise or finish the workout. A program update that arrives mid-workout waits for the next session.
+- The weight chart updates in place when you change the range or theme instead of redrawing.
+- Animations share one set of timings and the same curve as iOS sheets, and the springy overshoot is much smaller. Numbers on Home and Nutrition use fixed-width digits so they stop shifting.
+
+### Fixed
+
+- Nutrition showed one person's carb and fat targets for everyone. It now shows your own targets, or plain grams when none are set.
+- Removed the Progress streak row (fire emojis and consecutive days). The weekly card replaces it.
+- With Reduce Motion on, the workout progress bar, charts, confetti and delayed animations now stay still.
+
 ## [1.1.0] - 2026-09-01
 
 ### Added

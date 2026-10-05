@@ -36,6 +36,10 @@ to verify first.
 
 ## Before every commit
 
+- **`GOAL.md` is the standing objective** (Apple-grade feel, mobile first). Read it before planning work.
+- **Run `node test/feel.test.mjs`** before committing UI changes: it checks the GOAL bar by numbers (no animated layout properties, 44 px targets, tabular numbers, no overflow, reduced motion) at the S26 Ultra and iPhone viewports. Never add a KNOWN entry; fix the cause.
+- **`test/serve.test.mjs` hardcodes port 8899.** Stop any `node serve.mjs` you started (or run the suite on a free port) before running it; never kill a server another session started.
+
 - **Never big-bang commit.** A single commit that added five features at
   once put the app on a black screen in April 2026 (functions called before
   they were defined); three fix attempts failed and it was force-reset to
