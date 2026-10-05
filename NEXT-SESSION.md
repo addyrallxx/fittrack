@@ -12,6 +12,69 @@ what did not.
 
 ---
 
+## Session 2026-10-05 (day 2): 1.2.0 released, overnight lanes running
+
+This section supersedes the queue in the section below wherever they differ.
+
+**Released: FitTrack 1.2.0** (GitHub release `v1.2.0`, tag on `main`, `VERSION`
+and the manifest say 1.2.0, Settings shows 1.2.0). Release commits `6a22f8c` and
+`657619d`. It carries wave 2 plus:
+
+- F1, the gym flow, `a27b3d6`: previous-set recall, a rest bar you can nudge, the
+  screen stays on. Verified and merged (queue item 1 is done).
+- F3, floor-first Home and Nutrition, `ceace0c`: both lead with calories left to
+  your floor (queue item 2 is done).
+- `01f05b3`, three fixes from a Gemini review: the rest bar starts hidden from
+  screen readers, rest done is announced off the Workout tab, extra sets recall
+  the last weight. **3 of that review's 7 findings were false**, caused by
+  diff-only context and an ANSI decoding bug in the old Gemini wrapper (fixed in
+  `gem.ps1` v2); checking each finding against the code is what caught them.
+
+**Tooling**
+
+- `serve.mjs` and the feel gate (through `test/cdp.mjs`) take a `PORT` environment
+  variable (default 8899), so parallel worktrees test their own tree and never
+  another's. `test/serve.test.mjs` still hardcodes 8899.
+- **Gemini is driven by `gem.ps1` v2** (singleshot first, tools mode only for live
+  web or images, free quota read with `agy -p "/quota"` from PowerShell). Rules and
+  findings: vault `wiki/resources/gemini-bridge-v2.md` and the `ai-team-playbook`
+  lessons log. Still run `git status` after every Gemini job for strays.
+
+**Codex quota:** the weekly limit was hit at 05:03 and Adnan reset it around 13:20.
+Codex is back at work.
+
+**In flight at this checkpoint (nothing below is merged to `main`; every overnight
+commit is unreviewed, so read the diff and re-run the gates before cherry-picking)**
+
+| Lane | What | Where |
+|---|---|---|
+| Lane A | P7 input ergonomics first, then P9 storage and startup and P5 touch contract, as stacked branches | worktrees `ft-wt/p7`, `ft-wt/p9`, `ft-wt/p5`; branches `overnight/p7`, `overnight/p9`, `overnight/p5` |
+| Reel v2 | R1 to R3 done, R2 (the score) done, R4 render running | `C:/Users/adnan/projects/motion-studio`, see `FitTrack Motion Studio and Reel` |
+| Food scrub | Scrub personal tags and notes from `data/foods.json`, move `orders-parsed.json` out of the repo, then a git history rewrite and force push (Adnan approved the rewrite) | worktree `ft-wt/foods`, branch `chore/scrub-foods` |
+| V1 | "What's new" in the app | worktree `ft-wt/v1`, branch `feat/whats-new` |
+| W2 | Finish-workout summary | branch `feat/finish-summary` |
+| GH1 | GitHub audit, read-only. **The README showcase and repo description rewrite waits until the best reel and a much better app exist (Adnan).** | `docs/audit-2026-10-05/overnight/GH1-github-audit.md` |
+
+Run logs and briefs for these lanes sit untracked in
+`docs/audit-2026-10-05/overnight/`; commit them with the docs.
+
+**Decisions (also in the vault `FitTrack Decisions Log`)**
+
+- Mobbin is skipped: its MCP is paid only. Free substitutes: mobbin.com's free tier
+  browsed by Adnan, Gemini `-Task visual` critique of saved screenshots, Apple HIG,
+  Apple Design Resources, Material 3.
+- Adnan approved the git history rewrite and force push for the food scrub.
+- Every version gets a GitHub release with short notes, each chunk.
+- Gemini work goes through `gem.ps1` v2.
+
+**Next, in order:** read the lane results (journal and logs, not their summaries),
+review each diff, run `node test/syntax-check.mjs`, the five suites and
+`node test/feel.test.mjs` on the merged tree, merge one package at a time, then cut
+the next release with short notes. After that the remaining queue below still
+stands: food sourcing, the reel v2 `brag` cut, and a real S26 Ultra device pass.
+
+---
+
 ## Session 2026-10-05: wave 2, Apple-grade feel (shipped, F1 pending verification)
 
 **Read first**
@@ -193,7 +256,8 @@ still says "the iPhone test is the only thing that matters" is stale.
 
 ## Owner profile (private)
 
-The owner's height, weight, body composition, targets and medication schedule are kept in a private local record, not in this repository.
+The owner profile, derived targets and the GLP-1 medication schedule moved out of this public repo on 2026-10-05 to `C:/Users/adnan/projects/fittrack-private/owner-profile.md` (local only, never committed). Read it there when a task needs targets or the dose table; never copy its values into tracked files.
+
 ## Architecture
 
 Single-file vanilla-JS PWA. **No build step, no dependencies, classic script

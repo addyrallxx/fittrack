@@ -13,3 +13,5 @@ docs/audit-*/**/*.log
 docs/audit-*/**/*.jsonl
 docs/audit-*/**/*.in.txt
 docs/audit-*/**/*.log.err
+docs/research/2026-08-26-agent-journal.jsonl
+docs/research/2026-08-26-rebuild-research.json
