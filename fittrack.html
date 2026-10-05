@@ -207,6 +207,11 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .ring-val{font-size:16px;font-weight:800;line-height:1;letter-spacing:-0.5px;}
 .ring-unit{font-size:9px;color:var(--t2);font-weight:500;margin-top:2px;}
 .ring-name{font-size:11px;font-weight:600;color:var(--t2);text-align:center;}
+.energy-hero{margin:4px 16px 12px;padding:18px 16px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);}
+.energy-headline{font-size:32px;font-weight:800;letter-spacing:-.8px;line-height:1.15;color:var(--orange-text);font-variant-numeric:tabular-nums;}
+.energy-label{font-size:14px;font-weight:600;letter-spacing:0;color:var(--t2);}
+.energy-secondary{margin-top:8px;font-size:14px;font-weight:600;color:var(--t1);font-variant-numeric:tabular-nums;}
+.energy-context{margin-top:6px;font-size:12px;line-height:1.5;color:var(--t2);font-variant-numeric:tabular-nums;}
 /* CHECK-IN CARDS */
 .checkin-row{margin:0 16px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 .ci-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);padding:13px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all 0.3s var(--spring);position:relative;overflow:hidden;}
@@ -1170,6 +1175,20 @@ function refreshDataScreens(){
   }
   markScreenDirty(3);
 }
+/* Presentation only. Keep the established Nutrition floor calculation. */
+function calorieSummary(c,cal,protein,id){
+  const hasFloor=!!c.glp1||Number(c.targets.floor)>0;
+  const floor=Math.max(1600,c.targets.floor||c.targets.calories-200);
+  const remaining=Math.max(0,c.targets.calories-cal);
+  const below=hasFloor&&cal<floor;
+  const number=hasFloor?(below?Math.round(floor-cal).toLocaleString():'Floor reached'):Math.round(remaining).toLocaleString();
+  const label=hasFloor?(below?'kcal to your floor':''):'kcal remaining';
+  const proteinLeft=Math.max(0,c.targets.protein-protein);
+  const proteinCopy=proteinLeft>0?`${Math.round(proteinLeft).toLocaleString()}g protein to your target`:'Protein target reached';
+  return `<div class="energy-headline" id="${id}">${number}${label?` <span class="energy-label">${label}</span>`:''}</div>
+    <div class="energy-secondary">${hasFloor&&!below?`${Math.round(remaining).toLocaleString()} kcal left to your target`:proteinCopy}</div>
+    <div class="energy-context">${hasFloor&&!below?proteinCopy+'<br>':''}${Math.round(cal).toLocaleString()} kcal eaten / ${c.targets.calories.toLocaleString()} kcal target${hasFloor?`<br>Floor: ${floor.toLocaleString()} kcal`:''}</div>`;
+}
 function renderHome(){
   const l=S.log,c=S.cfg;
   const meals=l.nutrition.meals||[];
@@ -1201,15 +1220,11 @@ function renderHome(){
       <button class="hdr-btn" onclick="openNotifInfo()">${svgIcon('bell',18,'var(--t2)')}</button>
     </div>
     <div class="section-label">Today's activity</div>
+    <div class="energy-hero">${calorieSummary(c,totalCal,totalProt,'home-cal-num')}</div>
     <div class="rings-wrap">
       ${ring('cal','var(--orange)',totalCal,calGoal,Math.round(totalCal).toLocaleString(),'kcal','var(--orange-text)')}
       ${ring('pro','var(--coral)',totalProt,protGoal,Math.round(totalProt)+'g','protein','var(--coral-text)')}
       ${ring('h2o','var(--blue-light)',water,waterGoal,fmtVolBig(water),'water','var(--blue-light-text)')}
-    </div>
-    <div style="display:flex;justify-content:space-around;padding:0 20px;margin-bottom:14px;">
-      <div style="text-align:center;font-size:10px;color:var(--t3)">${Math.round(totalCal)} / ${calGoal} kcal</div>
-      <div style="text-align:center;font-size:10px;color:var(--t3)">${Math.round(totalProt)}g / ${protGoal}g</div>
-      <div style="text-align:center;font-size:10px;color:var(--t3)">${fmtVolBig(water)} / ${fmtVolBig(waterGoal)}</div>
     </div>
     <div class="section-label">Daily check-ins</div>
     <div class="checkin-row">
@@ -1610,7 +1625,6 @@ function renderNutrition(){
   const tFat=meals.reduce((a,m)=>a+(m.fat||0),0);
   const carbGoal=Number(c.targets.carbs),fatGoal=Number(c.targets.fat);
   const hasCarbGoal=Number.isFinite(carbGoal)&&carbGoal>0,hasFatGoal=Number.isFinite(fatGoal)&&fatGoal>0;
-  const remain=Math.max(0,c.targets.calories-tCal);
   const floor=Math.max(1600,c.targets.floor||c.targets.calories-200);
   const water=l.nutrition.water||0;
   const waterGoal=waterTarget();
@@ -1639,16 +1653,7 @@ function renderNutrition(){
       <button onclick="openMealSheet()" style="background:var(--orange-dim);border:1px solid var(--orange-border);border-radius:20px;padding:8px 16px;font-size:13px;font-weight:700;color:var(--orange-text)">+ Add meal</button>
     </div>
     <div class="macro-card">
-      <div class="macro-top">
-        <div>
-          <div class="macro-cal-big" id="cal-num">${Math.round(tCal)}</div>
-          <div style="font-size:12px;color:var(--t2);margin-top:3px">kcal eaten today</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-size:22px;font-weight:800;color:var(--t2)">${Math.round(remain)}</div>
-          <div style="font-size:12px;color:var(--t3);margin-top:2px">kcal remaining</div>
-        </div>
-      </div>
+      <div class="energy-summary" style="margin-bottom:14px">${calorieSummary(c,tCal,tProt,'cal-num')}</div>
       <div>
         <div class="macro-target-head">Daily macro targets${helpBtn('macroTargets')}</div>
         <div class="macro-bar-row">
@@ -1667,11 +1672,11 @@ function renderNutrition(){
           <div class="macro-bar-val">${Math.round(tFat)}g${hasFatGoal?` / ${fatGoal}g`:""}</div>
         </div>
       </div>
-      <div class="floor-warning">
+      ${c.glp1||Number(c.targets.floor)>0?`<div class="floor-warning">
         ${helpBtn('calorieFloor')}
         <div class="floor-warning-title">Hard floor: ${floor.toLocaleString()} kcal</div>
         <div class="floor-warning-copy">Do not finish the day below this intake.</div>
-      </div>
+      </div>`:''}
     </div>
     ${supplementRows.trim()?`<div class="section-label">Supplements</div><div class="supp-card">${supplementRows}</div>`:''}
     <div class="nutrition-context" data-data-key="search-context"><label for="search-meal">Log to</label><select id="search-meal" onchange="nutritionMeal=this.value">${mealOrder.map(t=>'<option'+(t===nutritionMeal?' selected':'')+'>'+t+'</option>').join('')}</select></div>
