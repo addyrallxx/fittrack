@@ -3,7 +3,7 @@
 import { spawn } from 'node:child_process';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import net from 'node:net';
+import { portFree as portAvailable, sleep } from './cdp.mjs';
 import os from 'node:os';
 import path from 'node:path';
 
@@ -13,11 +13,6 @@ const headful = process.env.FITTRACK_HEADFUL === '1';
 const fullMotion = process.env.FITTRACK_MOTION === 'full';
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'ftchrome-'));
 
-const portAvailable = port => new Promise(resolve => {
-  const server = net.createServer();
-  server.once('error', () => resolve(false));
-  server.listen(port, '127.0.0.1', () => server.close(() => resolve(true)));
-});
 async function findDebugPort() {
   for (let port = 9340; port < 9440; port++) if (await portAvailable(port)) return port;
   throw new Error('no free Chrome debug port in 9340..9439');
@@ -58,8 +53,6 @@ async function cleanupAndWait() {
 }
 process.once('exit', cleanup);
 process.once('SIGINT', () => process.exit(130));
-
-const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function target() {
   for (let i = 0; i < 40; i++) {
