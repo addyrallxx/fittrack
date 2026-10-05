@@ -83,7 +83,7 @@
 <link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <link rel="apple-touch-startup-image" href="./assets/splash/apple-splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<!-- Chart.js is requested only when Progress first needs its canvas. -->
 <style>
 :root{
   --black:#000000;--s1:#111111;--s2:#1C1C1E;--s3:#2C2C2E;--s4:#3A3A3C;
@@ -792,8 +792,9 @@ async function loadProgram(){
 function suggestSession(){
   const n=((S.workout&&S.workout.days)||[]).length;
   if(!n)return 0;
+  const logs=DB.allLogs();
   for(const d of recentDates(21)){
-    const l=DB.log(d);
+    const l=logs[d];
     if(l&&l.workout&&l.workout.completed&&l.workout.dayIndex>=0)return (l.workout.dayIndex+1)%n;
   }
   return 0;
@@ -873,7 +874,21 @@ ramadanMode:false, /* archived 2026-08-26, see docs/archive/ramadan-mode.md */
 };
 /* ── STORAGE ─────────────────────────────────── */
 const DB={
-  get(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def;}catch(e){return def;}},
+  /* Snapshots live only for a synchronous render or operation, never across awaits. */
+  _scope:null,
+  snapshot(fn){
+    if(this._scope)return fn();
+    this._scope=new Map();
+    try{return fn();}finally{this._scope=null;}
+  },
+  invalidate(){if(this._scope)this._scope.clear();},
+  get(k,def){
+    if(this._scope?.has(k))return this._scope.get(k);
+    let value=def;
+    try{const v=localStorage.getItem(k);if(v)value=JSON.parse(v);}catch(e){}
+    if(this._scope)this._scope.set(k,value);
+    return value;
+  },
   /* Returns whether the write landed. A silent false here used to be a real
      data-loss path: iOS evicts localStorage and Android can hit quota, and
      either way the log simply did not save while the UI carried on as though
@@ -888,6 +903,7 @@ const DB={
       }
       return false;
     }
+    finally{this.invalidate();}
   },
   _warned:false,
   /* A copy, never the shared constant. Handing out DEF_SETTINGS by reference
@@ -1763,7 +1779,14 @@ async function loadFoods(){
     const r=await fetch('./data/foods.json');
     if(!r.ok)return;
     const d=await r.json();
-    if(Array.isArray(d.entries))S.foods=d.entries;
+    if(Array.isArray(d.entries)){
+      S.foods=d.entries;
+      /* P4 owns screen patching. Refresh only its search results, keeping input/focus. */
+      if(document.getElementById('fsearch')){
+        nutritionHistory=deriveNutritionHistory();
+        runSearch(document.getElementById('fsearch').value);
+      }
+    }
   }catch(e){}
 }
 /* Custom foods win over the shipped database, which wins over the inline
@@ -1825,13 +1848,22 @@ function searchFoods(m,foods,history){
 /* Debounced so a burst of typing rebuilds the list once instead of once per
    character. The clear button still toggles immediately, because that one is
    pure feedback on the keystroke itself. */
+let searchGeneration=0,searchRequest=null;
+function cancelSearch(){
+  searchGeneration++;
+  clearTimeout(S.searchTimer);
+  searchRequest?.abort();searchRequest=null;
+}
 function handleSearch(q){
+  cancelSearch();
   const clr=document.getElementById('sclr');
   if(clr)clr.classList.toggle('show',q.length>0);
   clearTimeout(S.searchTimer);
   S.searchTimer=setTimeout(()=>runSearch(q),120);
 }
 function runSearch(q){
+  cancelSearch();
+  const generation=searchGeneration;
   const res=document.getElementById('sresults');
   if(!q.trim()){showRecentFoods();return;}
   if(q.length<2){if(res)res.classList.remove('show');return;}
@@ -1849,15 +1881,18 @@ function runSearch(q){
     `<button class="search-manual-btn" onclick="openManualSheet()">${svgIcon('edit',16,'var(--blue-text)')} Enter manually</button>`;
   }
   if(S.searchTimer)clearTimeout(S.searchTimer);
-  S.searchTimer=setTimeout(()=>fetchFoodAPI(q),700);
+  S.searchTimer=setTimeout(()=>fetchFoodAPI(q,generation),700);
 }
-async function fetchFoodAPI(q){
+async function fetchFoodAPI(q,generation=searchGeneration){
+  if(generation!==searchGeneration)return;
+  const input=document.getElementById('fsearch'),results=document.getElementById('sresults');
+  const request=new AbortController();searchRequest=request;
   try{
-    const r=await fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&action=process&json=1&page_size=5&fields=product_name,nutriments`);
+    const r=await fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&action=process&json=1&page_size=5&fields=product_name,nutriments`,{signal:request.signal});
     if(!r.ok)return;
     const d=await r.json();
     const res=document.getElementById('sresults');
-    if(!res||!res.classList.contains('show')||document.getElementById('fsearch')?.value!==q)return;
+    if(generation!==searchGeneration||request.signal.aborted||res!==results||document.getElementById('fsearch')!==input||!res?.isConnected||!res.classList.contains('show')||input?.value!==q)return;
     const prods=(d.products||[]).filter(p=>p.product_name&&p.nutriments?.['energy-kcal_100g']).slice(0,4);
     if(!prods.length)return;
     const apiItems=prods.map(p=>{
@@ -1868,7 +1903,7 @@ async function fetchFoodAPI(q){
       const fat=Math.round(p.nutriments['fat_100g']||0);
       window['_ft_'+id]={name:p.product_name.slice(0,45),cal,protein:prot,carbs,fat};
       return `<div class="sri" onclick="pickMealTypeAPI('${id}')">
-        <div style="flex:1"><div class="sri-name">${p.product_name.slice(0,45)}</div><div class="sri-macro">${cal} kcal per 100g · P:${prot}g</div></div>
+        <div style="flex:1"><div class="sri-name">${esc(p.product_name.slice(0,45))}</div><div class="sri-macro">${cal} kcal per 100g · P:${prot}g</div></div>
         <div class="sri-add">${svgIcon('plus',14,'var(--orange)')}</div>
       </div>`;
     }).join('');
@@ -1878,7 +1913,7 @@ async function fetchFoodAPI(q){
 }
 function clearSearch(){
   const i=document.getElementById('fsearch'),c=document.getElementById('sclr'),r=document.getElementById('sresults');
-  clearTimeout(S.searchTimer);if(i){i.value='';i.focus();}if(c)c.classList.remove('show');showRecentFoods();
+  cancelSearch();if(i){i.value='';i.focus();}if(c)c.classList.remove('show');showRecentFoods();
 }
 const MEAL_TYPES_R=['Suhoor','Iftar','Other','Snack'];
 const MEAL_TYPES_N=['Breakfast','Lunch','Dinner','Snack','Other'];
@@ -2306,9 +2341,10 @@ function estimateTDEE(days){
   if(!first)return {ok:false,why:'Needs a longer run of weigh-ins.'};
   const span=Math.round((new Date(last.date+'T12:00:00')-new Date(first.date+'T12:00:00'))/86400000);
   if(span<14)return {ok:false,why:'Needs at least two weeks between weigh-ins.'};
+  const logs=DB.allLogs();
   let logged=0,total=0;
   for(let i=0;i<span;i++){
-    const l=DB.log(shiftDate(last.date,-i));
+    const l=logs[shiftDate(last.date,-i)];
     const cal=l&&l.nutrition?(l.nutrition.meals||[]).reduce((a,m)=>a+(m.cal||0),0):0;
     if(cal>0){logged++;total+=cal;}
   }
@@ -2348,9 +2384,10 @@ function projectTarget(){
    5 to 10 bpm figures, so a rise is not expected, which is exactly why it is
    worth watching: it is the cheapest early warning available to him. */
 function rhrSeries(){
+  const logs=DB.allLogs();
   const out=[];
   for(const d of recentDates(120)){
-    const l=DB.log(d);
+    const l=logs[d];
     if(l&&typeof l.rhr==='number'&&l.rhr>0)out.push({date:d,rhr:l.rhr});
   }
   return out.reverse();
@@ -2524,7 +2561,8 @@ function saveRhr(){
   toast('\u2764\uFE0F','Resting HR logged',v+' bpm');
 }
 /* ── PROGRESS SCREEN ────────────────────────── */
-function renderProgress(){
+function renderProgress(){return DB.snapshot(renderProgressSnapshot);}
+function renderProgressSnapshot(){
   const retainedChart=document.querySelector("#s3 .chart-wrap");
   const wh=DB.weights(),all=DB.allLogs(),c=S.cfg;
   const curW=wh.length>0?wh[wh.length-1].weight:c.body.currentWeight;
@@ -2747,10 +2785,53 @@ function setRange(r){
   document.querySelectorAll('.range-tab').forEach(t=>{t.classList.toggle('active',t.textContent===r+'d');});
   buildChart();
 }
+let chartLoading=null;
+function ensureChart(){
+  if(typeof Chart!=='undefined')return Promise.resolve(true);
+  if(chartLoading)return chartLoading;
+  chartLoading=new Promise(resolve=>{
+    const script=document.createElement('script');
+    script.src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js';
+    script.async=true;
+    let settled=false;
+    const finish=ok=>{
+      if(settled)return;settled=true;clearTimeout(timer);
+      script.onload=script.onerror=null;
+      if(!ok)script.remove();
+      resolve(ok);
+    };
+    const timer=setTimeout(()=>finish(false),8000);
+    script.onload=()=>finish(typeof Chart!=='undefined');
+    script.onerror=()=>finish(false);
+    document.head.appendChild(script);
+  }).then(ok=>{if(!ok)chartLoading=null;return ok;});
+  return chartLoading;
+}
 function buildChart(){
   const canvas=document.getElementById('wt-chart');
   if(S.wtChart&&!S.wtChart.canvas.isConnected){S.wtChart.destroy();S.wtChart=null;}
-  if(!canvas||!canvas.isConnected||typeof Chart==='undefined')return;
+  if(!canvas||!canvas.isConnected)return;
+  if(typeof Chart==='undefined'){
+    const wrap=canvas.parentElement;
+    /* One continuation per canvas. P8 retains the canvas across re-renders. */
+    if(canvas.dataset.loading)return;
+    canvas.dataset.loading='true';wrap.dataset.empty='Loading weight chart...';
+    canvas.setAttribute('aria-label',wrap.dataset.empty);
+    ensureChart().then(ok=>{
+      delete canvas.dataset.loading;
+      if(!canvas.isConnected||document.getElementById('wt-chart')!==canvas)return;
+      if(ok){
+        const live=wrap.querySelector('.chart-scrub-live');if(live)live.textContent='';
+        buildChart();
+      }
+      else{
+        wrap.dataset.empty='Weight chart unavailable offline. Your logs still work.';
+        canvas.setAttribute('aria-label',wrap.dataset.empty);
+        const live=wrap.querySelector('.chart-scrub-live');if(live)live.textContent=wrap.dataset.empty;
+      }
+    });
+    return;
+  }
   const wh=DB.weights(),days=S.chartRange;
   const cut=new Date();cut.setDate(cut.getDate()-days);
   const filtered=wh.filter(w=>new Date(w.date+'T12:00:00')>=cut);
@@ -2829,7 +2910,7 @@ function renderSettings(){
     </div>
     <div class="settings-sec">
       <div class="section-label">Notifications</div>
-      ${pushBanner()}
+      <div id="push-status-banner">${pushBanner()}</div>
       <div class="settings-grp">
         ${notifRow('water','Water reminders','Five times through the day')}
         ${notifRow('gym','Gym prompts','Twice on training days')}
@@ -2934,9 +3015,9 @@ function notifRow(key,label,time){
      app is nudging them for a week while it sends nothing at all. */
   const live=S.pushStatus==='live';
   const [color,dim]={water:['var(--blue-text)','var(--blue-dim)'],gym:['var(--orange-text)','var(--orange-dim)'],weight:['var(--purple-text)','var(--purple-dim)'],dose:['var(--green-text)','var(--green-dim)']}[key]||['var(--t2)','var(--s2)'];
-  return `<div class="settings-row"${live?'':' style="opacity:.55"'}>
+  return `<div class="settings-row" data-notif="${key}"${live?'':' style="opacity:.55"'}>
     <div class="sr-icon" style="background:${dim}">${svgIcon('bell',18,color)}</div>
-    <div><div class="sr-lbl">${label}</div><div style="font-size:11px;color:var(--t3)">${live?time:'Not delivering yet'}</div></div>
+    <div><div class="sr-lbl">${label}</div><div data-delivery-time="${esc(time)}" style="font-size:11px;color:var(--t3)">${live?time:'Not delivering yet'}</div></div>
     <div class="toggle${on&&live?' on':''}" role="switch" aria-checked="${on&&live}" aria-label="${esc(label)}" onclick="toggleNotif('${key}')"><div class="toggle-knob"></div></div>
   </div>`;
 }
@@ -3461,9 +3542,10 @@ async function sendSub(sub){
    decides whether to nudge from sessions left against days left. */
 function gymWeekCount(){
   const dow=(new Date(S.today+'T12:00:00').getDay()+6)%7;   /* Mon=0 */
+  const logs=DB.allLogs();
   let n=0;
   for(let i=0;i<=dow;i++){
-    const l=DB.log(shiftDate(S.today,-i));
+    const l=logs[shiftDate(S.today,-i)];
     if(l&&l.workout&&l.workout.completed)n++;
   }
   return n;
@@ -3545,8 +3627,21 @@ async function refreshPushStatus(){
   }
   if(st===S.pushStatus)return st;
   S.pushStatus=st;
-  if(S.screen===4)renderScreen(4);
+  patchPushStatus();
   return st;
+}
+function patchPushStatus(){
+  const banner=document.getElementById('push-status-banner');
+  if(!banner)return;
+  banner.innerHTML=pushBanner();
+  for(const row of document.querySelectorAll('#s4 [data-notif]')){
+    const key=row.dataset.notif,live=S.pushStatus==='live';
+    const toggle=row.querySelector('.toggle'),on=live&&S.cfg.notifications?.[key]?.enabled!==false;
+    row.style.opacity=live?'':'.55';
+    toggle.classList.toggle('on',on);toggle.setAttribute('aria-checked',String(on));
+    const detail=row.querySelector('.sr-lbl').nextElementSibling;
+    detail.textContent=live?detail.dataset.deliveryTime:'Not delivering yet';
+  }
 }
 function initPush(){
   if(!('serviceWorker' in navigator))return;
@@ -3559,7 +3654,7 @@ function initPush(){
        reminders are not running. */
     console.warn('SW registration failed',e);
     S.pushStatus='off';
-    if(S.screen===4)renderScreen(4);
+    patchPushStatus();
   });
   navigator.serviceWorker.addEventListener('message',e=>{
     const d=e.data||{};
@@ -3804,6 +3899,21 @@ function init(){
   if(navHasEntry&&S.screen===0){navReturningHome=true;history.back();}
   window.addEventListener('hashchange',ingestFromHash);
   initSwipe();
+  window.addEventListener('storage',e=>{
+    if(e.storageArea&&e.storageArea!==localStorage)return;
+    if(e.key&&!e.key.startsWith('ft_'))return;
+    DB.invalidate();
+    if(!e.key||e.key==='ft_logs'){
+      S.log=DB.log(S.today)||freshLog(S.today);
+      cacheWorkoutRecall();nutritionHistory=null;
+    }
+    if(!e.key||e.key==='ft_settings'){S.cfg=DB.settings();applyTheme();}
+    if(!e.key||e.key==='ft_workout')S.workout=DB.workout();
+    for(let i=0;i<5;i++)markScreenDirty(i);
+    renderScreen(S.screen);
+  });
+  /* Best effort only. A denied persistence request never blocks startup. */
+  try{navigator.storage?.persist?.().catch(()=>{});}catch(e){}
   initPush();
   loadFoods();
   loadProgram();
