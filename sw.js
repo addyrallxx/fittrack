@@ -10,7 +10,7 @@
 
    The cache name follows the app release. The activate handler deletes every
    cache that is not the current version, so each release gets a clean fallback. */
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.3.0';
 const CACHE = `fittrack-v${APP_VERSION}`;
 const SHELL = ['./fittrack.html', './manifest.json', './icon-192.png', './icon-512.png'];
 

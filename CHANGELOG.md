@@ -6,6 +6,26 @@ FitTrack uses semantic versioning from this baseline. Patches fix defects, minor
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-05
+
+Faster, and kinder to your thumbs.
+
+### Added
+
+- A calm summary sheet when you finish a workout: duration, exercises done, sets, total volume and each exercise's top set, with "up from last time" only when it is.
+- What's new: Settings shows the version with the notes for each update, and after an update a one-time notice links to them.
+
+### Changed
+
+- Number fields open the right keypad with a Next or Done key, and the focused field stays above the keyboard, including inside sheets. Pinch zoom works again.
+- The app starts faster: stored logs are read once per screen instead of once per set or day, and charts load only when Progress opens, with a calm retry message offline.
+- The rest bar eases to green in its last 10 seconds.
+
+### Fixed
+
+- A stale food search can no longer overwrite the results of a newer one.
+- Dose editing changes one row instead of rebuilding the whole editor.
+
 ## [1.2.0] - 2026-10-05
 
 FitTrack now moves and responds like a native phone app.
@@ -76,7 +96,8 @@ FitTrack now moves and responds like a native phone app.
 - Push reminders for water, workouts, and weigh-ins.
 - Activity streaks, calendar history, body-composition summaries, and a settings screen.
 
-[Unreleased]: https://github.com/addyrallxx/fittrack/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/addyrallxx/fittrack/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/addyrallxx/fittrack/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/addyrallxx/fittrack/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/addyrallxx/fittrack/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/addyrallxx/fittrack/releases/tag/v1.0.0
