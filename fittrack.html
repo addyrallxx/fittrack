@@ -201,7 +201,8 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .ring-svg-wrap{position:relative;width:86px;height:86px;}
 .ring-svg-wrap svg{width:86px;height:86px;transform:rotate(-90deg);}
 .ring-bg{stroke:var(--s3);fill:none;}
-.ring-track{fill:none;stroke-linecap:round;transition:stroke-dashoffset 1.3s var(--ease-data);}
+#s0,#s0 *,#s2,#s2 *{font-variant-numeric:tabular-nums;}
+.ring-track{fill:none;stroke-linecap:round;transition:stroke-dashoffset var(--dur-data) var(--ease-out);}
 .ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .ring-val{font-size:16px;font-weight:800;line-height:1;letter-spacing:-0.5px;}
 .ring-unit{font-size:9px;color:var(--t2);font-weight:500;margin-top:2px;}
@@ -221,7 +222,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .steps-card{margin:0 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;}
 .steps-num{font-size:32px;font-weight:800;color:var(--green-text);letter-spacing:-1px;line-height:1;}
 .prog-track{height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
-.prog-fill{height:100%;border-radius:3px;transition:width 1s var(--ease-data);}
+.prog-fill{height:100%;border-radius:3px;width:100%;transform-origin:left;transition:transform var(--dur-data) var(--ease-out);}
 /* QUICK ACTIONS */
 .qa-grid{margin:0 16px 12px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;}
 .qa-btn{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;transition:transform 0.15s var(--spring);}
@@ -380,7 +381,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .macro-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .macro-bar-lbl{font-size:12px;font-weight:500;color:var(--t2);width:54px;}
 .macro-bar-track{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
-.macro-bar-fill{height:100%;border-radius:3px;transition:width 0.9s var(--ease-data);}
+.macro-bar-fill{height:100%;border-radius:3px;width:100%;transform-origin:left;transition:transform var(--dur-data) var(--ease-out);}
 .macro-bar-val{font-size:11px;font-weight:600;color:var(--t2);width:60px;text-align:right;}
 .food-search-wrap{margin:0 16px 12px;position:relative;}
 .food-search-input{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px 44px 13px 44px;font-size:15px;color:var(--t1);transition:border-color 0.2s;}
@@ -978,7 +979,7 @@ function ingestFromHash(){
   saveStepsFor(d,v);
   history.replaceState(null,'',location.pathname+location.search);
   toast('👟',`${v.toLocaleString()} steps imported`,shortDate(d));
-  if(S.screen===0)renderScreen(0);
+  if(document.getElementById('s0').firstElementChild)renderHome();else markScreenDirty(0);markScreenDirty(3);
 }
 /* -- SCHEMA RESET -----------------------------------------------------------
    Pre-v2 installs stored body weight in POUNDS with no units key, so the old
@@ -1072,7 +1073,7 @@ function ring(id,color,val,max,display,unit,textColor){
       <svg viewBox="0 0 86 86">
         <circle class="ring-bg" cx="43" cy="43" r="${r}" stroke-width="7"/>
         <circle class="ring-track" id="rt-${id}" cx="43" cy="43" r="${r}" stroke="${color}" stroke-width="7"
-          stroke-dasharray="${c}" stroke-dashoffset="${c}"/>
+          stroke-dasharray="${c}" stroke-dashoffset="${c*(1-dataRatio(val,max))}"/>
       </svg>
       <div class="ring-center">
         <div class="ring-val" style="color:${tc}" id="rv-${id}">${display}</div>
@@ -1082,23 +1083,53 @@ function ring(id,color,val,max,display,unit,textColor){
     <div class="ring-name" style="color:${tc};opacity:.8;">${id.toUpperCase()}</div>
   </div>`;
 }
+function dataRatio(value,goal){return Math.max(0,Math.min(value/goal||0,1));}
+function waterTarget(){return S.cfg.targets.water||DEF_SETTINGS.targets.water;}
 function animRing(id,val,max){
-  const r=35,c=2*Math.PI*r,el=document.getElementById('rt-'+id);
-  if(!el)return;
-  const pct=Math.min(val/max,1);
-  /* --ease-data, not --spring. This inline style overrides the .ring-track CSS
-     rule, so fixing the stylesheet alone left the ring still overshooting. */
-  setTimeout(()=>{el.style.transition='stroke-dashoffset 1.3s var(--ease-data)';el.style.strokeDashoffset=c*(1-pct);},60);
+  const el=document.getElementById('rt-'+id);
+  if(el)el.setAttribute('stroke-dashoffset',2*Math.PI*35*(1-dataRatio(val,max)));
 }
+/* Truthful numbers update immediately. No numeric frame loops to cancel. */
 function countUp(id,target,dec=0){
-  const el=document.getElementById('rv-'+id);if(!el)return;
-  const dur=900,start=performance.now();
-  const step=now=>{const p=Math.min((now-start)/dur,1),e=1-Math.pow(1-p,3),v=target*e;
-    el.textContent=dec>0?v.toFixed(dec):Math.round(v).toLocaleString();
-    if(p<1)requestAnimationFrame(step);};
-  requestAnimationFrame(step);
+  const el=document.getElementById('rv-'+id);
+  if(el){const text=dec?target.toFixed(dec):Math.round(target).toLocaleString();if(el.textContent!==text)el.textContent=text;}
 }
-/* ── HOME SCREEN ────────────────────────────── */
+/* Stable data nodes, including keyed meal groups and rows. Search is user-owned. */
+function patchDataScreen(id,html){
+  const root=document.getElementById(id);
+  if(!root.firstElementChild){root.innerHTML=html;return;}
+  const template=document.createElement('template');template.innerHTML=html;
+  const key=n=>n.nodeType===1?(n.id||n.getAttribute('data-data-key')||n.tagName+':'+(n.getAttribute('class')||'').split(' ')[0]+(n.classList.contains('section-label')?':'+n.textContent:'')):'#text';
+  function patch(parent,desired){
+    const wanted=new Map();
+    for(const n of desired.childNodes){const k=n.nodeType+':'+key(n);wanted.set(k,(wanted.get(k)||0)+1);}
+    for(const n of [...parent.childNodes]){const k=n.nodeType+':'+key(n),count=wanted.get(k)||0;if(count)wanted.set(k,count-1);else n.remove();}
+    const remaining=[...parent.childNodes];let cursor=parent.firstChild;
+    for(const next of [...desired.childNodes]){
+      const pos=remaining.findIndex(n=>n.nodeType===next.nodeType&&key(n)===key(next));
+      const node=pos<0?next.cloneNode(true):remaining.splice(pos,1)[0];
+      if(node!==cursor)parent.insertBefore(node,cursor);
+      if(pos>=0){
+        if(node.nodeType===3){if(node.nodeValue!==next.nodeValue)node.nodeValue=next.nodeValue;}
+        else if(!node.matches('.food-search-wrap,#sresults')){
+          for(const a of [...node.attributes])if(!next.hasAttribute(a.name))node.removeAttribute(a.name);
+          for(const a of [...next.attributes])if(node.getAttribute(a.name)!==a.value)node.setAttribute(a.name,a.value);
+          patch(node,next);
+        }
+      }
+      cursor=node.nextSibling;
+    }
+    remaining.forEach(n=>n.remove());
+  }
+  patch(root,template.content);
+}
+function refreshDataScreens(){
+  for(const i of [0,2]){
+    if(document.getElementById('s'+i).firstElementChild){if(i===0)renderHome();else renderNutrition();}
+    else markScreenDirty(i);
+  }
+  markScreenDirty(3);
+}
 function renderHome(){
   const l=S.log,c=S.cfg;
   const meals=l.nutrition.meals||[];
@@ -1106,7 +1137,7 @@ function renderHome(){
   const totalProt=meals.reduce((a,m)=>a+(m.protein||0),0);
   const water=l.nutrition.water||0;
   const steps=l.steps||0;
-  const calGoal=c.targets.calories,protGoal=c.targets.protein,waterGoal=c.targets.water||4000;
+  const calGoal=c.targets.calories,protGoal=c.targets.protein,waterGoal=waterTarget();
   const allLogs=DB.allLogs();
   const recent=Object.values(allLogs).filter(x=>x.workout?.completed&&x.date!==S.today).sort((a,b)=>b.date.localeCompare(a.date));
   const lastDayIdx=recent.length>0?recent[0].workout.dayIndex:-1;
@@ -1119,7 +1150,7 @@ function renderHome(){
   let deltaHtml='<span class="wt-delta-same">Not logged today</span>';
   if(l.weight&&wh.length>1){const prev=wh.length>1?wh[wh.length-2].weight:c.body.currentWeight;const d=(toDisp(l.weight)-toDisp(prev)).toFixed(1);if(d<0)deltaHtml=`<span class="wt-delta-down">↓ ${Math.abs(d)} ${wUnit()} from yesterday</span>`;else if(d>0)deltaHtml=`<span class="wt-delta-up">↑ ${d} ${wUnit()} from yesterday</span>`;else deltaHtml=`<span class="wt-delta-same">Same as yesterday</span>`;}
   else if(l.weight)deltaHtml=`<span class="wt-delta-down" style="color:var(--green-text)">Logged ✓</span>`;
-  document.getElementById('s0').innerHTML=`
+  patchDataScreen('s0',`
   <div>
     <div class="screen-header">
       <div>
@@ -1158,7 +1189,7 @@ function renderHome(){
           <div style="font-size:14px;font-weight:700;color:var(--green-text);margin-top:3px">${Math.round((steps/(c.targets.steps||10000))*100)}%</div>
         </div>
       </div>
-      <div class="prog-track"><div class="prog-fill" id="steps-bar" style="width:0%;background:var(--green)"></div></div>
+      <div class="prog-track"><div class="prog-fill" id="steps-bar" style="transform:scaleX(${dataRatio(steps,c.targets.steps||10000)});background:var(--green)"></div></div>
       <button onclick="openStepsSheet()" style="margin-top:10px;font-size:12px;color:var(--green-text);font-weight:700;background:var(--green-dim);border:1px solid var(--green-border);border-radius:8px;padding:7px 14px">Log steps</button>
     </div>
     <div class="section-label">Quick log</div>
@@ -1193,14 +1224,7 @@ function renderHome(){
       </div>
       <button class="wt-log-btn" onclick="openWeightSheet()">Log weight</button>
     </div>
-  </div>`;
-  setTimeout(()=>{
-    animRing('cal',totalCal,calGoal);countUp('cal',totalCal);
-    animRing('pro',totalProt,protGoal);countUp('pro',totalProt);
-    animRing('h2o',water,waterGoal);
-    const sb=document.getElementById('steps-bar');
-    if(sb)setTimeout(()=>{sb.style.width=Math.min((steps/(S.cfg.targets.steps||10000))*100,100)+'%';},80);
-  },80);
+  </div>`);
 }
 function ciCard(type,emoji,label,done){
   return `<div class="ci-card${done?' done':''}" onclick="toggleCI('${type}')" id="ci-${type}">
@@ -1449,7 +1473,7 @@ function renderNutrition(){
   const remain=Math.max(0,c.targets.calories-tCal);
   const floor=Math.max(1600,c.targets.floor||c.targets.calories-200);
   const water=l.nutrition.water||0;
-  const waterGoal=c.targets.water||4000;
+  const waterGoal=waterTarget();
   const hasProteinPowder=c.proteinPowder!==false;
   const hasCreatine=(c.targets.creatine||0)>0;
   const shakeCount=meals.filter(m=>m.foodId==='p12'||m.name==='ON Gold Standard Whey Shake').length;
@@ -1468,7 +1492,7 @@ function renderNutrition(){
   meals.forEach(m=>{const g=m.mealType||'Other';if(!groups[g])groups[g]=[];groups[g].push(m);});
   const mealOrder=c.ramadanMode!==false?['Suhoor','Iftar','Other','Snack']:['Breakfast','Lunch','Dinner','Snack','Other'];
   const mealSections=mealOrder.filter(g=>groups[g]?.length>0).map(g=>renderMealSec(g,groups[g])).join('');
-  document.getElementById('s2').innerHTML=`
+  patchDataScreen('s2',`
   <div>
     <div class="screen-header">
       <div><div class="header-title">Nutrition</div><div class="header-sub">${fmtDate(S.today)}</div></div>
@@ -1489,17 +1513,17 @@ function renderNutrition(){
         <div class="macro-target-head">Daily macro targets${helpBtn('macroTargets')}</div>
         <div class="macro-bar-row">
           <div class="macro-bar-lbl" style="color:var(--coral-text)">Protein</div>
-          <div class="macro-bar-track"><div class="macro-bar-fill" id="pb" style="width:0%;background:var(--coral)"></div></div>
+          <div class="macro-bar-track"><div class="macro-bar-fill" id="pb" style="transform:scaleX(${dataRatio(tProt,c.targets.protein)});background:var(--coral)"></div></div>
           <div class="macro-bar-val">${Math.round(tProt)}g / ${c.targets.protein}g</div>
         </div>
         <div class="macro-bar-row">
           <div class="macro-bar-lbl" style="color:var(--orange-text)">Carbs</div>
-          <div class="macro-bar-track">${hasCarbGoal?'<div class="macro-bar-fill" id="cb" style="width:0%;background:var(--orange)"></div>':''}</div>
+          <div class="macro-bar-track">${hasCarbGoal?`<div class="macro-bar-fill" id="cb" style="transform:scaleX(${dataRatio(tCarbs,carbGoal)});background:var(--orange)"></div>`:''}</div>
           <div class="macro-bar-val">${Math.round(tCarbs)}g${hasCarbGoal?` / ${carbGoal}g`:""}</div>
         </div>
         <div class="macro-bar-row">
           <div class="macro-bar-lbl" style="color:var(--blue-light-text)">Fat</div>
-          <div class="macro-bar-track">${hasFatGoal?'<div class="macro-bar-fill" id="fb" style="width:0%;background:var(--blue-light)"></div>':''}</div>
+          <div class="macro-bar-track">${hasFatGoal?`<div class="macro-bar-fill" id="fb" style="transform:scaleX(${dataRatio(tFat,fatGoal)});background:var(--blue-light)"></div>`:''}</div>
           <div class="macro-bar-val">${Math.round(tFat)}g${hasFatGoal?` / ${fatGoal}g`:""}</div>
         </div>
       </div>
@@ -1528,7 +1552,7 @@ function renderNutrition(){
           ${water>=waterGoal?'🎯 Goal hit!':Math.round((water/waterGoal)*100)+'%'}
         </div>
       </div>
-      <div class="prog-track"><div class="prog-fill" id="wbar" style="width:0%;background:linear-gradient(90deg,var(--blue-light),var(--blue))"></div></div>
+      <div class="prog-track"><div class="prog-fill" id="wbar" style="transform:scaleX(${dataRatio(water,waterGoal)});background:linear-gradient(90deg,var(--blue-light),var(--blue))"></div></div>
       <div class="water-btns">
         <button class="water-btn" onclick="addWater(250)">+${fmtVolInc(250)}</button>
         <button class="water-btn" onclick="addWater(500)">+${fmtVolInc(500)}</button>
@@ -1537,21 +1561,13 @@ function renderNutrition(){
       </div>
     </div>
     <div style="height:16px"></div>
-  </div>`;
-  setTimeout(()=>{
-    const wg=c.targets.water||4000;
-    const pb=document.getElementById('pb');const cb=document.getElementById('cb');const fb=document.getElementById('fb');const wb=document.getElementById('wbar');
-    if(pb)pb.style.width=Math.min((tProt/(c.targets.protein))*100,100)+'%';
-    if(cb&&hasCarbGoal)cb.style.width=Math.min((tCarbs/carbGoal)*100,100)+'%';
-    if(fb&&hasFatGoal)fb.style.width=Math.min((tFat/fatGoal)*100,100)+'%';
-    if(wb)wb.style.width=Math.min((water/wg)*100,100)+'%';
-  },80);
+  </div>`);
 }
 function renderMealSec(name,items){
   const secCal=items.reduce((a,m)=>a+(m.cal||0),0);
-  return `<div class="meal-sec">
+  return `<div class="meal-sec" data-data-key="group-${esc(name)}">
     <div class="meal-sec-hdr"><div class="meal-sec-name">${name}</div><div class="meal-sec-cals">${Math.round(secCal)} kcal</div></div>
-    ${items.map(m=>`<div class="meal-item">
+    ${items.map(m=>`<div class="meal-item" data-data-key="meal-${esc(m.id)}">
       <div style="flex:1;min-width:0">
         <div class="meal-name">${m.name}</div>
         <div class="meal-macro">P: ${m.protein||0}g · C: ${m.carbs||0}g · F: ${m.fat||0}g</div>
@@ -1561,18 +1577,14 @@ function renderMealSec(name,items){
     </div>`).join('')}
   </div>`;
 }
-function delMeal(id){S.log.nutrition.meals=S.log.nutrition.meals.filter(m=>m.id!==id);DB.saveLog(S.today,S.log);renderScreen(2);}
+function delMeal(id){S.log.nutrition.meals=S.log.nutrition.meals.filter(m=>m.id!==id);DB.saveLog(S.today,S.log);refreshDataScreens();}
 function addWater(ml){
   S.log.nutrition.water=(S.log.nutrition.water||0)+ml;
   DB.saveLog(S.today,S.log);
-  const disp=document.getElementById('water-disp');
-  const bar=document.getElementById('wbar');
-  const w=S.log.nutrition.water;
-  const wg=S.cfg.targets.water||4000;
-  if(disp)disp.innerHTML=`${fmtVolNum(w)}<span style="font-size:14px;color:var(--t2);margin-left:3px">${volBigUnit()}</span>`;
-  if(bar)bar.style.width=Math.min((w/wg)*100,100)+'%';
+  const w=S.log.nutrition.water,wg=waterTarget();
   toast('💧',`+${fmtVolInc(ml)} added`,`Total: ${fmtVolBig(w)} / ${fmtVolBig(wg)}`);
   if(w>=wg&&!S.log.checkins.water){S.log.checkins.water=true;DB.saveLog(S.today,S.log);setTimeout(()=>toast('🎯','Water goal reached!',`${fmtVolBig(wg)} complete 🎉`),1200);}
+  refreshDataScreens();
 }
 function quickShake(){const s=PRESETS.find(p=>p.id==='p12');if(s)addMealItem(s,'Other');}
 /* Creatine carries no calories, so putting it in the meal list would only add
@@ -1581,7 +1593,7 @@ function quickShake(){const s=PRESETS.find(p=>p.id==='p12');if(s)addMealItem(s,'
 function toggleCreatine(){
   S.log.creatine=S.log.creatine?0:(S.cfg.targets.creatine||5);
   DB.saveLog(S.today,S.log);
-  renderScreen(2);
+  renderNutrition();
   if(S.log.creatine)toast('\u{1F48A}','Creatine logged',S.log.creatine+'g. Timing does not matter, showing up every day does.');
 }
 /* The food database is data/foods.json, not inlined here. Those entries would
@@ -1763,10 +1775,11 @@ function addMealItem(food,mealType){
   if(!S.log.nutrition.meals)S.log.nutrition.meals=[];
   S.log.nutrition.meals.push(meal);
   DB.saveLog(S.today,S.log);
-  closeSheet();clearSearch();renderScreen(2);
+  closeSheet();
   toast('🍽️',`${food.name.slice(0,26)} logged`,`${food.cal} kcal · ${food.protein||0}g protein`);
   const tProt=S.log.nutrition.meals.reduce((a,m)=>a+(m.protein||0),0);
   if(tProt>=S.cfg.targets.protein&&!S.log.checkins.protein){S.log.checkins.protein=true;DB.saveLog(S.today,S.log);setTimeout(()=>toast('🥩','Protein goal reached!',`${Math.round(tProt)}g / ${S.cfg.targets.protein}g 💪`),1000);}
+  refreshDataScreens();
 }
 /* ── ONBOARDING ─────────────────────────────────────────────────────────
    The app shipped with one person's body hardcoded into DEF_SETTINGS. That is
@@ -2768,7 +2781,7 @@ function saveWeight(){
   S.log.weight=kg;DB.saveLog(S.today,S.log);
   DB.addWeight(S.today,kg);S.cfg.body.currentWeight=kg;DB.saveSettings(S.cfg);
   closeSheet();toast('⚖️',`Weight logged: ${v} ${wUnit()}`,'Saved to history');
-  if(S.screen===0)renderScreen(0);
+  if(document.getElementById('s0').firstElementChild)renderHome();else markScreenDirty(0);markScreenDirty(3);markScreenDirty(1);
 }
 function openStepsSheet(date){
   const d=date||S.today;
@@ -2800,7 +2813,7 @@ function saveSteps(){
   const v=parseInt(document.getElementById('si')?.value)||0;
   saveStepsFor(d,v);closeSheet();
   toast('👟',`${v.toLocaleString()} steps logged`,d===S.today?'':`for ${shortDate(d)}`);
-  if(S.screen===0)renderScreen(0);if(S.screen===3)renderScreen(3);
+  if(document.getElementById('s0').firstElementChild)renderHome();else markScreenDirty(0);markScreenDirty(3);if(S.screen===3)renderScreen(3);
 }
 function openWaterSheet(){
   const w=S.log.nutrition.water||0,wg=S.cfg.targets.water||4000,vu=volUnit()==='floz'?'fl oz':'ml';
