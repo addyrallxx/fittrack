@@ -22,3 +22,5 @@
 - Adnan is playing a game on this laptop. At most ONE headless Chrome at a time, close it when done, scan for a free CDP port. Finish correctness and geometry first; measure performance LAST and ONCE, record the number with a "machine busy" caveat, and never iterate on frame timings.
 - Append to your progress log after each part. End the log with a section headed `Final report`.
 - Before you finish, these must pass on your tree: `node test/syntax-check.mjs` and the suites listed in `NEXT-SESSION.md`, section "Testing".
+- From 2026-10-05 the feel gate `node test/feel.test.mjs` must also pass (it reuses a server already on port 8899). Never add a KNOWN entry to it; fix the cause instead.
+- `test/serve.test.mjs` hardcodes port 8899, which another process may hold: run it on a free port with an in-memory port substitution as earlier runs did, and never kill a server you did not start.
