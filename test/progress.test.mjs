@@ -351,6 +351,20 @@ check('frequently logged food outranks a high-pop never-logged match', () => {
   assert.equal(history.habit.last, '2026-08-27');
 });
 
+check('featured breaks search ties while nutritional staple does not', () => {
+  const foods = [
+    { id: 'nutritional', name: 'Apple A', pop: 50, tags: ['staple'] },
+    { id: 'plain', name: 'Apple B', pop: 50, tags: [] },
+    { id: 'featured', name: 'Apple C', pop: 50, tags: ['featured'] },
+    { id: 'variant', name: 'Apple D', pop: 50, tags: ['featured-variant'] },
+  ];
+  assert.deepEqual(Array.from(T.searchFoods('apple', foods, {}), f => f.id),
+    ['featured', 'nutritional', 'plain', 'variant']);
+  foods[0].name = 'Apple Z';
+  assert.deepEqual(Array.from(T.searchFoods('apple', foods, {}), f => f.id),
+    ['featured', 'plain', 'variant', 'nutritional']);
+});
+
 await acheck('sendSub carries confirmed dose steps and otherwise sends null', async () => {
   const requests = [];
   const app = loadApp(async (url, options) => { requests.push(JSON.parse(options.body)); return { ok: true }; });

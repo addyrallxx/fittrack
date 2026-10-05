@@ -15,3 +15,6 @@ docs/audit-*/**/*.in.txt
 docs/audit-*/**/*.log.err
 docs/research/2026-08-26-agent-journal.jsonl
 docs/research/2026-08-26-rebuild-research.json
+
+# Private delivery history stays outside the repository
+data/orders-parsed.json

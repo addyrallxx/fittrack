@@ -16,8 +16,8 @@
    "src": "estimated: no published Pizza 73 nutrition found, comparable to a generic garlic cheese bread wedge order scaled to 12 pieces",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "low-protein-density"
+    "low-protein-density",
+    "featured"
    ],
    "note": "12 garlic cheese bread wedges per order; a few wedges are a smaller portion.",
    "pop": 92
@@ -36,9 +36,9 @@
    "src": "derived from Popeyes Canada published 4-piece chicken nutrition (approx. 830 kcal for dark meat), published biscuit and Cajun fries figures, sweetened iced tea estimated",
    "conf": "derived",
    "tags": [
-    "featured",
     "high-protein",
-    "fried"
+    "fried",
+    "featured"
    ],
    "note": "Swapping the iced tea for a diet drink and fries for mashed potatoes cuts close to 300 kcal for the same chicken and protein.",
    "pop": 92
@@ -57,9 +57,9 @@
    "src": "derived from Popeyes Canada published 4-piece chicken nutrition, published mashed potatoes and biscuit figures, Diet Coke is 0 kcal",
    "conf": "derived",
    "tags": [
-    "featured",
     "high-protein",
-    "fried"
+    "fried",
+    "featured"
    ],
    "note": "Roughly 290 fewer kcal than the fries-and-sweet-tea variant, from the side and drink choice.",
    "pop": 92
@@ -78,8 +78,8 @@
    "src": "McDonald's Canada published nutrition (430 kcal); carbs/fat split corrected to 73C/13F to match McDonald's own published breakdown, the old 65C/15F split didn't match",
    "conf": "published",
    "tags": [
-    "featured",
-    "low-protein-density"
+    "low-protein-density",
+    "featured"
    ],
    "note": "Mostly carbs and fat with very little protein.",
    "pop": 92
@@ -117,8 +117,8 @@
    "src": "estimated: no published Flipp'n Burgers nutrition found, comparable to a generic bacon cheddar smash-style burger; modeled with beef bacon in place of pork bacon (confirm with the shop which bacon they use)",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "high-protein"
+    "high-protein",
+    "featured"
    ],
    "note": "Two sauces (Flipp'n sauce and mayo) on one burger; dropping one is a simple 80 to 100 kcal trim.",
    "pop": 92
@@ -137,8 +137,8 @@
    "src": "estimated: no published PrimeTime Donair & Poutine nutrition found, comparable to a triple smash-patty burger combo with fries",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "high-protein"
+    "high-protein",
+    "featured"
    ],
    "note": "High protein and fat from three patties. Two patties instead of three would cut roughly 250 kcal and 20 g fat.",
    "pop": 92
@@ -157,9 +157,9 @@
    "src": "USDA FDC 173806, brewed coffee",
    "conf": "published",
    "tags": [
-    "featured",
     "zero-calorie",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
    "note": "Coffee can blunt appetite.",
    "pop": 92
@@ -178,8 +178,8 @@
    "src": "estimated: no published Foodyard nutrition found, comparable to a standard butter chicken and rice bowl",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "high-protein"
+    "high-protein",
+    "featured"
    ],
    "note": "A reasonably balanced bowl order; the butter chicken cream sauce is the fat source, everything else is lean.",
    "pop": 92
@@ -236,8 +236,8 @@
    "src": "derived: Five Guys published Cheeseburger base (two patties, 840 kcal/47P/40C/55F) plus published per-topping figures for the three sauces (mayo 100 kcal/11F, ketchup 15 kcal/4C, BBQ sauce 60 kcal/16C); a single mayo packet alone is 90 to 100 kcal, so the old +40 kcal estimate for three sauces was too low",
    "conf": "derived",
    "tags": [
-    "featured",
-    "high-protein"
+    "high-protein",
+    "featured"
    ],
    "note": "Five Guys' regular cheeseburger is two patties by default; a Little Cheeseburger (one patty) would roughly halve the base while keeping most of the toppings (mushrooms, grilled onions, peppers). Mayo alone is close to 100 kcal of the sauce total here, dropping it is the biggest single trim.",
    "pop": 92
@@ -275,8 +275,8 @@
    "src": "estimated: no published Biryani Garden nutrition found, comparable to a typical South Asian chicken biryani combo platter portion",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "rice-heavy"
+    "rice-heavy",
+    "featured"
    ],
    "note": "Rice-heavy dish. Eating half the rice and keeping all the chicken improves the protein-to-carb ratio.",
    "pop": 92
@@ -295,8 +295,8 @@
    "src": "McDonald's Canada published nutrition (360 kcal)",
    "conf": "published",
    "tags": [
-    "featured",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
    "note": "Decent breakfast protein source relative to its size.",
    "pop": 92
@@ -315,9 +315,9 @@
    "src": "estimated: no published Shawarma Palace nutrition found, comparable to a typical chicken shawarma platter with rice/salad and multiple sauces",
    "conf": "estimate",
    "tags": [
-    "featured",
     "high-protein",
-    "heavy-sauce"
+    "heavy-sauce",
+    "featured"
    ],
    "note": "Three sauces on one platter (garlic, spicy garlic, sweet donair sauce) stack up fat fast. Picking one sauce instead of all three is a realistic 100-plus kcal save.",
    "pop": 92
@@ -336,8 +336,8 @@
    "src": "estimated: no published Boardwalk Fries Burgers Shakes nutrition found, comparable to a generic loaded bacon fries side",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "low-protein-density"
+    "low-protein-density",
+    "featured"
    ],
    "note": "Uses beef bacon, so no pork substitution is needed.",
    "pop": 92
@@ -356,8 +356,8 @@
    "src": "estimated: no published Boardwalk Fries Burgers Shakes nutrition found, comparable to a standard smash burger combo with a small fried side",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "high-protein"
+    "high-protein",
+    "featured"
    ],
    "note": "Diet cola instead of regular soda is already the right call here and saves roughly 150 kcal versus a sugared drink.",
    "pop": 92
@@ -376,8 +376,8 @@
    "src": "Coca-Cola published nutrition, Coca-Cola Zero Sugar is 0 kcal per serving",
    "conf": "published",
    "tags": [
-    "featured",
-    "zero-calorie"
+    "zero-calorie",
+    "featured"
    ],
    "note": "Zero calorie, no macro impact. Fine to log purely for hydration/habit tracking.",
    "pop": 92
@@ -396,9 +396,9 @@
    "src": "Coca-Cola Canada nutrition page 2025",
    "conf": "published",
    "tags": [
-    "featured",
     "zero-calorie",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
    "note": "",
    "pop": 92
@@ -417,11 +417,10 @@
    "src": "Coca-Cola Canada nutrition page 2025, scaled from per 100 mL value of 0 kcal",
    "conf": "published",
    "tags": [
-    "featured",
     "zero-calorie",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
-   "note": "",
    "pop": 92
   },
   {
@@ -438,10 +437,10 @@
    "src": "USDA FDC, creatine monohydrate is metabolically inert, 0 kcal per serving",
    "conf": "published",
    "tags": [
-    "featured",
     "daily",
     "low-effort",
-    "one-tap"
+    "one-tap",
+    "featured"
    ],
    "note": "Timing does not matter, only daily consistency does. Take with water any time of day.",
    "pop": 92
@@ -498,8 +497,8 @@
    "src": "Fuze Beverage Canada nutrition label",
    "conf": "published",
    "tags": [
-    "featured",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
    "note": "",
    "pop": 92
@@ -518,8 +517,8 @@
    "src": "derived: KFC Canada's own current nutrition sheet (kfc.ca, updated Feb 18 2025) lists Original Recipe Drumstick at 140 kcal/8F/2C/15P, unchanged from the earlier note here, plus Seasoned French Fries Individual size at 310 kcal/13F/45C/5P. Summed that is 450 kcal, not the 370 kcal this entry used to show; the drumstick figure was already right, the fries portion was undercounted",
    "conf": "derived",
    "tags": [
-    "featured",
-    "high-protein"
+    "high-protein",
+    "featured"
    ],
    "note": "The individual fries side is most of this combo's calories (310 of 450). More drumsticks and fewer fries or wraps increase protein for a similar calorie total.",
    "pop": 92
@@ -540,7 +539,6 @@
    "tags": [
     "featured"
    ],
-   "note": "",
    "pop": 92
   },
   {
@@ -557,8 +555,8 @@
    "src": "derived from KFC Canada published Snacker Wrap and individual fries nutrition",
    "conf": "derived",
    "tags": [
-    "featured",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
    "note": "Low protein for the calorie count. Two of these plus a piece of Original Recipe chicken would hit more protein for similar total kcal.",
    "pop": 92
@@ -577,8 +575,8 @@
    "src": "derived from KFC Canada published Snacker Wrap and individual fries nutrition, spicy sauce estimated similar to regular",
    "conf": "derived",
    "tags": [
-    "featured",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
    "note": "Same profile as the regular Snacker Wrap; spice adds negligible calories.",
    "pop": 92
@@ -597,8 +595,8 @@
    "src": "estimated: no published Osmow's Canada nutrition found, comparable to a large mixed rice-and-fries shawarma bowl with garlic sauce",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "heavy-sauce"
+    "heavy-sauce",
+    "featured"
    ],
    "note": "Garlic sauce on the side allows portion control and can cut 50 to 100 kcal of sauce.",
    "pop": 92
@@ -617,9 +615,9 @@
    "src": "derived from Subway Canada published bread, chicken, cheese and sauce component nutrition",
    "conf": "derived",
    "tags": [
-    "featured",
     "high-protein",
-    "heavy-sauce"
+    "heavy-sauce",
+    "featured"
    ],
    "note": "Mayonnaise plus garlic aioli together are close to 170 kcal and 19 g fat of the total. Dropping one of the two sauces keeps the sub recognizable and saves close to that amount.",
    "pop": 92
@@ -638,9 +636,9 @@
    "src": "derived from Subway Canada published bread, grilled chicken, cheese and sauce nutrition components, summed",
    "conf": "derived",
    "tags": [
-    "featured",
     "high-protein",
-    "heavy-sauce"
+    "heavy-sauce",
+    "featured"
    ],
    "note": "Sauce variants include hot honey with chipotle southwest, or hot honey with mayo and garlic aioli. Dropping to hot honey alone saves roughly 100 to 130 kcal and 15 to 20 g fat.",
    "pop": 92
@@ -659,8 +657,8 @@
    "src": "Five Guys published nutrition for Large Cajun Style Fries (myfooddiary.com/fatsecret aggregation of Five Guys' own figures): 1328 kcal, 57 g fat, 184 g carbs, 20 g protein; the previous split (71F/154C/18P) had the fat and carbs numbers swapped-ish and didn't match the published breakdown",
    "conf": "published",
    "tags": [
-    "featured",
-    "low-protein-density"
+    "low-protein-density",
+    "featured"
    ],
    "note": "A large order can be split across two meals; a Regular order is a smaller portion.",
    "pop": 92
@@ -679,8 +677,8 @@
    "src": "estimated, comparable to a standard restaurant mango juice/nectar serving, no published figure found",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "low-protein-density"
+    "low-protein-density",
+    "featured"
    ],
    "note": "44 g of straight sugar-equivalent carbs with zero protein. Water or a diet drink alongside the platter would free up real carb budget for the meal itself.",
    "pop": 92
@@ -699,9 +697,9 @@
    "src": "USDA FDC 746782, 2% milk",
    "conf": "published",
    "tags": [
-    "featured",
     "high-protein",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
    "note": "Milk provides protein with little preparation.",
    "pop": 92
@@ -720,9 +718,9 @@
    "src": "estimated: no published Shawarma Palace nutrition found, comparable to a mixed lamb/beef/chicken shawarma platter with multiple sauces",
    "conf": "estimate",
    "tags": [
-    "featured",
     "high-protein",
-    "heavy-sauce"
+    "heavy-sauce",
+    "featured"
    ],
    "note": "Lamb pushes the fat noticeably above the pure chicken platter #7.",
    "pop": 92
@@ -741,9 +739,9 @@
    "src": "Centrum Canada product label",
    "conf": "published",
    "tags": [
-    "featured",
     "daily",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
    "note": "Take with a meal for absorption, but do not stress the exact timing, daily consistency is what counts.",
    "pop": 92
@@ -762,9 +760,9 @@
    "src": "derived from Subway Canada published bread, chicken, double-cheese and sauce component nutrition, summed for a 3-sauce build",
    "conf": "derived",
    "tags": [
-    "featured",
     "heavy-sauce",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
    "note": "Chipotle southwest, garlic aioli and peppercorn ranch stacked together are roughly 280 kcal and 30 g fat of sauce. Using one sauce reduces calories and fat without changing bread, cheese, or protein.",
    "pop": 92
@@ -783,8 +781,8 @@
    "src": "derived from Subway Canada published bread, chicken, double-cheese and sauce component nutrition",
    "conf": "derived",
    "tags": [
-    "featured",
-    "high-protein"
+    "high-protein",
+    "featured"
    ],
    "note": "35 g protein for 610 kcal. Double cheese adds roughly 50 kcal and 4 g fat versus single cheese.",
    "pop": 92
@@ -803,8 +801,8 @@
    "src": "estimated: no published Osmow's Canada nutrition found, comparable to a large fries-or-rice shawarma bowl with a medium serving of garlic sauce (garlic sauce is a toum-style emulsion, essentially all fat)",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "heavy-sauce"
+    "heavy-sauce",
+    "featured"
    ],
    "note": "Garlic sauce (toum) is oil-based and is most of the fat here. Asking for 'light garlic sauce' instead of medium would plausibly cut 150 to 200 kcal and 15 to 20 g fat without changing the order otherwise.",
    "pop": 92
@@ -823,8 +821,8 @@
    "src": "estimated: no published Osmow's Canada nutrition found, comparable to a regular-size shawarma skewer platter",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "high-protein"
+    "high-protein",
+    "featured"
    ],
    "note": "Smaller portion than the Large items from the same chain.",
    "pop": 92
@@ -845,7 +843,6 @@
    "tags": [
     "featured"
    ],
-   "note": "",
    "pop": 92
   },
   {
@@ -862,9 +859,9 @@
    "src": "estimated: no published Chicken World nutrition found, comparable to a typical peri peri chicken and rice platter",
    "conf": "estimate",
    "tags": [
-    "featured",
     "high-protein",
-    "rice-heavy"
+    "rice-heavy",
+    "featured"
    ],
    "note": "Nutrition values are per platter.",
    "pop": 92
@@ -883,9 +880,9 @@
    "src": "estimated: no published Osmow's Canada nutrition found, comparable to a standard chicken shawarma wrap with garlic sauce",
    "conf": "estimate",
    "tags": [
-    "featured",
     "high-protein",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
    "note": "Portable wrap with protein.",
    "pop": 92
@@ -923,8 +920,8 @@
    "src": "estimated, comparable to a standard fast-food mayo-based dip cup, no published Popeyes Canada figure found for this specific sauce",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "heavy-sauce"
+    "heavy-sauce",
+    "featured"
    ],
    "note": "Pure added fat with no protein. Easy to skip entirely without changing the meal.",
    "pop": 92
@@ -943,9 +940,9 @@
    "src": "derived from Subway Canada published SubDog base plus bread, cheese and sauce component nutrition",
    "conf": "derived",
    "tags": [
-    "featured",
     "heavy-sauce",
-    "low-protein-density"
+    "low-protein-density",
+    "featured"
    ],
    "note": "Three sauces (hot honey, mayonnaise, garlic aioli) add roughly 200 kcal and 23 g fat on top of the dog itself, for only 21 g protein. Using just hot honey would save close to 170 kcal and 19 g fat.",
    "pop": 92
@@ -964,8 +961,8 @@
    "src": "derived from USDA FDC brewed tea (0 kcal) plus 30 mL 2% milk (~20 kcal)",
    "conf": "derived",
    "tags": [
-    "featured",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
    "note": "Traditional Bangladeshi style cha, a small daily protein and calorie top-up, harmless at this size.",
    "pop": 92
@@ -984,9 +981,9 @@
    "src": "derived from Subway Canada published bread, chicken, cheese and sauce component nutrition, summed for a 5-sauce build",
    "conf": "derived",
    "tags": [
-    "featured",
     "heavy-sauce",
-    "low-effort"
+    "low-effort",
+    "featured"
    ],
    "note": "Up to five sauces on one sandwich. Using just sweet onion teriyaki would save roughly 250 to 300 kcal and 30 g fat.",
    "pop": 92
@@ -1005,8 +1002,8 @@
    "src": "estimated: no published Flirty Bird nutrition found, comparable to a standard Nashville hot fried chicken sandwich",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "fried"
+    "fried",
+    "featured"
    ],
    "note": "Fried chicken sandwiches like this usually carry 30 to 40 g fat mostly from the fry oil and the mayo-based sauce; asking for sauce on the side is the easy trim.",
    "pop": 92
@@ -1025,9 +1022,9 @@
    "src": "estimated: no published Flirty Bird nutrition found, comparable to a standard fried chicken tender order with a mayo-based dipping sauce",
    "conf": "estimate",
    "tags": [
-    "featured",
     "high-protein",
-    "fried"
+    "fried",
+    "featured"
    ],
    "note": "Comeback sauce is mayo-based; ordering it on the side and using less would meaningfully cut the fat here.",
    "pop": 92
@@ -1046,8 +1043,8 @@
    "src": "estimated: no published Spice Avenue nutrition found, comparable to a typical Bengali beef bhuna khichuri portion",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "rice-heavy"
+    "rice-heavy",
+    "featured"
    ],
    "note": "Higher fat than the chicken version because beef bhuna carries more fat per gram of meat.",
    "pop": 92
@@ -1066,8 +1063,8 @@
    "src": "estimated: no published Spice Avenue nutrition found, comparable to a typical Bengali chicken bhuna khichuri portion",
    "conf": "estimate",
    "tags": [
-    "featured",
-    "rice-heavy"
+    "rice-heavy",
+    "featured"
    ],
    "note": "One of the more balanced items in this file: rice, lentils and chicken together rather than a straight fried item. The bhuna gravy oil is the main fat source; asking for less oil would trim a few grams of fat without changing the dish.",
    "pop": 92
@@ -2542,7 +2539,6 @@
     "zero-calorie",
     "low-effort"
    ],
-   "note": "",
    "pop": 62
   },
   {
@@ -4698,7 +4694,6 @@
     "high-protein",
     "low-effort"
    ],
-   "note": "",
    "pop": 95
   },
   {
@@ -4718,7 +4713,6 @@
     "high-protein",
     "low-effort"
    ],
-   "note": "",
    "pop": 95
   },
   {

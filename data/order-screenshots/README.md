@@ -1,6 +1,5 @@
-Drop real order screenshots here.
+# Order screenshots
 
-Filename hint: <app>-<restaurant>-<YYYY-MM-DD>.jpg, but anything works.
-These get parsed into data/foods.json with real portion sizes.
-
-Nothing here is committed except this README - see .gitignore.
+This directory is reserved for local, untracked source images.
+Keep private receipts and delivery history outside the repository.
+Only this README is intended to be tracked.

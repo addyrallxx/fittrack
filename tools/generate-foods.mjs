@@ -3,7 +3,8 @@ import crypto from 'node:crypto';
 
 const FILE = new URL('../data/foods.json', import.meta.url);
 const ORIGINAL_COUNT = 244;
-const ORIGINAL_IMMUTABLE_HASH = '0d9b7973dde30ce4369900467fdd403bd2dbb283c690e6ca4614091124b5b9fb';
+// Rebased intentionally after separating nutritional staple and featured tags.
+const ORIGINAL_IMMUTABLE_HASH = 'be1ffe29d4907e303ea4a2c84db1f772fdee192e94a1bf043d539a28ce1b3def';
 const db = JSON.parse(fs.readFileSync(FILE, 'utf8'));
 const withoutPop = entry => Object.fromEntries(Object.entries(entry).filter(([key]) => key !== 'pop'));
 const originals = db.entries.slice(0, ORIGINAL_COUNT).map(withoutPop);
