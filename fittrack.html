@@ -502,18 +502,22 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .toggle-knob{width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform 0.25s var(--spring);box-shadow:0 1px 4px rgba(0,0,0,0.3);}
 .toggle.on .toggle-knob{transform:translateX(18px);}
 /* BOTTOM SHEETS */
-#backdrop{position:fixed;inset:0;background:rgba(0,0,0,0);z-index:200;transition:background 0.3s var(--smooth);pointer-events:none;}
-#backdrop.show{background:rgba(0,0,0,0.72);pointer-events:all;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
-#sheet-wrap{position:fixed;bottom:0;left:0;right:0;z-index:201;transform:translateY(100%);transition:transform 0.4s var(--spring);}
+#sheet-wrap{position:fixed;inset:auto 0 0;margin:0;width:100%;max-width:none;max-height:92dvh;padding:0;border:0;background:transparent;color:var(--t1);overflow:visible;transform:translateY(100%);transition:transform var(--dur-sheet) var(--ease-sheet);}
 #sheet-wrap.show{transform:translateY(0);}
+#sheet-wrap::backdrop,#celebration::backdrop{background:rgba(0,0,0,0.72);opacity:0;transition:opacity var(--dur-sheet) var(--ease-sheet);}
+#sheet-wrap.show::backdrop,#celebration.show::backdrop{opacity:1;}
 .sheet{background:var(--s1);border-radius:var(--r-xl) var(--r-xl) 0 0;border-top:1px solid var(--border);padding-bottom:calc(var(--safe-b) + 10px);max-height:92dvh;overflow-y:auto;overscroll-behavior:contain;}
 .sheet::-webkit-scrollbar{display:none;}
-.sheet-handle{width:36px;height:4px;background:var(--s4);border-radius:2px;margin:12px auto 6px;}
-.sheet-hdr{padding:8px 20px 16px;display:flex;align-items:center;justify-content:space-between;}
+.sheet-handle{height:24px;display:flex;align-items:center;justify-content:center;touch-action:none;}
+.sheet-handle::before{content:'';width:36px;height:4px;background:var(--s4);border-radius:2px;}
+.sheet-hdr{padding:8px 20px 16px;display:flex;align-items:center;justify-content:space-between;touch-action:none;}
 .sheet-title{font-size:18px;font-weight:700;}
-.sheet-close{width:30px;height:30px;background:var(--s3);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.sheet-close{width:48px;height:48px;background:var(--s3);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.sheet-close:focus-visible{outline:2px solid var(--orange);outline-offset:3px;}
+@media(prefers-reduced-motion:reduce){#sheet-wrap,#sheet-wrap::backdrop,#celebration,#celebration::backdrop{transition:none;}}
 .sheet-close svg{width:13px;height:13px;stroke:var(--t2);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
 .sheet-body{padding:0 20px;}
+#sheet-wrap .inp-field{transition:none;}
 .inp-grp{margin-bottom:14px;}
 .inp-lbl{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:7px;}
 .inp-field{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px 14px;font-size:15px;color:var(--t1);transition:border-color 0.2s;}
@@ -543,10 +547,10 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .preset-macro{font-size:10px;color:var(--t2);margin-top:2px;}
 .preset-cal{font-size:14px;font-weight:700;color:var(--orange-text);}
 /* CELEBRATION */
-#celebration{position:fixed;inset:0;z-index:300;pointer-events:none;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.35s var(--smooth);}
-#celebration.show{opacity:1;pointer-events:all;}
-.cel-card{background:var(--s2);border:1px solid var(--green-border);border-radius:var(--r-xl);padding:32px 28px;text-align:center;width:82%;max-width:310px;transform:scale(0.8);transition:transform 0.5s var(--spring);}
-#celebration.show .cel-card{transform:scale(1);}
+#celebration{position:fixed;inset:0;margin:auto;padding:0;border:0;background:transparent;color:var(--t1);width:100%;max-width:none;height:100%;max-height:none;opacity:0;transition:opacity var(--dur-sheet) var(--ease-sheet);}
+#celebration[open]{display:flex;align-items:center;justify-content:center;}
+#celebration.show{opacity:1;}
+.cel-card{background:var(--s2);border:1px solid var(--green-border);border-radius:var(--r-xl);padding:32px 28px;text-align:center;width:82%;max-width:310px;}
 .cel-icon{font-size:52px;margin-bottom:12px;}
 .cel-title{font-size:22px;font-weight:800;color:var(--green-text);margin-bottom:8px;}
 .cel-sub{font-size:14px;color:var(--t2);line-height:1.55;margin-bottom:20px;}
@@ -581,9 +585,8 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
   <div id="tab-bar"></div>
 </div>
 <div id="onboard"></div>
-<div id="backdrop"></div>
-<div id="sheet-wrap"></div>
-<div id="celebration">
+<dialog id="sheet-wrap" aria-modal="true" aria-label="Sheet"></dialog>
+<dialog id="celebration" aria-modal="true" aria-labelledby="cel-title" aria-describedby="cel-sub">
   <div class="confetti-wrap" id="confetti-wrap"></div>
   <div class="cel-card">
     <div class="cel-icon" id="cel-icon">🎉</div>
@@ -591,7 +594,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
     <div class="cel-sub" id="cel-sub"></div>
     <button class="sheet-btn sheet-btn-primary" onclick="hideCel()" style="margin:0">Keep going 💪</button>
   </div>
-</div>
+</dialog>
 <div id="toast">
   <div class="toast-icon" id="t-icon">✅</div>
   <div>
@@ -2782,22 +2785,119 @@ function toggleRamadan(){
   DB.saveSettings(S.cfg);renderScreen(4);
 }
 /* ── BOTTOM SHEETS ──────────────────────────── */
+/* One history entry and opener for the entire modal session, including handoffs. */
+let modalSession=null,modalBackPending=false,modalQueuedOpen=null,modalSerial=0;
+function modalFocus(dialog){
+  const first=dialog.querySelector('input:not([disabled]):not([type="hidden"]),textarea:not([disabled]),select:not([disabled])')||dialog.querySelector('.sheet-close,button');
+  first?.focus({preventScroll:true});
+}
+function modalBack(){
+  if(!modalSession&&!modalBackPending)return false;
+  const pending=modalBackPending;
+  modalBackPending=false;
+  if(!pending)modalDismiss(true);
+  const idx=navBackHandlers.indexOf(modalBack);
+  if(idx>=0)navBackHandlers.splice(idx,1);
+  const queued=modalQueuedOpen;modalQueuedOpen=null;
+  if(queued){modalSession?.finish?.();queued();}
+  return true;
+}
+function modalPresent(dialog,fill){
+  if(modalBackPending){modalQueuedOpen=()=>modalPresent(dialog,fill);return;}
+  if(modalSession?.closing)modalSession.finish();
+  const replacing=!!modalSession;
+  if(!modalSession){
+    modalSession={opener:document.activeElement,dialog:null,closing:false};
+    history.pushState({...history.state,fittrackModal:true},'',location.pathname+location.search);
+    navBackHandlers.push(modalBack);
+  }
+  const session=modalSession,previous=session.dialog;
+  const serial=++modalSerial;
+  clearTimeout(session.timer);
+  session.closing=false;
+  previous?.getAnimations().forEach(a=>a.cancel());
+  if(previous&&previous!==dialog){previous.classList.remove('show');previous.close();}
+  session.dialog=dialog;
+  dialog.style.removeProperty('transform');dialog.style.removeProperty('transition');
+  dialog.getAnimations().forEach(a=>a.cancel());
+  fill();
+  if(!dialog.open){dialog.showModal();dialog.getBoundingClientRect();}
+  dialog.classList.add('show');
+  if(replacing&&!prefersReducedMotion())dialog.firstElementChild?.animate([{opacity:0},{opacity:1}],{duration:120,easing:'ease-out'});
+  modalFocus(dialog);
+  dialog.oncancel=e=>{e.preventDefault();modalDismiss();};
+  /* Keep the Tab boundary inside the dialog even when Chrome targets its toolbar. */
+  dialog.onkeydown=e=>{
+    if(e.key!=='Tab')return;
+    const controls=[...dialog.querySelectorAll('button,input,textarea,select,a[href],[tabindex]')].filter(el=>!el.disabled&&el.tabIndex>=0&&el.getClientRects().length);
+    const first=controls[0],last=controls[controls.length-1];
+    if(!first){e.preventDefault();dialog.focus();}
+    else if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+  };
+  dialog.onclose=()=>{if(!dialog.open&&modalSession===session&&!session.closing&&serial===modalSerial)modalDismiss();};
+  let outside=false;
+  dialog.onpointerdown=e=>{outside=e.target===dialog;};
+  dialog.onclick=e=>{if(outside&&e.target===dialog)modalDismiss();outside=false;};
+}
+function modalDismiss(fromBack=false){
+  modalQueuedOpen=null;
+  const session=modalSession;if(!session)return;
+  if(session.closing)return;
+  session.closing=true;
+  const dialog=session.dialog,serial=++modalSerial;
+  dialog.firstElementChild?.getAnimations().forEach(a=>a.cancel());
+  dialog.style.removeProperty('transform');dialog.style.removeProperty('transition');
+  dialog.classList.remove('show');
+  if(!fromBack){modalBackPending=true;history.back();}
+  const finish=()=>{
+    if(modalSession!==session||serial!==modalSerial)return;
+    dialog.close();
+    if(dialog.id==='sheet-wrap')dialog.replaceChildren();
+    document.getElementById('confetti-wrap').replaceChildren();
+    modalSession=null;
+    if(session.opener?.isConnected)session.opener.focus({preventScroll:true});
+  };
+  session.finish=finish;
+  if(prefersReducedMotion())finish();
+  else session.timer=setTimeout(finish,parseFloat(getComputedStyle(dialog).transitionDuration)*1000+30);
+}
+function bindSheetDrag(dialog){
+  let drag=null;
+  dialog.addEventListener('pointerdown',e=>{
+    if(!e.isPrimary||e.button!==0||modalSession?.closing||!e.target.closest('.sheet-handle,.sheet-hdr')||e.target.closest('button')||dialog.querySelector('.sheet').scrollTop>0)return;
+    drag={id:e.pointerId,start:e.clientY,last:e.clientY,time:e.timeStamp,velocity:0,height:dialog.getBoundingClientRect().height};
+    dialog.setPointerCapture(e.pointerId);dialog.style.transition='none';
+  },{passive:true});
+  dialog.addEventListener('pointermove',e=>{
+    if(!drag||drag.id!==e.pointerId)return;
+    const dt=e.timeStamp-drag.time;
+    if(dt>0)drag.velocity=(e.clientY-drag.last)/dt;
+    drag.last=e.clientY;drag.time=e.timeStamp;
+    const dy=e.clientY-drag.start;
+    dialog.style.transform=`translateY(${dy>=0?dy:Math.max(-24,dy*0.3)}px)`;
+  },{passive:true});
+  const release=e=>{
+    if(!drag||drag.id!==e.pointerId)return;
+    const dy=e.clientY-drag.start;
+    const dismiss=e.type==='pointerup'&&(dy>drag.height*0.3||(dy>0&&e.timeStamp-drag.time<100&&drag.velocity>0.5));
+    drag=null;
+    if(dialog.hasPointerCapture(e.pointerId))dialog.releasePointerCapture(e.pointerId);
+    dialog.style.transition=prefersReducedMotion()?'none':'transform 250ms var(--ease-sheet)';
+    if(dismiss)modalDismiss();else dialog.style.transform='translateY(0)';
+  };
+  dialog.addEventListener('pointerup',release,{passive:true});
+  dialog.addEventListener('pointercancel',release,{passive:true});
+  dialog.addEventListener('lostpointercapture',()=>{if(drag){drag=null;dialog.style.removeProperty('transform');dialog.style.removeProperty('transition');}},{passive:true});
+}
 function openSheet(content,title=''){
-  const sw=document.getElementById('sheet-wrap'),bd=document.getElementById('backdrop');
-  sw.innerHTML=`<div class="sheet" role="dialog" aria-modal="true"${title?' aria-label="'+esc(title)+'"':''}>
-    <div class="sheet-handle"></div>
-    ${title?`<div class="sheet-hdr"><div class="sheet-title">${title}</div><button class="sheet-close" aria-label="Close" onclick="closeSheet()">${svgIcon('x',13,'var(--t2)')}</button></div>`:''}
-    ${content}
-  </div>`;
-  requestAnimationFrame(()=>{bd.classList.add('show');sw.classList.add('show');});
-  /* Move focus into the sheet, or a keyboard and a screen reader are both left
-     behind on the element that opened it. A text input wins when there is one,
-     because every sheet that has one exists to have it typed into. */
-  requestAnimationFrame(()=>{
-    const first=sw.querySelector('input,textarea,select,button');
-    if(first)try{first.focus({preventScroll:true});}catch(e){}
+  const dialog=document.getElementById('sheet-wrap');
+  modalPresent(dialog,()=>{
+    dialog.setAttribute('aria-label',title||'Sheet');
+    dialog.innerHTML=`<div class="sheet"><div class="sheet-handle" aria-hidden="true"></div>
+      <div class="sheet-hdr"><div class="sheet-title">${title}</div><button type="button" class="sheet-close" aria-label="Close" onclick="closeSheet()">${svgIcon('x',13,'var(--t2)')}</button></div>${content}</div>`;
+    if(!dialog.dataset.dragBound){bindSheetDrag(dialog);dialog.dataset.dragBound='true';}
   });
-  bd.onclick=closeSheet;
 }
 function openHelp(topicKey){
   const topic=HELP_TOPICS[topicKey];
@@ -2805,8 +2905,8 @@ function openHelp(topicKey){
   openSheet(`<div class="sheet-body help-sheet-copy">${topic.body.map(x=>`<p>${x}</p>`).join('')}</div>`,topic.title);
 }
 function closeSheet(){
-  document.getElementById('sheet-wrap')?.classList.remove('show');
-  document.getElementById('backdrop')?.classList.remove('show');
+  if(modalSession?.dialog.id==='sheet-wrap')modalDismiss();
+  else if(modalBackPending)modalQueuedOpen=null;
 }
 function openWeightSheet(){
   const cur=S.log.weight||S.cfg.body.currentWeight;
@@ -2895,9 +2995,8 @@ function openMealSheet(){
   </div>`,'Add meal');
 }
 function openManualSheet(){
-  closeSheet();
   const types=getMealTypes();
-  setTimeout(()=>openSheet(`<div class="sheet-body">
+  openSheet(`<div class="sheet-body">
     <div class="inp-grp"><div class="inp-lbl">Food name</div><input class="inp-field" id="mn" type="text" placeholder="e.g. Beef Tehari" autocorrect="off"></div>
     <div class="inp-row">
       <div class="inp-grp"><div class="inp-lbl">Calories</div><input class="inp-field" id="mc" type="number" placeholder="0" inputmode="numeric"></div>
@@ -2915,7 +3014,7 @@ function openManualSheet(){
       <button class="sheet-btn sheet-btn-primary" style="flex:1" onclick="saveManual(false)">Add meal</button>
       <button class="sheet-btn sheet-btn-secondary" style="flex:1" onclick="saveManual(true)">Save as preset</button>
     </div>
-  </div>`,'Manual entry'),80);
+  </div>`,'Manual entry');
 }
 function saveManual(savePreset){
   const name=document.getElementById('mn')?.value?.trim();if(!name)return;
@@ -3265,13 +3364,14 @@ function confirmClear(){
 }
 /* ── CELEBRATION + TOAST ────────────────────── */
 function celebrate(icon,title,sub){
-  document.getElementById('cel-icon').textContent=icon;
-  document.getElementById('cel-title').textContent=title;
-  document.getElementById('cel-sub').textContent=sub;
-  document.getElementById('celebration').classList.add('show');
-  launchConfetti();
+  modalPresent(document.getElementById('celebration'),()=>{
+    document.getElementById('cel-icon').textContent=icon;
+    document.getElementById('cel-title').textContent=title;
+    document.getElementById('cel-sub').textContent=sub;
+    launchConfetti();
+  });
 }
-function hideCel(){document.getElementById('celebration').classList.remove('show');}
+function hideCel(){if(modalSession?.dialog.id==='celebration')modalDismiss();else if(modalBackPending)modalQueuedOpen=null;}
 function launchConfetti(){
   const w=document.getElementById('confetti-wrap');if(!w)return;w.innerHTML='';
   if(prefersReducedMotion())return;
