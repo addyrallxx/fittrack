@@ -369,7 +369,8 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .rest-action{min-width:48px;min-height:44px;border-radius:10px;padding:0 8px;background:var(--s3);color:var(--t1);font-size:12px;font-weight:700;transition:transform var(--dur-press) var(--ease-out);}
 .rest-action:active{transform:scale(.96);}
 .rest-track{height:3px;background:var(--s3);margin-top:8px;overflow:hidden;border-radius:3px;}
-.rest-fill{height:100%;background:var(--orange);transform-origin:left center;transition:transform 250ms linear;}
+.rest-fill{height:100%;background:var(--orange);transform-origin:left center;transition:transform 250ms linear,background-color var(--dur-data) var(--ease-out);}
+.rest-bar.ending .rest-fill{background:var(--green);}
 .rest-bar.done .rest-cd{color:var(--green-text);font-size:22px;}
 .rest-bar.done .rest-fill{background:var(--green);}
 #s1.rest-space{padding-bottom:calc(var(--tab-h) + var(--safe-b) + 120px);scroll-padding-bottom:calc(var(--tab-h) + var(--safe-b) + 120px);}
@@ -544,6 +545,21 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 @media(prefers-reduced-motion:reduce){#sheet-wrap,#sheet-wrap::backdrop,#celebration,#celebration::backdrop{transition:none;}}
 .sheet-close svg{width:13px;height:13px;stroke:var(--t2);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
 .sheet-body{padding:0 20px;}
+.finish-summary{font-variant-numeric:tabular-nums;}
+.finish-summary .sheet-title{overflow-wrap:anywhere;}
+.finish-summary-note{color:var(--t2);font-size:13px;margin-bottom:20px;}
+.finish-summary-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 16px;margin-bottom:24px;}
+.finish-summary-stats dt{font-size:12px;color:var(--t2);margin-bottom:5px;}
+.finish-summary-stats dd{font-size:20px;font-weight:600;overflow-wrap:anywhere;}
+.finish-summary-exercise{padding:14px 0;border-top:1px solid var(--border);}
+.finish-summary-exercise h3{font-size:14px;font-weight:600;overflow-wrap:anywhere;margin-bottom:5px;}
+.finish-summary-set{font-size:14px;color:var(--t2);}
+.finish-summary-change{font-size:12px;color:var(--t3);margin-top:5px;}
+.finish-summary-footer{position:sticky;bottom:0;padding:12px 20px 4px;background:var(--s1);}
+.finish-summary-footer .sheet-btn{min-height:48px;transition:transform var(--dur-press) var(--ease-press);}
+.finish-summary-footer .sheet-btn:active{transform:scale(.98);}
+.finish-summary-footer .sheet-btn:focus-visible{outline:2px solid var(--orange);outline-offset:3px;}
+@media(prefers-reduced-motion:reduce){.finish-summary-footer .sheet-btn{transition:none;transform:none;}}
 #sheet-wrap .inp-field{transition:none;}
 .inp-grp{margin-bottom:14px;}
 .inp-lbl{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:7px;}
@@ -1528,6 +1544,11 @@ function reconcileRestTimers(){
   const bar=ensureRestBar();
   for(const [id,timer] of Object.entries(S.restTimers)){
     if(timer.session!==restSessionKey()){stopRest(id);continue;}
+    // Rest starts synchronously after a checked set. Persist the first set time once.
+    if(!S.log.workout.startTime&&!S.log.workout.completed&&S.log.workout.exercises[id]?.sets?.some(s=>s?.done)){
+      S.log.workout.startTime=new Date().toISOString();
+      DB.saveLog(S.today,S.log);
+    }
     const rem=Math.max(0,Math.ceil((timer.end-Date.now())/1000));
     if(!rem&&!timer.doneUntil){
       timer.doneUntil=Date.now()+3000;
@@ -1539,6 +1560,7 @@ function reconcileRestTimers(){
     if(timer.doneUntil&&Date.now()>=timer.doneUntil){stopRest(id);continue;}
     const visible=S.screen===1;
     bar.classList.toggle('show',visible);bar.classList.toggle('done',!!timer.doneUntil);
+    bar.classList.toggle('ending',rem<=10);
     bar.inert=!visible;bar.setAttribute('aria-hidden',String(!visible));
     bar.querySelector('.rest-cd').textContent=timer.doneUntil?'Rest done':fmtTime(rem);
     bar.querySelector('.rest-fill').style.transform='scaleX('+Math.max(0,Math.min(1,(timer.end-Date.now())/timer.duration))+')';
@@ -1616,15 +1638,14 @@ function logWholeSession(){
   finishWorkout();
 }
 function finishWorkout(){
+  const finishedAt=Date.now();
   S.log.workout.completed=true;
   syncWorkoutWakeLock();
   S.log.workout.dayIndex=S.workoutDay;
-  S.log.workout.startTime=S.log.workout.startTime||new Date().toISOString();
   S.log.checkins.gym=true;
   DB.saveLog(S.today,S.log);
   const d=S.workout.days[S.workoutDay];
-  const exDone=d.exercises.filter(e=>S.log.workout.exercises[e.id]?.completed).length;
-  celebrate('\u{1F3CB}','Workout complete',`${d.name}, ${exDone} exercises logged. Three a week is the whole plan, and this was one of them.`);
+  showWorkoutSummary(d,finishedAt);
   cancelWorkoutTimers();
   for(const e of d.exercises){
     if(!S.log.workout.exercises[e.id]?.completed)continue;
@@ -1633,6 +1654,38 @@ function finishWorkout(){
     if(btn){btn.textContent='\u2713 Complete';btn.classList.add('done');}
   }
   updateWorkoutProgress();dirtyWorkoutDependents();
+}
+function showWorkoutSummary(day,finishedAt){
+  const entries=S.log.workout.exercises||{};
+  const checked=entry=>(entry?.sets||[]).filter(s=>s?.done);
+  // Top set means heaviest recorded weight, then most reps at that weight.
+  const topSet=entry=>checked(entry).filter(s=>Number.isFinite(s.weight)&&s.weight>=0&&Number.isFinite(s.reps)&&s.reps>0)
+    .reduce((best,s)=>!best||s.weight>best.weight||(s.weight===best.weight&&s.reps>best.reps)?s:best,null);
+  const history=DB.allLogs(),dates=Object.keys(history).filter(date=>date<S.today).sort().reverse();
+  let sets=0,volume=0;
+  const rows=day.exercises.map(ex=>{
+    const entry=entries[ex.id],top=topSet(entry);
+    const logged=checked(entry);sets+=logged.length;
+    for(const s of logged)if(Number.isFinite(s.weight)&&s.weight>=0&&Number.isFinite(s.reps)&&s.reps>0)volume+=s.weight*s.reps;
+    // Compare to the latest session with checked sets, never an older personal best.
+    const previousDate=dates.find(date=>checked(history[date]?.workout?.exercises?.[ex.id]).length);
+    const previous=previousDate?topSet(history[previousDate].workout.exercises[ex.id]):null;
+    const improved=top&&previous&&(top.weight>previous.weight||(top.weight===previous.weight&&top.reps>previous.reps));
+    return `<div class="finish-summary-exercise"><h3>${esc(ex.name)}</h3><div class="finish-summary-set">${top?'Top set: '+fmtW(top.weight)+' '+wUnit()+' × '+top.reps:'No sets logged'}</div>${improved?'<div class="finish-summary-change">Up from last time</div>':''}</div>`;
+  }).join('');
+  const start=Date.parse(S.log.workout.startTime);
+  const duration=Number.isFinite(start)&&start<=finishedAt?fmtTime(Math.floor((finishedAt-start)/1000)):'Not timed';
+  const done=day.exercises.filter(ex=>entries[ex.id]?.completed).length;
+  const dialog=document.getElementById('sheet-wrap');
+  modalPresent(dialog,()=>{
+    dialog.setAttribute('aria-label','Workout summary');
+    dialog.innerHTML=`<div class="sheet finish-summary"><div class="sheet-handle" aria-hidden="true"></div>
+      <div class="sheet-hdr"><h2 class="sheet-title">${esc(day.name)}</h2></div>
+      <div class="sheet-body"><p class="finish-summary-note">Session saved.</p>
+        <dl class="finish-summary-stats"><div><dt>Duration</dt><dd>${duration}</dd></div><div><dt>Exercises done</dt><dd>${done} of ${day.exercises.length}</dd></div><div><dt>Total sets</dt><dd>${sets}</dd></div><div><dt>Total volume (${wUnit()} × reps)</dt><dd>${fmtW(volume)}</dd></div></dl>
+        ${rows}</div><div class="finish-summary-footer"><button type="button" class="sheet-btn sheet-btn-primary" onclick="closeSheet()">Done</button></div></div>`;
+    if(!dialog.dataset.dragBound){bindSheetDrag(dialog);dialog.dataset.dragBound='true';}
+  });
 }
 /* ── NUTRITION SCREEN ───────────────────────── */
 function renderNutrition(){
