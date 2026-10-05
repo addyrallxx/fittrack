@@ -32,8 +32,9 @@ id = "28caa8c97997496899b70f56889f18a7"
 # Public half of the VAPID pair. Safe to commit: the browser receives it as
 # applicationServerKey anyway, and it must match VAPID_PUBLIC in fittrack.html.
 VAPID_PUBLIC_KEY = "BB3_s3JhI7PA6q8YLZYmKepjaW394uuyxkzjWUz2Bm3HMguRlYv3v5rOeU_KaL_JCpz1uLqb0sQgIx-75a3RC_0"
-# Contact address required by RFC 8292 so a push service can reach the sender.
-VAPID_SUBJECT = "mailto:adnanshakib.business@gmail.com"
+# Contact required by RFC 8292 so a push service can reach the sender. A
+# project URL is valid here and keeps any personal email out of the public repo.
+VAPID_SUBJECT = "https://github.com/addyrallxx/fittrack"
 
 # VAPID_PRIVATE_KEY is NOT here and must never be. Set it once with:
 #   npx wrangler secret put VAPID_PRIVATE_KEY

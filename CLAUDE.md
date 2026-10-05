@@ -26,10 +26,11 @@ open work, and session history, read `NEXT-SESSION.md`, not this file.
   layer converts, via `toDisp` / `fromDisp` / `fmtW` / `fmtWU` / `wUnit`. Any
   new weight-touching code reads and writes kg; unit conversion happens only
   at render time.
-- **The GLP-1 medication titration table is never extrapolated.** It stops at
-  Adnan's last confirmed dose/date. Extend it only when he states the next
-  actual step himself, never by inferring the next dose from the cadence of
-  previous steps.
+- **The medication dose schedule is never extrapolated, and none ships in
+  the code.** The app holds only the dates and doses the user stored in the
+  dose editor. It never infers the next dose from the cadence of previous
+  steps. The owner's own values live on his phone and in a private folder
+  outside the repo.
 - **The app must stay free.** Install by link plus Add to Home Screen, no app
   store, no paid services, no infra beyond the free tiers already in use
   (GitHub Pages, Cloudflare Workers free tier, Cloudflare KV free tier).

@@ -7,7 +7,7 @@
 - FitTrack is a single-file vanilla JS PWA. `fittrack.html` holds shell, CSS and all JS in classic script scope so inline `onclick=` handlers work. No build step, no bundler, no framework, no new dependency.
 - `sw.js` is network-first for every GET on purpose. Never make anything cache-first.
 - Weight is stored in kilograms everywhere. Only the display layer converts (`toDisp`, `fromDisp`, `fmtW`, `fmtWU`, `wUnit`).
-- The GLP-1 medication titration table is never extrapolated.
+- The medication dose schedule is never extrapolated, and none ships in the code.
 - Free only: GitHub Pages, Cloudflare Workers and KV free tiers. No paid service, no account system.
 - Rulings already made (see `docs/research/competitive-and-design-plan.md` section 5): no social feed, no streaks/badges/points, no opaque readiness score, no AI coach or photo meal estimator, no dose optimizer, no fasting program, no recipe planner, no framework or native wrapper.
 - No em dashes in any app copy, doc or log you write. Use periods, commas, colons, parentheses.

@@ -62,7 +62,7 @@ when plans change, private by default, and free to run.
 |---|---|
 | **Logs a day in a few taps** | Calories, protein, water, steps, weight, creatine, resting heart rate. Quick-log buttons on the home screen, and home-screen shortcuts so you can add water without opening a screen. |
 | **Knows 1,502 foods, and cites them** | Built from real delivery orders and researched data, each entry tagged `published`, `derived` or `estimate`. Falls back to Open Food Facts for anything it does not have. |
-| **Three interchangeable sessions** | Full-body workouts named for the actual machines at my gym, with a ramp-in for a detrained body. Any three days a week. Miss one and the plan still works. |
+| **Three interchangeable sessions** | Full-body workouts on common gym machines and cables, with a gradual ramp-in. Any three days a week. Miss one and the plan still works. |
 | **Predicts from your own data** | Trend-weight smoothing, TDEE back-calculated from what you logged against what the scale actually did, and a projected date for your target. It refuses to answer when it does not have enough data instead of inventing a number. |
 | **Supports GLP-1 routines** | Optional calorie-floor warnings and a weekly dose reminder for people using semaglutide, tirzepatide or another GLP-1. It tracks what you enter without recommending a dose. |
 | **Reminds you when it is closed** | Server-scheduled web push, so it works with the app shut. Water checkpoints that skip when you are already ahead, and a gym nudge that stays quiet while you still have a spare day in the week. |

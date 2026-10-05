@@ -116,7 +116,7 @@ Prevents the mobile device screen from dimming or locking during active rest int
 
 ### 4. Web Push and Badging API
 
-Delivers scheduled reminders (GLP-1 medication injection doses, hydration checkpoints, gym workouts) and displays badge counts on the home screen icon.
+Delivers scheduled reminders (weekly dose reminders, hydration checkpoints, gym workouts) and displays badge counts on the home screen icon.
 
 - **Chrome Android Installed (WebAPK):**
   - Web Push Status: Supported (Chrome 42/50+). Delivers reliably via Firebase Cloud Messaging (FCM) and standard VAPID authentication. Push messages wake the service worker in the background.

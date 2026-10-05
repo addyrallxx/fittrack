@@ -1,5 +1,6 @@
 // Run: node test/feel.test.mjs. Chrome emulation is not a Safari/device claim.
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import vm from 'node:vm';
 import { createHash } from 'node:crypto';
@@ -19,6 +20,10 @@ const capture = fs.readFileSync(path.join(root, 'tools/capture-media.mjs'), 'utf
 const start = capture.indexOf('function pad('), end = capture.indexOf('/*', capture.indexOf('return { schema: 2, today, settings, weights, logs };', start));
 if (start < 0 || end < 0) throw new Error('capture-media demo seed boundary changed');
 const seed = vm.runInNewContext(capture.slice(start, end) + '\nbuildDemoSeed(new Date())');
+const sentinelPath = path.join(process.env.FITTRACK_PRIVATE_DIR || path.join(os.homedir(), 'projects', 'fittrack-private'), 'sentinels.json');
+const privacyTokens = fs.existsSync(sentinelPath) ? JSON.parse(fs.readFileSync(sentinelPath, 'utf8')) : null;
+if (privacyTokens && (!Array.isArray(privacyTokens) || privacyTokens.some(t => typeof t !== 'string' || !t))) throw new Error('Invalid private sentinel list');
+if (!privacyTokens) console.log('Privacy assertion skipped: private sentinels.json absent (expected in CI).');
 
 function inspect(reduced = false) {
   const findings = [];
@@ -133,6 +138,10 @@ async function main() {
         if (index === 1) await app.evaluate("(() => {document.querySelector('.ex-hdr')?.click(); const exerciseId=document.querySelector('.ex-card')?.id.replace(/^ec-/,''); if(exerciseId)startRest(exerciseId,60);})()");
         const inspectState = async (label, replay) => {
           await sleep(100);
+          if (privacyTokens) {
+            const text = (await app.evaluate('document.body.innerText')).replace(/Built by[\s\S]*?All rights reserved\./, ''); // the author credit is attribution, not private data
+            if (privacyTokens.some(t => text.includes(t))) throw new Error('Privacy violation in demo media text: '+label+' sentinel indexes '+privacyTokens.map((t,i)=>text.includes(t)?i:null).filter(i=>i!==null));
+          }
           record(await app.evaluate(`(${inspect.toString()})(false)`), context + '/' + label, counts);
           await app.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
           await app.evaluate(replay);

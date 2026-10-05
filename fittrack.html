@@ -953,7 +953,7 @@ body:{currentWeight:null,startingWeight:null,targetWeight:null,bodyFat:null,star
 notifications:{water:{enabled:true},gym:{enabled:true},weight:{enabled:true},dose:{enabled:true}},
 glp1:false,
 dose:{med:'GLP-1 medication',steps:[]},
-gymTarget:3, /* Sessions per week, on whichever days he likes. There are no fixed
+gymTarget:3, /* Sessions per week, on whichever days the user chooses. There are no fixed
    training days: the plan is three interchangeable sessions and the reminder
    counts what is left in the week rather than naming a weekday. */
 ramadanMode:false, /* archived 2026-08-26, see docs/archive/ramadan-mode.md */
@@ -1124,8 +1124,8 @@ function ingestFromHash(){
   if(document.getElementById('s0').firstElementChild)renderHome();else markScreenDirty(0);markScreenDirty(3);
 }
 /* -- SCHEMA RESET -----------------------------------------------------------
-   Pre-v2 installs stored body weight in POUNDS with no units key, so the old
-   165.0 default would render as "165.0 kg". Rather than carry a converter for
+   Pre-v2 installs stored body weight in POUNDS with no units key, so a stored
+   pound value would render as kilograms. Rather than carry a converter for
    data the owner has confirmed is stale and unused, bump SCHEMA and wipe. Any
    future breaking storage change bumps this number again. */
 const SCHEMA=2;
@@ -2179,8 +2179,7 @@ function computeTargets(d){
   const protein=Math.round(w*2.1);
   const fat=Math.round(w*0.84);
   const carbs=Math.max(50,Math.round((calories-protein*4-fat*9)/4));
-  /* 49 ml per kg, rounded to the nearest 250 so the target is a number he can
-     hold in his head and hit with whole bottles rather than a precise figure. */
+  /* Round the per-kg water target to whole bottle increments. */
   const water=Math.round(w*49/250)*250;
   return {bmr,tdee,calories,protein,carbs,fat,water,steps:8000,creatine:d.creatine?5:0,floor};
 }
@@ -2501,10 +2500,7 @@ function projectTarget(){
   when.setDate(when.getDate()+Math.round(weeks*7));
   return {ok:true,cur,rate,weeks:Math.round(weeks),date:when.toISOString().slice(0,10)};
 }
-/* GLP-1 medication's glucagon arm raises resting heart rate, more than tirzepatide
-   or semaglutide do. Typical doses stay below the trial doses that produced the
-   5 to 10 bpm figures, so a rise is not expected, which is exactly why it is
-   worth watching: it is the cheapest early warning available to him. */
+/* Resting heart rate is compared with the user's own logged baseline. */
 function rhrSeries(){
   const logs=DB.allLogs();
   const out=[];
@@ -2529,13 +2525,8 @@ function rhrStatus(){
 }
 function migrateDoseSettings(cfg,freshInstall){
   if(cfg.dose&&Array.isArray(cfg.dose.steps))return false;
-  const legacy=false;
-  cfg.dose={med:legacy?'GLP-1 medication':'GLP-1 medication',steps:legacy?[
-    /* private owner data removed */
-    /* private owner data removed */
-    /* private owner data removed */
-  ]:[]};
-  if(legacy)cfg.glp1=true;
+  cfg.dose={med:'GLP-1 medication',steps:[]};
+  if(!freshInstall)cfg.doseNeedsEntry=true;
   return true;
 }
 function sortedDoseSteps(steps){
@@ -2765,7 +2756,7 @@ function renderProgressSnapshot(){
           '<div style="font-size:12px;color:var(--t2);margin-top:3px">'+(r.ok?'Baseline '+r.base+' bpm':(r.n||0)+' of 3 readings needed')+'</div></div>'+
           '<button onclick="openRhrSheet()" style="padding:10px 16px;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--t2)">'+(S.log.rhr?'Update':'Log today')+'</button>'+
         '</div>'+
-        '<div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);line-height:1.5">'+(r.ok?r.msg:'Some GLP-1 medications can lift resting heart rate. Logging it anyway is the cheapest early warning you have.')+'</div>';
+        '<div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);line-height:1.5">'+(r.ok?r.msg:'Log at least three readings to compare your resting heart rate with your own baseline.')+'</div>';
       })()}
     </div>
     ${doseScheduleCard()}
@@ -4042,7 +4033,7 @@ function init(){
   if(!S.cfg.unitVol)S.cfg.unitVol=DEF_SETTINGS.unitVol;
   if(!S.cfg.theme)S.cfg.theme=DEF_SETTINGS.theme;
   if(S.cfg.proteinPowder==null)S.cfg.proteinPowder=DEF_SETTINGS.proteinPowder;
-  if(!S.cfg.programStart)S.cfg.programStart=DEF_SETTINGS.programStart;
+  if(!S.cfg.programStart)S.cfg.programStart=S.today;
   if(S.cfg.gymTarget==null)S.cfg.gymTarget=DEF_SETTINGS.gymTarget;
   ['water','gym','weight','dose'].forEach(k=>{if(!S.cfg.notifications[k])S.cfg.notifications[k]={enabled:true};});
   ['carbs','fat','creatine'].forEach(k=>{if(S.cfg.targets[k]==null)S.cfg.targets[k]=DEF_SETTINGS.targets[k];});
@@ -4103,7 +4094,12 @@ function init(){
   // trend and projection then reads as his actual starting point.
   if(firstRun){openOnboard();return;}
   const wh=DB.weights();
-  if(wh.length===0)DB.addWeight(S.cfg.programStart||S.today,S.cfg.body.startingWeight);
+  if(wh.length===0&&Number.isFinite(S.cfg.body.startingWeight)&&S.cfg.body.startingWeight>0)DB.addWeight(S.cfg.programStart||S.today,S.cfg.body.startingWeight);
+  if(S.cfg.doseNeedsEntry){
+    toast('ℹ️','Re-enter your dose schedule','Add your confirmed dates and doses in Settings.');
+    delete S.cfg.doseNeedsEntry;
+    DB.saveSettings(S.cfg);
+  }
   updateNoticeTimer=setTimeout(checkUpdateNotice,1000);
 }
 document.addEventListener('DOMContentLoaded',init);

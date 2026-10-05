@@ -76,14 +76,14 @@ check('the service worker and the app agree on the reminder server', () => {
 });
 
 check('notification presentation uses the Android badge and tags every renotify', () => {
-  const steps = [];
+  const steps = [{ date: '2099-08-31', mg: 0.1 }];
   const payloads = [
-    compose('weight', {}, {}, { date: '2026-08-31', dow: 1 }),
-    compose('gym-am', {}, {}, { date: '2026-09-04', dow: 5 }),
-    compose('gym-pm', {}, {}, { date: '2026-09-04', dow: 5 }),
-    compose('dose-eve', {}, { dose: { steps } }, { date: '2026-08-30', dow: 0 }),
-    compose('dose-am', {}, { dose: { steps } }, { date: '2026-08-31', dow: 1 }),
-    compose('water:0.4', { water: 400 }, {}, { date: '2026-08-31', dow: 1 }),
+    compose('weight', {}, {}, { date: '2099-08-31', dow: 1 }),
+    compose('gym-am', {}, {}, { date: '2099-09-04', dow: 5 }),
+    compose('gym-pm', {}, {}, { date: '2099-09-04', dow: 5 }),
+    compose('dose-eve', {}, { dose: { steps } }, { date: '2099-08-30', dow: 0 }),
+    compose('dose-am', {}, { dose: { steps } }, { date: '2099-08-31', dow: 1 }),
+    compose('water:0.4', { water: 400 }, {}, { date: '2099-08-31', dow: 1 }),
     { title: 'FitTrack test', body: 'Test', tag: 'ft-test' },
   ].filter(Boolean);
   const stamped = buildOpts({ tag: 'timestamp-test', timestamp: 123 });

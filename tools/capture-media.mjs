@@ -124,10 +124,7 @@ function buildDemoSeed(now) {
       log.checkins.protein = totalProtein >= settings.targets.protein;
       log.creatine = settings.targets.creatine;
       log.steps = 6000 + i * 900;
-      // Constant, not the real 59: three-plus readings so rhrStatus().ok is
-      // true and the card shows the real message, not the generic
-      // "GLP-1 medication can lift resting heart rate" boilerplate that only
-      // shows while fewer than 3 readings exist.
+      // Synthetic readings keep the baseline card populated.
       log.rhr = 58;
     }
     logs[date] = log;
@@ -136,16 +133,11 @@ function buildDemoSeed(now) {
   return { schema: 2, today, settings, weights, logs };
 }
 
-/* ── FORBIDDEN STRINGS: the entire point of this task ──────────────────
-   The owner's real health data must never appear in a captured page. Every
-   number here is his, not the demo profile's, so a match proves a leak. */
-const FORBIDDEN_TOKENS = ['[private-1]', '[private-2]', '[private-3]', '[private-4]', '[private-5]', '[private-6]'];
-
-/* "Adnan" is handled separately: the Settings screen legitimately shows a
-   static "Built by Adnan Shakib" developer credit (fittrack.html line
-   ~2188), which is authorship, not a health-data leak, and untouchable
-   under this run's file ownership anyway. The check below still fails hard
-   if "Adnan" shows up ANYWHERE else. */
+/* Private sentinel values never ship with the project. */
+const sentinelPath = path.join(process.env.FITTRACK_PRIVATE_DIR || path.join(os.homedir(), 'projects', 'fittrack-private'), 'sentinels.json');
+const FORBIDDEN_TOKENS = fs.existsSync(sentinelPath) ? JSON.parse(fs.readFileSync(sentinelPath, 'utf8')) : null;
+if (FORBIDDEN_TOKENS && (!Array.isArray(FORBIDDEN_TOKENS) || FORBIDDEN_TOKENS.some(t => typeof t !== 'string' || !t))) throw new Error('Invalid private sentinel list');
+if (!FORBIDDEN_TOKENS) console.log('Privacy assertion skipped: private sentinels.json absent (expected in CI).');
 
 function pngDims(buf) { return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) }; }
 
@@ -324,12 +316,7 @@ async function main() {
     async function pageSnapshot() {
       return evaluate(`(() => {
         const body = document.body.innerText || '';
-        let aboutText = '';
-        document.querySelectorAll('.settings-row').forEach(el => {
-          if (el.textContent && el.textContent.includes('Built by')) aboutText += el.innerText;
-        });
-        const withoutAbout = aboutText ? body.split(aboutText).join('') : body;
-        return { body, adnanOutsideAbout: withoutAbout.includes('Adnan'), adnanTotal: body.includes('Adnan') };
+        return { body };
       })()`);
     }
     async function waitSettled(maxTries = 20, intervalMs = 100) {
@@ -343,10 +330,12 @@ async function main() {
       return { settled: false, snap };
     }
     function assertPrivacy(name, snap) {
-      const hits = FORBIDDEN_TOKENS.filter(t => snap.body.includes(t));
-      if (hits.length) throw new Error(`PRIVACY VIOLATION in ${name}: found ${JSON.stringify(hits)} in captured page text`);
-      if (snap.adnanOutsideAbout) throw new Error(`PRIVACY VIOLATION in ${name}: "Adnan" appears outside the static About/credits row`);
-      return { adnanTotal: snap.adnanTotal };
+      if (!FORBIDDEN_TOKENS) return {};
+      /* The static author credit in Settings is attribution, not private data. */
+      const body = snap.body.replace(/Built by[\s\S]*?All rights reserved\./, '');
+      const hits = FORBIDDEN_TOKENS.filter(t => body.includes(t));
+      if (hits.length) throw new Error(`PRIVACY VIOLATION in ${name}: private sentinel matched`);
+      return {};
     }
     /* screenId set -> capture the full scrollable height of that .screen
        element (clip + captureBeyondViewport), not just the 1040-logical-px
@@ -378,7 +367,7 @@ async function main() {
       const fp = path.join(screenshotsDir, name + '.png');
       fs.writeFileSync(fp, buf);
       const dims = pngDims(buf);
-      results.push({ name, path: fp, bytes: buf.length, ...dims, adnanPresent: !!priv?.adnanTotal });
+      results.push({ name, path: fp, bytes: buf.length, ...dims });
     }
     /* renderScreen(idx) only refills #s{idx}'s innerHTML. Visibility is a
        separate concern owned by go(idx), which slides the previous screen
@@ -570,8 +559,7 @@ function printReport() {
   console.log('\n=== capture-media.mjs report ===');
   console.log('outDir:', outDir);
   for (const r of results) {
-    if (r.width) console.log(`${r.name}.png  ${r.bytes} bytes  ${r.width}x${r.height}` +
-      (r.adnanPresent ? '  (contains the static "Built by Adnan Shakib" credit only)' : ''));
+    if (r.width) console.log(`${r.name}.png  ${r.bytes} bytes  ${r.width}x${r.height}`);
     else console.log(`${r.name}  ${r.bytes} bytes`);
   }
 }

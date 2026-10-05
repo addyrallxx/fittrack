@@ -67,7 +67,7 @@ Generic calorie trackers primarily celebrate eating less or staying below a ceil
 
 ### Its GLP-1 schedule model is conservative by construction
 
-The reminder code accepts explicit dated dose steps, checks both ends of the confirmed range, and refuses to name a dose outside it. It never extrapolates the next GLP-1 medication step. That is safer than the medication-level curves and automatic titration tools promoted by several GLP-1 products.
+The reminder code accepts explicit dated dose steps, checks both ends of the confirmed range, and refuses to name a dose outside it. It never extrapolates the next dose step. That is safer than the medication-level curves and automatic titration tools promoted by several GLP-1 products.
 
 There is one important current-state caveat. The client is not yet sending the owner's confirmed steps to the worker, so dose reminders are intentionally silent. The model is sound, but the v1.0 experience does not yet deliver the promised owner-specific reminder. The plan below fixes that only by recording confirmed actuals, never by recreating a global schedule or inferring a future dose.
 
@@ -255,7 +255,7 @@ These features need a model service, an account or key, ongoing cost, and a priv
 
 ### No medication-level curve, dose optimizer, reconstitution calculator, or automatic titration
 
-Several current GLP-1 apps market these. FitTrack must not. GLP-1 medication is not a normal supplement, the owner's schedule is actual dated information, and the table must stop at the last confirmed step. The app may record a dose and remind from saved confirmed data. It may never recommend, extrapolate, or calculate what to draw.
+Several current GLP-1 apps market these. FitTrack must not. A GLP-1 medication is not a normal supplement, a stored schedule is actual dated information, and the table must stop at the last confirmed step. The app may record a dose and remind from saved confirmed data. It may never recommend, extrapolate, or calculate what to draw.
 
 ### No fasting program
 

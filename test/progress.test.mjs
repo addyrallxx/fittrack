@@ -88,7 +88,7 @@ const T = loadApp();
  * Set only the state these functions actually read. */
 const TODAY = '2026-08-27';
 T.S.today = TODAY;
-T.S.cfg = { body: { targetWeight: 72.0 }, targets: { calories: 1800 }, units: 'kg' };
+T.S.cfg = { body: { targetWeight: 62.0 }, targets: { calories: 2100 }, units: 'kg' };
 
 const shift = (d, n) => T.shiftDate(d, n);
 const reset = () => { T.DB.set('ft_weights', []); T.DB.set('ft_logs', {}); };
@@ -182,12 +182,12 @@ check('weekly rate refuses a short span even with plenty of readings', () => {
 check('tdee back-calculates to the real number from intake and weight change', () => {
   reset();
   seedWeights(42, 73.0, -0.35);
-  seedDays(42, { cal: 1800 });
+  seedDays(42, { cal: 2100 });
   const e = T.estimateTDEE(28);
   assert.ok(e.ok, 'should have enough data: ' + e.why);
-  // 0.35 kg/wk of fat is 0.05 kg/day, which is 385 kcal/day. 1800 + 385 = 2185.
-  assert.ok(Math.abs(e.tdee - 2185) < 120, `expected about 2185, got ${e.tdee}`);
-  assert.equal(e.meanIntake, 1800);
+  // 0.35 kg/wk of fat is 0.05 kg/day, which is 385 kcal/day. 2100 + 385 = 2485.
+  assert.ok(Math.abs(e.tdee - 2485) < 120, `expected about 2485, got ${e.tdee}`);
+  assert.equal(e.meanIntake, 2100);
 });
 
 check('tdee refuses to answer when most days have no food logged', () => {
@@ -197,7 +197,7 @@ check('tdee refuses to answer when most days have no food logged', () => {
   for (let i = 0; i < 42; i++) {
     const d = shift(TODAY, -i);
     const l = T.freshLog(d);
-    if (i % 5 === 0) l.nutrition.meals = [{ id: 'x', name: 'day', cal: 1800 }];
+    if (i % 5 === 0) l.nutrition.meals = [{ id: 'x', name: 'day', cal: 2100 }];
     logs[d] = l;
   }
   T.DB.set('ft_logs', logs);
@@ -263,8 +263,8 @@ check('gaining is reported as gaining, not softened into not losing', () => {
 check('an absurdly slow rate is called out instead of dated', () => {
   reset();
   // 55 grams a week: fast enough to clear the 50 gram noise floor, slow enough
-  // that 65 kg is 113 weeks away. The window between those two guards is narrow
-  // by construction, and this is the case that lives inside it.
+  // that the 62 kg target is years away. The window between those two guards is
+  // narrow by construction, and this is the case that lives inside it.
   T.DB.set('ft_weights', [
     { date: shift(TODAY, -84), weight: 80.66 },
     { date: shift(TODAY, -42), weight: 80.33 },
@@ -277,9 +277,9 @@ check('an absurdly slow rate is called out instead of dated', () => {
 check('reaching the target is stated plainly', () => {
   reset();
   T.DB.set('ft_weights', [
-    { date: shift(TODAY, -28), weight: 66.0 },
-    { date: shift(TODAY, -14), weight: 65.0 },
-    { date: TODAY, weight: 64.0 }]);
+    { date: shift(TODAY, -28), weight: 63.0 },
+    { date: shift(TODAY, -14), weight: 62.0 },
+    { date: TODAY, weight: 61.0 }]);
   const p = T.projectTarget();
   assert.equal(p.ok, true);
   assert.equal(p.done, true);
@@ -314,25 +314,40 @@ check('resting heart rate says nothing at all from one or two readings', () => {
 
 /* Dose schedules and food ranking share this file because the same VM harness
  * exercises the real inline app code without introducing a build boundary. */
-check('dose migration seeds the owner once and never auto-extends', () => {
-  const cfg = { name: 'Sample Person', profile: { birthday: '1990-01-01' }, glp1: false };
-  assert.equal(T.migrateDoseSettings(cfg, false), true);
-  assert.equal(cfg.glp1, true);
-  assert.equal(cfg.dose.med, 'GLP-1 medication');
-  assert.equal(cfg.dose.steps.length, 6);
-  assert.equal(cfg.dose.steps.at(-1).date, '2026-01-01');
-  assert.equal(T.migrateDoseSettings(cfg, false), false);
-  assert.equal(cfg.dose.steps.length, 6, 'a later launch must not append another inferred step');
+check('dose migration never invents a schedule and asks once for the missing one', () => {
+  // A profile saved before the dose editor existed has no stored schedule.
+  // The app must not guess one from who the profile belongs to: it starts
+  // empty and raises the one-time Settings notice flag instead.
+  const legacy = { name: 'Sample Person', profile: { birthday: '1990-01-01' }, glp1: false };
+  assert.equal(T.migrateDoseSettings(legacy, false), true);
+  assert.deepEqual(JSON.parse(JSON.stringify(legacy.dose)), { med: 'GLP-1 medication', steps: [] });
+  assert.equal(legacy.glp1, false, 'migration must not switch medication tracking on by itself');
+  assert.equal(legacy.doseNeedsEntry, true, 'a missing legacy schedule must raise the one-time notice flag');
+  assert.equal(T.migrateDoseSettings(legacy, false), false, 'a later launch must not migrate again');
+  assert.equal(legacy.dose.steps.length, 0, 'a later launch must not append an inferred step');
 
   const fresh = { name: '', profile: {}, glp1: true };
   assert.equal(T.migrateDoseSettings(fresh, true), true);
   assert.equal(fresh.dose.steps.length, 0, 'a fresh install must start with no claimed dose history');
+  assert.equal(fresh.doseNeedsEntry, undefined, 'a fresh install has nothing to re-enter, so no notice');
 });
 
-check('a date past the confirmed dose table yields no number', () => {
-  const cfg = { name: 'Sample Person', profile: { birthday: '1990-01-01' } };
+check('a stored dose schedule wins and is never touched by migration', () => {
+  const steps = [{ date: '2099-01-04', mg: 0.1 }, { date: '2099-01-11', mg: 0.2 }];
+  const cfg = { name: 'Sample Person', profile: { birthday: '1990-01-01' }, glp1: true,
+    dose: { med: 'Examplemed', steps: steps.map(s => ({ ...s })) } };
+  const before = JSON.stringify(cfg);
+  assert.equal(T.migrateDoseSettings(cfg, false), false);
+  assert.equal(JSON.stringify(cfg), before, 'a stored schedule must come back byte-identical');
+  const emptyStored = { glp1: true, dose: { med: 'Examplemed', steps: [] } };
+  assert.equal(T.migrateDoseSettings(emptyStored, false), false, 'an empty stored array is still the user\'s own choice');
+  assert.equal(emptyStored.doseNeedsEntry, undefined);
+});
+
+check('a date past the stored dose table yields no number', () => {
+  const cfg = { dose: { med: 'Examplemed', steps: [{ date: '2099-01-04', mg: 0.1 }, { date: '2099-01-11', mg: 0.2 }] } };
   T.migrateDoseSettings(cfg, false);
-  assert.equal(T.doseForDate('2026-10-05', cfg.dose.steps), null);
+  assert.equal(T.doseForDate('2099-01-25', cfg.dose.steps), null);
 });
 
 check('frequently logged food outranks a high-pop never-logged match', () => {
@@ -369,12 +384,12 @@ await acheck('sendSub carries confirmed dose steps and otherwise sends null', as
   const requests = [];
   const app = loadApp(async (url, options) => { requests.push(JSON.parse(options.body)); return { ok: true }; });
   app.S.cfg = {
-    targets: { water: 3500 }, gymTarget: 3, notifications: {},
-    dose: { med: 'Tirzepatide', steps: [{ date: '2026-09-01', mg: 2.5 }] },
+    targets: { water: 2750 }, gymTarget: 3, notifications: {},
+    dose: { med: 'Examplemed', steps: [{ date: '2099-01-04', mg: 0.1 }] },
   };
   assert.equal(await app.sendSub({ endpoint: 'https://push.example/one', keys: {} }), true);
-  assert.equal(requests[0].cfg.dose.med, 'Tirzepatide');
-  assert.equal(requests[0].cfg.dose.steps[0].mg, 2.5);
+  assert.equal(requests[0].cfg.dose.med, 'Examplemed');
+  assert.equal(requests[0].cfg.dose.steps[0].mg, 0.1);
 
   app.S.cfg.dose.steps = [];
   assert.equal(await app.sendSub({ endpoint: 'https://push.example/two', keys: {} }), true);
@@ -410,7 +425,7 @@ check('height round-trips through cm and inches without drift', () => {
   assert.ok(Math.abs(T.htFrom(T.htDisp(cm)) - cm) < 1e-9, 'inch round-trip drifted');
 });
 check('volume round-trips through ml and fl oz without drift', () => {
-  const ml = 3500;
+  const ml = 2750;
   T.S.cfg = { unitVol: 'ml' };
   assert.ok(Math.abs(T.volFrom(T.volDisp(ml)) - ml) < 1e-9);
   T.S.cfg.unitVol = 'floz';

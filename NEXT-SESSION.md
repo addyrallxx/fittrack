@@ -256,7 +256,7 @@ still says "the iPhone test is the only thing that matters" is stale.
 
 ## Owner profile (private)
 
-The owner profile, derived targets and the GLP-1 medication schedule moved out of this public repo on 2026-10-05 to `C:/Users/adnan/projects/fittrack-private/owner-profile.md` (local only, never committed). Read it there when a task needs targets or the dose table; never copy its values into tracked files.
+The owner profile, derived targets and the medication schedule moved out of this public repo on 2026-10-05 to `~/projects/fittrack-private/owner-profile.md` (local only, never committed). Read it there when a task needs targets or the dose table; never copy its values into tracked files.
 
 ## Architecture
 
@@ -382,7 +382,7 @@ not run, the exact failure mode that black-screened this app in April.
 Verified green as a unit plus live route checks. Contents: the
 whole-session workout button moved into the progress row with even
 spacing; whey and creatine logging unified onto one `.supp-action`
-control; `GLP1_DOSES` (a hardcoded const gated on one person's name
+control; a hardcoded dose-table const (gated on one person's name
 and birthday) replaced by user-entered `S.cfg.dose`, with an editor,
 validation, a taken-doses history, and a one-time migration for existing
 installs; the worker's `doseFor` now requires an exact date match instead
@@ -511,10 +511,13 @@ any date it cannot match, and its `known` guard only covers dates AFTER the
 table:
 
 ```
-[private dose schedule rows removed]
+before the first row  -> the LAST row's mg, known:true   <- the bug
+the first row's date  -> the first row's mg, known:true
+after the last row    -> the last row's mg, known:false  <- correctly flagged
 ```
 
-A date before `TITRATION[0].date` reports **a dose with `known: true`**, so the reminder would state a wrong dose. Real-world
+A date before `TITRATION[0].date` reports **the last row's mg with `known: true`**, so the
+reminder would state "This week is 2 mg" during a 1 mg week. Real-world
 exposure is limited to past dates, but this is a confident wrong dose
 statement in the exact part of the app whose stated rule is to never guess a
 dose. Fix: `known` must also require `dateStr >= TITRATION[0].date`.
@@ -608,8 +611,8 @@ argument and `compose()` returns null for both dose reminders when
 > confirmed by grep, so it now sends `dose:null` and **dose reminders are
 > silent for everyone, including Adnan.** That was the deliberate fail-safe
 > choice: silence is always correct, a wrong dose never is. To get his own
-> reminders back, the confirmed schedule (still recorded in the GLP-1 medication
-> section above, the confirmed dates) must be wired into the client as
+> reminders back, the confirmed schedule (since moved to the owner's private
+> profile outside the repo) must be wired into the client as
 > `cfg.dose = { med, steps:[{date,mg}] }`. Do not extrapolate past the last confirmed date.
 
 **Fix 4, zero gym sessions survives.** `??` instead of `||` in the client at
@@ -790,7 +793,7 @@ no junk records are sitting in KV collecting reminders.
 
 ## Research artefact
 
-Full 8-agent research output (GLP-1 medication, Calgary NW food data, gym
+Full 8-agent research output (medication, local food data, gym
 equipment, iOS PWA + Web Push, competitor apps, Cloudflare push
 implementation), roughly 122k chars, with adversarial verification passes on
 the pharmacology and nutrition numbers:

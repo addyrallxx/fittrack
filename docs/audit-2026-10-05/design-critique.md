@@ -97,7 +97,7 @@ The following audit provides an itemized, concrete critique per screen with exac
 
 #### Defect 1.3: Caloric Ring Semantic Mismatch for GLP-1 Therapy
 - **Location:** "Today's Activity", first ring (`ring('cal', ...)`).
-- **What is wrong:** The orange ring is filled to roughly 58% (1,060 of 1,800 kcal). In standard fitness apps (Apple Fitness, MyFitnessPal), a partially filled ring signals incomplete progress that must be filled. However, on GLP-1 medication, 1,060 kcal represents an acute danger: it sits 540 kcal below the owner's 1,600 kcal hard floor! A half-empty ring provides zero indication of floor proximity, floor violation, or muscle catabolism risk.
+- **What is wrong:** The orange ring is filled to roughly 58% (1,060 of 1,800 kcal). In standard fitness apps (Apple Fitness, MyFitnessPal), a partially filled ring signals incomplete progress that must be filled. However, on a GLP-1 medication, 1,060 kcal represents an acute danger: it sits 540 kcal below the user's 1,600 kcal hard floor! A half-empty ring provides zero indication of floor proximity, floor violation, or muscle catabolism risk.
 - **Why it matters:** Ring closure semantics work for positive goals (steps, water, exercise minutes). For calories on an appetite suppressant, treating intake as an ordinary "fill to win" circle is biologically misleading.
 - **The fix:**
   - Replace the 3-ring circular dashboard on Home with an Apple Health-style "Status and Protection" hero card.
@@ -310,7 +310,7 @@ The following audit provides an itemized, concrete critique per screen with exac
 #### Defect 3.1: Inverted Clinical Hierarchy (Celebrating Deficit while Undereating)
 - **Location:** Top Macro card (`.macro-card`, lines 1400-1434).
 - **What is wrong:** The card prominently displays "1060 kcal eaten today" on the left in 36px bold orange, and pairs it on the right with "740 kcal remaining" in calm 22px bold text. The "Hard floor: 1,600 kcal" warning is relegated to a small secondary container at the bottom of the card.
-- **Why it matters:** On a GLP-1 receptor agonist (GLP-1 medication), the primary physiological danger is severe undereating, dehydration, and lean tissue loss. At 1,060 kcal, the user is 540 kcal below their non-negotiable safety floor. Framing 740 kcal as "remaining" applies the psychology of an ordinary weight-loss app celebrating an aggressive deficit. The user feels they are "winning" by having 740 kcal left, when in reality their muscle mass is actively compromised.
+- **Why it matters:** On a GLP-1 receptor agonist, the primary physiological danger is severe undereating, dehydration, and lean tissue loss. At 1,060 kcal, the user is 540 kcal below their non-negotiable safety floor. Framing 740 kcal as "remaining" applies the psychology of an ordinary weight-loss app celebrating an aggressive deficit. The user feels they are "winning" by having 740 kcal left, when in reality their muscle mass is actively compromised.
 - **The fix:**
   - Invert the card hierarchy: Lead with floor proximity rather than ceiling distance.
   - When intake is below the floor after mid-afternoon (e.g. past 16:00), replace "kcal remaining" with an urgent, calm floor indicator:
