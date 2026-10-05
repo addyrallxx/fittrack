@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,interactive-widget=resizes-content,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -354,7 +354,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .set-adj{width:32px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:17px;font-weight:300;flex-shrink:0;position:relative;z-index:1;}
 .set-adj::before{content:"";position:absolute;inset:0 -6px;}
 .set-adj:active{background:var(--s3);}
-.set-inp{flex:1;text-align:center;font-size:14px;font-weight:700;color:var(--t1);background:none;height:44px;min-width:0;}
+.set-inp{flex:1;text-align:center;font-size:16px;font-weight:700;color:var(--t1);background:none;height:44px;min-width:0;}
 .set-chk{width:34px;height:34px;background:var(--s3);border-radius:9px;display:flex;align-items:center;justify-content:center;transition:transform var(--dur-press) var(--ease-out),background var(--dur-press) var(--ease-out),color var(--dur-press) var(--ease-out);margin:auto;}
 .set-chk svg{width:15px;height:15px;stroke:var(--t3);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
 .set-chk.on{background:var(--green);}
@@ -403,7 +403,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .macro-bar-fill{height:100%;border-radius:3px;width:100%;transform-origin:left;transition:transform var(--dur-data) var(--ease-out);}
 .macro-bar-val{font-size:11px;font-weight:600;color:var(--t2);width:60px;text-align:right;}
 .food-search-wrap{margin:0 16px 12px;position:relative;}
-.food-search-input{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px 44px 13px 44px;font-size:15px;color:var(--t1);transition:border-color 0.2s;}
+.food-search-input{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px 44px 13px 44px;font-size:16px;color:var(--t1);transition:border-color 0.2s;}
 .food-search-input::placeholder{color:var(--t3);}
 .food-search-input:focus{border-color:var(--border2);}
 .search-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:20px;height:20px;pointer-events:none;}
@@ -529,11 +529,11 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .toggle-knob{width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform 0.25s var(--spring);box-shadow:0 1px 4px rgba(0,0,0,0.3);}
 .toggle.on .toggle-knob{transform:translateX(18px);}
 /* BOTTOM SHEETS */
-#sheet-wrap{position:fixed;inset:auto 0 0;margin:0;width:100%;max-width:none;max-height:92dvh;padding:0;border:0;background:transparent;color:var(--t1);overflow:visible;transform:translateY(100%);transition:transform var(--dur-sheet) var(--ease-sheet);}
+#sheet-wrap{position:fixed;inset:auto 0 var(--sheet-bottom,0px);margin:0;width:100%;max-width:none;max-height:var(--sheet-height,92dvh);padding:0;border:0;background:transparent;color:var(--t1);overflow:visible;transform:translateY(100%);transition:transform var(--dur-sheet) var(--ease-sheet);}
 #sheet-wrap.show{transform:translateY(0);}
 #sheet-wrap::backdrop,#celebration::backdrop{background:rgba(0,0,0,0.72);opacity:0;transition:opacity var(--dur-sheet) var(--ease-sheet);}
 #sheet-wrap.show::backdrop,#celebration.show::backdrop{opacity:1;}
-.sheet{background:var(--s1);border-radius:var(--r-xl) var(--r-xl) 0 0;border-top:1px solid var(--border);padding-bottom:calc(var(--safe-b) + 10px);max-height:92dvh;overflow-y:auto;overscroll-behavior:contain;}
+.sheet{background:var(--s1);border-radius:var(--r-xl) var(--r-xl) 0 0;border-top:1px solid var(--border);padding-bottom:calc(var(--safe-b) + 10px);max-height:var(--sheet-height,92dvh);overflow-y:auto;overscroll-behavior:contain;}
 .sheet::-webkit-scrollbar{display:none;}
 .sheet-handle{height:24px;display:flex;align-items:center;justify-content:center;touch-action:none;}
 .sheet-handle::before{content:'';width:36px;height:4px;background:var(--s4);border-radius:2px;}
@@ -547,8 +547,10 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 #sheet-wrap .inp-field{transition:none;}
 .inp-grp{margin-bottom:14px;}
 .inp-lbl{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:7px;}
-.inp-field{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px 14px;font-size:15px;color:var(--t1);transition:border-color 0.2s;}
+.inp-field{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px 14px;font-size:16px;color:var(--t1);transition:border-color 0.2s;}
 .inp-field:focus{border-color:var(--border2);}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--orange-text);outline-offset:2px;}
+.inp-lbl{display:block;}
 .inp-field::placeholder{color:var(--t3);}
 .inp-row{display:flex;gap:10px;}
 .inp-row .inp-grp{flex:1;}
@@ -1360,12 +1362,12 @@ function exCard(ex,exLog){
       <div class="set-num">${i+1}</div>
       <div class="set-inp-wrap">
         <button class="set-adj" onclick="adj('${ex.id}',${i},'w',-2.5)">−</button>
-        <input class="set-inp" type="number" id="sw-${ex.id}-${i}" value="${w}" placeholder="${fmtW(fallback.weight)}" inputmode="decimal" enterkeyhint="next" aria-label="Set ${i+1} weight in ${wUnit()}" onchange="updSet('${ex.id}',${i},'w',this.value)">
+        <input class="set-inp" type="number" id="sw-${ex.id}-${i}" value="${w}" placeholder="${fmtW(fallback.weight)}" inputmode="decimal" enterkeyhint="next" aria-label="Set ${i+1} weight in ${wUnit()}" onchange="updSet('${ex.id}',${i},'w',this.value)" autocomplete="off" step="any">
         <button class="set-adj" onclick="adj('${ex.id}',${i},'w',2.5)">+</button>
       </div>
       <div class="set-inp-wrap">
         <button class="set-adj" onclick="adj('${ex.id}',${i},'r',-1)">−</button>
-        <input class="set-inp" type="number" id="sr-inp-${ex.id}-${i}" value="${r}" placeholder="${fallback.reps}" inputmode="numeric" enterkeyhint="done" aria-label="Set ${i+1} reps" onchange="updSet('${ex.id}',${i},'r',this.value)">
+        <input class="set-inp" type="number" id="sr-inp-${ex.id}-${i}" value="${r}" placeholder="${fallback.reps}" inputmode="numeric" enterkeyhint="done" aria-label="Set ${i+1} reps" onchange="updSet('${ex.id}',${i},'r',this.value)" autocomplete="off">
         <button class="set-adj" onclick="adj('${ex.id}',${i},'r',1)">+</button>
       </div>
       <button class="set-chk${isDone?' on':''}" id="sc-${ex.id}-${i}" onclick="toggleSet('${ex.id}',${i})">${svgIcon('check',15,'var(--t3)')}</button>
@@ -1681,10 +1683,10 @@ function renderNutrition(){
       </div>`:''}
     </div>
     ${supplementRows.trim()?`<div class="section-label">Supplements</div><div class="supp-card">${supplementRows}</div>`:''}
-    <div class="nutrition-context" data-data-key="search-context"><label for="search-meal">Log to</label><select id="search-meal" onchange="nutritionMeal=this.value">${mealOrder.map(t=>'<option'+(t===nutritionMeal?' selected':'')+'>'+t+'</option>').join('')}</select></div>
+    <div class="nutrition-context" data-data-key="search-context"><label for="search-meal">Log to</label><select id="search-meal" onchange="nutritionMeal=this.value" autocomplete="off" enterkeyhint="done">${mealOrder.map(t=>'<option'+(t===nutritionMeal?' selected':'')+'>'+t+'</option>').join('')}</select></div>
     <div class="food-search-wrap">
       <div class="search-ico">${svgIcon('search',18,'var(--t3)')}</div>
-      <input class="food-search-input" id="fsearch" type="text" placeholder="Search food or browse presets..." onfocus="if(!this.value.trim())showRecentFoods()" oninput="handleSearch(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
+      <input class="food-search-input" id="fsearch" type="text" placeholder="Search food or browse presets..." onfocus="if(!this.value.trim())showRecentFoods()" oninput="handleSearch(this.value)" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Search food">
       <div class="search-clr" id="sclr" role="button" tabindex="0" aria-label="Clear search" onclick="clearSearch()">${svgIcon('x',10,'var(--t2)')}</div>
     </div>
     <div class="search-results" id="sresults"></div>
@@ -1893,10 +1895,10 @@ function pickMealType(foodId,src){
     <div style="font-size:16px;font-weight:600;margin-bottom:3px">${food.name}</div>
     <div style="font-size:12px;color:var(--t2);margin-bottom:6px">${food.serving?esc(food.serving)+' · ':''}${food.cal} kcal · ${food.protein}g protein</div>
     ${food.src?'<div style="font-size:11px;color:var(--t3);margin-bottom:14px">'+confBadge(food)+' '+esc(food.src)+'</div>':'<div style="margin-bottom:14px"></div>'}
-    ${weighed?'<div class="inp-grp"><div class="inp-lbl">Portion (grams)</div><input class="inp-field" id="loc-portion" type="number" value="'+food.grams+'" inputmode="numeric"></div>':''}
+    ${weighed?'<div class="inp-grp"><div class="inp-lbl">Portion (grams)</div><input class="inp-field" id="loc-portion" type="number" value="'+food.grams+'" inputmode="numeric" autocomplete="off" enterkeyhint="done" aria-label="Portion in grams"></div>':''}
     ${food.note?'<div style="font-size:12px;color:var(--t2);line-height:1.45;margin:12px 0 4px">'+esc(food.note)+'</div>':''}
     <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 10px">Add to which meal?</div>
-    ${types.map(t=>`<button onclick="logFood('${foodId}','${t}')" style="width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px;font-size:15px;font-weight:500;color:var(--t1);text-align:left;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center">${t}<span style="color:var(--orange-text)">→</span></button>`).join('')}
+    ${types.map(t=>`<button ${t===nutritionMeal?'data-input-submit':''} onclick="logFood('${foodId}','${t}')" style="width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px;font-size:15px;font-weight:500;color:var(--t1);text-align:left;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center">${t}<span style="color:var(--orange-text)">→</span></button>`).join('')}
   </div>`,'Add to meal');
 }
 function pickMealTypeAPI(tempId){
@@ -1905,9 +1907,9 @@ function pickMealTypeAPI(tempId){
   openSheet(`<div class="sheet-body">
     <div style="font-size:16px;font-weight:600;margin-bottom:3px">${food.name}</div>
     <div style="font-size:12px;color:var(--t2);margin-bottom:12px">${food.cal} kcal per 100g</div>
-    <div class="inp-grp"><div class="inp-lbl">Portion (grams)</div><input class="inp-field" id="api-portion" type="number" value="100" inputmode="numeric"></div>
+    <div class="inp-grp"><div class="inp-lbl">Portion (grams)</div><input class="inp-field" id="api-portion" type="number" value="100" inputmode="numeric" autocomplete="off" enterkeyhint="done" aria-label="Portion in grams"></div>
     <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin:12px 0 10px">Add to which meal?</div>
-    ${types.map(t=>`<button onclick="logFoodAPI('${tempId}','${t}')" style="width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px;font-size:15px;font-weight:500;color:var(--t1);text-align:left;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center">${t}<span style="color:var(--orange-text)">→</span></button>`).join('')}
+    ${types.map(t=>`<button ${t===nutritionMeal?'data-input-submit':''} onclick="logFoodAPI('${tempId}','${t}')" style="width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px;font-size:15px;font-weight:500;color:var(--t1);text-align:left;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center">${t}<span style="color:var(--orange-text)">→</span></button>`).join('')}
   </div>`,'Add to meal');
 }
 function logFood(foodId,mealType){
@@ -2115,7 +2117,7 @@ function obShowError(message){
   const id=S.ob.step===1?(message.startsWith('Height')?'ob-h':'ob-bd'):
     (message.startsWith('Enter your current')||message.startsWith('That weight')?'ob-w':'ob-t');
   const field=document.getElementById(id);
-  if(field){field.setAttribute('aria-invalid','true');field.focus();}
+  if(field){field.setAttribute('aria-invalid','true');field.focus({preventScroll:true});}
 }
 function obNext(){
   obCapture();
@@ -2198,19 +2200,19 @@ function renderOnboard(){
   if(st===0){
     body.push('<div class="ob-h">A few questions, then it is yours.</div>',
       '<div class="ob-p">This builds a starting plan from your own numbers. Everything stays on this phone: there is no account and nothing to sign up for. Every target it sets is editable afterwards, and the app replaces its own estimates with measured ones as soon as you have logged enough for it to know better.</div>',
-      '<div class="inp-grp"><div class="inp-lbl">What should it call you? (optional)</div><input class="inp-field" id="ob-n" type="text" value="'+(d.name||'')+'" placeholder="Your name" autocorrect="off"></div>');
+      '<div class="inp-grp"><div class="inp-lbl">What should it call you? (optional)</div><input class="inp-field" id="ob-n" type="text" value="'+(d.name||'')+'" placeholder="Your name" autocorrect="off" autocomplete="off" enterkeyhint="done" aria-label="Your name (optional)"></div>');
   } else if(st===1){
     body.push('<div class="ob-h">About you</div>',
       '<div class="ob-p">Used for the calorie maths and nothing else.</div>',
       '<div class="ob-opts">'+opt('sex','male','Male')+opt('sex','female','Female')+'</div>',
-      '<div class="inp-grp"><div class="inp-lbl">Height ('+hu+')</div><input class="inp-field" id="ob-h" type="number" inputmode="decimal" value="'+(d.heightRaw||'')+'" placeholder="'+(hu==='in'?'Height in inches':'Height in cm')+'"></div>',
-      '<div class="inp-grp"><div class="inp-lbl">Date of birth</div><input class="inp-field" id="ob-bd" type="date" value="'+(d.birthday||'')+'" max="'+S.today+'"></div>');
+      '<div class="inp-grp"><div class="inp-lbl">Height ('+hu+')</div><input class="inp-field" id="ob-h" type="number" inputmode="decimal" value="'+(d.heightRaw||'')+'" placeholder="'+(hu==='in'?'Height in inches':'Height in cm')+'" autocomplete="off" enterkeyhint="next" aria-label="Height" step="any"></div>',
+      '<div class="inp-grp"><div class="inp-lbl">Date of birth</div><input class="inp-field" id="ob-bd" type="date" value="'+(d.birthday||'')+'" max="'+S.today+'" autocomplete="off" enterkeyhint="done" aria-label="Date of birth"></div>');
   } else if(st===2){
     body.push('<div class="ob-h">Where you are, where you want to be</div>',
       '<div class="ob-p">A nearer target beats an ambitious one. You can move it whenever you like.</div>',
       '<div class="ob-opts">'+opt('units','kg','Kilograms')+opt('units','lb','Pounds')+'</div>',
-      '<div class="inp-grp"><div class="inp-lbl">Current weight (<span data-ob-weight-unit>'+u+'</span>)</div><input class="inp-field" id="ob-w" type="number" inputmode="decimal" value="'+(d.weightRaw||'')+'"></div>',
-      '<div class="inp-grp"><div class="inp-lbl">Target weight (<span data-ob-weight-unit>'+u+'</span>)</div><input class="inp-field" id="ob-t" type="number" inputmode="decimal" value="'+(d.targetRaw||'')+'"></div>');
+      '<div class="inp-grp"><div class="inp-lbl">Current weight (<span data-ob-weight-unit>'+u+'</span>)</div><input class="inp-field" id="ob-w" type="number" inputmode="decimal" value="'+(d.weightRaw||'')+'" autocomplete="off" enterkeyhint="next" aria-label="Current weight" step="any"></div>',
+      '<div class="inp-grp"><div class="inp-lbl">Target weight (<span data-ob-weight-unit>'+u+'</span>)</div><input class="inp-field" id="ob-t" type="number" inputmode="decimal" value="'+(d.targetRaw||'')+'" autocomplete="off" enterkeyhint="done" aria-label="Target weight" step="any"></div>');
   } else if(st===3){
     body.push('<div class="ob-h">Training</div>',
       '<div class="ob-p">Realistically, how many sessions a week? Not the best week you have ever had, the ordinary one. The program is three interchangeable full body sessions you can do on any days, so this only sets the weekly target the reminders count against.</div>',
@@ -2246,6 +2248,7 @@ function renderOnboard(){
   const progress='<div class="ob-progress"><div class="ob-progress-meta"><span class="ob-progress-name">FitTrack</span><span>Step '+(st+1)+' of 5</span></div><div class="ob-progress-track" role="progressbar" aria-label="Onboarding progress" aria-valuemin="1" aria-valuemax="5" aria-valuenow="'+(st+1)+'"><div class="ob-progress-fill" style="--ob-progress-from:'+from+';--ob-progress-to:'+to+'"></div></div></div>';
   const host=document.getElementById('onboard');
   host.innerHTML=progress+'<div class="ob-stage '+(direction<0?'ob-back':'ob-forward')+'">'+body.join('')+'<div class="ob-err" role="alert" aria-live="assertive">'+(S.ob.err||'')+'</div>'+nav+'</div>';
+  prepareInputFlow(host);
   [...host.querySelector('.ob-stage').children].forEach((el,i)=>{el.classList.add('ob-enter-item');el.style.setProperty('--ob-delay',Math.min(i,4)*32+'ms');});
   if(last)animateObSummary(run);
 }
@@ -2432,36 +2435,70 @@ function openDoseSheet(){
   if(!S.doseDraft.steps.length)S.doseDraft.steps.push({date:'',mg:''});
   renderDoseEditor();
 }
-function renderDoseEditor(error){
+function doseEditorRow(x,i){
+  return `<div class="dose-edit-row" data-dose-index="${i}">
+    <div class="inp-grp"><div class="inp-lbl">Date</div><input class="inp-field" type="date" value="${esc(x.date)}" aria-label="Dose ${i+1} date" oninput="doseDraftChange(Number(this.closest('.dose-edit-row').dataset.doseIndex),'date',this.value)" autocomplete="off" enterkeyhint="next"></div>
+    <div class="inp-grp"><div class="inp-lbl">mg</div><input class="inp-field" type="number" value="${esc(x.mg)}" min="0.001" max="50" step="any" inputmode="decimal" aria-label="Dose ${i+1} milligrams" oninput="doseDraftChange(Number(this.closest('.dose-edit-row').dataset.doseIndex),'mg',this.value)" autocomplete="off" enterkeyhint="done"></div>
+    <button class="dose-remove" aria-label="Delete dose row ${i+1}" onclick="doseDraftRemove(Number(this.closest('.dose-edit-row').dataset.doseIndex))">${svgIcon('trash',14,'currentColor')}</button>
+  </div>`;
+}
+function renderDoseEditor(){
   const d=S.doseDraft;
-  const rows=d.steps.map((x,i)=>`<div class="dose-edit-row">
-    <div class="inp-grp"><div class="inp-lbl">Date</div><input class="inp-field" type="date" value="${esc(x.date)}" aria-label="Dose ${i+1} date" oninput="doseDraftChange(${i},'date',this.value)"></div>
-    <div class="inp-grp"><div class="inp-lbl">mg</div><input class="inp-field" type="number" value="${esc(x.mg)}" min="0.001" max="50" step="0.1" inputmode="decimal" aria-label="Dose ${i+1} milligrams" oninput="doseDraftChange(${i},'mg',this.value)"></div>
-    <button class="dose-remove" aria-label="Delete dose row ${i+1}" onclick="doseDraftRemove(${i})">${svgIcon('trash',14,'currentColor')}</button>
-  </div>`).join('');
   openSheet(`<div class="sheet-body">
-    ${error?`<div class="dose-error" role="alert">${esc(error)}</div>`:''}
-    <div class="inp-grp"><div class="inp-lbl">Medication name</div><input class="inp-field" type="text" value="${esc(d.med)}" autocorrect="off" oninput="S.doseDraft.med=this.value"></div>
+    <div class="dose-error" id="dose-error" role="alert" hidden></div>
+    <div class="inp-grp"><div class="inp-lbl">Medication name</div><input class="inp-field" id="dose-med" type="text" value="${esc(d.med)}" aria-label="Medication name" autocorrect="off" oninput="S.doseDraft.med=this.value" autocomplete="off" enterkeyhint="next"></div>
     <div class="inp-lbl" style="margin-top:18px">Confirmed dates and doses</div>
-    ${rows||'<div style="font-size:12px;color:var(--t3);margin-bottom:10px">No rows. Add one when the next dose is confirmed.</div>'}
+    <div id="dose-rows">${d.steps.map(doseEditorRow).join('')}</div>
     <button class="sheet-btn sheet-btn-secondary" onclick="doseDraftAdd()">Add dose row</button>
     <button class="sheet-btn sheet-btn-primary" onclick="saveDoseSchedule()">Save schedule</button>
   </div>`,'Dose schedule');
 }
 function doseDraftChange(i,key,value){if(S.doseDraft?.steps[i])S.doseDraft.steps[i][key]=value;}
-function doseDraftAdd(){S.doseDraft.steps.push({date:'',mg:''});renderDoseEditor();}
-function doseDraftRemove(i){S.doseDraft.steps.splice(i,1);renderDoseEditor();}
+function doseDraftAdd(){
+  const i=S.doseDraft.steps.length;
+  S.doseDraft.steps.push({date:'',mg:''});
+  document.getElementById('dose-rows').insertAdjacentHTML('beforeend',doseEditorRow(S.doseDraft.steps[i],i));
+  prepareInputFlow(document.getElementById('sheet-wrap'));
+}
+function doseDraftRemove(i){
+  const list=document.getElementById('dose-rows'),rows=[...list.children];
+  const focused=rows[i]?.contains(document.activeElement);
+  S.doseDraft.steps.splice(i,1);rows[i]?.remove();
+  [...list.children].forEach((row,index)=>{
+    row.dataset.doseIndex=index;
+    row.querySelector('input[type=date]').setAttribute('aria-label','Dose '+(index+1)+' date');
+    row.querySelector('input[type=number]').setAttribute('aria-label','Dose '+(index+1)+' milligrams');
+    row.querySelector('button').setAttribute('aria-label','Delete dose row '+(index+1));
+  });
+  prepareInputFlow(document.getElementById('sheet-wrap'));
+  if(focused)(list.children[Math.min(i,list.children.length-1)]?.querySelector('input')||document.getElementById('dose-med')).focus({preventScroll:true});
+  queueSheetReveal();
+}
+function doseEditorError(message,field){
+  const error=document.getElementById('dose-error');
+  error.textContent=message;error.hidden=false;
+  field?.setAttribute('aria-invalid','true');field?.setAttribute('aria-describedby','dose-error');
+  field?.focus({preventScroll:true});queueSheetReveal();
+}
 function saveDoseSchedule(){
-  const med=String(S.doseDraft?.med||'').trim();
-  if(!med)return renderDoseEditor('Enter the medication name.');
+  const medication=document.getElementById('dose-med');
+  const rows=[...document.querySelectorAll('#dose-rows .dose-edit-row')];
+  S.doseDraft.med=medication.value;
+  rows.forEach((row,i)=>{
+    S.doseDraft.steps[i]={date:row.querySelector('input[type=date]').value,mg:row.querySelector('input[type=number]').value};
+    row.querySelectorAll('input').forEach(field=>{field.removeAttribute('aria-invalid');field.removeAttribute('aria-describedby');});
+  });
+  medication.removeAttribute('aria-invalid');medication.removeAttribute('aria-describedby');
+  const med=String(S.doseDraft.med).trim();
+  if(!med)return doseEditorError('Enter the medication name.',medication);
   const steps=[],seen=new Set();
-  for(const row of S.doseDraft.steps){
+  for(const [i,row] of S.doseDraft.steps.entries()){
     const date=String(row.date||'').trim(),raw=String(row.mg||'').trim();
     if(!date&&!raw)continue;
-    if(!isRealDate(date))return renderDoseEditor('Every dose needs a real date.');
+    if(!isRealDate(date))return doseEditorError('Every dose needs a real date.',rows[i].querySelector('input[type=date]'));
     const mg=Number(raw);
-    if(!Number.isFinite(mg)||mg<=0||mg>50)return renderDoseEditor('Each dose must be more than 0 mg and no more than 50 mg.');
-    if(seen.has(date))return renderDoseEditor('Two doses cannot use the same date.');
+    if(!Number.isFinite(mg)||mg<=0||mg>50)return doseEditorError('Each dose must be more than 0 mg and no more than 50 mg.',rows[i].querySelector('input[type=number]'));
+    if(seen.has(date))return doseEditorError('Two doses cannot use the same date.',rows[i].querySelector('input[type=date]'));
     seen.add(date);steps.push({date,mg});
   }
   steps.sort((a,b)=>a.date.localeCompare(b.date));
@@ -2475,13 +2512,13 @@ function openRhrSheet(){
   const cur=S.log.rhr||'';
   openSheet('<div class="sheet-body">'+
     '<div style="font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:14px">Take it sitting still, before coffee, before your dose. Using the same conditions every time matters more than the exact number.</div>'+
-    '<div class="inp-grp"><div class="inp-lbl">Resting heart rate (bpm)</div><input class="inp-field" id="rhr-in" type="number" value="'+cur+'" inputmode="numeric" placeholder="62"></div>'+
+    '<div class="inp-grp"><div class="inp-lbl">Resting heart rate (bpm)</div><input class="inp-field" id="rhr-in" type="number" value="'+cur+'" inputmode="numeric" placeholder="62" autocomplete="off" enterkeyhint="done" aria-label="Resting heart rate in bpm"></div>'+
     '<button class="sheet-btn sheet-btn-primary" onclick="saveRhr()">Save</button>'+
   '</div>','Resting heart rate');
 }
 function saveRhr(){
   const v=parseInt(document.getElementById('rhr-in')?.value);
-  if(!v||v<30||v>140)return;
+  if(!v||v<30||v>140)return inputError(document.getElementById('rhr-in'),'Enter a resting heart rate from 30 to 140 bpm.');
   S.log.rhr=v;DB.saveLog(S.today,S.log);
   closeSheet();renderScreen(3);
   toast('\u2764\uFE0F','Resting HR logged',v+' bpm');
@@ -2944,6 +2981,86 @@ function toggleRamadan(){
 /* ── BOTTOM SHEETS ──────────────────────────── */
 /* One history entry and opener for the entire modal session, including handoffs. */
 let modalSession=null,modalBackPending=false,modalQueuedOpen=null,modalSerial=0;
+/* Input flow stays delegated so incremental rows keep their identity and draft. */
+function inputFields(root){
+  return [...root.querySelectorAll('input:not([type="hidden"]),select,textarea')].filter(el=>!el.disabled&&el.getClientRects().length);
+}
+function prepareInputFlow(root){
+  const fields=[...root.querySelectorAll('input,select,textarea')];
+  fields.forEach((field,i)=>{
+    const label=field.closest('.inp-grp')?.querySelector('.inp-lbl');
+    if(label){
+      if(!field.id)field.id='field-'+(++prepareInputFlow.serial);
+      if(label.tagName==='LABEL')label.htmlFor=field.id;
+      else{
+        const associated=document.createElement('label');
+        associated.className=label.className;associated.innerHTML=label.innerHTML;
+        associated.htmlFor=field.id;label.replaceWith(associated);
+      }
+    }
+    field.autocomplete='off';
+    field.enterKeyHint=i<fields.length-1?'next':'done';
+  });
+  if(fields.length&&!root.querySelector('[data-input-submit],.sheet-btn-primary,.ob-btn-p')){
+    const action=root.querySelector('.sheet-btn:not(.sheet-btn-secondary),button[onclick^="logFood"]');
+    action?.setAttribute('data-input-submit','');
+  }
+}
+prepareInputFlow.serial=0;
+function revealSheetField(){
+  const dialog=document.getElementById('sheet-wrap');
+  if(!dialog.open||modalSession?.closing)return;
+  const viewport=window.visualViewport;
+  // Pin the dialog to the visible viewport without touching P6's transforms.
+  // Ignore pinch zoom: zoom remains available and is not a keyboard resize.
+  const usable=viewport&&Math.abs(viewport.scale-1)<0.05;
+  const height=usable?viewport.height:window.innerHeight;
+  const top=usable?viewport.offsetTop:0;
+  dialog.style.setProperty('--sheet-bottom',Math.max(0,window.innerHeight-top-height)+'px');
+  dialog.style.setProperty('--sheet-height',Math.max(1,height*0.92)+'px');
+  const field=document.activeElement,scroller=dialog.querySelector('.sheet');
+  if(!scroller||!field?.matches('input,select,textarea')||!dialog.contains(field))return;
+  const box=scroller.getBoundingClientRect(),rect=field.getBoundingClientRect();
+  const action=dialog.querySelector('[data-input-submit],.sheet-btn-primary');
+  const button=action?.getBoundingClientRect();
+  const upper=Math.max(top,box.top)+12,lower=Math.min(top+height,box.bottom)-12;
+  // Reveal both when they fit. Otherwise leave the action reachable by sheet scroll.
+  const bottom=button&&button.bottom-rect.top<=lower-upper?Math.max(rect.bottom,button.bottom):rect.bottom;
+  if(bottom>lower)scroller.scrollTop+=bottom-lower;
+  const updated=field.getBoundingClientRect();
+  if(updated.top<upper)scroller.scrollTop-=upper-updated.top;
+}
+function queueSheetReveal(){
+  cancelAnimationFrame(queueSheetReveal.frame);
+  queueSheetReveal.frame=requestAnimationFrame(revealSheetField);
+}
+window.visualViewport?.addEventListener('resize',queueSheetReveal);
+window.visualViewport?.addEventListener('scroll',queueSheetReveal);
+window.addEventListener('resize',queueSheetReveal);
+document.addEventListener('focusin',e=>{if(e.target.closest('#sheet-wrap'))queueSheetReveal();});
+document.addEventListener('input',e=>{
+  if(!e.target.matches('input,select,textarea'))return;
+  e.target.removeAttribute('aria-invalid');
+  const error=e.target.closest('.inp-grp')?.querySelector('[data-input-error]');
+  if(error){error.remove();e.target.removeAttribute('aria-describedby');}
+});
+document.addEventListener('keydown',e=>{
+  const field=e.target;
+  if(e.key!=='Enter'||e.isComposing||!field.matches('input,select'))return;
+  const root=field.closest('#sheet-wrap,#onboard,.set-row');
+  if(!root){if(field.id==='fsearch'){e.preventDefault();if(!e.repeat)handleSearch(field.value);}return;}
+  e.preventDefault();
+  if(e.repeat||modalSession?.closing)return;
+  const fields=inputFields(root),index=fields.indexOf(field);
+  // Blur commits workout changes; it must never implicitly check off a set.
+  if(fields[index+1]){fields[index+1].focus({preventScroll:true});queueSheetReveal();return;}
+  if(root.matches('.set-row')){field.blur();return;}
+  const action=root.querySelector('[data-input-submit],.sheet-btn-primary,.ob-btn-p');
+  if(action&&!action.disabled){
+    action.click();
+    if(field.isConnected&&root.contains(document.activeElement))queueSheetReveal();
+  }
+});
 function modalFocus(dialog){
   const first=dialog.querySelector('input:not([disabled]):not([type="hidden"]),textarea:not([disabled]),select:not([disabled])')||dialog.querySelector('.sheet-close,button');
   first?.focus({preventScroll:true});
@@ -3053,8 +3170,10 @@ function openSheet(content,title=''){
     dialog.setAttribute('aria-label',title||'Sheet');
     dialog.innerHTML=`<div class="sheet"><div class="sheet-handle" aria-hidden="true"></div>
       <div class="sheet-hdr"><div class="sheet-title">${title}</div><button type="button" class="sheet-close" aria-label="Close" onclick="closeSheet()">${svgIcon('x',13,'var(--t2)')}</button></div>${content}</div>`;
+    prepareInputFlow(dialog);
     if(!dialog.dataset.dragBound){bindSheetDrag(dialog);dialog.dataset.dragBound='true';}
   });
+  queueSheetReveal();
 }
 function openHelp(topicKey){
   const topic=HELP_TOPICS[topicKey];
@@ -3070,7 +3189,7 @@ function openWeightSheet(){
   openSheet(`<div class="sheet-body">
     <div class="inp-grp">
       <div class="inp-lbl">Weight (${wUnit()})</div>
-      <input class="inp-field" id="wi" type="number" value="${fmtW(cur)}" inputmode="decimal" step="0.1" style="font-size:28px;font-weight:800;text-align:center;padding:20px;color:var(--purple-text)">
+      <input class="inp-field" id="wi" type="number" value="${fmtW(cur)}" inputmode="decimal" step="0.1" style="font-size:28px;font-weight:800;text-align:center;padding:20px;color:var(--purple-text)" autocomplete="off" enterkeyhint="done" aria-label="Weight">
     </div>
     <div style="display:flex;justify-content:center;gap:12px;margin-bottom:16px">
       <button onclick="adjWt(-0.5)" style="width:46px;height:46px;background:var(--s2);border-radius:50%;font-size:20px;color:var(--t2);display:flex;align-items:center;justify-content:center">−</button>
@@ -3086,7 +3205,7 @@ function openWeightSheet(){
 function adjWt(d){const e=document.getElementById('wi');if(e)e.value=(parseFloat(e.value)+d).toFixed(1);}
 function saveWeight(){
   const v=parseFloat(document.getElementById('wi')?.value);
-  if(!v||isNaN(v))return;
+  if(!Number.isFinite(v)||v<=0)return inputError(document.getElementById('wi'),'Enter a weight greater than zero.');
   const kg=fromDisp(v);
   S.log.weight=kg;DB.saveLog(S.today,S.log);
   DB.addWeight(S.today,kg);S.cfg.body.currentWeight=kg;DB.saveSettings(S.cfg);
@@ -3099,11 +3218,11 @@ function openStepsSheet(date){
   openSheet(`<div class="sheet-body">
     <div class="inp-grp">
       <div class="inp-lbl">Date</div>
-      <input class="inp-field" id="sd" type="date" value="${d}" max="${S.today}" onchange="openStepsSheet(this.value)">
+      <input class="inp-field" id="sd" type="date" value="${d}" max="${S.today}" onchange="openStepsSheet(this.value)" autocomplete="off" enterkeyhint="next" aria-label="Date">
     </div>
     <div class="inp-grp">
       <div class="inp-lbl">Steps on ${d===S.today?'today':shortDate(d)}</div>
-      <input class="inp-field" id="si" type="number" value="${cur}" inputmode="numeric" style="font-size:28px;font-weight:800;text-align:center;padding:20px;color:var(--green-text)">
+      <input class="inp-field" id="si" type="number" value="${cur}" inputmode="numeric" style="font-size:28px;font-weight:800;text-align:center;padding:20px;color:var(--green-text)" autocomplete="off" enterkeyhint="done" aria-label="Steps">
     </div>
     <button class="sheet-btn" style="background:var(--green);color:#fff" onclick="saveSteps()">Save steps</button>
     <div class="inp-lbl" style="margin-top:20px;margin-bottom:8px">Catch up on the last 7 days</div>
@@ -3135,9 +3254,25 @@ function openWaterSheet(){
       <button class="water-btn" onclick="addWater(750);closeSheet()">+${fmtVolInc(750)}</button>
       <button class="water-btn" onclick="addWater(1000);closeSheet()">+${fmtVolInc(1000)}</button>
     </div>
-    <div class="inp-grp"><div class="inp-lbl">Custom amount (${vu})</div><input class="inp-field" id="cwi" type="number" placeholder="e.g. ${volUnit()==='floz'?'12':'350'}" inputmode="numeric"></div>
-    <button class="sheet-btn" style="background:var(--blue);color:#fff" onclick="addWater(Math.round(volFrom(parseFloat(document.getElementById('cwi').value)||0)));closeSheet()">Add water</button>
+    <div class="inp-grp"><div class="inp-lbl">Custom amount (${vu})</div><input class="inp-field" id="cwi" type="number" step="any" placeholder="e.g. ${volUnit()==='floz'?'12':'350'}" inputmode="${volUnit()==='floz'?'decimal':'numeric'}" autocomplete="off" enterkeyhint="done" aria-label="Custom water amount"></div>
+    <button class="sheet-btn" data-input-submit style="background:var(--blue);color:#fff" onclick="saveCustomWater()">Add water</button>
   </div>`,'Add water');
+}
+function saveCustomWater(){
+  const field=document.getElementById('cwi'),amount=parseFloat(field.value);
+  if(!Number.isFinite(amount)||amount<=0)return inputError(field,'Enter a water amount greater than zero.');
+  addWater(Math.round(volFrom(amount)));closeSheet();
+}
+function inputError(field,message){
+  const group=field.closest('.inp-grp');
+  let error=group.querySelector('[data-input-error]');
+  if(!error){
+    error=document.createElement('div');error.dataset.inputError='';error.className='dose-error';
+    error.id=field.id+'-error';error.setAttribute('role','alert');group.append(error);
+  }
+  error.textContent=message;field.setAttribute('aria-describedby',error.id);
+  field.setAttribute('aria-invalid','true');field.focus({preventScroll:true});
+  queueSheetReveal();
 }
 function openMealSheet(){
   const all=[...PRESETS,...DB.customFoods()];
@@ -3154,18 +3289,18 @@ function openMealSheet(){
 function openManualSheet(){
   const types=getMealTypes();
   openSheet(`<div class="sheet-body">
-    <div class="inp-grp"><div class="inp-lbl">Food name</div><input class="inp-field" id="mn" type="text" placeholder="e.g. Beef Tehari" autocorrect="off"></div>
+    <div class="inp-grp"><div class="inp-lbl">Food name</div><input class="inp-field" id="mn" type="text" placeholder="e.g. Beef Tehari" autocorrect="off" autocomplete="off" enterkeyhint="next" aria-label="Food name"></div>
     <div class="inp-row">
-      <div class="inp-grp"><div class="inp-lbl">Calories</div><input class="inp-field" id="mc" type="number" placeholder="0" inputmode="numeric"></div>
-      <div class="inp-grp"><div class="inp-lbl">Protein (g)</div><input class="inp-field" id="mp" type="number" placeholder="0" inputmode="decimal"></div>
+      <div class="inp-grp"><div class="inp-lbl">Calories</div><input class="inp-field" id="mc" type="number" placeholder="0" inputmode="numeric" autocomplete="off" enterkeyhint="next" aria-label="Calories"></div>
+      <div class="inp-grp"><div class="inp-lbl">Protein (g)</div><input class="inp-field" id="mp" type="number" placeholder="0" inputmode="decimal" autocomplete="off" enterkeyhint="next" aria-label="Protein in grams" step="any"></div>
     </div>
     <div class="inp-row">
-      <div class="inp-grp"><div class="inp-lbl">Carbs (g)</div><input class="inp-field" id="mcarb" type="number" placeholder="0" inputmode="decimal"></div>
-      <div class="inp-grp"><div class="inp-lbl">Fat (g)</div><input class="inp-field" id="mf" type="number" placeholder="0" inputmode="decimal"></div>
+      <div class="inp-grp"><div class="inp-lbl">Carbs (g)</div><input class="inp-field" id="mcarb" type="number" placeholder="0" inputmode="decimal" autocomplete="off" enterkeyhint="next" aria-label="Carbs in grams" step="any"></div>
+      <div class="inp-grp"><div class="inp-lbl">Fat (g)</div><input class="inp-field" id="mf" type="number" placeholder="0" inputmode="decimal" autocomplete="off" enterkeyhint="next" aria-label="Fat in grams" step="any"></div>
     </div>
     <div class="inp-grp">
       <div class="inp-lbl">Meal type</div>
-      <select class="inp-field" id="mt" style="-webkit-appearance:none">${types.map(t=>`<option value="${t}">${t}</option>`).join('')}</select>
+      <select class="inp-field" id="mt" style="-webkit-appearance:none" autocomplete="off" enterkeyhint="done" aria-label="Meal type">${types.map(t=>`<option value="${t}">${t}</option>`).join('')}</select>
     </div>
     <div style="display:flex;gap:10px;margin-top:4px">
       <button class="sheet-btn sheet-btn-primary" style="flex:1" onclick="saveManual(false)">Add meal</button>
@@ -3174,19 +3309,19 @@ function openManualSheet(){
   </div>`,'Manual entry');
 }
 function saveManual(savePreset){
-  const name=document.getElementById('mn')?.value?.trim();if(!name)return;
+  const name=document.getElementById('mn')?.value?.trim();if(!name)return inputError(document.getElementById('mn'),'Enter a food name.');
   const food={id:'c_'+Date.now(),name,cal:parseInt(document.getElementById('mc')?.value)||0,protein:parseFloat(document.getElementById('mp')?.value)||0,carbs:parseFloat(document.getElementById('mcarb')?.value)||0,fat:parseFloat(document.getElementById('mf')?.value)||0};
   if(savePreset){const c=DB.customFoods();c.push(food);DB.saveCustomFoods(c);}
   addMealItem(food,document.getElementById('mt')?.value||'Other');
 }
 function openTargetSheet(field,label,current){
   openSheet(`<div class="sheet-body">
-    <div class="inp-grp"><div class="inp-lbl">${label}</div><input class="inp-field" id="ti" type="number" value="${current}" inputmode="decimal" style="font-size:24px;font-weight:800;text-align:center;padding:18px"></div>
+    <div class="inp-grp"><div class="inp-lbl">${label}</div><input class="inp-field" id="ti" type="number" value="${current}" inputmode="${field==='steps'||field==='calories'?'numeric':'decimal'}" style="font-size:24px;font-weight:800;text-align:center;padding:18px" autocomplete="off" enterkeyhint="done" aria-label="Target" step="any"></div>
     <button class="sheet-btn sheet-btn-primary" onclick="saveTarget('${field}')">Save</button>
   </div>`,`Edit ${field}`);
 }
 function saveTarget(field){
-  const v=parseFloat(document.getElementById('ti')?.value);if(isNaN(v))return;
+  const v=parseFloat(document.getElementById('ti')?.value);if(!Number.isFinite(v))return inputError(document.getElementById('ti'),'Enter a target.');
   if(field==='water')S.cfg.targets.water=volUnit()==='floz'?Math.round(volFrom(v)):Math.round(v*1000);
   else S.cfg.targets[field]=field==='steps'?Math.round(v):v;
   DB.saveSettings(S.cfg);closeSheet();renderScreen(4);
@@ -3196,18 +3331,18 @@ function openBodySheet(){
   const b=S.cfg.body;
   openSheet(`<div class="sheet-body">
     <div class="inp-row">
-      <div class="inp-grp"><div class="inp-lbl">Current weight (${wUnit()})</div><input class="inp-field" id="bcw" type="number" value="${fmtW(b.currentWeight)}" inputmode="decimal" step="0.1"></div>
-      <div class="inp-grp"><div class="inp-lbl">Target weight (${wUnit()})</div><input class="inp-field" id="btw" type="number" value="${fmtW(b.targetWeight)}" inputmode="decimal" step="0.1"></div>
+      <div class="inp-grp"><div class="inp-lbl">Current weight (${wUnit()})</div><input class="inp-field" id="bcw" type="number" value="${fmtW(b.currentWeight)}" inputmode="decimal" step="0.1" autocomplete="off" enterkeyhint="next" aria-label="Current weight"></div>
+      <div class="inp-grp"><div class="inp-lbl">Target weight (${wUnit()})</div><input class="inp-field" id="btw" type="number" value="${fmtW(b.targetWeight)}" inputmode="decimal" step="0.1" autocomplete="off" enterkeyhint="next" aria-label="Target weight"></div>
     </div>
     <div class="inp-row">
-      <div class="inp-grp"><div class="inp-lbl">Body fat %</div><input class="inp-field" id="bbf" type="number" value="${b.bodyFat}" inputmode="decimal" step="0.1"></div>
-      <div class="inp-grp"><div class="inp-lbl">Lean mass (${wUnit()})</div><input class="inp-field" id="bmm" type="number" value="${fmtW(b.muscleMass)}" inputmode="decimal" step="0.5"></div>
+      <div class="inp-grp"><div class="inp-lbl">Body fat %</div><input class="inp-field" id="bbf" type="number" value="${b.bodyFat}" inputmode="decimal" step="0.1" autocomplete="off" enterkeyhint="next" aria-label="Body fat percent"></div>
+      <div class="inp-grp"><div class="inp-lbl">Lean mass (${wUnit()})</div><input class="inp-field" id="bmm" type="number" value="${fmtW(b.muscleMass)}" inputmode="decimal" step="0.5" autocomplete="off" enterkeyhint="next" aria-label="Lean mass"></div>
     </div>
     <div class="inp-row">
       ${htUnit()==='cm'?
-        `<div class="inp-grp"><div class="inp-lbl">Height (cm)</div><input class="inp-field" id="bh" type="number" value="${htDisp(S.cfg.profile.heightCm||0).toFixed(1)}" inputmode="decimal" step="0.5"></div>`
-        :`<div class="inp-grp"><div class="inp-lbl">Height (ft)</div><input class="inp-field" id="bhf" type="number" value="${Math.floor(htDisp(S.cfg.profile.heightCm||0)/12)}" inputmode="numeric" step="1"></div>
-        <div class="inp-grp"><div class="inp-lbl">Height (in)</div><input class="inp-field" id="bhi" type="number" value="${(htDisp(S.cfg.profile.heightCm||0)%12).toFixed(1)}" inputmode="decimal" step="0.5"></div>`}
+        `<div class="inp-grp"><div class="inp-lbl">Height (cm)</div><input class="inp-field" id="bh" type="number" value="${htDisp(S.cfg.profile.heightCm||0).toFixed(1)}" inputmode="decimal" step="0.5" autocomplete="off" enterkeyhint="done" aria-label="Height in cm"></div>`
+        :`<div class="inp-grp"><div class="inp-lbl">Height (ft)</div><input class="inp-field" id="bhf" type="number" value="${Math.floor(htDisp(S.cfg.profile.heightCm||0)/12)}" inputmode="numeric" step="1" autocomplete="off" enterkeyhint="next" aria-label="Height in feet"></div>
+        <div class="inp-grp"><div class="inp-lbl">Height (in)</div><input class="inp-field" id="bhi" type="number" value="${(htDisp(S.cfg.profile.heightCm||0)%12).toFixed(1)}" inputmode="decimal" step="0.5" autocomplete="off" enterkeyhint="done" aria-label="Height in inches"></div>`}
     </div>
     <button class="sheet-btn sheet-btn-primary" onclick="saveBody()">Save stats</button>
   </div>`,'Body stats');
@@ -3233,27 +3368,27 @@ function saveBody(){
 }
 function openNameSheet(){
   openSheet(`<div class="sheet-body">
-    <div class="inp-grp"><div class="inp-lbl">Your name</div><input class="inp-field" id="ni" type="text" value="${S.cfg.name}" autocorrect="off"></div>
+    <div class="inp-grp"><div class="inp-lbl">Your name</div><input class="inp-field" id="ni" type="text" value="${S.cfg.name}" autocorrect="off" autocomplete="off" enterkeyhint="done" aria-label="Your name"></div>
     <button class="sheet-btn sheet-btn-primary" onclick="saveName()">Save</button>
   </div>`,'Edit name');
 }
-function saveName(){const v=document.getElementById('ni')?.value?.trim();if(!v)return;S.cfg.name=v;DB.saveSettings(S.cfg);closeSheet();if(S.screen===4)renderScreen(4);if(S.screen===0)renderScreen(0);}
+function saveName(){const v=document.getElementById('ni')?.value?.trim();if(!v)return inputError(document.getElementById('ni'),'Enter your name.');S.cfg.name=v;DB.saveSettings(S.cfg);closeSheet();if(S.screen===4)renderScreen(4);if(S.screen===0)renderScreen(0);}
 function openAddExSheet(){
   openSheet(`<div class="sheet-body">
-    <div class="inp-grp"><div class="inp-lbl">Exercise name</div><input class="inp-field" id="en" type="text" placeholder="e.g. Cable Fly" autocorrect="off"></div>
+    <div class="inp-grp"><div class="inp-lbl">Exercise name</div><input class="inp-field" id="en" type="text" placeholder="e.g. Cable Fly" autocorrect="off" autocomplete="off" enterkeyhint="next" aria-label="Exercise name"></div>
     <div class="inp-row">
-      <div class="inp-grp"><div class="inp-lbl">Sets</div><input class="inp-field" id="es" type="number" value="3" inputmode="numeric"></div>
-      <div class="inp-grp"><div class="inp-lbl">Reps</div><input class="inp-field" id="er" type="text" value="10–12"></div>
+      <div class="inp-grp"><div class="inp-lbl">Sets</div><input class="inp-field" id="es" type="number" value="3" inputmode="numeric" autocomplete="off" enterkeyhint="next" aria-label="Sets"></div>
+      <div class="inp-grp"><div class="inp-lbl">Reps</div><input class="inp-field" id="er" type="text" value="10–12" autocomplete="off" enterkeyhint="next" aria-label="Reps range"></div>
     </div>
     <div class="inp-row">
-      <div class="inp-grp"><div class="inp-lbl">Starting weight</div><input class="inp-field" id="ew" type="text" placeholder="15–20 lb"></div>
-      <div class="inp-grp"><div class="inp-lbl">Muscle group</div><input class="inp-field" id="em" type="text" placeholder="Chest"></div>
+      <div class="inp-grp"><div class="inp-lbl">Starting weight</div><input class="inp-field" id="ew" type="text" placeholder="15–20 lb" autocomplete="off" enterkeyhint="next" aria-label="Starting weight range"></div>
+      <div class="inp-grp"><div class="inp-lbl">Muscle group</div><input class="inp-field" id="em" type="text" placeholder="Chest" autocomplete="off" enterkeyhint="done" aria-label="Muscle group"></div>
     </div>
     <button class="sheet-btn sheet-btn-primary" onclick="saveNewEx()">Add exercise</button>
   </div>`,'Add exercise');
 }
 function saveNewEx(){
-  const name=document.getElementById('en')?.value?.trim();if(!name)return;
+  const name=document.getElementById('en')?.value?.trim();if(!name)return inputError(document.getElementById('en'),'Enter an exercise name.');
   const ex={id:'cx_'+Date.now(),name,muscle:document.getElementById('em')?.value?.trim()||'Other',sets:parseInt(document.getElementById('es')?.value)||3,reps:document.getElementById('er')?.value||'10',weight:document.getElementById('ew')?.value||'BW',restSec:90,cues:['Focus on the target muscle throughout','Control the weight on the way down','Breathe out on exertion']};
   S.workout.days[S.workoutDay].exercises.push(ex);DB.saveWorkout(S.workout);
   closeSheet();renderScreen(1);toast('✅',`${name} added`,'');
