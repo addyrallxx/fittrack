@@ -6,8 +6,15 @@ FitTrack uses semantic versioning from this baseline. Patches fix defects, minor
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-05
+
+FitTrack now moves and responds like a native phone app.
+
 ### Added
 
+- Each set opens with what you lifted last time, shown under the row, such as "Last 60 kg × 8".
+- One rest bar sits above the tabs with minus and plus 15 s and Skip. Android buzzes when rest is done, and a toast tells you if you are on another tab.
+- The screen stays awake during a workout, where the browser supports it.
 - Drag across the weight chart to see the date and weight of the nearest weigh-in, with a thin marker line and a small readout. Android gives a light tick on each new point. Arrow keys work too, and a tap shows the value briefly.
 - Tap the food search to see your 12 most recent foods with their last serving, and log one in a single tap.
 - An empty meal that you logged in the last two weeks offers a one-tap repeat, such as "Repeat Tue · 640 kcal".
@@ -17,6 +24,7 @@ FitTrack uses semantic versioning from this baseline. Patches fix defects, minor
 
 ### Changed
 
+- With a calorie floor set, Home and Nutrition lead with the calories left to your floor, then protein, then what remains to your target.
 - Tapping a tab now fades in place instead of sliding sideways. A deliberate swipe still slides, but it no longer starts from a text field, the day tabs or an open sheet.
 - Every screen keeps its place when you leave and come back, and after small actions such as deleting a meal or toggling creatine.
 - Android Back goes to Home first, then leaves the app.
@@ -68,6 +76,7 @@ FitTrack uses semantic versioning from this baseline. Patches fix defects, minor
 - Push reminders for water, workouts, and weigh-ins.
 - Activity streaks, calendar history, body-composition summaries, and a settings screen.
 
-[Unreleased]: https://github.com/addyrallxx/fittrack/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/addyrallxx/fittrack/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/addyrallxx/fittrack/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/addyrallxx/fittrack/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/addyrallxx/fittrack/releases/tag/v1.0.0

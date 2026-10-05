@@ -31,4 +31,4 @@ http.createServer((q,r)=>{
     r.writeHead(200,{'Content-Type':T[path.extname(f)]||'application/octet-stream','Service-Worker-Allowed':'/'});
     r.end(d);
   });
-}).listen(8899,'127.0.0.1',()=>console.log('serving on http://127.0.0.1:8899'));
+}).listen(Number(process.env.PORT)||8899,'127.0.0.1',()=>console.log('serving on http://127.0.0.1:'+(Number(process.env.PORT)||8899)));

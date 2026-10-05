@@ -27,14 +27,15 @@ export async function browser() {
     if (profile) fs.rmSync(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
   }
   try {
-    if (await portFree(8899)) server = spawn(process.execPath, ['serve.mjs'], { cwd: root, stdio: 'ignore' });
-    const url = 'http://127.0.0.1:8899/fittrack.html';
+    const PORT = Number(process.env.PORT) || 8899; // parallel worktrees pass PORT so their gates never test another tree
+    if (await portFree(PORT)) server = spawn(process.execPath, ['serve.mjs'], { cwd: root, stdio: 'ignore', env: { ...process.env, PORT: String(PORT) } });
+    const url = `http://127.0.0.1:${PORT}/fittrack.html`;
     let serving = false;
     for (let i = 0; i < 40; i++) {
       try { const response = await fetch(url, { signal: AbortSignal.timeout(1000) }); if (response.ok && (await response.text()).includes('renderScreen')) { serving = true; break; } } catch {}
       await sleep(100);
     }
-    if (!serving) throw new Error('Port 8899 is not serving FitTrack');
+    if (!serving) throw new Error(`Port ${PORT} is not serving FitTrack`);
     let port;
     for (let candidate = 9340; candidate < 9440; candidate++) if (await portFree(candidate)) { port = candidate; break; }
     if (!port) throw new Error('No free CDP port');
