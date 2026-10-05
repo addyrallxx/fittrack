@@ -605,11 +605,8 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 <script>
 /* One cached OS query, initialized before startup and shared by motion helpers. */
 const reducedMotionQuery=matchMedia('(prefers-reduced-motion: reduce)');
-let reducedMotion=reducedMotionQuery.matches;
-function prefersReducedMotion(){return reducedMotion;}
-function updateReducedMotion(event){reducedMotion=event.matches;}
-if(reducedMotionQuery.addEventListener)reducedMotionQuery.addEventListener('change',updateReducedMotion);
-else reducedMotionQuery.addListener(updateReducedMotion);
+/* .matches is live, so a setting change applies to the very next animation. */
+function prefersReducedMotion(){return reducedMotionQuery.matches;}
 const APP_VERSION='1.1.0';
 /* ── ICONS ───────────────────────────────────────── */
 const I={

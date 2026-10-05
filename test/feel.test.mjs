@@ -159,10 +159,12 @@ async function main() {
       console.log(`\n${device.name} ${device.width}x${device.height} DPR ${device.deviceScaleFactor} ${theme}`);
       console.log('Screen     states  known  fail');
       await app.evaluate(`setTheme('${theme}')`);
+      // Sheets close with an animation and stay modal until closed (P6): wait for it.
+      const closeModals = async () => { await app.evaluate('closeSheet()'); for (let i = 0; i < 60; i++) { if (await app.evaluate("!document.querySelector('dialog[open]')")) return; await sleep(25); } throw new Error('A dialog did not close'); };
       for (let index = 0; index < screens.length; index++) {
         const counts = { known: 0, fail: 0 }, context = `${device.name}/${theme}/${screens[index]}`;
         await app.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
-        await app.evaluate(`closeSheet(); go(${index});`);
+        await closeModals(); await app.evaluate(`go(${index});`);
         await sleep(100);
         if (index === 1) await app.evaluate("(() => {document.querySelector('.ex-hdr')?.click(); const exerciseId=document.querySelector('.ex-card')?.id.replace(/^ec-/,''); if(exerciseId)startRest(exerciseId,60);})()");
         const inspectState = async (label, replay) => {
@@ -188,7 +190,7 @@ async function main() {
           const code = triggers[t];
           if (visited.has(code)) continue;
           visited.add(code);
-          await app.evaluate('closeSheet()');
+          await closeModals();
           await app.evaluate(code);
           await sleep(110);
           if (!await app.evaluate("!!document.querySelector('#sheet-wrap.show')")) throw new Error('Sheet trigger did not open: ' + code);
@@ -196,7 +198,7 @@ async function main() {
           const nested = await app.evaluate("[...document.querySelectorAll('#sheet-wrap [onclick]')].map(el=>el.getAttribute('onclick')).filter(code=>/^(openManualSheet|pickMealType|openHelp)\\(/.test(code))");
           for (const next of nested) if (!visited.has(next) && !triggers.includes(next)) triggers.push(next);
         }
-        await app.evaluate('closeSheet()');
+        await closeModals();
         console.log(`${screens[index].padEnd(10)} ${String(states).padStart(5)} ${String(counts.known).padStart(6)} ${String(counts.fail).padStart(5)}`);
       }
     }
