@@ -426,7 +426,14 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .range-tabs{display:flex;gap:6px;}
 .range-tab{padding:5px 12px;border-radius:14px;border:1px solid var(--border);background:none;color:var(--t3);font-size:11px;font-weight:600;transition:all 0.2s var(--smooth);}
 .range-tab.active{background:var(--purple);border-color:var(--purple-text);color:#fff;}
-.chart-wrap{height:160px;position:relative;}
+.chart-wrap{height:160px;position:relative;margin-top:32px;}
+.chart-wrap canvas{touch-action:pan-y;}
+.chart-wrap[data-empty]:not([data-empty=""])::after{content:attr(data-empty);position:absolute;inset:0;display:grid;place-items:center;color:var(--t2);font-size:13px;pointer-events:none;}
+.chart-wrap canvas:focus-visible{outline:2px solid var(--purple-text);outline-offset:3px;}
+.chart-scrub-line{position:absolute;width:1px;background:var(--t2);pointer-events:none;opacity:0;transition:opacity 120ms linear;}
+.chart-scrub-pill{position:absolute;top:-30px;left:0;max-width:100%;box-sizing:border-box;padding:5px 9px;border-radius:999px;background:var(--s2);color:var(--t1);font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity 120ms linear;}
+.chart-wrap.scrubbing .chart-scrub-line,.chart-wrap.scrubbing .chart-scrub-pill{opacity:1;}
+.chart-scrub-live{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}
 .week-summary{margin:0 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;}
 .week-summary-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;}
 .week-summary-row+.week-summary-row{border-top:1px solid var(--border);}
@@ -932,7 +939,7 @@ function applyTheme(){
   if(mc&&bg)mc.setAttribute('content',bg);
   const cs=document.querySelector('meta[name="color-scheme"]');
   if(cs)cs.setAttribute('content',t);
-  if(S.wtChart)buildChart(); /* chart colours are read from CSS vars at build time */
+  if(S.wtChart)buildChart(); /* Update the existing chart colours in place. */
 }
 function setTheme(v){
   S.cfg.theme=(v==='light'||v==='dark')?v:'system';
@@ -2255,6 +2262,7 @@ function saveRhr(){
 }
 /* ── PROGRESS SCREEN ────────────────────────── */
 function renderProgress(){
+  const retainedChart=document.querySelector("#s3 .chart-wrap");
   const wh=DB.weights(),all=DB.allLogs(),c=S.cfg;
   const curW=wh.length>0?wh[wh.length-1].weight:c.body.currentWeight;
   const diff=(curW-c.body.startingWeight).toFixed(1);
@@ -2288,7 +2296,7 @@ function renderProgress(){
           <div style="font-size:10px;color:var(--t3);text-align:right;margin-top:6px">Target: ${fmtWU(c.body.targetWeight)}</div>
         </div>
       </div>
-      <div class="chart-wrap"><canvas id="wt-chart"></canvas></div>
+      <div class="chart-wrap"><canvas id="wt-chart" tabindex="0" aria-label="Weight history. Use left and right arrows to explore weigh-ins."></canvas><div class="chart-scrub-line"></div><div class="chart-scrub-pill" aria-hidden="true"></div><div class="chart-scrub-live" aria-live="polite" aria-atomic="true"></div></div>
     </div>
     <div class="section-label">Trend and projection</div>
     <div class="bstats-card">
@@ -2360,7 +2368,8 @@ function renderProgress(){
     </div>
     <div style="height:16px"></div>
   </div>`;
-  setTimeout(()=>buildChart(),100);
+  if(retainedChart)document.querySelector("#s3 .chart-wrap").replaceWith(retainedChart);
+  buildChart();
 }
 function buildCal(){
   const now=S.calMonth||new Date(),y=now.getFullYear(),m=now.getMonth();
@@ -2408,20 +2417,81 @@ function showDay(ds){
     ${log.steps>0?`<div class="flex-bc" style="background:var(--s2);border-radius:var(--r-md);padding:12px"><span style="font-size:13px;color:var(--t2)">Steps</span><span style="font-size:16px;font-weight:800;color:var(--green-text)">${log.steps.toLocaleString()}</span></div>`:''}
   </div>`,dl);
 }
+
+function installChartScrubbing(chart){
+  const canvas=chart.canvas,wrap=canvas.parentElement;
+  const line=wrap.querySelector('.chart-scrub-line'),pill=wrap.querySelector('.chart-scrub-pill'),live=wrap.querySelector('.chart-scrub-live');
+  let selected=-1,lastPulse=-Infinity,gesture=null,tapHide=0;
+  function hide(){wrap.classList.remove('scrubbing');}
+  chart.resetScrub=()=>{selected=-1;gesture=null;hide();};
+  function show(index,haptic){
+    const weights=chart.scrubWeights||[],points=chart.getDatasetMeta(0).data;
+    if(!weights.length||!points[index])return;
+    const point=points[index].getProps(['x'],true),area=chart.chartArea;
+    const text=fmtDate(weights[index].date)+', '+toDisp(weights[index].weight).toFixed(1)+' '+wUnit();
+    pill.textContent=text;if(live.textContent!==text)live.textContent=text;
+    line.style.transform='translateX('+point.x+'px)';
+    line.style.top=area.top+'px';line.style.height=(area.bottom-area.top)+'px';
+    const left=Math.max(0,Math.min(wrap.clientWidth-pill.offsetWidth,point.x-pill.offsetWidth/2));
+    pill.style.transform='translateX('+left+'px)';wrap.classList.add('scrubbing');
+    const now=performance.now();
+    if(haptic&&index!==selected&&!prefersReducedMotion()&&/Android/i.test(navigator.userAgent)&&!/iPhone|iPad|iPod/i.test(navigator.userAgent)&&typeof navigator.vibrate==='function'&&now-lastPulse>=40){
+      navigator.vibrate(8);lastPulse=now;
+    }
+    selected=index;
+  }
+  function at(e,haptic=true){
+    const x=(e.clientX-canvas.getBoundingClientRect().left)*chart.width/canvas.getBoundingClientRect().width;
+    const points=chart.getDatasetMeta(0).data;
+    let nearest=0,distance=Infinity;
+    points.forEach((p,i)=>{const d=Math.abs(p.getProps(['x'],true).x-x);if(d<distance){distance=d;nearest=i;}});
+    show(nearest,haptic);
+  }
+  canvas.addEventListener('pointerdown',e=>{
+    if(!e.isPrimary||e.button!==0)return;
+    selected=-1;clearTimeout(tapHide);gesture={id:e.pointerId,x:e.clientX,y:e.clientY,axis:null,e};
+  });
+  canvas.addEventListener('pointermove',e=>{
+    if(!gesture||gesture.id!==e.pointerId)return;
+    const dx=e.clientX-gesture.x,dy=e.clientY-gesture.y;
+    if(!gesture.axis&&Math.max(Math.abs(dx),Math.abs(dy))>8){
+      gesture.axis=Math.abs(dx)>Math.abs(dy)?'x':'y';
+      if(gesture.axis==='x'&&canvas.setPointerCapture&&e.isTrusted)canvas.setPointerCapture(e.pointerId);
+    }
+    if(gesture.axis==='y'){hide();return;}
+    if(gesture.axis==='x')at(e);
+  });
+  // A vertical scroll that starts on the chart must not flash the pill or buzz: scrub only once the drag is horizontal; a plain tap shows the value briefly, silently.
+  function release(e){const g=gesture;gesture=null;if(g&&!g.axis&&e&&e.type==='pointerup'){at(g.e,false);tapHide=setTimeout(hide,1500);}else hide();}
+  ['pointerup','pointercancel','lostpointercapture'].forEach(type=>canvas.addEventListener(type,release));
+  // Keep chart drags out of the app's horizontal tab-swipe recognizer.
+  ['touchstart','touchmove','touchend'].forEach(type=>canvas.addEventListener(type,e=>e.stopPropagation(),{passive:true}));
+  canvas.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){hide();return;}
+    if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+    e.preventDefault();
+    const n=(chart.scrubWeights||[]).length;if(!n)return;
+    show(selected<0?(e.key==='ArrowLeft'?n-1:0):Math.max(0,Math.min(n-1,selected+(e.key==='ArrowRight'?1:-1))),false);
+  });
+  canvas.addEventListener('blur',hide);
+  const observer=new MutationObserver(()=>{
+    if(!canvas.isConnected){observer.disconnect();if(chart.canvas===canvas)chart.destroy();if(S.wtChart===chart)S.wtChart=null;}
+  });
+  observer.observe(document.getElementById('s3'),{childList:true,subtree:true});
+}
 function setRange(r){
   S.chartRange=r;
-  if(S.wtChart){S.wtChart.destroy();S.wtChart=null;}
   document.querySelectorAll('.range-tab').forEach(t=>{t.classList.toggle('active',t.textContent===r+'d');});
   buildChart();
 }
 function buildChart(){
   const canvas=document.getElementById('wt-chart');
-  if(!canvas||typeof Chart==='undefined')return;
-  if(S.wtChart){S.wtChart.destroy();S.wtChart=null;}
+  if(S.wtChart&&!S.wtChart.canvas.isConnected){S.wtChart.destroy();S.wtChart=null;}
+  if(!canvas||!canvas.isConnected||typeof Chart==='undefined')return;
   const wh=DB.weights(),days=S.chartRange;
   const cut=new Date();cut.setDate(cut.getDate()-days);
   const filtered=wh.filter(w=>new Date(w.date+'T12:00:00')>=cut);
-  if(filtered.length===0)filtered.push({date:S.today,weight:S.cfg.body.currentWeight});
+  canvas.setAttribute('aria-label',filtered.length?'Weight history. Use left and right arrows to explore weigh-ins.':'No weigh-ins in this range.');
   const labels=filtered.map(w=>{const d=new Date(w.date+'T12:00:00');return `${d.getMonth()+1}/${d.getDate()}`;});
   /* toDisp(), not the raw stored kilograms: the chart used to plot kg no
      matter what unit was selected, the one screen the lb toggle never
@@ -2433,10 +2503,20 @@ function buildChart(){
   const cs=getComputedStyle(document.documentElement),v=n=>cs.getPropertyValue(n).trim();
   const purple=v('--purple-text'),green=v('--green-text'),surface=v('--s2'),
         text=v('--t1'),tipBorder=v('--border2'),tick=v('--t3'),grid=v('--border');
-  S.wtChart=new Chart(canvas,{type:'line',data:{labels,datasets:[
+  const config={type:'line',data:{labels,datasets:[
     {label:'Weight',data,borderColor:purple,backgroundColor:purple+'12',borderWidth:2.5,pointBackgroundColor:purple,pointRadius:4,pointHoverRadius:6,fill:true,tension:0.4},
     {label:'Target',data:Array(labels.length).fill(toDisp(S.cfg.body.targetWeight)),borderColor:green+'73',borderWidth:1.5,borderDash:[5,5],pointRadius:0,fill:false},
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:surface,titleColor:purple,bodyColor:text,borderColor:tipBorder,borderWidth:1,padding:10}},scales:{x:{grid:{color:grid},ticks:{color:tick,font:{size:10},maxTicksLimit:6}},y:{grid:{color:grid},ticks:{color:tick,font:{size:10}}}},animation:{duration:800,easing:'easeOutQuart'}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false,backgroundColor:surface,titleColor:purple,bodyColor:text,borderColor:tipBorder,borderWidth:1,padding:10}},scales:{x:{grid:{color:grid},ticks:{color:tick,font:{size:10},maxTicksLimit:6}},y:{grid:{color:grid},ticks:{color:tick,font:{size:10}}}},animation:{duration:prefersReducedMotion()?0:550,easing:'easeOutQuart'}}};
+  if(S.wtChart){
+    S.wtChart.data=config.data;S.wtChart.options=config.options;
+    S.wtChart.update('none');
+  }else{
+    S.wtChart=new Chart(canvas,config);
+    installChartScrubbing(S.wtChart);
+  }
+  S.wtChart.scrubWeights=filtered;
+  if(S.wtChart.resetScrub)S.wtChart.resetScrub();
+  canvas.parentElement.dataset.empty=filtered.length?'':'No weigh-ins in this range.';
 }
 /* ── SETTINGS SCREEN ────────────────────────── */
 function renderSettings(){
