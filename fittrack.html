@@ -809,7 +809,8 @@ function cacheWorkoutRecall(){
     }
   }
 }
-function lastWeightFor(exId,i=0){return workoutRecall[exId]?.[i]?.weight??null;}
+/* a set beyond last session's count recalls the last weight lifted, not the template default */
+function lastWeightFor(exId,i=0){const sets=workoutRecall[exId];return sets?.[i]?.weight??sets?.findLast?.(x=>x?.weight!=null)?.weight??null;}
 function setDefaults(ex,i){
   return {weight:lastWeightFor(ex.id,i)??Number(ex.weight?.match(/\d+/)?.[0]??20),
     reps:workoutRecall[ex.id]?.[i]?.reps??Number(ex.reps?.match(/^\d+/)?.[0]??10)};
@@ -1499,7 +1500,7 @@ function restSessionKey(){return S.today+':'+S.workoutDay;}
 function ensureRestBar(){
   let bar=document.getElementById('workout-rest');
   if(!bar){
-    bar=document.createElement('div');bar.id='workout-rest';bar.className='rest-bar';
+    bar=document.createElement('div');bar.id='workout-rest';bar.className='rest-bar';bar.inert=true;bar.setAttribute('aria-hidden','true');
     bar.innerHTML=`<div class="rest-row"><div><div class="rest-lbl">Rest time</div><div class="rest-cd" role="timer">0:00</div></div><div class="rest-actions"><button class="rest-action" onclick="adjustRest(-15)" aria-label="Shorten rest by 15 seconds">−15 s</button><button class="rest-action" onclick="adjustRest(15)" aria-label="Extend rest by 15 seconds">+15 s</button><button class="rest-action" onclick="cancelWorkoutTimers()">Skip</button></div></div><div class="rest-track"><div class="rest-fill"></div></div>`;
     document.getElementById('tab-bar').before(bar);
   }
@@ -1512,6 +1513,7 @@ function reconcileRestTimers(){
     const rem=Math.max(0,Math.ceil((timer.end-Date.now())/1000));
     if(!rem&&!timer.doneUntil){
       timer.doneUntil=Date.now()+3000;
+      if(S.screen!==1)toast('⏱','Rest done','Time for your next set');
       if(/Android/i.test(navigator.userAgent)&&!prefersReducedMotion()&&typeof navigator.vibrate==='function'){
         try{navigator.vibrate([0,80,60,80]);}catch(e){}
       }
