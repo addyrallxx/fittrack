@@ -81,3 +81,26 @@ kilograms in storage, free hosting only. See `CLAUDE.md`.
 - The showcase reel: `C:/Users/adnan/projects/motion-studio`
   (`src/projects/fittrack/`). Re-capture the app after each UI wave with
   `node scripts/capture-fittrack.mjs` so the reel never shows an old UI.
+
+## Progress (updated 2026-10-05, end of wave 2)
+
+| Criterion | Status | Evidence |
+|---|---|---|
+| Only transform and opacity animate | Met for every screen the feel gate visits; legacy `transition: all` on `.tab-icon`, `.ci-card`, `.ci-check`, `.range-tab` is listed as KNOWN | `test/feel.test.mjs` |
+| Same-frame press feedback | Partial: P5 touch contract still open | audit F09 |
+| No replay from zero on routine updates | Met on Home and Nutrition (P4); Workout updates in place (P3) | commits 103ca4d, 9d1d71e |
+| Calm tab switches, spatial drill-downs | Met: 160 ms fade-through on tap, swipe slides | c9357ee |
+| iOS-curve sheets, drag to dismiss, Back closes | Met: native dialogs | P6 commit |
+| Scroll at display rate, content-visibility | Open: P9 | audit F15, F16 |
+| Reduced motion everywhere | Met and gated | 447dc86, 5248128 |
+| 44 x 44 targets | Partial: new controls comply; legacy targets listed as KNOWN for P5 | feel gate |
+| Primary action in the thumb zone | Partial: undo toast and rest bar comply; screen-level audit pending | |
+| Numeric keypads, enterkeyhint, keyboard never covers | Open: P7 | audit F12 |
+| Android haptics | Partial: chart scrubbing; set check and rest end in F1 (pending merge) | f57f28e |
+| tabular-nums on changing numbers | Met on Home, Nutrition, weekly summary, chart pill; legacy list in KNOWN | feel gate |
+| No hardcoded targets | Met for macros | 6904ba5 |
+| No streaks or scores | Met | 6904ba5 |
+| Floor-first nutrition for GLP-1 users | Open: F3 | research backlog item 1 |
+| Device check on the S26 Ultra | Not done yet | needs Adnan's phone |
+
+Overnight 2026-10-05 to 06 (autopilot, unreviewed until morning): F1 verify, F3 floor-first, P7 input ergonomics, P9 storage and startup, reel v2 (3D iPhone 18 Pro Max, new score), a Gemini goal audit with new upgrade ideas, an adversarial review of wave 2, and food sourcing batches. See `docs/audit-2026-10-05/overnight/`.

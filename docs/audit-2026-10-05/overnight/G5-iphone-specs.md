@@ -1,0 +1,5 @@
+# G5: iPhone 18 Pro Max, exact published specs for a 3D model
+
+Research only. Write exactly one file: `docs/audit-2026-10-05/overnight/iphone-18-pro-max-specs.md`. Edit nothing else; never download files into the project.
+
+A Remotion reel needs a photoreal 3D iPhone 18 Pro Max. From Apple's own pages first (apple.com product and tech specs pages, Apple Design Resources), then reputable teardown or spec sites, record with a source URL you opened for each: height, width, depth (mm), weight, display diagonal, resolution and pixel density, outer corner radius and display corner radius if published (otherwise say unpublished and give the best documented estimate with its source), Dynamic Island size and position, rear camera plateau size, position and lens layout, side button positions, frame material and finish, and the colourways with names and approximate hex values from Apple's imagery. Also say whether Apple Design Resources offers official iPhone 18 Pro Max product bezels for marketing use, with the URL and licence terms. If any value cannot be verified, write "unverified". Finish within your turn budget; write the file as you go; end with `Final report`.

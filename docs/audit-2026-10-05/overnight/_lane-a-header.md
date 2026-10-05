@@ -1,0 +1,4 @@
+# Overnight lane A (autopilot, Adnan asleep, Claude reviews in the morning)
+
+Read `C:/Users/adnan/projects/fittrack/docs/audit-2026-10-05/RULES.md` and `C:/Users/adnan/projects/fittrack/GOAL.md` first. Overrides for tonight: Adnan is asleep, so there is no gaming constraint, but still use one headless Chrome at a time and close it. Port 8899 is FREE tonight: the feel gate spawns `node serve.mjs` from the checkout it runs in, so run it from your worktree and stop any server you start before you finish. Never commit (the driver commits after the gates pass). If your log already has parts from an earlier attempt that hit a usage limit, continue from where it stopped instead of starting over. Before finishing, all of these must pass in your worktree: `node test/syntax-check.mjs`, `node test/progress.test.mjs`, `node test/push.test.mjs`, `node test/schedule.test.mjs`, `node test/feel.test.mjs` (no new KNOWN entries). End your log with `Final report`.
+
