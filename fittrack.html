@@ -525,6 +525,17 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .sr-lbl{flex:1;font-size:15px;font-weight:500;color:var(--t1);}
 .sr-val{font-size:13px;color:var(--t3);font-weight:500;}
 .sr-arrow svg{width:14px;height:14px;stroke:var(--t4);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.version-row{width:100%;height:48px;min-height:48px;text-align:left;}
+.version-row .sr-val{color:var(--blue-text);}
+.release-copy{font-size:14px;line-height:1.55;}
+.release-copy h3{font-size:16px;margin:0 0 4px;}
+.release-copy time{font-size:12px;color:var(--t3);}
+.release-copy ul{padding-left:20px;margin:12px 0 20px;}
+.release-copy li{margin-bottom:8px;}
+.release-copy summary{min-height:48px;cursor:pointer;padding:12px 0;}
+.release-copy details{border-top:1px solid var(--border);}
+.release-link{display:flex;align-items:center;min-height:48px;color:var(--blue-text);}
+#t-update{min-height:44px;text-align:left;font:inherit;color:var(--t1);}
 .toggle{width:44px;height:26px;background:var(--s3);border-radius:13px;position:relative;transition:background 0.25s var(--smooth);flex-shrink:0;}
 .toggle.on{background:var(--green);}
 .toggle-knob{width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform 0.25s var(--spring);box-shadow:0 1px 4px rgba(0,0,0,0.3);}
@@ -653,7 +664,32 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 const reducedMotionQuery=matchMedia('(prefers-reduced-motion: reduce)');
 /* .matches is live, so a setting change applies to the very next animation. */
 function prefersReducedMotion(){return reducedMotionQuery.matches;}
-const APP_VERSION='1.2.0';
+const APP_VERSION='1.3.0';
+const RELEASE_NOTES=[
+  {version:'1.3.0',date:'2026-10-05',title:'Faster, and kinder to your thumbs',notes:[
+    'Number fields open the right keypad, and the keyboard never covers what you type.',
+    'A calm summary when you finish a workout: time, sets, volume and your top sets.',
+    'The rest bar turns green in its last 10 seconds.',
+    'Starts faster, and charts load only when you open Progress.',
+    'See what changed after each update, right here.'
+  ]},
+  {version:'1.2.0',date:'2026-10-05',title:'A smoother phone app',notes:[
+    'See your last set, adjust one rest bar, and keep the screen awake while training.',
+    'With a calorie floor set, see calories left to your floor first.',
+    'Log recent foods, repeat a meal, and undo food changes.',
+    'Tabs fade, screens keep their place, and sheets drag down to close.',
+    'Drag across the weight chart to read any weigh-in.',
+    'Your own macro targets, a calm weekly card, and better Reduce Motion support.'
+  ]},
+  {version:'1.1.0',date:'2026-09-01',title:'More personal, easier to use',notes:[
+    'Edit your medication, confirmed doses, dates, and reminders.',
+    'Choose light, dark, or system appearance and metric or imperial units.',
+    'Read clearer workout names and set details.',
+    'Log whey and creatine from one supplement control.',
+    'Search 1,502 foods, with your logging history helping rank results.',
+    'Dose reminders follow only the dates you confirm.'
+  ]}
+];
 /* ── ICONS ───────────────────────────────────────── */
 const I={
   home:`<svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
@@ -1089,6 +1125,7 @@ function go(idx,source='tap'){
   if(!navRendered.has(idx)||navDirty.has(idx))renderScreen(idx,true);
   S.screen=idx;
   updateTabs();
+  checkUpdateNotice();
   if(navHistoryReady&&source!=='back'){
     const state={...history.state,fittrackNav:true,screen:idx};
     /* Never copy a notification/action fragment into app-created entries. */
@@ -2120,6 +2157,7 @@ function needsOnboard(){try{return !localStorage.getItem('ft_settings');}catch(e
 function openOnboard(){
   S.ob={step:0,err:'',motionId:0,d:{sex:'male',units:'kg',sessions:3,glp1:false,creatine:false,protein:false}};
   document.getElementById('onboard').classList.add('show');
+  checkUpdateNotice();
   renderOnboard();
 }
 function obClearError(){
@@ -3051,11 +3089,12 @@ function renderSettings(){
           <div class="sr-icon" style="background:var(--orange-dim)">${svgIcon('activity',18,'var(--orange)')}</div>
           <div style="flex:1;min-width:0">
             <div class="sr-lbl">FitTrack</div>
-            <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-top:3px">Version ${APP_VERSION}<br>Built by Adnan Shakib<br>© 2026 Adnan Shakib. All rights reserved.</div>
+            <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-top:3px">Built by Adnan Shakib<br>© 2026 Adnan Shakib. All rights reserved.</div>
             <a href="https://github.com/addyrallxx/fittrack" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:var(--blue-text);text-decoration:underline;text-underline-offset:3px">View FitTrack on GitHub</a>
             <div style="font-size:11px;color:var(--t3);line-height:1.6;margin-top:10px">Chart.js, MIT License<br>Open Food Facts API, ODbL</div>
           </div>
         </div>
+        <button type="button" class="settings-row version-row" onclick="openWhatsNew()"><span class="sr-lbl">Version ${APP_VERSION}</span><span class="sr-val">What's new</span></button>
       </div>
     </div>
     <div style="height:16px"></div>
@@ -3313,6 +3352,40 @@ function openHelp(topicKey){
   const topic=HELP_TOPICS[topicKey];
   if(!topic)return;
   openSheet(`<div class="sheet-body help-sheet-copy">${topic.body.map(x=>`<p>${x}</p>`).join('')}</div>`,topic.title);
+}
+function openWhatsNew(){
+  if(document.activeElement.id==='t-update')document.querySelector('.tab-btn.active')?.focus({preventScroll:true});
+  document.getElementById('t-update')?.setAttribute('hidden','');
+  const current=RELEASE_NOTES.find(r=>r.version===APP_VERSION);
+  const copy=r=>`<h3>${esc(r.title)}</h3><time datetime="${esc(r.date)}">${esc(r.date)}</time><ul>${r.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>`;
+  openSheet(`<div class="sheet-body release-copy"><p>Version ${esc(APP_VERSION)}</p>${current?copy(current):''}${RELEASE_NOTES.filter(r=>r.version!==APP_VERSION).map(r=>`<details><summary>Version ${esc(r.version)}</summary>${copy(r)}</details>`).join('')}<a class="release-link" href="https://github.com/addyrallxx/fittrack/releases" target="_blank" rel="noopener noreferrer">All updates</a></div>`,"What's new");
+}
+let updateNoticeTimer=null;
+function checkUpdateNotice(){
+  clearTimeout(updateNoticeTimer);
+  const el=document.getElementById('toast');
+  const unsafe=needsOnboard()||!!S.ob||document.getElementById('onboard').classList.contains('show')||S.screen===1||workoutSessionActive();
+  if(unsafe&&el.classList.contains('update-notice')){
+    el.classList.remove('show','update-notice');
+    document.getElementById('t-update')?.setAttribute('hidden','');
+    clearTimeout(S.toastTimer);
+  }
+  const seen=DB.get('ft_last_seen_version',null);
+  if(!seen){DB.set('ft_last_seen_version',APP_VERSION);return;}
+  if(typeof seen!=='string'||!/^\d+\.\d+\.\d+$/.test(seen))return;
+  const previous=seen.split('.').map(Number),current=APP_VERSION.split('.').map(Number);
+  const difference=current.findIndex((v,i)=>v!==previous[i]);
+  if(difference<0||current[difference]<previous[difference])return;
+  // Wait for a quiet moment, including after an unfinished workout or sheet.
+  if(unsafe||modalSession||modalBackPending||el.classList.contains('show')||document.visibilityState!=='visible'){
+    updateNoticeTimer=setTimeout(checkUpdateNotice,1000);return;
+  }
+  toast('ℹ️',`Updated to ${APP_VERSION}. See what's new`,'');
+  document.getElementById('t-txt').innerHTML=`<button type="button" id="t-update" onclick="openWhatsNew();document.getElementById('toast').classList.remove('show')">Updated to ${esc(APP_VERSION)}. See what's new</button>`;
+  el.classList.add('update-notice');
+  clearTimeout(S.toastTimer);
+  S.toastTimer=setTimeout(()=>{el.classList.remove('show','update-notice');document.getElementById('t-update')?.setAttribute('hidden','');},6000);
+  DB.set('ft_last_seen_version',APP_VERSION);
 }
 function closeSheet(){
   if(modalSession?.dialog.id==='sheet-wrap')modalDismiss();
@@ -3825,6 +3898,7 @@ function launchConfetti(){
   w.appendChild(fragment);
 }
 function toast(icon,txt,sub,undo=null){
+  document.getElementById('toast').classList.remove('update-notice');
   nutritionUndo=undo;
   document.getElementById('t-undo').hidden=!undo;
   document.getElementById('toast').classList.toggle('nutrition-undo',!!undo);
@@ -3976,6 +4050,7 @@ function init(){
   if(firstRun){openOnboard();return;}
   const wh=DB.weights();
   if(wh.length===0)DB.addWeight(S.cfg.programStart||S.today,S.cfg.body.startingWeight);
+  updateNoticeTimer=setTimeout(checkUpdateNotice,1000);
 }
 document.addEventListener('DOMContentLoaded',init);
 </script>

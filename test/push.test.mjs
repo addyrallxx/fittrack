@@ -263,5 +263,14 @@ check('the app version matches in all four files', () => {
     'version drift: ' + JSON.stringify(versions));
 });
 
+check('the current release has notes', () => {
+  const version = html.match(/const APP_VERSION\s*=\s*['"]([^'"]+)['"]/);
+  const notes = html.match(/const RELEASE_NOTES\s*=\s*(\[[\s\S]*?\n\]);/);
+  assert.ok(version, 'APP_VERSION is missing');
+  assert.ok(notes, 'RELEASE_NOTES is missing');
+  const releases = vm.runInNewContext(notes[1]);
+  assert.equal(releases[0].version, version[1], 'newest release notes must match APP_VERSION');
+});
+
 console.log('\nVERDICT: ' + (fail ? 'FAIL' : 'PASS') + ' (' + pass + '/' + (pass + fail) + ')');
 process.exit(fail ? 1 : 0);
