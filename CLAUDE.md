@@ -6,10 +6,17 @@ open work, and session history, read `NEXT-SESSION.md`, not this file.
 
 ## Architecture constraints, do not "improve" these away
 
-- **Single-file vanilla JS PWA. No build step, no bundler, no framework.**
-  `fittrack.html` carries the shell, CSS and all JS. It runs in classic
-  script scope on purpose, so inline `onclick=` handlers keep working. Do not
-  introduce a module system or a build step to "clean this up."
+- **No build step, no bundler, no framework (revised 2026-10-05, ADR 0001).**
+  FitTrack is now a portfolio-grade passion project with Adnan as its main user,
+  not a store app. The single 243 KB `fittrack.html` is being split in phases
+  (A1 css/js files, A2 domains, A3 native ES modules with delegated `data-action`
+  handlers, A4 CI and JSDoc types) per `docs/adr/0001-portfolio-grade-structure.md`.
+  Until A3 lands, the code still runs in classic script scope with inline
+  `onclick=`; do not convert pieces ad hoc outside the phased plan. `fittrack.html`
+  stays the entry URL forever (`start_url` must never change).
+- **No personal data in tracked files.** Adnan's profile, targets and dose
+  schedule live on his device and in `C:/Users/adnan/projects/fittrack-private/`
+  (never committed). Demo media uses the seeded synthetic profile only.
 - **The service worker (`sw.js`) is network-first for every GET, on
   purpose.** There is no build step and no hashed filenames, so nothing can
   safely be cache-first: a stale cache would silently serve an old version

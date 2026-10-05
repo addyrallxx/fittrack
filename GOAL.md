@@ -12,7 +12,17 @@ Read order for a cold start: `GOAL.md` (this file), then `NEXT-SESSION.md`
 > perfected over time. desktop, pc variant is optional only after we properly
 > refine it and properly set up the mobile app."
 
-So: publishing is not the goal, polish is. The work never "finishes"; it gets
+> "I wanna make it a capability project that I can showcase on my portfolio ...
+> I don't want to make fittrack a running app on the app stores or start selling
+> it ... I'll still be the main user and its going to be a fitness app for me that
+> satisfies all my goals and requirements and I never have to pay for anything
+> similar." (2026-10-05)
+
+So: FitTrack is a portfolio-grade passion project with one main user. Publishing
+to stores and selling are not goals; polish, engineering quality a reviewer can
+read, and Adnan's own needs are. The public repo carries no personal data (his
+profile lives on his device), and the structure follows `docs/adr/0001-portfolio-grade-structure.md`.
+Publishing is not the goal, polish is. The work never "finishes"; it gets
 measurably better every session, one shipped chunk at a time.
 
 ## Platform order

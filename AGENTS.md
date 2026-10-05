@@ -5,10 +5,11 @@ history, read `NEXT-SESSION.md`, not this file.
 
 ## Architecture constraints, do not "improve" these away
 
-- **Single-file vanilla JS PWA. No build step, no bundler, no framework.**
-  `fittrack.html` carries the shell, CSS and all JS. It runs in classic
-  script scope on purpose, so inline `onclick=` handlers keep working. Do
-  not introduce a module system or a build step to "clean this up."
+- **No build step, no bundler, no framework (ADR 0001, 2026-10-05).** The single
+  `fittrack.html` is being split in phases (A1 css/js files, A2 domains, A3 ES
+  modules with delegated `data-action` handlers, A4 CI). Until A3 lands the code
+  runs in classic script scope with inline `onclick=`; never convert pieces ad hoc.
+  `fittrack.html` stays the entry URL. No personal data in any tracked file.
 - **The service worker (`sw.js`) is network-first for every GET, on
   purpose.** There is no build step and no hashed filenames, so nothing can
   safely be cache-first: a stale cache would silently serve an old version
