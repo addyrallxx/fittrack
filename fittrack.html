@@ -336,6 +336,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 @keyframes ex-reveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.ex-card.open .ex-body{animation:none;}}
 .workout-progress #wk-prog{transition:transform var(--dur-data) var(--ease-out)!important;transform-origin:left center;}
+@media(prefers-reduced-motion:reduce){.workout-progress #wk-prog{transition-duration:0.01ms!important;}}
 .ex-body-inner{padding:0 16px 16px;border-top:1px solid var(--border);padding-top:14px;}
 .set-hdr,.set-row{display:grid;grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 36px;gap:8px;}
 .set-hdr{margin-bottom:8px;}
