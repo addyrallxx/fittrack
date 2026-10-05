@@ -6,6 +6,22 @@ FitTrack uses semantic versioning from this baseline. Patches fix defects, minor
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-05
+
+Built for your thumbs, private by design.
+
+### Changed
+
+- Every control is at least 48 x 48 px with one press feel: feedback starts the moment you touch, scale never drops below 98 percent, and every control has visible focus and keyboard activation.
+- Numbers that change keep a steady width everywhere.
+- Android gives a short tick on deliberate actions such as checking a set, adding food, undo and saving weight.
+- Your profile, targets and medication schedule live only on your device. The app code ships with neutral defaults, and the food database no longer mentions its owner.
+
+### Fixed
+
+- Search on the phone keyboard now lowers it so the results show.
+- The dose sheet's error message clears as soon as you start correcting it.
+
 ## [1.3.0] - 2026-10-05
 
 Faster, and kinder to your thumbs.
@@ -96,7 +112,8 @@ FitTrack now moves and responds like a native phone app.
 - Push reminders for water, workouts, and weigh-ins.
 - Activity streaks, calendar history, body-composition summaries, and a settings screen.
 
-[Unreleased]: https://github.com/addyrallxx/fittrack/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/addyrallxx/fittrack/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/addyrallxx/fittrack/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/addyrallxx/fittrack/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/addyrallxx/fittrack/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/addyrallxx/fittrack/compare/v1.0.0...v1.1.0

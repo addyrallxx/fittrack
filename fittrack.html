@@ -698,8 +698,14 @@ body,input,select,textarea{font-variant-numeric:tabular-nums;}
 const reducedMotionQuery=matchMedia('(prefers-reduced-motion: reduce)');
 /* .matches is live, so a setting change applies to the very next animation. */
 function prefersReducedMotion(){return reducedMotionQuery.matches;}
-const APP_VERSION='1.3.0';
+const APP_VERSION='1.4.0';
 const RELEASE_NOTES=[
+  {version:'1.4.0',date:'2026-10-05',title:'Built for your thumbs, private by design',notes:[
+    'Every button is at least 48 px, with one quick, consistent press feel.',
+    'Numbers keep a steady width, and Android gives a light tick on deliberate taps.',
+    'Search on the keyboard now lowers it so you can see the results.',
+    'Your profile and medication schedule live only on your device.'
+  ]},
   {version:'1.3.0',date:'2026-10-05',title:'Faster, and kinder to your thumbs',notes:[
     'Number fields open the right keypad, and the keyboard never covers what you type.',
     'A calm summary when you finish a workout: time, sets, volume and your top sets.',
