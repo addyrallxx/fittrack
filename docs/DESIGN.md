@@ -55,7 +55,7 @@ The research proposes orange for workout and neutral/yellow for energy. The curr
 
 Keep the installed system stack: `-apple-system,'SF Pro Display','SF Pro Text','Roboto',system-ui,sans-serif`. No downloaded font or new font family. Body is 16px with line-height 1.4. Inputs inherit the family. Global body and form fields use tabular numerals.
 
-Existing sizes are component values, not a newly normalized scale: screen title 28px/700/1.15, subtitle 13px, energy headline 32px/800/1.15, sheet title 18px/700, input and sheet button 16px, help copy 14px/1.6, onboarding prose 14px/1.55, empty copy 14px/1.5, uppercase section label 11px/600 with 0.8px tracking, tab label 10px/500. Small labels and these body exceptions remain recorded even where they fail blueprint floors.
+Existing sizes are component values, not a newly normalized scale: screen title 28px/700/1.15, subtitle 13px, energy headline 32px/800/1.15, sheet title 18px/700, input and sheet button 16px, help copy 16px/1.6, onboarding prose 16px/1.55, empty copy 16px/1.5, uppercase section label 11px/600 with 0.8px tracking, tab label 10px/500. Small labels remain compact; explanatory prose meets the 16px floor.
 
 ## Layout
 
@@ -74,19 +74,19 @@ Cards use `--s1` and 1px `--border`, inset controls use `--s2`/`--s3`. Tab bar b
 ## Components
 
 - Final P5 rules set ordinary button, link, input and switch minima to 48px in both dimensions. Header, sheet close, meal delete, set check and calendar arrows are explicit 48px boxes. Sheet buttons have 52px minimum height.
-- Calendar remains seven columns with 2px gaps; `.cal-cell` explicitly permits width below 48px while retaining 48px height. This exception is a floor failure at narrow phone widths.
+- Calendar remains seven columns with 2px gaps and 48px height. The grid and day headings reclaim 7px of inner padding on each side, giving 44px cell width at 372px and 45.71px at 384px.
 - Settings rows have 54px minimum height and grouped dividers. Supplements share one card, 64px rows, 40px icon chips and a trailing action. Preserve this approved grouping.
 - Workout muscle metadata sits below the movement name, with one trailing completion/chevron slot. Set rows have a 48px completion column. A single docked rest bar accompanies exact prior-set recall.
-- Primary sheet button is orange with white text; active workout tab and incomplete exercise action are blue with white text. These are recorded contrast failures, not endorsed accessible pairings.
+- Primary sheet buttons use orange fill with `#111111` text; active workout tabs and incomplete exercise actions use blue with the same text. Selected purple range and weight-unit buttons also use `#111111`.
 - Native dialogs handle modal focus, Back and drag dismissal. Food log supports recent/repeat actions and Undo. Progress uses a reusable Chart.js canvas with loading/unavailable copy.
 
 ## Motion
 
 | Token | Shipped value |
 |---|---|
-| `--dur-press` | `120ms` |
+| `--dur-press` | `150ms` |
 | `--dur-nav` | `200ms` |
-| `--dur-sheet` | `350ms` |
+| `--dur-sheet` | `300ms` |
 | `--dur-data` | `550ms` |
 | `--ease-out` | `cubic-bezier(0.22,1,0.36,1)` |
 | `--ease-sheet` | `cubic-bezier(0.32,0.72,0,1)` |
@@ -96,7 +96,7 @@ Cards use `--s1` and 1px `--border`, inset controls use `--s2`/`--s3`. Tab bar b
 | `--spring` fallback | `cubic-bezier(0.22,1,0.36,1)` |
 | `--spring` when `linear()` supported | `linear(0,0.2 10%,0.55 22%,0.82 36%,0.97 50%,1.03 64%,1.015 78%,1 100%)` |
 
-Tab taps fade through in 160ms; gesture swipes slide in 240ms. Routine data updates animate the delta, never count from zero. Common press scale is 0.98 or a surface/opacity change. Reduced motion globally reduces CSS timing to 0.01ms and removes delays; JS reads the live `MediaQueryList` via `prefersReducedMotion()`. Keep the sheet and data contracts despite their blueprint duration conflicts.
+Tab taps fade through in 160ms; gesture swipes slide in 240ms. Routine data updates animate the delta, never count from zero. Common press scale is 0.98 or a surface/opacity change. Reduced motion globally reduces CSS timing to 0.01ms and removes delays; JS reads the live `MediaQueryList` via `prefersReducedMotion()`. Sheets meet the 300ms floor ceiling. The 550ms data-chart reveal remains an accepted exception.
 
 ## Iconography and voice
 
@@ -120,7 +120,7 @@ This embedded bar is the baseline for a future task's `bar.md`, not an additiona
 4. Reach (One UI): show five bottom navigation destinations in the 64px bar plus safe area. Routine targets are 48px; the leading action should sit in the bottom 40% of the viewport. Flag calendar exceptions rather than hiding them.
 5. Workout continuity (Hevy): display one previous weight/reps pair per set, one visible docked rest timer, and a 48px completion target. Completing a set must preserve typed inputs and the expanded movement.
 6. Logging economy (MacroFactor): expose Recent/Repeat before new food search; repeat a saved meal in at most two deliberate taps. Retain visible source-confidence labels and Undo after deletion.
-7. Motion (One UI): tab taps use a 160ms fade, swipes a 240ms slide, sheets the existing 350ms non-overshooting curve, data deltas 550ms. Press scale stays at least 0.98. No count-up replay on a routine log; reduced motion settles immediately.
+7. Motion (One UI): tab taps use a 160ms fade, swipes a 240ms slide, sheets a 300ms non-overshooting curve, data deltas 550ms. Press scale stays at least 0.98. No count-up replay on a routine log; reduced motion settles immediately.
 
 Before future UI work: name the screen's one job in ten words or fewer, choose one exact reference view, fetch/render it, and identify missing inputs or a blind critic. Check the vault's `wiki/resources/21st-components/_index.md` situation table before building UI. Pick one direction skill. Show the task bar before building, honoring the session's existing authorization. Borrow structure, never copy words, logos or artwork; credit the reference in a comment. For a large brand surface, compare three directions from safest to boldest; for a small edit, make one. Use the raw five-versions and one-screen-test templates for simplification, counting fields, buttons, links and words. Do not create an account/signup flow to satisfy a template.
 
@@ -131,20 +131,20 @@ Source audit only, not a fresh browser or physical-device pass. Contrast was rec
 | Floor | This system's value | Pass/fail/unknown |
 |---|---|---|
 | Text 4.5:1, primary/secondary | Dark `--t1`/`--t2` on `--black`/`--s1`/`--s2`: 21.00/18.88/17.01 and 9.50/8.54/7.69. Light: 18.82/21.00/18.00 and 8.18/9.12/7.82 | PASS for these pairs |
-| Text 4.5:1, metadata | Dark `--t3 #8E8E93` on black/s1/s2: 6.44/5.79/5.22; on `--s3 #2C2C2E`: 4.27 (`.conf-est`). Light t3 on page/s1/s2: 5.97/6.66/5.70 | FAIL: dark estimate badge |
-| Text 4.5:1, filled actions | `#FFFFFF` on orange `#FF9500`: 2.20; on blue `#0A84FF`: 3.65; on purple `#BF5AF2`: 3.52 (selected weight-unit buttons). Both themes retain these fills | FAIL: sheet primary, workout controls, weight-unit buttons |
+| Text 4.5:1, metadata | Dark `--t3 #8E8E93` on black/s1/s2: 6.44/5.79/5.22. `.conf-est` now uses `--t2 #AEAEB2` on `--s3 #2C2C2E`: 6.30 (was 4.27); light `#48484A` on `#DFDFE6`: 6.88. Light t3 on page/s1/s2: 5.97/6.66/5.70 | PASS for these pairs |
+| Text 4.5:1, filled actions | `#111111` on orange `#FF9500`: 8.59 (was white 2.20); on blue `#0A84FF`: 5.18 (was 3.65); on purple `#BF5AF2`: 5.36 (was 3.52). Both themes retain fills. Finish gradient endpoint `#FF6B35`: 6.66; steps green `#30D158`: 9.34 | PASS for these pairs |
 | Text 4.5:1, accent text | Dark orange/coral/blue/light-blue/green/purple/red on s1: 8.59/6.80/5.18/9.42/9.34/5.36/5.54. Light text overrides on page: 5.42/4.98/5.89/5.89/4.85/5.24/5.16 | PASS for these pairs; UNKNOWN for all washes/raised surfaces |
 | Decoration is not readable text | t4 dark on black/s1: 3.06/2.75; light on page/s1: 2.71/3.02. Source restricts t4 to decoration | PASS for intended use only; not a text token |
-| Taps at least 44 x 44px | Most final rules use 48px, sheet buttons 52px. Seven calendar columns, 16px outer inset, 16px inner padding, 1px borders, six 2px gaps give about 43.71px width at 384px and 42px at 372px | FAIL: calendar width; other runtime hit boxes UNKNOWN |
-| Body at least 16px | Base body 16px; `.ob-p`, `.help-sheet-copy`, `.empty-txt` are 14px explanatory prose | FAIL: body-copy exceptions |
+| Taps at least 44 x 44px | Most final rules use 48px, sheet buttons 52px. Calendar grid reclaims 14px total inner padding: calculated width 44px at 372px and 45.71px at 384px (was 42/43.71px), height 48px | PASS in source geometry: calendar at audited widths; other runtime hit boxes UNKNOWN |
+| Body at least 16px | Base body and `.ob-p`, `.help-sheet-copy`, `.empty-txt` are 16px (prose was 14px) | PASS for these classes |
 | Prose line length 45 to 75ch | No `ch` constraint; viewport-width cards with fixed insets. No rendered character-width measurement performed | UNKNOWN; compact labels are not prose columns |
-| Five states per control | Default, active and 2px focus-visible rules exist; disabled attributes occur, but no complete hover/disabled styling matrix | FAIL: incomplete five-state coverage |
+| Five states per control | Default component styles; pointer hover uses a 2px outline; focus-visible uses the accent outline; active uses an accent outline and existing press scales without fading text; disabled and aria-disabled use 0.6 opacity and block pointer interaction | PASS in source: five-state shared matrix |
 | Designed empty states | Meal empty has Add meal instruction; chart has empty/loading messages. No complete five-screen empty-state inventory or action guarantee | UNKNOWN: partial coverage |
 | Designed error states | Onboarding `.ob-err`, dose `.dose-error` with alert/field association, program-fetch and chart-unavailable copy exist. No complete per-field/per-screen inventory | UNKNOWN: partial coverage |
 | Reduced motion | Global CSS timing/delay override, dialog override and live JS query implemented | PASS in source; physical-device behavior UNKNOWN |
-| Motion 150 to 300ms, ease-out | Navigation 160/240ms passes; press 120ms, sheet 350ms, data 550ms conflict with floor; existing easing contracts retained | FAIL against blueprint range; deliberate project contracts |
+| Motion 150 to 300ms, ease-out | Navigation 160/240ms; press 150ms (was 120ms); sheet 300ms (was 350ms). Existing easing curves retained | PASS for these UI timings. ACCEPTED EXCEPTION: 550ms data-chart reveal conveys a measured data delta |
 
-FAILS are for Adnan's review. This audit grants no permission to change tokens or approved motion. A partial PASS is not whole-app accessibility certification. Additional preship concerns include body line-height 1.4 versus 1.5, calendar 2px gaps versus 8px, and decorative hairlines that must not substitute for accessible focus/control boundaries.
+Floor fixes above were authorized on 2026-10-09. Locked, decided and approved choices outside these fixes remain intact. A partial PASS is not whole-app accessibility certification. Additional preship concerns include body line-height 1.4 versus 1.5, calendar 2px gaps versus 8px, and decorative hairlines that must not substitute for accessible focus/control boundaries.
 
 ### Design Loop critics
 

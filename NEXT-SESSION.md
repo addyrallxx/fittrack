@@ -1063,3 +1063,4 @@ not just the box, or it will chase numbers that are already fine.
    On a GLP-1 the risk is undereating and the app still leads with the ceiling.
 5. Tag `v1.0.0` in git once G lands, so the tag marks a finished baseline.
 
+2026-10-09: design floor fixes applied per DESIGN.md protocol section; see git diff.

@@ -111,7 +111,7 @@
   --orange-text:var(--orange);--green-text:var(--green);--purple-text:var(--purple);
   --coral-text:var(--coral);--blue-text:var(--blue);--blue-light-text:var(--blue-light);
   --red-text:var(--red);
-  --dur-press:120ms;--dur-nav:200ms;--dur-sheet:350ms;--dur-data:550ms;
+  --dur-press:150ms;--dur-nav:200ms;--dur-sheet:300ms;--dur-data:550ms;
   --ease-out:cubic-bezier(0.22,1,0.36,1);
   --ease-sheet:cubic-bezier(0.32,0.72,0,1);
   --ease-press:cubic-bezier(0.25,0.46,0.45,0.94);
@@ -248,7 +248,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 @keyframes ob-step-in{from{opacity:0;transform:translateX(var(--ob-shift,0))}to{opacity:1;transform:translateX(0)}}
 @keyframes ob-error-in{0%{opacity:0;transform:translateX(8px)}65%{opacity:1;transform:translateX(-2px)}100%{opacity:1;transform:translateX(0)}}
 .ob-h{font-size:26px;font-weight:700;line-height:1.2;margin-bottom:8px;}
-.ob-p{font-size:14px;color:var(--t2);line-height:1.55;margin-bottom:22px;}
+.ob-p{font-size:16px;color:var(--t2);line-height:1.55;margin-bottom:22px;}
 .ob-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
 .ob-opt{flex:1;min-width:78px;min-height:48px;padding:12px 10px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-md);font-size:14px;font-weight:600;color:var(--t2);text-align:center;touch-action:manipulation;transition:transform .14s var(--spring),background-color .18s var(--smooth),border-color .18s var(--smooth),color .18s var(--smooth);}
 .ob-opt.on{background:var(--orange-dim);border-color:var(--orange-border);color:var(--orange-text);transform:scale(1.015);}
@@ -274,7 +274,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .conf{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:1px 5px;border-radius:4px;margin-left:6px;vertical-align:1px;}
 .conf-pub{background:var(--green-dim);color:var(--green-text);}
 .conf-der{background:var(--orange-dim);color:var(--orange-text);}
-.conf-est{background:var(--s3);color:var(--t3);}
+.conf-est{background:var(--s3);color:var(--t2);}
 .sri-brand{font-size:11px;color:var(--t3);}
 .supp-card{margin:0 16px 12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
 .supp-row{width:100%;min-height:64px;padding:11px 14px;display:flex;align-items:center;gap:12px;text-align:left;transition:transform 0.15s var(--spring),background 0.15s var(--smooth);}
@@ -307,7 +307,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .day-tabs::-webkit-scrollbar{display:none;}
 .day-tab{flex-shrink:0;min-height:48px;padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:var(--s1);color:var(--t2);font-size:12px;font-weight:600;transition:background var(--dur-press) var(--ease-out),border-color var(--dur-press) var(--ease-out),color var(--dur-press) var(--ease-out);line-height:1.15;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
 .day-tab-label{font-size:9px;opacity:.7;}
-.day-tab.active{background:var(--blue);border-color:var(--blue-text);color:#fff;}
+.day-tab.active{background:var(--blue);border-color:var(--blue-text);color:#111;}
 .workout-progress{margin:0 16px 12px;}
 .workout-progress-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;}
 .workout-progress-count{font-size:12px;font-weight:600;color:var(--t2);}
@@ -381,13 +381,13 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .cue-dot{width:5px;height:5px;border-radius:50%;background:var(--blue-light);flex-shrink:0;margin-top:5px;}
 .ex-where{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--blue-border);font-size:12px;color:var(--t2);line-height:1.45;overflow-wrap:anywhere;}
 .ex-where .cue-title{margin-bottom:4px;}
-.ex-complete-btn{width:100%;margin-top:14px;padding:13px;background:var(--blue);border-radius:var(--r-md);font-size:15px;font-weight:700;color:#fff;text-align:center;transition:transform var(--dur-press) var(--ease-out),background var(--dur-press) var(--ease-out),color var(--dur-press) var(--ease-out);}
+.ex-complete-btn{width:100%;margin-top:14px;padding:13px;background:var(--blue);border-radius:var(--r-md);font-size:15px;font-weight:700;color:#111;text-align:center;transition:transform var(--dur-press) var(--ease-out),background var(--dur-press) var(--ease-out),color var(--dur-press) var(--ease-out);}
 .ex-complete-btn:active{transform:scale(0.98);}
 .ex-complete-btn.done{background:var(--green);color:#000;}
 .warmup-banner{margin:0 16px 12px;background:var(--orange-wash);border:1px solid var(--orange-border);border-radius:var(--r-md);padding:12px 14px;}
 .warmup-title{font-size:10px;font-weight:700;color:var(--orange-text);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:5px;}
 .warmup-txt{font-size:12px;color:var(--t2);line-height:1.55;}
-.finish-btn{margin:14px 16px 0;padding:16px;background:linear-gradient(135deg,#FF9500,#FF6B35);border-radius:var(--r-lg);font-size:16px;font-weight:800;color:#fff;text-align:center;transition:transform 0.15s var(--spring);letter-spacing:0.2px;}
+.finish-btn{margin:14px 16px 0;padding:16px;background:linear-gradient(135deg,#FF9500,#FF6B35);border-radius:var(--r-lg);font-size:16px;font-weight:800;color:#111;text-align:center;transition:transform 0.15s var(--spring);letter-spacing:0.2px;}
 .finish-btn:active{transform:scale(0.98);}
 .finish-btn.done{background:var(--green);color:#000;}
 /* NUTRITION SCREEN */
@@ -458,7 +458,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .chart-current{font-size:30px;font-weight:800;color:var(--purple-text);letter-spacing:-0.8px;}
 .range-tabs{display:flex;gap:6px;}
 .range-tab{padding:5px 12px;border-radius:14px;border:1px solid var(--border);background:none;color:var(--t3);font-size:11px;font-weight:600;transition:transform var(--dur-press) var(--ease-press),opacity var(--dur-press) var(--ease-press),background-color var(--dur-press) var(--ease-press),color var(--dur-press) var(--ease-press),border-color var(--dur-press) var(--ease-press);}
-.range-tab.active{background:var(--purple);border-color:var(--purple-text);color:#fff;}
+.range-tab.active{background:var(--purple);border-color:var(--purple-text);color:#111;}
 .chart-wrap{height:160px;position:relative;margin-top:32px;}
 .chart-wrap canvas{touch-action:pan-y;}
 .chart-wrap[data-empty]:not([data-empty=""])::after{content:attr(data-empty);position:absolute;inset:0;display:grid;place-items:center;color:var(--t2);font-size:13px;pointer-events:none;}
@@ -583,7 +583,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 .inp-row .inp-grp{flex:1;}
 .sheet-btn{width:100%;padding:15px;border-radius:var(--r-md);font-size:16px;font-weight:700;text-align:center;margin-top:8px;margin-bottom:4px;transition:transform 0.15s var(--spring);}
 .sheet-btn:active{transform:scale(0.98);}
-.sheet-btn-primary{background:var(--orange);color:#fff;}
+.sheet-btn-primary{background:var(--orange);color:#111;}
 .sheet-btn-secondary{background:var(--s3);color:var(--t1);}
 .sheet-btn-danger{background:var(--red-dim);color:var(--red-text);}
 .help-anchor{position:relative;}
@@ -595,7 +595,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 .floor-warning>.help-btn{top:50%;right:-6px;transform:translateY(-50%);}
 .metric-title{position:relative;min-height:24px;padding-right:30px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;}
 .metric-title>.help-btn{top:-13px;right:-10px;}
-.help-sheet-copy{font-size:14px;color:var(--t2);line-height:1.6;padding-bottom:8px;}
+.help-sheet-copy{font-size:16px;color:var(--t2);line-height:1.6;padding-bottom:8px;}
 .help-sheet-copy p+p{margin-top:10px;}
 .preset-item{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:7px;transition:background 0.1s;}
 .preset-item:active{background:var(--s3);}
@@ -622,7 +622,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 /* EMPTY STATES */
 .empty-state{padding:32px 20px;text-align:center;}
 .empty-icon{font-size:36px;margin-bottom:10px;}
-.empty-txt{font-size:14px;color:var(--t3);line-height:1.5;}
+.empty-txt{font-size:16px;color:var(--t3);line-height:1.5;}
 /* ANIMATIONS */
 /* FLEX UTILS */
 .flex{display:flex;}.flex-bc{display:flex;align-items:center;justify-content:space-between;}
@@ -631,8 +631,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 body,input,select,textarea{font-variant-numeric:tabular-nums;}
 :where(button,a,input,select,textarea,[role="button"],[role="switch"]){min-width:48px;min-height:48px;touch-action:manipulation;}
 :is(button,a,[role="button"],[role="switch"]){transition:transform var(--dur-press) var(--ease-press),opacity var(--dur-press) var(--ease-press),background-color var(--dur-press) var(--ease-press),color var(--dur-press) var(--ease-press),border-color var(--dur-press) var(--ease-press);}
-:where(button,a,[role="button"]):active{opacity:.8;}
+:where(button,a,[role="button"]):active{outline:2px solid var(--orange-text);outline-offset:-2px;}
 :where(button,a,input,select,textarea,[role="button"],[role="switch"],[tabindex]):focus-visible{outline:2px solid var(--orange-text);outline-offset:-2px;}
+@media(hover:hover){
+  :where(button,a,input,select,textarea,[role="button"],[role="switch"]):not(:disabled):not([aria-disabled="true"]):not(:focus-visible):hover{outline:2px solid var(--t2);outline-offset:-2px;}
+}
+:where(input,select,textarea,[role="switch"]):not(:disabled):not([aria-disabled="true"]):active{outline:2px solid var(--orange-text);outline-offset:-2px;}
+:where(button,a,input,select,textarea,[role="button"],[role="switch"]):is(:disabled,[aria-disabled="true"]){opacity:.6;cursor:not-allowed;pointer-events:none;}
 .sheet-btn{min-height:52px;}
 .sheet-btn-text{background:transparent;color:var(--t2);font-weight:500;}
 .set-hdr,.set-row{grid-template-columns:24px minmax(0,1fr) minmax(0,1fr) 48px;gap:6px;}
@@ -648,7 +653,9 @@ body,input,select,textarea{font-variant-numeric:tabular-nums;}
 .help-btn{width:48px;height:48px;}
 .metric-title,.macro-target-head{min-height:48px;padding-right:48px;display:flex;align-items:center;}
 .metric-title>.help-btn{top:0;right:0;}
-/* Seven columns share the card width. Calendar height is 48px; width is the sole exception. */
+/* Reclaim 7px of inner padding per side for seven 44px targets at 372px. */
+.cal-grid,.cal-days-hdr{margin-inline:-7px;}
+.cal-days-hdr{column-gap:2px;}
 .cal-cell{aspect-ratio:auto;min-width:0;min-height:48px;}
 .cal-cell:active,.settings-row[onclick]:active,.ex-hdr:active,.sri:active,.preset-item:active{transform:none;background:var(--s2);}
 .toggle{width:48px;height:48px;min-width:48px;margin:0;flex-shrink:0;}
@@ -3073,8 +3080,8 @@ function renderSettings(){
           <div class="sr-icon" style="background:var(--purple-dim)">${svgIcon('scale',18,'var(--purple)')}</div>
           <div class="sr-lbl">Weight</div>
           <div style="display:flex;gap:6px">
-            <button onclick="setUnits('kg')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${wUnit()==='kg'?'var(--purple)':'var(--s2)'};color:${wUnit()==='kg'?'#fff':'var(--t2)'}">kg</button>
-            <button onclick="setUnits('lb')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${wUnit()==='lb'?'var(--purple)':'var(--s2)'};color:${wUnit()==='lb'?'#fff':'var(--t2)'}">lb</button>
+            <button onclick="setUnits('kg')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${wUnit()==='kg'?'var(--purple)':'var(--s2)'};color:${wUnit()==='kg'?'#111':'var(--t2)'}">kg</button>
+            <button onclick="setUnits('lb')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${wUnit()==='lb'?'var(--purple)':'var(--s2)'};color:${wUnit()==='lb'?'#111':'var(--t2)'}">lb</button>
           </div>
         </div>
         <div class="settings-row">
@@ -3089,8 +3096,8 @@ function renderSettings(){
           <div class="sr-icon" style="background:var(--blue-dim)">${svgIcon('drop',18,'var(--blue-light)')}</div>
           <div class="sr-lbl">Volume</div>
           <div style="display:flex;gap:6px">
-            <button onclick="setVolUnit('ml')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${volUnit()==='ml'?'var(--blue)':'var(--s2)'};color:${volUnit()==='ml'?'#fff':'var(--t2)'}">ml</button>
-            <button onclick="setVolUnit('floz')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${volUnit()==='floz'?'var(--blue)':'var(--s2)'};color:${volUnit()==='floz'?'#fff':'var(--t2)'}">fl oz</button>
+            <button onclick="setVolUnit('ml')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${volUnit()==='ml'?'var(--blue)':'var(--s2)'};color:${volUnit()==='ml'?'#111':'var(--t2)'}">ml</button>
+            <button onclick="setVolUnit('floz')" style="padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:${volUnit()==='floz'?'var(--blue)':'var(--s2)'};color:${volUnit()==='floz'?'#111':'var(--t2)'}">fl oz</button>
           </div>
         </div>
       </div>
@@ -3432,8 +3439,8 @@ function openWeightSheet(){
       <button onclick="adjWt(0.5)" style="width:46px;height:46px;background:var(--s2);border-radius:50%;font-size:20px;color:var(--t2);display:flex;align-items:center;justify-content:center">+</button>
     </div>
     <div style="display:flex;gap:8px;justify-content:center;margin-bottom:14px">
-      <button onclick="setUnits('kg');openWeightSheet()" style="padding:7px 18px;border-radius:8px;font-size:13px;font-weight:700;background:${wUnit()==='kg'?'var(--purple)':'var(--s2)'};color:${wUnit()==='kg'?'#fff':'var(--t2)'}">kg</button>
-      <button onclick="setUnits('lb');openWeightSheet()" style="padding:7px 18px;border-radius:8px;font-size:13px;font-weight:700;background:${wUnit()==='lb'?'var(--purple)':'var(--s2)'};color:${wUnit()==='lb'?'#fff':'var(--t2)'}">lb</button>
+      <button onclick="setUnits('kg');openWeightSheet()" style="padding:7px 18px;border-radius:8px;font-size:13px;font-weight:700;background:${wUnit()==='kg'?'var(--purple)':'var(--s2)'};color:${wUnit()==='kg'?'#111':'var(--t2)'}">kg</button>
+      <button onclick="setUnits('lb');openWeightSheet()" style="padding:7px 18px;border-radius:8px;font-size:13px;font-weight:700;background:${wUnit()==='lb'?'var(--purple)':'var(--s2)'};color:${wUnit()==='lb'?'#111':'var(--t2)'}">lb</button>
     </div>
     <button class="sheet-btn sheet-btn-primary" onclick="saveWeight()">Save weight</button>
   </div>`,'Log weight');
@@ -3460,7 +3467,7 @@ function openStepsSheet(date){
       <div class="inp-lbl">Steps on ${d===S.today?'today':shortDate(d)}</div>
       <input class="inp-field" id="si" type="number" value="${cur}" inputmode="numeric" style="font-size:28px;font-weight:800;text-align:center;padding:20px;color:var(--green-text)" autocomplete="off" enterkeyhint="done" aria-label="Steps">
     </div>
-    <button class="sheet-btn" style="background:var(--green);color:#fff" onclick="saveSteps()">Save steps</button>
+    <button class="sheet-btn" style="background:var(--green);color:#111" onclick="saveSteps()">Save steps</button>
     <div class="inp-lbl" style="margin-top:20px;margin-bottom:8px">Catch up on the last 7 days</div>
     <div style="display:flex;flex-direction:column;gap:6px">
       ${recentDates(7).map(x=>{
@@ -3491,7 +3498,7 @@ function openWaterSheet(){
       <button class="water-btn" onclick="addWater(1000);closeSheet()">+${fmtVolInc(1000)}</button>
     </div>
     <div class="inp-grp"><div class="inp-lbl">Custom amount (${vu})</div><input class="inp-field" id="cwi" type="number" step="any" placeholder="e.g. ${volUnit()==='floz'?'12':'350'}" inputmode="${volUnit()==='floz'?'decimal':'numeric'}" autocomplete="off" enterkeyhint="done" aria-label="Custom water amount"></div>
-    <button class="sheet-btn" data-input-submit style="background:var(--blue);color:#fff" onclick="saveCustomWater()">Add water</button>
+    <button class="sheet-btn" data-input-submit style="background:var(--blue);color:#111" onclick="saveCustomWater()">Add water</button>
   </div>`,'Add water');
 }
 function saveCustomWater(){
