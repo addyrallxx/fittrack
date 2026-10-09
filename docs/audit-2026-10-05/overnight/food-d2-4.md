@@ -1,0 +1,19 @@
+# Food sourcing, day 2 batch 4: published nutrition for 10 foods
+
+**Budget rule (hard): your FIRST action is write_to_file creating docs/audit-2026-10-05/overnight/food-d2-4.json containing []. After EVERY food, rewrite the whole valid JSON array. Last night every run spent its step cap searching and was killed with nothing written.** Edit nothing else, never download files into the project, no helper scripts, read pages with read_url_content only.
+
+For each entry, find the published nutrition for that exact item: the brand Canadian nutrition page or PDF first, then the US page (say so), then Open Food Facts (barcode URL), then USDA FoodData Central (FDC id) for generic items. Open every page you cite. If a brand site gives no readable nutrition within two steps, mark that brand unresolved and move on. **Portions:** when the published item is the same portion as ours (same piece count or named size), use the published grams and values as they are and set grams to the published grams; scale only when ours is a different portion of the same item, and say so in src. Never guess.
+
+Objects: {"id","status":"sourced"|"unresolved","cal","protein","carbs","fat","grams","conf":"published"|"derived","src","url","scaled","checked":"2026-10-06"}. Check 4p+4c+9f within 25 percent of cal; keep label values if a real label breaks it and note it in src.
+
+Entries:
+{"id":"blowers-grafton-grilled-chicken-sandwich","name":"Grilled Chicken Sandwich (ask no bacon)","brand":"Blowers & Grafton","serving":"1 sandwich","grams":350,"cal":650,"protein":40,"carbs":55,"fat":28}
+{"id":"boardwalk-chipotle-beef-bacon-fries","name":"Chipotle Beef Bacon Fries","brand":"Boardwalk Fries Burgers Shakes","serving":"1 order, loaded fries with beef bacon and chipotle sauce","grams":400,"cal":900,"protein":28,"carbs":75,"fat":55}
+{"id":"boardwalk-chipotle-burger-combo","name":"Chipotle Burger Combo (Single, Regular Bun, Tater Bites, Diet Cola)","brand":"Boardwalk Fries Burgers Shakes","serving":"1 combo, single chipotle burger, regular bun, small tater bites, fountain diet cola","grams":550,"cal":1050,"protein":40,"carbs":95,"fat":58}
+{"id":"library-restaurant-boston-pizza-cheese-pizza-large-slice","name":"Cheese Pizza, Large Slice","brand":"Boston Pizza","serving":"1 restaurant order","grams":145,"cal":304,"protein":13,"carbs":36,"fat":12}
+{"id":"calgary-pizza-master-bbq-loaded-slice","name":"BBQ Loaded Pizza Slice (Large)","brand":"Calgary Pizza Master","serving":"1 of 8 slices, BBQ sauce, pepperoni, beef, spicy BBQ chicken, garlic, chilli flakes, cilantro (no sausage)","grams":120,"cal":275,"protein":13,"carbs":29,"fat":12}
+{"id":"calgary-pizza-master-butter-chicken-loaded-slice","name":"Butter Chicken Loaded Pizza Slice (Large)","brand":"Calgary Pizza Master","serving":"1 of 8 slices, butter chicken sauce, salami, bacon, tandoori chicken, garlic, chilli flakes, cilantro (no sausage)","grams":125,"cal":300,"protein":14,"carbs":29,"fat":15}
+{"id":"calgary-pizza-master-pepperoni-slice","name":"Pepperoni Pizza Slice (Large)","brand":"Calgary Pizza Master","serving":"1 of 8 slices from a large pepperoni pizza","grams":120,"cal":280,"protein":12,"carbs":28,"fat":14}
+{"id":"california-thai-chicken-basil-stir-fry","name":"Chicken Basil Stir-fry (Pad Krapow, no rice)","brand":"California Thai","serving":"~350g, chicken and vegetables only","grams":350,"cal":420,"protein":40,"carbs":15,"fat":22}
+{"id":"california-thai-chicken-pad-thai","name":"Chicken Pad Thai","brand":"California Thai","serving":"~400g","grams":400,"cal":750,"protein":30,"carbs":90,"fat":25}
+{"id":"chicken-world-peri-peri-rice-platter","name":"Peri Peri Rice Platter (Regular)","brand":"Chicken World","serving":"1 regular platter, peri peri chicken over rice","grams":480,"cal":750,"protein":40,"carbs":85,"fat":25}

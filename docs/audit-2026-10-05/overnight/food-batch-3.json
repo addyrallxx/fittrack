@@ -1,0 +1,44 @@
+[
+  {
+    "id": "library-restaurant-mary-brown-s-chicken-tenders-3-piece",
+    "status": "sourced",
+    "cal": 585,
+    "protein": 30.9,
+    "carbs": 12.8,
+    "fat": 45.4,
+    "grams": 190,
+    "conf": "derived",
+    "src": "Mary Brown's Nutritionals PDF, 3 PC: Chicken Tenders (published 128g: 394 kcal, 20.8g protein, 8.6g carbs, 30.6g fat; scaled to 190g)",
+    "url": "https://marybrowns.com/wp-content/uploads/Mary-Browns-Nutritionals.pdf",
+    "scaled": true,
+    "checked": "2026-10-06"
+  },
+  {
+    "id": "library-restaurant-mary-brown-s-chicken-sandwich-classic",
+    "status": "sourced",
+    "cal": 598,
+    "protein": 33.1,
+    "carbs": 44.5,
+    "fat": 31.8,
+    "grams": 250,
+    "conf": "derived",
+    "src": "Mary Brown's Nutritionals PDF, Big Mary (published 249g: 596 kcal, 33g protein, 44.3g carbs, 31.7g fat; scaled to 250g)",
+    "url": "https://marybrowns.com/wp-content/uploads/Mary-Browns-Nutritionals.pdf",
+    "scaled": true,
+    "checked": "2026-10-06"
+  },
+  {
+    "id": "library-restaurant-mary-brown-s-original-chicken-breast-1-piece",
+    "status": "sourced",
+    "cal": 330,
+    "protein": 39,
+    "carbs": 7,
+    "fat": 16,
+    "grams": 170,
+    "conf": "published",
+    "src": "Mary Brown's Nutritionals PDF, Centre Breast (1 piece, 170g: 330 kcal, 39g protein, 7g carbs, 16g fat)",
+    "url": "https://marybrowns.com/wp-content/uploads/Mary-Browns-Nutritionals.pdf",
+    "scaled": false,
+    "checked": "2026-10-06"
+  }
+]

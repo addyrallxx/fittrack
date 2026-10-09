@@ -1,0 +1,646 @@
+
+iPhone 18 Pro and 18 Pro Max - Technical Specifications - Apple
+Apple Store Mac iPad iPhone Watch
+Vision AirPods TV & Home Entertainment Accessories Support
+0 +
+iPhone 18 Pro
+Explore
+Buy
+iPhone Duo
+New
+iPhone 18 Pro
+Currently viewing
+iPhone Air
+iPhone 17
+iPhone 17e
+iPhone 16
+Compare
+Accessories
+Shop iPhone
+iOS 27
+iPhone 18 Pro
+*
+Buy
+Overview
+Tech Specs
+Switch from Android
+iPhone 18 Pro Technical Specifications
+iPhone 18 Pro
+iPhone 18 Pro Max
+Finish
+iPhone 18 Pro
+Black, Silver, Glacier, Burgundy
+Aluminum unibody design Ceramic Shield 2 front Ceramic Shield back
+iPhone 18 Pro Max
+Black, Silver, Glacier, Burgundy
+Aluminum unibody design Ceramic Shield 2 front Ceramic Shield back
+Capacity
+iPhone 18 Pro
+256GB
+512GB
+1TB
+2TB
+iPhone 18 Pro Max
+256GB
+512GB
+1TB
+2TB
+Size and Weight
+Width:
+2.83 inches (71.9 mm)
+Height:
+5.91 inches (150.0 mm)
+Depth:
+0.34 inch (8.75 mm)
+iPhone 18 Pro
+Weight:
+7.44 ounces (211 grams)
+Width:
+3.07 inches (78.0 mm)
+Height:
+6.43 inches (163.4 mm)
+Depth:
+0.34 inch (8.75 mm)
+iPhone 18 Pro Max
+Weight:
+8.78 ounces (249 grams)
+Display
+iPhone 18 Pro
+Super Retina XDR display
+6.3-inch (diagonal) all-screen OLED display
+2622-by-1206-pixel resolution at 460 ppi
+The iPhone 18 Pro display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.27 inches diagonally (actual viewable area is less).
+iPhone 18 Pro Max
+Super Retina XDR display
+6.9-inch (diagonal) all-screen OLED display
+2868-by-1320-pixel resolution at 460 ppi
+The iPhone 18 Pro Max display has rounded corners that follow a beautiful curved design, and these corners are within a standard rectangle. When measured as a standard rectangular shape, the screen is 6.86 inches diagonally (actual viewable area is less).
+Both models
+Dynamic Island
+Always-On display
+ProMotion technology with adaptive refresh rates up to 120Hz
+HDR display
+True Tone
+Wide color (P3)
+Haptic Touch
+2,000,000:1 contrast ratio (typical)
+1000 nits max brightness (typical); 1600 nits peak brightness (HDR); 3000 nits peak brightness (outdoor); 1 nit minimum brightness
+Fingerprint-resistant oleophobic coating
+Anti-reflective coating
+Support for display of multiple languages and characters simultaneously
+Splash, Water, and Dust Resistant
+Rated IP68 (maximum depth of 6 meters up to 30 minutes) under IEC standard 60529
+Apple Intelligence and Siri AI
+The next generation of Apple Intelligence is centered around you, integrated into your apps, and built with privacy. Apple Intelligence powers Siri AI — an entirely new version of Siri that’s more personal, conversational, and powerful, along with helpful features across apps.
+Learn more
+Chip
+A20 Pro chip
+6-core CPU with 2 super cores and 4 efficiency cores
+7-core GPU with Neural Accelerators
+Dual 16-core Neural Engine
+Hardware-accelerated ray tracing
+Camera
+48MP Pro Fusion camera system
+48MP Fusion Main with variable aperture (ƒ/1.48, ƒ/1.8, ƒ/2.8, ƒ/4.0): 24 mm, second-generation sensor-shift optical image stabilization, 100% Focus Pixels, super-high-resolution photos (24MP and 48MP)
+Also enables 12MP optical-quality 2x Telephoto: 48 mm, second-generation sensor-shift optical image stabilization, 100% Focus Pixels
+48MP Fusion Ultra Wide: 13 mm, ƒ/2.2 aperture and 120° field of view, Hybrid Focus Pixels, super-high-resolution photos (24MP and 48MP)
+48MP Fusion Telephoto: 100 mm (4x), ƒ/2.8 aperture, Hybrid Focus Pixels, 3D sensor-shift optical image stabilization and autofocus, tetraprism design, super-high-resolution photos (24MP and 48MP)
+Also enables 12MP optical-quality 8x Telephoto: 200 mm, ƒ/2.8 aperture, Hybrid Focus Pixels, 3D sensor-shift optical image stabilization and autofocus, tetraprism design
+8x optical-quality zoom in, 2x optical zoom out; 16x optical-quality zoom range
+Digital zoom up to 40x
+Customizable default lens (Fusion Main)
+Pro controls for lens aperture, shutter speed, white balance, and viewing histogram
+Apple Reference Image (Fusion Main)
+Sapphire crystal lens cover
+Adaptive True Tone flash
+Photonic Engine
+Deep Fusion
+Smart HDR 5
+Next-generation portraits with Focus and Depth Control
+Portrait Lighting with six effects
+Night mode
+Panorama (up to 63MP)
+Photographic Styles 3
+Smart focus tracking
+Spatial photos
+48MP macro photography
+ProRAW
+Wide color capture for photos and Live Photos
+Lens correction (Fusion Ultra Wide)
+Advanced red-eye correction
+Auto image stabilization
+Burst mode
+Photo geotagging
+Image formats captured: HEIF, JPEG, and DNG
+Video Recording
+4K Dolby Vision video recording at 24 fps, 25 fps, 30 fps, 60 fps, 100 fps (Fusion Main), or 120 fps (Fusion Main)
+1080p Dolby Vision video recording at 25 fps, 30 fps, 60 fps, or 120 fps (Fusion Main)
+720p Dolby Vision video recording at 30 fps
+Cinematic mode up to 4K Dolby Vision at 60 fps
+Cinematic mode effects from video (Fusion Main)
+Pro controls for lens aperture, shutter speed, white balance, and viewing histogram
+Smart focus tracking
+Improved low-light video at 1080p
+Action mode up to 2.8K Dolby Vision at 60 fps
+Spatial video recording at 1080p at 30 fps
+ProRes video recording up to 4K at 120 fps with external recording
+ProRes RAW
+Academy Color Encoding System
+Apple Log 2
+Genlock support
+Macro video recording, including slo-mo and time-lapse
+Slo-mo video support for 1080p up to 240 fps and 4K Dolby Vision up to 120 fps (Fusion Main)
+Dual Capture up to 4K Dolby Vision at 30 fps
+Time-lapse video with stabilization up to 4K Dolby Vision
+Night mode Time-lapse
+QuickTake video up to 4K Dolby Vision at 60 fps
+Second-generation sensor-shift optical image stabilization for video (Fusion Main)
+3D sensor-shift optical image stabilization and autofocus for video (Fusion Telephoto)
+Digital zoom up to 24x
+Audio zoom
+True Tone flash
+Cinematic video stabilization (4K, 1080p, and 720p)
+Continuous autofocus video
+Take 8MP still photos while recording 4K video
+Playback zoom
+Video formats recorded: HEVC, H.264, ProRes, and ProRes RAW
+Spatial Audio and stereo recording
+Four studio-quality mics
+Wind noise reduction
+Audio Mix
+Front Camera
+18MP Center Stage camera
+ƒ/1.9 aperture
+Autofocus with Focus Pixels
+Retina Flash
+Tap to zoom and rotate
+Center Stage for photos
+Ultra-stabilized video
+Dual Capture
+Center Stage for video calls
+Pro controls for shutter speed, white balance, and viewing histogram
+Photonic Engine
+Deep Fusion
+Smart HDR 5
+Next-generation portraits with Focus and Depth Control
+Portrait Lighting with six effects
+Animoji and Memoji
+Night mode
+Photographic Styles 3
+Improved low-light video at 1080p
+ProRAW
+Wide color capture for photos and Live Photos
+Lens correction
+Auto image stabilization
+Burst mode
+4K Dolby Vision video recording at 24 fps, 25 fps, 30 fps, or 60 fps
+1080p Dolby Vision video recording at 25 fps, 30 fps, or 60 fps
+Cinematic mode up to 4K Dolby Vision at 30 fps
+Cinematic mode effects from video
+ProRes video recording up to 4K at 60 fps with external recording
+ProRes RAW
+Academy Color Encoding System
+Apple Log 2
+Slo-mo video support for 1080p at 120 fps
+Time‑lapse video with stabilization up to 4K Dolby Vision
+Night mode Time-lapse
+QuickTake video up to 4K at 60 fps in Dolby Vision
+Cinematic video stabilization (4K, 1080p, and 720p)
+Spatial Audio and stereo recording
+Wind noise reduction
+Audio Mix
+Power and Battery
+iPhone 18 Pro
+Typical use Up to 24 hours
+Video playback Up to 36 hours
+Video playback (streamed) Up to 33 hours
+iPhone 18 Pro Max
+Typical use Up to 30 hours
+Video playback Up to 45 hours
+Video playback (streamed) Up to 40 hours
+Both models
+Built-in rechargeable lithium-ion battery
+Fast-charge capable: Up to 50% charge in around 15 minutes when using 60W-capable adapter or higher with Adjustable Voltage Supply (available separately) paired with USB-C charging cable Up to 50% charge in 30 minutes with 35W adapter or higher paired with MagSafe Charger (both available separately)
+Face ID
+Enabled by TrueDepth technology in the Center Stage front camera
+Peace of Mind
+Emergency SOS via satellite
+Crash Detection
+Roadside Assistance via satellite
+Messages via satellite
+Find My via satellite
+Cellular and Wireless
+Model A3472 **
+FDD-5G NR (Bands n1, n2, n3, n5, n7, n8, n12, n14, n20, n25, n26, n28, n29, n30, n66, n70, n71, n75)
+TDD-5G NR (Bands n38, n40, n41, n48, n53, n77, n78, n79)
+5G NR mmWave (Bands n258, n260, n261)
+FDD-LTE (Bands 1, 2, 3, 4, 5, 7, 8, 12, 13, 14, 17, 18, 19, 20, 25, 26, 28, 29, 30, 32, 66, 71, 106)
+TDD-LTE (Bands 34, 38, 39, 40, 41, 42, 48, 53)
+UMTS/HSPA+ (850, 900, 1700/2100, 1900, 2100 MHz)
+GSM/EDGE (850, 900, 1800, 1900 MHz)
+Model A3473 **
+FDD-5G NR (Bands n1, n2, n3, n5, n7, n8, n12, n14, n20, n25, n26, n28, n29, n30, n66, n70, n71, n75)
+TDD-5G NR (Bands n38, n40, n41, n48, n53, n77, n78, n79)
+5G NR mmWave (Bands n258, n260, n261)
+FDD-LTE (Bands 1, 2, 3, 4, 5, 7, 8, 12, 13, 14, 17, 18, 19, 20, 25, 26, 28, 29, 30, 32, 66, 71)
+TDD-LTE (Bands 34, 38, 39, 40, 41, 42, 48, 53)
+UMTS/HSPA+/DC-HSDPA (850, 900, 1700/2100, 1900, 2100 MHz)
+GSM/EDGE (850, 900, 1800, 1900 MHz)
+iPhone 18 Pro
+5G (sub-6 GHz and mmWave) with 4x4 MIMO
+Gigabit LTE with 4x4 MIMO
+Apple N1 wireless networking chip
+Wi‑Fi 7 (802.11be) with 2x2 MIMO
+Bluetooth 6
+Thread networking technology
+Apple second-generation Ultra Wideband chip
+NFC with reader mode
+Express Cards with power reserve
+Apple C2 cellular modem
+iPhone 18 Pro Max
+5G (sub-6 GHz and mmWave) with 4x4 MIMO
+Gigabit LTE with 4x4 MIMO
+Apple N1 wireless networking chip
+Wi‑Fi 7 (802.11be) with 2x2 MIMO
+Bluetooth 6
+Thread networking technology
+Apple second-generation Ultra Wideband chip
+NFC with reader mode
+Express Cards with power reserve
+Location
+Precision dual-frequency GPS (GPS, GLONASS, Galileo, QZSS, BeiDou, and NavIC)
+Digital compass
+Wi-Fi
+Cellular
+iBeacon microlocation
+External Buttons and Connectors
+Volume up/down
+Action button
+Camera Control
+Side button
+Built-in stereo speaker Built-in microphone
+USB-C connector
+Built-in microphones
+Built-in stereo speaker
+Action button features
+Silent Mode, Focus, Camera, Visual Intelligence, Flashlight, Voice Memo, Recognize Music, Translate, Magnifier, Controls, Shortcut, or Accessibility
+Camera controls
+Exposure, Depth, Zoom, Cameras, Styles, Tone
+Charging and Expansion
+USB-C connector with support for:
+Charging
+DisplayPort
+USB 3 (up to 10Gb/s)
+MagSafe and Wireless Charging
+MagSafe wireless charging up to 25W
+Qi2 wireless charging up to 25W
+Magnet array
+Alignment magnet
+Accessory Identification NFC
+Magnetometer
+Sensors
+Face ID
+LiDAR Scanner
+Barometer
+High dynamic range gyro
+High-g accelerometer
+Proximity sensor
+Dual ambient light sensors
+SIM Card
+Dual eSIM (two active eSIMs; stores eight or more eSIMs)
+iPhone 18 Pro and iPhone 18 Pro Max use advanced eSIM technology for more convenience and security (not compatible with physical SIM cards).
+Learn more about eSIM
+Learn more about traveling with eSIM
+Apple Pay
+Pay with your iPhone using Face ID in stores, within apps, and on the web
+Send and receive money in Messages with Apple Cash
+Complete purchases made with Apple Pay on your Mac
+Pay for your ride using Express Transit
+Learn more about Apple Pay
+Learn more about Apple Cash
+Apple Card
+Credit card created by Apple, designed for iPhone
+Get unlimited 3% Daily Cash at Apple and select merchants when you use Apple Pay, 2% with Apple Pay, and 1% everywhere else
+Use the Wallet app to apply for, manage, and use Apple Card
+Titanium, laser-etched physical credit card for use where Apple Pay is not accepted yet
+Share with up to five people, 13 years or older, in your Family Sharing group to track expenses and manage spending
+Learn more about Apple Card
+Video Calling
+FaceTime video calling over cellular or Wi-Fi
+FaceTime HD (1080p) video calling over 5G or Wi-Fi
+Center Stage for video calling
+SharePlay
+Screen sharing
+Portrait mode in FaceTime video
+Spatial Audio
+Voice Isolation and Wide Spectrum microphone modes
+Optical zoom with rear-facing camera
+Audio Calling
+FaceTime audio
+Voice over LTE (VoLTE)
+Wi-Fi calling
+SharePlay
+Screen sharing
+Spatial Audio
+Voice Isolation and Wide Spectrum microphone modes
+Audio Playback
+Supported formats include AAC, APAC, MP3, Apple Lossless, FLAC, Dolby Digital, Dolby Digital Plus, and Dolby Atmos
+Spatial Audio playback
+User-configurable maximum volume limit
+Video Playback
+Supported formats include HEVC, H.264, AV1, and ProRes
+HDR with Dolby Vision, HDR10+/HDR10, and HLG
+Up to 4K HDR AirPlay for mirroring, photos, and video out to Apple TV (2nd generation or later) or AirPlay-enabled smart TV
+Video mirroring and video out support: Up to 4K HDR through native DisplayPort output over USB-C or USB-C Digital AV Adapter (model A2119; adapter sold separately)
+Siri
+Get help with everyday tasks like sending messages, setting reminders, and more
+Activate hands-free with only your voice using “Siri” or “Hey Siri,” or use Type to Siri
+Protected by the strongest privacy of any intelligent assistant
+Powered by Apple Intelligence, Siri is more natural and helpful
+Learn more about Siri
+Operating System
+iOS 27 iOS is the world’s most personal and secure mobile operating system, packed with powerful features and designed to protect your privacy.
+Privacy
+iPhone is built from the ground up to protect your personal information. Every iPhone has secure authentication. Apps need your permission to track your activity across other companies’ apps or websites. Your iMessages and FaceTime video calls are encrypted end-to-end. And much more.
+Learn more about privacy features
+Accessibility
+Built-in accessibility features supporting vision, mobility, hearing, speech, and cognitive needs help you get the most out of your iPhone — in the ways that work best for you.
+Learn more
+Features include:
+Assistive Access
+VoiceOver
+Zoom
+Magnifier
+Voice Control
+Switch Control
+AssistiveTouch
+Eye Tracking
+RTT and TTY support
+Closed Captions
+Live Captions
+Personal Voice
+Live Speech
+Type to Siri
+Vocal Shortcuts
+Spoken Content
+Built-in Apps
+App Store
+Books
+Calculator
+Calendar
+Camera
+Clock
+Compass
+Contacts
+FaceTime
+Files
+Find My
+Fitness
+Freeform
+Games
+GarageBand
+Health
+Home
+iMovie
+iTunes Store
+Journal
+Keynote
+Magnifier
+Mail
+Maps
+Measure
+Messages
+Music
+News
+Notes
+Numbers
+Pages
+Passwords
+Phone
+Photos
+Podcasts
+Preview
+Reminders
+Safari
+Settings
+Shortcuts
+Stocks
+Tips
+Translate
+TV
+Voice Memos
+Wallet
+Watch
+Weather
+For a complete list of Apple apps available on iPhone, see  apple.com/apps .
+Rating for Hearing Aids
+Hearing Aid Compatible
+System Requirements
+Apple Account (required for some features)
+Internet access
+Syncing to a Mac or PC requires:
+macOS Catalina 10.15 or later using the Finder
+macOS High Sierra 10.13 through macOS Mojave 10.14.6 using iTunes 12.8 or later
+Windows 10 or later using iTunes 12.12.10 or later (free download from apple.com/itunes/download )
+Environmental Requirements
+Operating ambient temperature:
+32° to 95° F (0° to 35° C)
+Nonoperating temperature:
+−4° to 113° F (−20° to 45° C)
+Relative humidity:
+5% to 95% noncondensing
+Operating altitude:
+tested up to 10,000 feet (3000 m)
+Languages
+Language support
+English (Australia, UK, U.S.), Chinese (Simplified, Traditional, Traditional – Hong Kong), French (Canada, France), German, Italian, Japanese, Korean, Spanish (Latin America, Spain), Arabic, Bulgarian, Catalan, Croatian, Czech, Danish, Dutch, Finnish, Greek, Hebrew, Hindi, Hungarian, Indonesian, Kazakh, Malay, Norwegian, Polish, Portuguese (Brazil, Portugal), Romanian, Russian, Slovak, Swedish, Thai, Turkish, Ukrainian, Vietnamese
+Learn more about feature availability
+In the Box
+iPhone with iOS 27
+USB-C Charge Cable (1 m)
+iPhone and the Environment
+See the iPhone 18 Pro and iPhone 18 Pro Max Product Environmental Report (PDF) , opens in new tab
+Progress toward Apple 2030
+Apple 2030 is our goal to be carbon neutral across our value chain. We design our products to be less carbon intensive by prioritizing the use of recycled and renewable content and low-carbon materials while focusing on the energy efficiency of our software and hardware.
+See Apple’s commitment
+Materials
+iPhone 18 Pro and iPhone 18 Pro Max are made with 40% recycled content, including:
+85% recycled aluminum in the enclosure
+100% recycled cobalt in the battery
+100% recycled gold plating and tin solder in all Apple-designed printed circuit boards
+95% recycled lithium in the battery
+100% recycled rare earth elements in all magnets
+80% recycled steel in multiple components including the battery enclosure and vapor chamber chassis
+100% recycled tungsten in the Taptic Engine
+Packaging
+100% fiber-based packaging
+Energy
+50% of manufacturing electricity for iPhone 18 Pro and iPhone 18 Pro Max is sourced from renewable electricity
+Exceeds U.S. Department of Energy requirements for battery charger systems
+Waste
+No established final assembly sites generate waste sent to landfill as part of Apple’s Zero Waste Program
+Smarter chemistry
+All of the materials used in Apple products, accessories, and packaging are covered by the requirements of our Regulated Substances Specification (PDF) , which was one of the first in industry to restrict the use of key substances of concern. See the latest Environmental Progress Report (PDF) to understand Apple’s recent efforts in phasing out these chemistries.
+Trade in your smartphone for credit.
+With Apple Trade In, you can get credit toward a new iPhone when you trade in an eligible smartphone. It’s good for you and the planet.
+Learn more , Apple Trade In
+Lease your next iPhone, only at Apple.
+Join Apple Upgrade and lease a new iPhone with low monthly payments for 12 or 24 months. Then upgrade when your term is complete.
+Learn more , Apple Upgrade
+Still have questions? Just ask.
+You won’t find a better place to buy iPhone. We know about carriers, payment options, and more. And we make it easy to understand.
+Learn more , buying iPhone
+Apple Footer
+Fast, free delivery
+Or pick up available items at an Apple Store.
+Learn more Fast, free delivery
+Pay monthly at 0% APR
+You can pay over time when you choose to check out at Apple with Apple Card Monthly Installments.†
+Learn more Pay monthly at 0% APR
+Get help buying
+Have a question? Call a Specialist or chat online.
+Contact us
+*
+Financing available to qualified customers, subject to credit approval and credit limit, and requires you to select Apple Card Monthly Installments (ACMI) as your payment type at checkout at Apple. Financing terms vary by product. Taxes and shipping on items purchased using ACMI are subject to your card’s variable APR, not the ACMI 0% APR. ACMI is not available for purchases made at special storefronts or when using such special discounts in-store at Apple, except ACMI is available at the Education storefront and with the Education discount. The last month’s payment for each product will be the product’s purchase price, less all other payments at the monthly payment amount. ACMI is subject to change at any time for any reason, including but not limited to installment term lengths and eligible products. See the Apple Card Customer Agreement for more information about ACMI.
+** To identify your iPhone model number, see support.apple.com/108044 . For details on 5G and LTE support, contact your carrier and see apple.com/iphone/cellular . Cellular technology support is based on iPhone model number and configuration for GSM networks.
+Available space is less and varies due to many factors. A standard configuration uses approximately 12GB to 24GB of space, including iOS 27 with its latest features and Apple apps that can be deleted. Apple Intelligence on-device models use approximately 7GB of space and can be deleted if Apple Intelligence is turned off. Turning on Apple Intelligence will download the models again. Apple apps that can be deleted use about 4.5GB of space, and you can download them back from the App Store. Storage capacity subject to change based on software version, settings, and iPhone model.
+Size and weight vary by configuration and manufacturing process.
+iPhone 18 Pro and iPhone 18 Pro Max are splash, water, and dust resistant and were tested under controlled laboratory conditions with a rating of IP68 under IEC standard 60529 (maximum depth of 6 meters up to 30 minutes). Splash, water, and dust resistance are not permanent conditions. Resistance might decrease as a result of normal wear. Do not attempt to charge a wet iPhone; refer to the user guide for cleaning and drying instructions. Liquid damage not covered under warranty.
+Apple Intelligence is available with Siri and device language set to Chinese (Simplified), Chinese (Traditional), Danish, Dutch, English, French, German, Italian, Japanese, Korean, Norwegian, Portuguese, Spanish, Swedish, Turkish, or Vietnamese. Some features may not be available in all regions or languages. Some devices may not be available in all regions. Siri AI is available in beta in iOS 27 and requires an Apple Intelligence–enabled device set to a supported language. Available in English to start. Siri AI will not be initially available in the EU on iOS. Certain Apple Intelligence features that rely on server-side models are subject to daily usage limits, including but not limited to Siri AI, Intelligent Photo Editing Tools, Image Playground, and AFM 3 Cloud models in Shortcuts. Daily limits may vary by feature, request complexity, system demand, system policies, and other factors. Expanded access to such features will be available for a fee in the future. Use of these features is subject to the Apple Intelligence Terms and Conditions. Learn more at apple.com/apple-intelligence .
+Enabled by compatible apps.
+Enabled by compatible third-party hardware and software.
+Testing conducted by Apple in August 2026 using preproduction iPhone 18 Pro, iPhone 18 Pro Max, and iPhone Duo units and software, subscribed to LTE and 5G carrier networks, using a representative usage profile. Profile is based on the median usage values across iPhone users and reflects a combination of passive and active use of a variety of applications, including but not limited to messaging, photos, music, social media, video streaming, games, web browsing, and navigation. iPhone Duo typical use based on equal usage between inner and outer displays. Battery life varies by use, configuration, cellular network, signal strength, and other factors; actual results may vary based on usage.
+Testing conducted by Apple in July 2026 using preproduction iPhone 18 Pro and iPhone 18 Pro Max units and software, subscribed to LTE and 5G carrier networks. Video playback consisted of a repeated 2-hour 23-minute HDR movie purchased from the iTunes Store. Video playback (streamed) consisted of a repeated 3-hour 1-minute HDR movie purchased from the iTunes Store. All settings were default except: Bluetooth was paired with headphones; Wi-Fi was associated with a network; the Wi-Fi feature Ask to Join Networks, Auto-Brightness, and True Tone were turned off.
+Testing conducted by Apple in July 2026 using preproduction iPhone 18 Pro and iPhone 18 Pro Max units and software, and either USB‑C Charge Cable or Apple MagSafe Chargers (1‑meter Model A3502 and 2‑meter Model A3503), both with Apple 40W Dynamic Power Adapter with 60W Max (Model A3351). Wired fast charge supported with 60W-capable USB‑C cable and USB PD 3.1 (or better) power adapters with Adjustable Voltage Supply (AVS). Fast‑charge testing conducted with drained iPhone units. Times measured from the appearance of the Apple logo as the unit started up. Charge time varies with adapter, settings, usage, and environmental factors; actual results will vary.
+Satellite features are included for free for two years with the activation of any iPhone 14 or later model. Connection and response times vary based on location, site conditions, and other factors. Some satellite features require a carrier plan. SMS messaging via satellite is available on supported carriers. SMS message rates may apply. Satellite connectivity is provided by Globalstar and its affiliates. See support.apple.com/105097 for more information.
+iPhone Duo, iPhone 18 Pro, iPhone 17e, iPhone 17, and iPhone Air can detect a severe car crash and call for help. Requires a cellular connection, satellite connectivity, or Wi-Fi calling.
+Data plan required. 5G, Gigabit LTE, VoLTE, and Wi-Fi calling are available in select markets and through select carriers. Speeds are based on theoretical throughput and vary based on site conditions and carrier. For details on 5G and LTE support, contact your carrier and see apple.com/iphone/cellular .
+Wi-Fi 7 available in countries and regions where supported.
+Ultra Wideband availability varies by region.
+Visual Intelligence is available on any Apple Intelligence–enabled iPhone. Some capabilities may not be available in all languages and regions. For more details, see support.apple.com/121115#visual-intelligence .
+USB 3 cable with 10Gb/s speed required.
+iPhone 18 Pro models are activated with an eSIM and do not support a physical SIM. Use of an eSIM requires a carrier that supports eSIM and a wireless service plan. See your carrier for details. To learn more, visit support.apple.com/HT212780 .
+Apple Cash services are provided by Green Dot Bank, Member FDIC. Apple Payments Services LLC, a subsidiary of Apple Inc., is a service provider of Green Dot Bank for Apple Cash accounts. Neither Apple Inc. nor Apple Payments Services LLC is a bank. Learn more about Apple Cash Terms and Conditions from Green Dot Bank. Only available in the 50 United States, the District of Columbia, and Puerto Rico (collectively the “U.S.”). To send and receive money with an Apple Cash account, you must be 18 and a U.S. resident. If you’re under 18, your family organizer can set up Apple Cash for you as part of their Apple Cash Family account, but you may not be able to access features that require a supported payment card. Security checks may require more time to make funds available. Apple Cash Family accounts can only send or receive up to $2000 within a rolling seven-day period. Tap to Cash transactions can only be used to send or receive up to $2000 within a rolling seven-day period. Other limits apply, see Apple Cash Terms and Conditions from Green Dot for details. To access and use all Apple Cash features, you must register your Apple Cash account and have an eligible Apple device with Wallet that has the latest version of iOS. All communications from Apple and Green Dot Bank about Apple Cash (including transactional and marketing communications) and customer service support are available in English. Certain communications about Apple Cash can be viewed in another language depending on your device language settings.
+Available only in select cities and transit systems. Requires eligible device and OS version. See here for details .
+Merchant offers may change at any time.
+Apple Card Family Participants and Co-Owners do not need to have a familial relationship but must be part of the same Apple Family Sharing group.
+FaceTime calling requires a FaceTime-enabled device for the caller and recipient and a Wi-Fi connection. Availability over a cellular network depends on carrier policies; data charges may apply.
+Standard dynamic range video content only.
+Siri may not be available in all languages or in all areas, and features may vary by area. Internet access required. Cellular data charges may apply.
+Wireless broadband recommended; fees may apply.
+Product recycled or renewable content is the mass of certified recycled material relative to the overall mass of the device, not including packaging or in-box accessories. Recycled and renewable plastic content calculation includes mass balance allocation.
+Breakdown of U.S. retail packaging by weight. Adhesives, inks, and coatings are excluded from our calculations of plastic content and packaging weight. Fiber sourcing requirements are defined in Apple’s Responsible Fiber Specification. We consider wood fibers to include bamboo.
+We estimate the percentage of electricity-related emissions in our manufacturing that is sourced from low-carbon electricity by attributing to our carbon model low-carbon energy procured by our suppliers in the prior fiscal year, based on the supplier manufacturing allocations at time of product launch. Included in this number is only low-carbon electricity that Apple or its suppliers have procured as part of Apple’s Supplier Clean Energy Program.
+Efficiency performance is based on the U.S. Department of Energy Federal Energy Conservation Standards for Battery Chargers .
+All established final assembly supplier sites — those that have been Apple suppliers for more than one year — for iPhone 18 Pro and iPhone 18 Pro Max are third-party verified as Zero Waste by UL LLC (UL 2799 Standard). UL requires at least 90% diversion through methods other than waste to energy to achieve Zero Waste to Landfill (Silver 90–94%, Gold 95–99%, and Platinum 100%) designations.
+Apple’s Regulated Substances Specification describes Apple’s restrictions on the use of certain chemical substances in materials in Apple products, accessories, manufacturing processes, and packaging used for shipping products to Apple’s end-customers. Restrictions are derived from international laws or directives, regulatory agencies, eco-label requirements, environmental standards, and Apple policies. Every Apple product is free of PVC and phthalates except for AC power cords in India, Thailand (for two-prong AC power cords), and South Korea, where we continue to seek government approval for our PVC and phthalates replacement. Apple products comply with the European Union Directive 2011/65/EU and its amendments, including exemptions for the use of lead such as high-temperature solder. Apple is working to phase out the use of these exempted substances for new products where technically possible.
+Trade-in values will vary based on the condition, year, and configuration of your eligible trade-in device. Not all devices are eligible for credit. You must be at least the age of majority to be eligible to trade in for credit or for an Apple Gift Card. Trade-in value may be applied toward qualifying new device purchase, or added to an Apple Gift Card. Actual value awarded is based on receipt of a qualifying device matching the description provided when estimate was made. Sales tax may be assessed on full value of a new device purchase. In-store trade-in requires presentation of a valid photo ID (local law may require saving this information). Offer may not be available in all stores, and may vary between in-store and online trade-in. Some stores may have additional requirements. Apple or its trade-in partners reserve the right to refuse, cancel, or limit quantity of any trade-in transaction for any reason. More details are available from Apple’s trade-in partner for trade-in and recycling of eligible devices. Restrictions and limitations may apply.
+Apple Upgrade is a device leasing program available in the U.S. (excluding U.S. territories). Leases are provided by Klarna; subject to eligibility and credit approval, including final approval at checkout. To be eligible, you must be a U.S. resident, at least 18 years old (or the legal age in your state), have an accepted credit or debit card, and have an Apple Account. Additional eligibility criteria apply. Device must be in good condition upon return; damage fees may apply. For iPhone only: In order to lease an iPhone, you must select an eligible carrier (but you cannot use a prepaid carrier plan). Upgrades require entering into a new lease and are subject to eligibility and credit approval. Apple Upgrade is not available on refurbished devices or online at the following special stores: Apple Employee Purchase Plan; participating corporate Employee Purchase Programs; Apple at Work for small businesses or enterprises; Government, Education, or Veterans and Military Purchase Programs.
+Features are subject to change. Some features, applications, and services may not be available in all regions or all languages and may require specific hardware and software. For more information, see Feature Availability .
+†
+Apple Card Monthly Installments (ACMI) is a 0% APR payment option that is only available if you select it at checkout in the U.S. for eligible products purchased at Apple Store locations, apple.com , the Apple Store app, or by calling 1-800-MY-APPLE, and is subject to credit approval and credit limit. See here for more information about eligible products. Existing customers: See your Customer Agreement for your variable APR. As of July 1, 2026, the variable APR on new Apple Card accounts ranges from 17.49% to 27.74%. You must elect to use ACMI at checkout. If you buy an ACMI-eligible product with a one-time payment on Apple Card at checkout, that purchase is subject to your Apple Card’s variable APR, not the ACMI 0% APR. Taxes and shipping on items purchased using ACMI are subject to your Apple Card’s variable APR, not the ACMI 0% APR. In order to buy an iPhone with ACMI, you must select one of the following carriers (prepaid carrier plans are not supported): AT&T, T-Mobile, or Verizon. An iPhone purchased with ACMI is always unlocked, so you can switch carriers at any time, subject to your carrier’s terms. ACMI is not available for purchases made at the following special storefronts or when using these discounts in-store at Apple: Apple Employee Purchase Plan; participating corporate Employee Purchase Programs; Apple at Work for small businesses; Government and Veterans and Military Purchase Programs; or on refurbished devices. The last month’s payment for each product will be the product’s purchase price, less all other payments at the monthly payment amount. ACMI is subject to change at any time for any reason, including but not limited to installment term lengths and eligible products. See the Apple Card Customer Agreement for more information about ACMI.
+To access and use all Apple Card features and products available only to Apple Card users, you must add Apple Card to Wallet on an iPhone or iPad that supports and has the latest version of iOS or iPadOS. Apple Card is subject to credit approval, available only for qualifying applicants in the United States, and issued by Goldman Sachs Bank USA, Salt Lake City Branch.
+Apple Payments Services LLC, a subsidiary of Apple Inc., is a service provider of Goldman Sachs Bank USA for Apple Card and Savings accounts. Neither Apple Inc. nor Apple Payments Services LLC is a bank.
+All communications from Apple and Goldman Sachs Bank USA about Apple Card (including transactional and marketing communications) and customer service support are available in English. Certain communications about Apple Card can be viewed in another language depending on your device language settings. If you reside in the U.S. Virgin Islands, American Samoa, Guam, Northern Mariana Islands, or U.S. Minor Outlying Islands, please call Goldman Sachs at 877-255-5923 with questions about Apple Card.
+
+Apple
+iPhone
+iPhone 18 Pro
+Tech Specs
+Shop and Learn
+Shop and Learn
+Store
+Mac
+iPad
+iPhone
+Watch
+Vision
+AirPods
+TV & Home
+AirTag
+Accessories
+Gift Cards
+Apple Wallet
+Apple Wallet
+Wallet
+Apple Card
+Apple Pay
+Apple Cash
+Account
+Account
+Manage Your Apple Account
+Apple Store Account
+iCloud.com
+Entertainment
+Entertainment
+Apple One
+Apple TV
+Apple Music
+Apple Arcade
+Apple Fitness+
+Apple News+
+Apple Podcasts
+Apple Books
+App Store
+Apple Store
+Apple Store
+Find a Store
+Genius Bar
+Today at Apple
+Group Reservations
+Apple Camp
+Apple Store App
+Certified Refurbished
+Apple Upgrade
+Apple Trade In
+Financing
+Carrier Deals at Apple
+Order Status
+Shopping Help
+For Business
+For Business
+Apple and Business
+Shop for Business
+For Education
+For Education
+Apple and Education
+Shop for K-12
+Shop for College
+For Healthcare
+For Healthcare
+Apple and Healthcare
+For Government
+For Government
+Apple and Government
+Shop for Veterans and Military
+Shop for State and Local Employees
+Shop for Federal Employees
+Apple Values
+Apple Values
+Accessibility
+Education
+Environment
+Inclusion and Diversity
+Privacy
+Racial Equity and Justice
+Supply Chain Innovation
+About Apple
+About Apple
+Newsroom
+Apple Leadership
+Career Opportunities
+Investors
+Ethics & Compliance
+Events
+Contact Apple
+More ways to shop: Find an Apple Store or other retailer near you. Or call 1-800-MY-APPLE (1-800-692-7753).
+United States
+Copyright ©
+2026
+Apple Inc. All rights reserved.
+Privacy Policy
+Terms of Use
+Sales and Refunds
+Legal
+Site Map
+United States

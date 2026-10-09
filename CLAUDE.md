@@ -37,6 +37,8 @@ open work, and session history, read `NEXT-SESSION.md`, not this file.
 
 ## Device priority
 
+Design work: follow the Design protocol section in docs/DESIGN.md (Jack Roberts blueprint, 2026-10-09) before any UI change.
+
 **Samsung Galaxy S26 Ultra (Android, Chrome) is the primary target.** iPhone
 is secondary: Adnan shares the app with friends and family who are mostly on
 iPhone, so it must also work, but the S26 is his own daily phone and the one

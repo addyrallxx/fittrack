@@ -1,0 +1,16 @@
+[
+  {
+    "id": "generic-thai-chicken-larb-salad",
+    "status": "unresolved",
+    "cal": 380,
+    "protein": 38,
+    "carbs": 20,
+    "fat": 16,
+    "grams": 350,
+    "conf": "derived",
+    "src": "No exact published item in USDA FoodData Central, Open Food Facts, or brand nutrition databases. Initial estimate retained for chicken larb salad without rice.",
+    "url": "",
+    "scaled": false,
+    "checked": "2026-10-06"
+  }
+]

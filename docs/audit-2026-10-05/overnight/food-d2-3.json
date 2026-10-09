@@ -1,0 +1,30 @@
+[
+  {
+    "id": "generic-poke-tofu-chicken-bowl",
+    "status": "unresolved",
+    "cal": 480,
+    "protein": 40,
+    "carbs": 40,
+    "fat": 18,
+    "grams": 420,
+    "conf": "derived",
+    "src": "No exact published item in USDA FoodData Central, Open Food Facts, or brand nutrition databases. Initial estimate retained for poke-style bowl with tofu and chicken hybrid with extra protein add-on.",
+    "url": "",
+    "scaled": false,
+    "checked": "2026-10-06"
+  },
+  {
+    "id": "generic-rotisserie-chicken-breast-portion",
+    "status": "sourced",
+    "cal": 264,
+    "protein": 37,
+    "carbs": 1.8,
+    "fat": 10.6,
+    "grams": 150,
+    "conf": "derived",
+    "src": "Open Food Facts barcode 0226119703988 (Member's Mark Rotisserie Chicken Breast, published per 100g: 176 kcal, 24.69g protein, 1.18g carbs, 7.05g fat; scaled to 150g)",
+    "url": "https://world.openfoodfacts.org/product/0226119703988",
+    "scaled": true,
+    "checked": "2026-10-06"
+  }
+]

@@ -1,0 +1,12 @@
+# Scrub personal notes, phase 2 (ownership expanded)
+
+Same worktree and log as phase 1 (`C:/Users/adnan/projects/ft-wt/foods`, `logs/foods-scrub.log.md`); append "Phase 2". Adnan approved the expansion. You now own: `data/foods.json`, the `featured` tie-breaker in `fittrack.html` (only that), `tools/check-foods.mjs`, `tools/generate-foods.mjs`, `tools/source-foods.mjs`, `.gitignore`, `data/orders-parsed.json`, `data/order-screenshots/README.md`.
+
+1. Rename the personal tags to neutral ones that keep behaviour: `featured` to `staple`, `featured-variant` to `staple-variant`; drop `not-order-history` if nothing reads it (otherwise rename it neutrally). Update every consumer.
+2. Rename the six personal build names: "(custom build)" to "(custom build)", "(loaded build)" to "(loaded build)". Keep the ids.
+3. The immutable-record hashes in `check-foods.mjs` and `generate-foods.mjs` protect the originals from accidental edits: recompute them for the renamed records on purpose, with a one-line comment saying why.
+4. `data/orders-parsed.json` is a personal delivery-order history with no runtime consumer (verify across every tracked file, including Python and docs). Move it out of the repo to `C:/Users/adnan/projects/fittrack-private/orders-parsed.json` (create the folder), point any tool that reads it at that path through an env var or a clear error, and gitignore `data/orders-parsed.json` and `data/order-screenshots/*` except the README. Strip personal details from that README.
+5. Gates: `node tools/check-foods.mjs`, `node test/syntax-check.mjs`, `node test/progress.test.mjs`, `node test/push.test.mjs`, `node test/schedule.test.mjs`, and `PORT=8903 node test/feel.test.mjs`. All pass.
+6. History scan for the rewrite that follows (read-only git only): write `logs/history-scan.md` listing every path and pattern with personal content anywhere in `git log --all` history: the tags and names above, every phase 1 note you removed (search a distinctive substring of each), `orders-parsed.json`, any file ever committed under `data/order-screenshots/`, and anything else personal you find in past versions of shipped files. For each: paths, number of commits, first and last commit. Propose the exact `git filter-repo` arguments (paths to delete, a `--replace-text` file with literal and `regex:` rules) and write that rules file to `logs/history-replace.txt`.
+
+Rules: never run git stash, checkout, restore, reset, clean, commit or push. No em dashes. End with `Final report`.
